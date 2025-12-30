@@ -3,7 +3,7 @@ title: "Day 1 Setup (Windows)"
 description: "Install VS Code, Git, and Python 3.13; accept the GitHub Classroom assignment; create a venv; commit and push."
 date: 2025-12-30
 categories: [Setup]
-tags: [Windows, VS Code, Git, Python, venv]
+tags: [windows, vscode, git, github-classroom, python, venv, pip]
 ---
 
 # Day 1 Setup Guide (Windows)

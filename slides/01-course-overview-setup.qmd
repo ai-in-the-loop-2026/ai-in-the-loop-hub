@@ -3,7 +3,8 @@ title: "Course Overview and Workflow Setup"
 description: "What this course is, how we’ll work, and how to use GitHub Classroom + autograding successfully."
 date: 2026-01-13
 categories: [Workflow]
-tags: [GitHub, Setup, Python]
+tags: [github, setup, python]
+repo-actions: false
 format:
   revealjs:
     theme: simple

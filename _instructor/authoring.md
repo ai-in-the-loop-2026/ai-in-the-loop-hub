@@ -73,7 +73,7 @@ title: "Day 1 Setup (Windows)"
 description: "Install VS Code, Git, Python 3.13; accept the Classroom assignment; create a venv; commit and push."
 categories: Setup
 date: 2025-12-30
-tags: [Windows, VS Code, Git, Python, venv]
+tags: [windows, vscode, git, github-classroom, python, venv, pip]
 ---
 ```
 
