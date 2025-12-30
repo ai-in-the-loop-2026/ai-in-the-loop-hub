@@ -1,0 +1,29 @@
+---
+title: "Schedule"
+---
+
+This page is the **authoritative course schedule** and the main entry point for weekly materials.
+
+- Slide decks are linked here (rendered HTML).
+- Assignment invite links live on the [Assignments](assignments.qmd) page.
+
+::: {.callout-note}
+Dates below are placeholders until you finalize the semester calendar.  
+The key requirement here: the **first Tuesday meeting** uses the first slide deck.
+:::
+
+## Week 1
+
+| Meeting | Topic | Slides | Due |
+|---|---|---|---|
+| Tuesday | Course overview + workflow setup | [Course Overview and Workflow Setup](slides/01-course-overview-setup.qmd) | — |
+| Thursday | (Fill in) | — | — |
+
+## Future weeks (placeholder)
+
+Add additional weeks as you finalize topics and dates. A nice pattern is:
+
+- one row per meeting
+- links to slides
+- links to relevant resources
+- due items (assignment checkpoints) in the “Due” column

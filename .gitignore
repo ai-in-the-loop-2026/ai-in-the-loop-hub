@@ -1,0 +1,72 @@
+# Quarto / site output
+_site/
+.quarto/
+.quarto-cache/
+_freeze/
+
+# Generated artifacts you likely don't want in main
+*.pdf
+
+# Secrets / credentials
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+credentials.*
+secrets.*
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# R (optional)
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+
+# Node (optional)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# VS Code (keep curated team settings if desired)
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# JetBrains
+.idea/
+
+# Vim / Emacs
+*.swp
+*.swo
+*~
+.#*
+

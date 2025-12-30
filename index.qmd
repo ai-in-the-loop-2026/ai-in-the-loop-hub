@@ -1,0 +1,42 @@
+---
+title: "Creating with AI in the Loop"
+---
+
+Welcome! This is the **course hub** for _Creating with AI in the Loop_.
+
+If you’re ever unsure where to find something, start here.
+
+::: {.callout-note}
+**Student work lives in GitHub Classroom assignment repositories.**  
+This hub contains **instructions, links, slides, and policies**—not your submissions.
+:::
+
+## What you should do first (Week 1)
+1. Read the [Syllabus](syllabus.qmd) and the [AI Use Policy](policies/ai-use.qmd).
+2. Follow the [Day 1 Setup guide (Windows)](resources/day1_setup_windows.md) or [Day 1 Setup guide (macOS)](resources/day1_setup_macos.md).
+3. Accept **A0 — Setup Verification** using the link on the [Assignments](assignments.qmd) page.
+4. Make sure you understand how “submission” works (commit + push).
+
+## Quick links
+- **Schedule:** [Schedule](schedule.qmd)
+- **Assignments:** [Assignments](assignments.qmd)
+- **Policies:** [Policies](policies/index.qmd)
+- **Resources:** [Resources](resources/index.qmd)
+
+## How announcements work
+- **Primary channel:** (fill in: LMS announcements / email / GitHub Discussions)
+- **Where to ask questions:** (fill in: LMS forum / GitHub Discussions)
+- **Office hours:** (fill in link/time)
+
+## What this course is about (short version)
+You will learn to:
+- use AI tools effectively in a software development workflow
+- build software that calls model APIs (Gemini) and uses tools/data
+- test and evaluate non-deterministic components
+- ship a final project with clear design choices and limitations
+
+## Course “defaults” (so you don’t have to guess)
+- **Python:** 3.13.x (supported)  
+- **Environment:** `venv` + `pip`  
+- **Repo workflow (early weeks):** commit to `main`  
+- **Autograding:** usually runs on push (check ✅/❌ on GitHub)

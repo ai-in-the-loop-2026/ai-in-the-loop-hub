@@ -1,0 +1,74 @@
+---
+title: "Course Overview and Workflow Setup"
+description: "What this course is, how we’ll work, and how to use GitHub Classroom + autograding successfully."
+date: 2026-01-13
+categories: [Workflow]
+tags: [GitHub, Setup, Python]
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    center: false
+    transition: fade
+    code-line-numbers: true
+---
+
+## What you’ll be able to do by the end of this course
+
+- Build software that calls model APIs (Gemini) safely and reliably
+- Design tool-using and multi-step agent workflows
+- Test and evaluate non-deterministic components
+- Ship a final project with clear limitations + documentation
+
+---
+
+## How we’ll work
+
+- **Course hub site:** schedule, policies, resources
+- **GitHub Classroom repos:** where graded work happens
+- **AI use:** allowed (and expected) with transparency
+
+---
+
+## Tools for Week 1
+
+- Python 3.13.x
+- `venv` + `pip`
+- VS Code (recommended)
+- Git + GitHub
+
+---
+
+## GitHub Classroom: what “submission” means
+
+- Accept the assignment link
+- Make changes in your assignment repo
+- **Commit + push** to GitHub before the deadline
+- Check ✅/❌ next to your latest commit for autograding results
+
+---
+
+## Setup checklist (high level)
+
+1. Install VS Code
+2. Install Git
+3. Install Python 3.13.x
+4. Clone your A0 repo
+5. Create `.venv`, install dependencies
+6. Commit + push a small change
+
+---
+
+## Expectations and norms
+
+- You are responsible for keeping your repos private unless instructed otherwise
+- Don’t commit secrets (API keys) — use `.env` locally
+- Ask for help early; include exact error messages
+
+---
+
+## Next steps
+
+- Read the syllabus + policies
+- Complete Day 1 setup
+- Start A0 (Setup Verification)

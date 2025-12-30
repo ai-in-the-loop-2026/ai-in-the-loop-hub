@@ -1,0 +1,6 @@
+---
+title: "Collaboration Policy"
+description: "What kinds of collaboration are allowed, how to give credit, and how to avoid unacceptable sharing."
+categories: Academic Integrity
+---
+{{< include /policies/_includes/collaboration.md >}}

@@ -1,0 +1,7 @@
+---
+title: "Late Work & Extensions"
+description: "Deadlines, grace periods (if any), extension requests, and how GitHub Classroom cutoffs affect submissions."
+categories: Course Logistics
+---
+
+{{< include /policies/_includes/late-work.md >}}

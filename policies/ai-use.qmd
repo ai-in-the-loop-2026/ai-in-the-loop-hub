@@ -1,0 +1,7 @@
+---
+title: "AI Use Policy"
+description: "What AI assistance is allowed in this course, what you must disclose, and what crosses the line."
+categories: Academic Integrity
+---
+
+{{< include /policies/_includes/ai-use.md >}}

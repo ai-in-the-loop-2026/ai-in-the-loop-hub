@@ -1,0 +1,69 @@
+project:
+  type: website
+  output-dir: _site
+
+  # Render only the website pages + slide decks we intend to publish.
+  # (Keeps things like README.md and `_instructor/` from becoming stray site pages.)
+  render:
+    - index.qmd
+    - schedule.qmd
+    - assignments.qmd
+    - syllabus.qmd
+    - policies/**/*.qmd
+    - resources/**/*.qmd
+    - resources/**/*.md
+    - slides/index.qmd
+    - slides/**/[0-9][0-9]-*.qmd
+
+# Quarto does not render files/directories that start with `_`
+# (so `_instructor/` will not be published even without the render list above).
+
+website:
+  title: "Creating with AI in the Loop"
+  site-url: "https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/"
+
+  repo-url: "https://github.com/ai-in-the-loop-2026/ai-in-the-loop-hub"
+  repo-actions: [issue]
+
+  reader-mode: true
+  back-to-top-navigation: true
+
+  search:
+    location: navbar
+    type: overlay
+
+  navbar:
+    background: primary
+    left:
+      - href: index.qmd
+        text: Home
+      - href: schedule.qmd
+        text: Schedule
+      - href: assignments.qmd
+        text: Assignments
+      - href: slides/index.qmd
+        text: Slides
+      - href: syllabus.qmd
+        text: Syllabus
+      - href: policies/index.qmd
+        text: Policies
+      - href: resources/index.qmd
+        text: Resources
+    right:
+      - icon: github
+        href: "https://github.com/ai-in-the-loop-2026/ai-in-the-loop-hub"
+
+  page-footer:
+    left: "Creating with AI in the Loop"
+    right:
+      - text: "Report an issue"
+        href: "https://github.com/ai-in-the-loop-2026/ai-in-the-loop-hub/issues"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-location: right
+    code-copy: true
+    smooth-scroll: true
+    link-external-newwindow: true

@@ -1,0 +1,26 @@
+---
+title: "Resources"
+page-layout: full
+
+# Auto-listing: shows all pages in this folder.
+# To hide a page, put `draft: true` in that page's YAML header.
+listing:
+  id: resources
+  contents: .
+  type: default
+  sort:
+    - categories
+    - title
+  fields: [title, description, categories, date]
+  filter-ui: true
+  page-size: 50
+---
+
+Use this page as the **single place** to find setup guides, FAQs, and “how-to” docs.
+
+## Featured: Day 1 setup
+- [Day 1 Setup (Windows)](day1_setup_windows.md)
+- [Day 1 Setup (macOS)](day1_setup_macos.md)
+
+## All resources
+The list below is generated automatically from the files in this folder.

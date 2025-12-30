@@ -1,0 +1,15 @@
+---
+title: "Syllabus"
+---
+
+::: {.callout-note collapse="true" .content-visible when-format="html"}
+## AI Use Policy (click to expand)
+
+{{< include /policies/_includes/ai-use.md >}}
+:::
+
+::: {.callout-note .content-visible when-format="pdf"}
+## AI Use Policy
+
+{{< include /policies/_includes/ai-use.md >}}
+:::
