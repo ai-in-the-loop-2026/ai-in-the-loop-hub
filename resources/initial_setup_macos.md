@@ -58,7 +58,25 @@ brew --version
 
 ---
 
-## 3) Install Python 3.13.x via Homebrew
+## 3) Install Git Credential Manager (GCM)
+
+GCM securely stores your GitHub credentials so you don't have to re-authenticate on every push.
+
+Install:
+```bash
+brew install git-credential-manager
+```
+
+Verify:
+```bash
+git-credential-manager --version
+```
+
+The first time you `git push`, GCM will open a browser window to authenticate with GitHub. After that, your credentials are stored securely.
+
+---
+
+## 4) Install Python 3.13.x via Homebrew
 
 Install:
 ```bash
@@ -79,11 +97,11 @@ python3.13 -m pip --version
 
 ---
 
-## 4) Install VS Code
+## 5) Install VS Code
 
 ### Option A (recommended): download from Microsoft
 
-- Download: `https://code.visualstudio.com/download`
+- Download: <https://code.visualstudio.com/download>
 - Drag **Visual Studio Code.app** to **Applications**
 - Open VS Code once
 
@@ -94,7 +112,7 @@ brew install --cask visual-studio-code
 
 ---
 
-## 5) Install VS Code extensions
+## 6) Install VS Code extensions
 
 In VS Code, go to Extensions:
 

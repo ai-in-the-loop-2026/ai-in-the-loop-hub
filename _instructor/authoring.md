@@ -204,20 +204,27 @@ Example (policy page):
 Example (syllabus: collapsible in HTML, expanded in PDF):
 
 ```md
-::: {.callout-note collapse="true" .content-visible when-format="html"}
+::: {.content-visible when-format="html"}
+::: {.callout-note collapse="true"}
 ## AI Use Policy (click to expand)
+
 {{< include /policies/_includes/ai-use.md >}}
 :::
+:::
 
-::: {.callout-note .content-visible when-format="pdf"}
+::: {.content-visible when-format="pdf"}
+::: {.callout-note}
 ## AI Use Policy
+
 {{< include /policies/_includes/ai-use.md >}}
+:::
 :::
 ```
 
 Notes:
 - Included files in `policies/_includes/` should not contain YAML front matter.
 - The `{{< include ... >}}` line should be on its own line with blank lines around it.
+- **Important:** `.content-visible` must be on its own wrapper div, not combined with `.callout-note` on the same div.
 
 ---
 

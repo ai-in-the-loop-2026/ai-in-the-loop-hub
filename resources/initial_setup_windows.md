@@ -12,7 +12,7 @@ tags: [windows, vscode, git, python, one-time]
 This guide installs the core tools you need for the course. You only need to do this once.
 
 > **Course standard:** Python **3.13.x** (we'll support/debug primarily on 3.13).
-> Download: `https://www.python.org/downloads/latest/python3.13/`
+> Download: <https://www.python.org/downloads/>
 
 ---
 
@@ -26,14 +26,15 @@ This guide installs the core tools you need for the course. You only need to do 
 ## 1) Install Visual Studio Code (VS Code)
 
 ### Download (official)
-`https://code.visualstudio.com/download`
+
+<https://code.visualstudio.com/download>
 
 ### Install
 1. Run the installer.
 2. Accept defaults unless you know you want something else.
 3. **Recommended:** enable **"Add to PATH"**.
 
-(Official Windows setup doc: `https://code.visualstudio.com/docs/setup/windows`)
+(Official Windows setup doc: <https://code.visualstudio.com/docs/setup/windows>)
 
 ### Verify
 Open VS Code from the Start menu.
@@ -46,8 +47,8 @@ Open VS Code from the Start menu.
 
 Use either official source:
 
-- `https://git-scm.com/download/win`
-- `https://gitforwindows.org/`
+- <https://git-scm.com/download/win>
+- <https://gitforwindows.org/>
 
 ### Install
 Accept defaults unless you know you need different settings.
@@ -70,7 +71,8 @@ git config --global --list
 ## 3) Install Python (course standard: 3.13.x)
 
 ### Download (official)
-`https://www.python.org/downloads/latest/python3.13/`
+
+<https://www.python.org/downloads/>
 
 ### Install (important checkboxes)
 When running the installer:
@@ -110,7 +112,7 @@ For each assignment, follow the [GitHub Classroom Workflow Guide](github_classro
 
 ## Git not found in VS Code
 
-- Install Git for Windows (`https://git-scm.com/download/win`)
+- Install [Git for Windows](https://git-scm.com/download/win)
 - Quit and restart VS Code
 - Verify:
   ```powershell
@@ -119,7 +121,7 @@ For each assignment, follow the [GitHub Classroom Workflow Guide](github_classro
 
 ## `python` not recognized or opens Microsoft Store
 
-- Install Python 3.13.x from `https://www.python.org/downloads/latest/python3.13/`
+- Install [Python 3.13.x](https://www.python.org/downloads/)
 - Make sure **Add to PATH** is checked
 - Restart PowerShell and verify:
   ```powershell

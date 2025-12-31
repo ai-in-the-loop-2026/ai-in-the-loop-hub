@@ -2,14 +2,18 @@
 title: "Syllabus"
 ---
 
-::: {.callout-note collapse="true" .content-visible when-format="html"}
+::: {.content-visible when-format="html"}
+::: {.callout-note collapse="true"}
 ## AI Use Policy (click to expand)
 
 {{< include /policies/_includes/ai-use.md >}}
 :::
+:::
 
-::: {.callout-note .content-visible when-format="pdf"}
+::: {.content-visible when-format="pdf"}
+::: {.callout-note}
 ## AI Use Policy
 
 {{< include /policies/_includes/ai-use.md >}}
+:::
 :::

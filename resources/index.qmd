@@ -25,7 +25,7 @@ Use this page as the **single place** to find setup guides, FAQs, and "how-to" d
 - [Initial Setup (Windows)](initial_setup_windows.md) — VS Code, Git, Python 3.13
 - [Initial Setup (macOS)](initial_setup_macos.md) — Homebrew, VS Code, Git, Python 3.13
 
-### GitHub Classroom Workflow (every assignment)
+### GitHub Classroom Workflow (every build assignment)
 
 - [GitHub Classroom Workflow](github_classroom_workflow.md) — Accept, clone, venv, commit, push
 

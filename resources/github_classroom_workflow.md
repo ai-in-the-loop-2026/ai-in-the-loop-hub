@@ -23,7 +23,7 @@ This guide covers the steps you'll follow for each GitHub Classroom assignment:
 
 ## 1) Accept the GitHub Classroom assignment
 
-1. Click the Classroom invite link (from the Assignments page or Schedule).
+1. Click the Classroom invite link (from the [Assignments page](../assignments.qmd)).
 2. Click **Accept assignment**.
 3. GitHub creates a repo for you and takes you to it.
 
@@ -170,6 +170,14 @@ After pushing, check your repo on GitHub. If autograding is enabled, you'll see 
 - Make sure you accepted the assignment with the correct GitHub account
 - Retry push and complete the browser sign-in flow if prompted
 - Check that the repo URL matches your GitHub username
+
+If issues persist, run these commands and include the output in your help request:
+
+```bash
+git remote -v
+git config --global credential.helper
+git config --show-origin --get-all credential.helper
+```
 
 ## PowerShell won't activate `.venv` (execution policy)
 Use **Command Prompt** instead:
