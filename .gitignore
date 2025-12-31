@@ -71,3 +71,6 @@ __MACOSX/
 *~
 .#*
 
+
+/.quarto/
+**/*.quarto_ipynb

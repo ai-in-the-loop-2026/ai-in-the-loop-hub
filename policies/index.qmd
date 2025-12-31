@@ -19,6 +19,7 @@ listing:
 Use this page as the **single place** to find course policies.
 
 ## Featured: Core policies
+
 - [AI Use Policy](ai-use.qmd)
 - [Collaboration Policy](collaboration.qmd)
 - [Late Work & Extensions](late-work.qmd)

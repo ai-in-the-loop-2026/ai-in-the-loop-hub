@@ -16,11 +16,18 @@ listing:
   page-size: 50
 ---
 
-Use this page as the **single place** to find setup guides, FAQs, and “how-to” docs.
+Use this page as the **single place** to find setup guides, FAQs, and "how-to" docs.
 
-## Featured: Day 1 setup
-- [Day 1 Setup (Windows)](day1_setup_windows.md)
-- [Day 1 Setup (macOS)](day1_setup_macos.md)
+## Featured
+
+### Initial Setup (one-time)
+
+- [Initial Setup (Windows)](initial_setup_windows.md) — VS Code, Git, Python 3.13
+- [Initial Setup (macOS)](initial_setup_macos.md) — Homebrew, VS Code, Git, Python 3.13
+
+### GitHub Classroom Workflow (every assignment)
+
+- [GitHub Classroom Workflow](github_classroom_workflow.md) — Accept, clone, venv, commit, push
 
 ## All resources
 The list below is generated automatically from the files in this folder.
