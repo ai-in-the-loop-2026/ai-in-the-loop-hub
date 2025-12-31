@@ -1,18 +1,19 @@
 [
   {
+    "listing": "/resources/index.html",
+    "items": [
+      "/resources/faq.html",
+      "/resources/github_classroom_workflow.html",
+      "/resources/initial_setup_windows.html",
+      "/resources/initial_setup_macos.html"
+    ]
+  },
+  {
     "listing": "/policies/index.html",
     "items": [
       "/policies/ai-use.html",
       "/policies/collaboration.html",
       "/policies/late-work.html"
-    ]
-  },
-  {
-    "listing": "/resources/index.html",
-    "items": [
-      "/resources/faq.html",
-      "/resources/day1_setup_windows.html",
-      "/resources/day1_setup_macos.html"
     ]
   },
   {

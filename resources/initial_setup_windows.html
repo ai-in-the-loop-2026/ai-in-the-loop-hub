@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-12-30">
+<meta name="description" content="One-time installation of VS Code, Git, and Python 3.13 on Windows.">
 
-<title>Resources – Creating with AI in the Loop</title>
+<title>Initial Setup (Windows) – Creating with AI in the Loop</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +67,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -69,66 +104,8 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-resources .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-description','listing-categories','listing-date',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-resources'] = new List('listing-resources', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <style>html{ scroll-behavior: smooth; }</style>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -176,7 +153,7 @@ window.Quarto = {
 <span class="menu-text">Policies</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../resources/index.html" aria-current="page"> 
+    <a class="nav-link" href="../resources/index.html"> 
 <span class="menu-text">Resources</span></a>
   </li>  
 </ul>
@@ -199,7 +176,7 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -207,28 +184,69 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#featured" id="toc-featured" class="nav-link active" data-scroll-target="#featured">Featured</a>
+  <li><a href="#initial-setup-guide-windows" id="toc-initial-setup-guide-windows" class="nav-link active" data-scroll-target="#initial-setup-guide-windows">Initial Setup Guide (Windows)</a>
   <ul class="collapse">
-  <li><a href="#initial-setup-one-time" id="toc-initial-setup-one-time" class="nav-link" data-scroll-target="#initial-setup-one-time">Initial Setup (one-time)</a></li>
-  <li><a href="#github-classroom-workflow-every-assignment" id="toc-github-classroom-workflow-every-assignment" class="nav-link" data-scroll-target="#github-classroom-workflow-every-assignment">GitHub Classroom Workflow (every assignment)</a></li>
+  <li><a href="#creating-with-ai-in-the-loop-one-time-windows-setup" id="toc-creating-with-ai-in-the-loop-one-time-windows-setup" class="nav-link" data-scroll-target="#creating-with-ai-in-the-loop-one-time-windows-setup">Creating with AI in the Loop — One-time Windows setup</a></li>
+  <li><a href="#what-you-need" id="toc-what-you-need" class="nav-link" data-scroll-target="#what-you-need">What you need</a></li>
+  <li><a href="#install-visual-studio-code-vs-code" id="toc-install-visual-studio-code-vs-code" class="nav-link" data-scroll-target="#install-visual-studio-code-vs-code">1) Install Visual Studio Code (VS Code)</a>
+  <ul class="collapse">
+  <li><a href="#download-official" id="toc-download-official" class="nav-link" data-scroll-target="#download-official">Download (official)</a></li>
+  <li><a href="#install" id="toc-install" class="nav-link" data-scroll-target="#install">Install</a></li>
+  <li><a href="#verify" id="toc-verify" class="nav-link" data-scroll-target="#verify">Verify</a></li>
   </ul></li>
-  <li><a href="#all-resources" id="toc-all-resources" class="nav-link" data-scroll-target="#all-resources">All resources</a></li>
+  <li><a href="#install-git-git-for-windows" id="toc-install-git-git-for-windows" class="nav-link" data-scroll-target="#install-git-git-for-windows">2) Install Git (Git for Windows)</a>
+  <ul class="collapse">
+  <li><a href="#download-official-1" id="toc-download-official-1" class="nav-link" data-scroll-target="#download-official-1">Download (official)</a></li>
+  <li><a href="#install-1" id="toc-install-1" class="nav-link" data-scroll-target="#install-1">Install</a></li>
+  <li><a href="#verify-1" id="toc-verify-1" class="nav-link" data-scroll-target="#verify-1">Verify</a></li>
+  <li><a href="#one-time-git-identity-setup" id="toc-one-time-git-identity-setup" class="nav-link" data-scroll-target="#one-time-git-identity-setup">One-time Git identity setup</a></li>
+  </ul></li>
+  <li><a href="#install-python-course-standard-3.13.x" id="toc-install-python-course-standard-3.13.x" class="nav-link" data-scroll-target="#install-python-course-standard-3.13.x">3) Install Python (course standard: 3.13.x)</a>
+  <ul class="collapse">
+  <li><a href="#download-official-2" id="toc-download-official-2" class="nav-link" data-scroll-target="#download-official-2">Download (official)</a></li>
+  <li><a href="#install-important-checkboxes" id="toc-install-important-checkboxes" class="nav-link" data-scroll-target="#install-important-checkboxes">Install (important checkboxes)</a></li>
+  <li><a href="#verify-2" id="toc-verify-2" class="nav-link" data-scroll-target="#verify-2">Verify</a></li>
+  </ul></li>
+  <li><a href="#install-vs-code-extensions" id="toc-install-vs-code-extensions" class="nav-link" data-scroll-target="#install-vs-code-extensions">4) Install VS Code extensions</a></li>
+  <li><a href="#youre-done-with-one-time-setup" id="toc-youre-done-with-one-time-setup" class="nav-link" data-scroll-target="#youre-done-with-one-time-setup">You’re done with one-time setup!</a></li>
+  </ul></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a>
+  <ul class="collapse">
+  <li><a href="#git-not-found-in-vs-code" id="toc-git-not-found-in-vs-code" class="nav-link" data-scroll-target="#git-not-found-in-vs-code">Git not found in VS Code</a></li>
+  <li><a href="#python-not-recognized-or-opens-microsoft-store" id="toc-python-not-recognized-or-opens-microsoft-store" class="nav-link" data-scroll-target="#python-not-recognized-or-opens-microsoft-store"><code>python</code> not recognized or opens Microsoft Store</a></li>
+  <li><a href="#powershell-wont-run-scripts-execution-policy" id="toc-powershell-wont-run-scripts-execution-policy" class="nav-link" data-scroll-target="#powershell-wont-run-scripts-execution-policy">PowerShell won’t run scripts (execution policy)</a></li>
+  <li><a href="#if-youre-stuck-include-these-in-your-help-request" id="toc-if-youre-stuck-include-these-in-your-help-request" class="nav-link" data-scroll-target="#if-youre-stuck-include-these-in-your-help-request">If you’re stuck, include these in your help request</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ai-in-the-loop-2026/ai-in-the-loop-hub/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Resources</h1>
+<h1 class="title">Initial Setup (Windows)</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Setup</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    One-time installation of VS Code, Git, and Python 3.13 on Windows.
+  </div>
 </div>
 
 
-
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 30, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -238,130 +256,147 @@ window.Quarto = {
 </header>
 
 
-<p>Use this page as the <strong>single place</strong> to find setup guides, FAQs, and “how-to” docs.</p>
-<section id="featured" class="level2">
-<h2 class="anchored" data-anchor-id="featured">Featured</h2>
-<section id="initial-setup-one-time" class="level3">
-<h3 class="anchored" data-anchor-id="initial-setup-one-time">Initial Setup (one-time)</h3>
+<section id="initial-setup-guide-windows" class="level1">
+<h1>Initial Setup Guide (Windows)</h1>
+<section id="creating-with-ai-in-the-loop-one-time-windows-setup" class="level2">
+<h2 class="anchored" data-anchor-id="creating-with-ai-in-the-loop-one-time-windows-setup">Creating with AI in the Loop — One-time Windows setup</h2>
+<p>This guide installs the core tools you need for the course. You only need to do this once.</p>
+<blockquote class="blockquote">
+<p><strong>Course standard:</strong> Python <strong>3.13.x</strong> (we’ll support/debug primarily on 3.13). Download: <code>https://www.python.org/downloads/latest/python3.13/</code></p>
+</blockquote>
+<hr>
+</section>
+<section id="what-you-need" class="level2">
+<h2 class="anchored" data-anchor-id="what-you-need">What you need</h2>
 <ul>
-<li><a href="../resources/initial_setup_windows.html">Initial Setup (Windows)</a> — VS Code, Git, Python 3.13</li>
-<li><a href="../resources/initial_setup_macos.html">Initial Setup (macOS)</a> — Homebrew, VS Code, Git, Python 3.13</li>
+<li>Windows 10/11</li>
+<li>A GitHub account (the same one you’ll use to accept GitHub Classroom assignments)</li>
+</ul>
+<hr>
+</section>
+<section id="install-visual-studio-code-vs-code" class="level2">
+<h2 class="anchored" data-anchor-id="install-visual-studio-code-vs-code">1) Install Visual Studio Code (VS Code)</h2>
+<section id="download-official" class="level3">
+<h3 class="anchored" data-anchor-id="download-official">Download (official)</h3>
+<p><code>https://code.visualstudio.com/download</code></p>
+</section>
+<section id="install" class="level3">
+<h3 class="anchored" data-anchor-id="install">Install</h3>
+<ol type="1">
+<li>Run the installer.</li>
+<li>Accept defaults unless you know you want something else.</li>
+<li><strong>Recommended:</strong> enable <strong>“Add to PATH”</strong>.</li>
+</ol>
+<p>(Official Windows setup doc: <code>https://code.visualstudio.com/docs/setup/windows</code>)</p>
+</section>
+<section id="verify" class="level3">
+<h3 class="anchored" data-anchor-id="verify">Verify</h3>
+<p>Open VS Code from the Start menu.</p>
+<hr>
+</section>
+</section>
+<section id="install-git-git-for-windows" class="level2">
+<h2 class="anchored" data-anchor-id="install-git-git-for-windows">2) Install Git (Git for Windows)</h2>
+<section id="download-official-1" class="level3">
+<h3 class="anchored" data-anchor-id="download-official-1">Download (official)</h3>
+<p>Use either official source:</p>
+<ul>
+<li><code>https://git-scm.com/download/win</code></li>
+<li><code>https://gitforwindows.org/</code></li>
 </ul>
 </section>
-<section id="github-classroom-workflow-every-assignment" class="level3">
-<h3 class="anchored" data-anchor-id="github-classroom-workflow-every-assignment">GitHub Classroom Workflow (every assignment)</h3>
+<section id="install-1" class="level3">
+<h3 class="anchored" data-anchor-id="install-1">Install</h3>
+<p>Accept defaults unless you know you need different settings.</p>
+</section>
+<section id="verify-1" class="level3">
+<h3 class="anchored" data-anchor-id="verify-1">Verify</h3>
+<p>Open <strong>PowerShell</strong> and run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>git <span class="op">--</span>version</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="one-time-git-identity-setup" class="level3">
+<h3 class="anchored" data-anchor-id="one-time-git-identity-setup">One-time Git identity setup</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>git config <span class="op">--</span>global user<span class="op">.</span><span class="fu">name</span> <span class="st">"First Last"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>git config <span class="op">--</span>global user<span class="op">.</span><span class="fu">email</span> <span class="st">"you@school.edu"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>git config <span class="op">--</span>global <span class="op">--</span>list</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="install-python-course-standard-3.13.x" class="level2">
+<h2 class="anchored" data-anchor-id="install-python-course-standard-3.13.x">3) Install Python (course standard: 3.13.x)</h2>
+<section id="download-official-2" class="level3">
+<h3 class="anchored" data-anchor-id="download-official-2">Download (official)</h3>
+<p><code>https://www.python.org/downloads/latest/python3.13/</code></p>
+</section>
+<section id="install-important-checkboxes" class="level3">
+<h3 class="anchored" data-anchor-id="install-important-checkboxes">Install (important checkboxes)</h3>
+<p>When running the installer: 1. Check <strong>“Add python.exe to PATH”</strong> 2. Keep <strong>pip</strong> included (default) 3. Keep the <strong>Python launcher</strong> (<code>py</code>) enabled if offered (default)</p>
+</section>
+<section id="verify-2" class="level3">
+<h3 class="anchored" data-anchor-id="verify-2">Verify</h3>
+<p>Close and reopen PowerShell, then run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>python <span class="op">--</span>version</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>py <span class="op">--</span>version</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>pip <span class="op">--</span>version</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="install-vs-code-extensions" class="level2">
+<h2 class="anchored" data-anchor-id="install-vs-code-extensions">4) Install VS Code extensions</h2>
+<p>In VS Code, go to Extensions:</p>
 <ul>
-<li><a href="../resources/github_classroom_workflow.html">GitHub Classroom Workflow</a> — Accept, clone, venv, commit, push</li>
+<li><strong>Python</strong> (Microsoft)</li>
+</ul>
+<p>Optional:</p>
+<ul>
+<li><strong>GitHub Pull Requests and Issues</strong> (GitHub)</li>
+</ul>
+<hr>
+</section>
+<section id="youre-done-with-one-time-setup" class="level2">
+<h2 class="anchored" data-anchor-id="youre-done-with-one-time-setup">You’re done with one-time setup!</h2>
+<p>For each assignment, follow the <a href="../resources/github_classroom_workflow.html">GitHub Classroom Workflow Guide</a>.</p>
+<hr>
+</section>
+</section>
+<section id="troubleshooting" class="level1">
+<h1>Troubleshooting</h1>
+<section id="git-not-found-in-vs-code" class="level2">
+<h2 class="anchored" data-anchor-id="git-not-found-in-vs-code">Git not found in VS Code</h2>
+<ul>
+<li><p>Install Git for Windows (<code>https://git-scm.com/download/win</code>)</p></li>
+<li><p>Quit and restart VS Code</p></li>
+<li><p>Verify:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>git <span class="op">--</span>version</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 </ul>
 </section>
+<section id="python-not-recognized-or-opens-microsoft-store" class="level2">
+<h2 class="anchored" data-anchor-id="python-not-recognized-or-opens-microsoft-store"><code>python</code> not recognized or opens Microsoft Store</h2>
+<ul>
+<li><p>Install Python 3.13.x from <code>https://www.python.org/downloads/latest/python3.13/</code></p></li>
+<li><p>Make sure <strong>Add to PATH</strong> is checked</p></li>
+<li><p>Restart PowerShell and verify:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>python <span class="op">--</span>version</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>py <span class="op">--</span>version</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ul>
 </section>
-<section id="all-resources" class="level2">
-<h2 class="anchored" data-anchor-id="all-resources">All resources</h2>
-<p>The list below is generated automatically from the files in this folder.</p>
-
+<section id="powershell-wont-run-scripts-execution-policy" class="level2">
+<h2 class="anchored" data-anchor-id="powershell-wont-run-scripts-execution-policy">PowerShell won’t run scripts (execution policy)</h2>
+<p>Use <strong>Command Prompt</strong> terminal in VS Code instead, or (advanced) allow local scripts:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Set-ExecutionPolicy</span> <span class="op">-</span>Scope CurrentUser RemoteSigned</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+<section id="if-youre-stuck-include-these-in-your-help-request" class="level2">
+<h2 class="anchored" data-anchor-id="if-youre-stuck-include-these-in-your-help-request">If you’re stuck, include these in your help request</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>git <span class="op">--</span>version</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>python <span class="op">--</span>version</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>py <span class="op">--</span>version</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>
+</section>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-resources">
-<div class="listing-actions-group">
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
-</div>
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Q291cnNlJTIwTG9naXN0aWNz" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1767132920854" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="15">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/faq.html" class="no-external">Course FAQ</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q291cnNlJTIwTG9naXN0aWNz'); return false;">Course Logistics</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/faq.html" class="no-external">
-<p>Responses to Frequently Asked Questions about the course.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/faq.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="R2l0SHVi" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1767189184609" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="527">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/github_classroom_workflow.html" class="no-external">GitHub Classroom Workflow</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0SHVi'); return false;">GitHub</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/github_classroom_workflow.html" class="no-external">
-<p>Accept an assignment, clone the repo, set up a virtual environment, and submit your work.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/github_classroom_workflow.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="U2V0dXA=" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1767189708128" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="301">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/initial_setup_windows.html" class="no-external">Initial Setup (Windows)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/initial_setup_windows.html" class="no-external">
-<p>One-time installation of VS Code, Git, and Python 3.13 on Windows.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/initial_setup_windows.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="U2V0dXA=" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1767189747949" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="310">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/initial_setup_macos.html" class="no-external">Initial Setup (macOS)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/initial_setup_macos.html" class="no-external">
-<p>One-time installation of VS Code, Git, Python 3.13, and Homebrew on macOS.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/initial_setup_macos.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

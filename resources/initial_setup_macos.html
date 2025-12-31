@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-12-30">
+<meta name="description" content="One-time installation of VS Code, Git, Python 3.13, and Homebrew on macOS.">
 
-<title>Resources – Creating with AI in the Loop</title>
+<title>Initial Setup (macOS) – Creating with AI in the Loop</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +67,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -69,66 +104,8 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-resources .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-description','listing-categories','listing-date',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-resources'] = new List('listing-resources', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <style>html{ scroll-behavior: smooth; }</style>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -176,7 +153,7 @@ window.Quarto = {
 <span class="menu-text">Policies</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../resources/index.html" aria-current="page"> 
+    <a class="nav-link" href="../resources/index.html"> 
 <span class="menu-text">Resources</span></a>
   </li>  
 </ul>
@@ -199,7 +176,7 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -207,28 +184,64 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#featured" id="toc-featured" class="nav-link active" data-scroll-target="#featured">Featured</a>
+  <li><a href="#initial-setup-guide-macos" id="toc-initial-setup-guide-macos" class="nav-link active" data-scroll-target="#initial-setup-guide-macos">Initial Setup Guide (macOS)</a>
   <ul class="collapse">
-  <li><a href="#initial-setup-one-time" id="toc-initial-setup-one-time" class="nav-link" data-scroll-target="#initial-setup-one-time">Initial Setup (one-time)</a></li>
-  <li><a href="#github-classroom-workflow-every-assignment" id="toc-github-classroom-workflow-every-assignment" class="nav-link" data-scroll-target="#github-classroom-workflow-every-assignment">GitHub Classroom Workflow (every assignment)</a></li>
+  <li><a href="#creating-with-ai-in-the-loop-one-time-macos-setup" id="toc-creating-with-ai-in-the-loop-one-time-macos-setup" class="nav-link" data-scroll-target="#creating-with-ai-in-the-loop-one-time-macos-setup">Creating with AI in the Loop — One-time macOS setup</a></li>
+  <li><a href="#what-you-need" id="toc-what-you-need" class="nav-link" data-scroll-target="#what-you-need">What you need</a></li>
+  <li><a href="#install-apple-command-line-tools-includes-git" id="toc-install-apple-command-line-tools-includes-git" class="nav-link" data-scroll-target="#install-apple-command-line-tools-includes-git">1) Install Apple Command Line Tools (includes <code>git</code>)</a>
+  <ul class="collapse">
+  <li><a href="#one-time-git-identity-setup" id="toc-one-time-git-identity-setup" class="nav-link" data-scroll-target="#one-time-git-identity-setup">One-time Git identity setup</a></li>
   </ul></li>
-  <li><a href="#all-resources" id="toc-all-resources" class="nav-link" data-scroll-target="#all-resources">All resources</a></li>
+  <li><a href="#install-homebrew" id="toc-install-homebrew" class="nav-link" data-scroll-target="#install-homebrew">2) Install Homebrew</a></li>
+  <li><a href="#install-python-3.13.x-via-homebrew" id="toc-install-python-3.13.x-via-homebrew" class="nav-link" data-scroll-target="#install-python-3.13.x-via-homebrew">3) Install Python 3.13.x via Homebrew</a></li>
+  <li><a href="#install-vs-code" id="toc-install-vs-code" class="nav-link" data-scroll-target="#install-vs-code">4) Install VS Code</a>
+  <ul class="collapse">
+  <li><a href="#option-a-recommended-download-from-microsoft" id="toc-option-a-recommended-download-from-microsoft" class="nav-link" data-scroll-target="#option-a-recommended-download-from-microsoft">Option A (recommended): download from Microsoft</a></li>
+  <li><a href="#option-b-homebrew" id="toc-option-b-homebrew" class="nav-link" data-scroll-target="#option-b-homebrew">Option B: Homebrew</a></li>
+  </ul></li>
+  <li><a href="#install-vs-code-extensions" id="toc-install-vs-code-extensions" class="nav-link" data-scroll-target="#install-vs-code-extensions">5) Install VS Code extensions</a>
+  <ul class="collapse">
+  <li><a href="#enable-the-code-command-recommended" id="toc-enable-the-code-command-recommended" class="nav-link" data-scroll-target="#enable-the-code-command-recommended">Enable the <code>code</code> command (recommended)</a></li>
+  </ul></li>
+  <li><a href="#youre-done-with-one-time-setup" id="toc-youre-done-with-one-time-setup" class="nav-link" data-scroll-target="#youre-done-with-one-time-setup">You’re done with one-time setup!</a></li>
+  </ul></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a>
+  <ul class="collapse">
+  <li><a href="#homebrew-brew-command-not-found" id="toc-homebrew-brew-command-not-found" class="nav-link" data-scroll-target="#homebrew-brew-command-not-found">Homebrew: <code>brew: command not found</code></a></li>
+  <li><a href="#python-3.13-not-found-python3.13-command-not-found" id="toc-python-3.13-not-found-python3.13-command-not-found" class="nav-link" data-scroll-target="#python-3.13-not-found-python3.13-command-not-found">Python 3.13 not found (<code>python3.13: command not found</code>)</a></li>
+  <li><a href="#vs-code-code-command-not-found" id="toc-vs-code-code-command-not-found" class="nav-link" data-scroll-target="#vs-code-code-command-not-found">VS Code: <code>code: command not found</code></a></li>
+  <li><a href="#if-youre-stuck-include-these-in-your-help-request" id="toc-if-youre-stuck-include-these-in-your-help-request" class="nav-link" data-scroll-target="#if-youre-stuck-include-these-in-your-help-request">If you’re stuck, include these in your help request</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ai-in-the-loop-2026/ai-in-the-loop-hub/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Resources</h1>
+<h1 class="title">Initial Setup (macOS)</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Setup</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    One-time installation of VS Code, Git, Python 3.13, and Homebrew on macOS.
+  </div>
 </div>
 
 
-
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 30, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -238,130 +251,138 @@ window.Quarto = {
 </header>
 
 
-<p>Use this page as the <strong>single place</strong> to find setup guides, FAQs, and “how-to” docs.</p>
-<section id="featured" class="level2">
-<h2 class="anchored" data-anchor-id="featured">Featured</h2>
-<section id="initial-setup-one-time" class="level3">
-<h3 class="anchored" data-anchor-id="initial-setup-one-time">Initial Setup (one-time)</h3>
+<section id="initial-setup-guide-macos" class="level1">
+<h1>Initial Setup Guide (macOS)</h1>
+<section id="creating-with-ai-in-the-loop-one-time-macos-setup" class="level2">
+<h2 class="anchored" data-anchor-id="creating-with-ai-in-the-loop-one-time-macos-setup">Creating with AI in the Loop — One-time macOS setup</h2>
+<p>This guide installs the core tools you need for the course. You only need to do this once.</p>
+<blockquote class="blockquote">
+<p><strong>Course standard:</strong> Python <strong>3.13.x</strong> (we’ll support/debug primarily on 3.13).</p>
+</blockquote>
+<hr>
+</section>
+<section id="what-you-need" class="level2">
+<h2 class="anchored" data-anchor-id="what-you-need">What you need</h2>
 <ul>
-<li><a href="../resources/initial_setup_windows.html">Initial Setup (Windows)</a> — VS Code, Git, Python 3.13</li>
-<li><a href="../resources/initial_setup_macos.html">Initial Setup (macOS)</a> — Homebrew, VS Code, Git, Python 3.13</li>
+<li>macOS (recent version)</li>
+<li>Admin access for installs</li>
+<li>A GitHub account</li>
+</ul>
+<hr>
+</section>
+<section id="install-apple-command-line-tools-includes-git" class="level2">
+<h2 class="anchored" data-anchor-id="install-apple-command-line-tools-includes-git">1) Install Apple Command Line Tools (includes <code>git</code>)</h2>
+<p>Open <strong>Terminal</strong> and run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">xcode-select</span> <span class="at">--install</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Verify:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="one-time-git-identity-setup" class="level3">
+<h3 class="anchored" data-anchor-id="one-time-git-identity-setup">One-time Git identity setup</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">"First Last"</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">"you@school.edu"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> <span class="at">--list</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="install-homebrew" class="level2">
+<h2 class="anchored" data-anchor-id="install-homebrew">2) Install Homebrew</h2>
+<p>Run the official installer:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/bin/bash</span> <span class="at">-c</span> <span class="st">"</span><span class="va">$(</span><span class="ex">curl</span> <span class="at">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="va">)</span><span class="st">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If the installer prints a line that starts with <code>eval "$(...)"</code>, copy/paste it into Terminal (this adds Homebrew to your PATH).</p>
+<p>Verify:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+<section id="install-python-3.13.x-via-homebrew" class="level2">
+<h2 class="anchored" data-anchor-id="install-python-3.13.x-via-homebrew">3) Install Python 3.13.x via Homebrew</h2>
+<p>Install:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install python@3.13</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Verify:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3.13</span> <span class="at">--version</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3.13</span> <span class="at">-m</span> pip <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<blockquote class="blockquote">
+<p>If <code>python3.13</code> is not found, run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> info python@3.13</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>and follow the “caveats” it prints (Homebrew will tell you what to add to your PATH).</p>
+</blockquote>
+<hr>
+</section>
+<section id="install-vs-code" class="level2">
+<h2 class="anchored" data-anchor-id="install-vs-code">4) Install VS Code</h2>
+<section id="option-a-recommended-download-from-microsoft" class="level3">
+<h3 class="anchored" data-anchor-id="option-a-recommended-download-from-microsoft">Option A (recommended): download from Microsoft</h3>
+<ul>
+<li>Download: <code>https://code.visualstudio.com/download</code></li>
+<li>Drag <strong>Visual Studio Code.app</strong> to <strong>Applications</strong></li>
+<li>Open VS Code once</li>
 </ul>
 </section>
-<section id="github-classroom-workflow-every-assignment" class="level3">
-<h3 class="anchored" data-anchor-id="github-classroom-workflow-every-assignment">GitHub Classroom Workflow (every assignment)</h3>
+<section id="option-b-homebrew" class="level3">
+<h3 class="anchored" data-anchor-id="option-b-homebrew">Option B: Homebrew</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install <span class="at">--cask</span> visual-studio-code</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="install-vs-code-extensions" class="level2">
+<h2 class="anchored" data-anchor-id="install-vs-code-extensions">5) Install VS Code extensions</h2>
+<p>In VS Code, go to Extensions:</p>
 <ul>
-<li><a href="../resources/github_classroom_workflow.html">GitHub Classroom Workflow</a> — Accept, clone, venv, commit, push</li>
+<li><strong>Python</strong> (Microsoft)</li>
 </ul>
+<p>Optional:</p>
+<ul>
+<li><strong>GitHub Pull Requests and Issues</strong> (GitHub)</li>
+</ul>
+<section id="enable-the-code-command-recommended" class="level3">
+<h3 class="anchored" data-anchor-id="enable-the-code-command-recommended">Enable the <code>code</code> command (recommended)</h3>
+<p>In VS Code:</p>
+<ul>
+<li><code>Cmd+Shift+P</code> → <strong>Shell Command: Install ‘code’ command in PATH</strong></li>
+</ul>
+<p>Verify in Terminal:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
 </section>
 </section>
-<section id="all-resources" class="level2">
-<h2 class="anchored" data-anchor-id="all-resources">All resources</h2>
-<p>The list below is generated automatically from the files in this folder.</p>
-
+<section id="youre-done-with-one-time-setup" class="level2">
+<h2 class="anchored" data-anchor-id="youre-done-with-one-time-setup">You’re done with one-time setup!</h2>
+<p>For each assignment, follow the <a href="../resources/github_classroom_workflow.html">GitHub Classroom Workflow Guide</a>.</p>
+<hr>
+</section>
+</section>
+<section id="troubleshooting" class="level1">
+<h1>Troubleshooting</h1>
+<section id="homebrew-brew-command-not-found" class="level2">
+<h2 class="anchored" data-anchor-id="homebrew-brew-command-not-found">Homebrew: <code>brew: command not found</code></h2>
+<p>Re-run the PATH line the installer printed (the <code>eval ...</code> line), then restart Terminal and try:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="python-3.13-not-found-python3.13-command-not-found" class="level2">
+<h2 class="anchored" data-anchor-id="python-3.13-not-found-python3.13-command-not-found">Python 3.13 not found (<code>python3.13: command not found</code>)</h2>
+<p>Run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> info python@3.13</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>and follow the “caveats” (it tells you exactly what to add to your PATH). Then open a new Terminal and retry:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3.13</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="vs-code-code-command-not-found" class="level2">
+<h2 class="anchored" data-anchor-id="vs-code-code-command-not-found">VS Code: <code>code: command not found</code></h2>
+<p>In VS Code:</p>
+<ul>
+<li><code>Cmd+Shift+P</code> → <strong>Shell Command: Install ‘code’ command in PATH</strong> Restart Terminal.</li>
+</ul>
+<hr>
+</section>
+<section id="if-youre-stuck-include-these-in-your-help-request" class="level2">
+<h2 class="anchored" data-anchor-id="if-youre-stuck-include-these-in-your-help-request">If you’re stuck, include these in your help request</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3.13</span> <span class="at">--version</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>
+</section>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-resources">
-<div class="listing-actions-group">
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
-</div>
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Q291cnNlJTIwTG9naXN0aWNz" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1767132920854" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="15">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/faq.html" class="no-external">Course FAQ</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q291cnNlJTIwTG9naXN0aWNz'); return false;">Course Logistics</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/faq.html" class="no-external">
-<p>Responses to Frequently Asked Questions about the course.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/faq.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="R2l0SHVi" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1767189184609" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="527">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/github_classroom_workflow.html" class="no-external">GitHub Classroom Workflow</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0SHVi'); return false;">GitHub</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/github_classroom_workflow.html" class="no-external">
-<p>Accept an assignment, clone the repo, set up a virtual environment, and submit your work.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/github_classroom_workflow.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="U2V0dXA=" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1767189708128" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="301">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/initial_setup_windows.html" class="no-external">Initial Setup (Windows)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/initial_setup_windows.html" class="no-external">
-<p>One-time installation of VS Code, Git, and Python 3.13 on Windows.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/initial_setup_windows.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="U2V0dXA=" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1767189747949" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="310">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/initial_setup_macos.html" class="no-external">Initial Setup (macOS)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/initial_setup_macos.html" class="no-external">
-<p>One-time installation of VS Code, Git, Python 3.13, and Homebrew on macOS.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/initial_setup_macos.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

@@ -49,228 +49,235 @@
     "text": "Next steps\n\nRead the syllabus + policies\nComplete Day 1 setup\nStart A0 (Setup Verification)"
   },
   {
-    "objectID": "resources/faq.html",
-    "href": "resources/faq.html",
-    "title": "Course FAQ",
+    "objectID": "resources/initial_setup_windows.html",
+    "href": "resources/initial_setup_windows.html",
+    "title": "Initial Setup (Windows)",
     "section": "",
-    "text": "No FAQs have been added yet. Please check back later for updates."
+    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13). Download: https://www.python.org/downloads/latest/python3.13/\n\n\n\n\n\n\nWindows 10/11\nA GitHub account (the same one you’ll use to accept GitHub Classroom assignments)\n\n\n\n\n\n\n\nhttps://code.visualstudio.com/download\n\n\n\n\nRun the installer.\nAccept defaults unless you know you want something else.\nRecommended: enable “Add to PATH”.\n\n(Official Windows setup doc: https://code.visualstudio.com/docs/setup/windows)\n\n\n\nOpen VS Code from the Start menu.\n\n\n\n\n\n\n\nUse either official source:\n\nhttps://git-scm.com/download/win\nhttps://gitforwindows.org/\n\n\n\n\nAccept defaults unless you know you need different settings.\n\n\n\nOpen PowerShell and run:\ngit --version\n\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list\n\n\n\n\n\n\n\nhttps://www.python.org/downloads/latest/python3.13/\n\n\n\nWhen running the installer: 1. Check “Add python.exe to PATH” 2. Keep pip included (default) 3. Keep the Python launcher (py) enabled if offered (default)\n\n\n\nClose and reopen PowerShell, then run:\npython --version\npy --version\npip --version\n\n\n\n\n\nIn VS Code, go to Extensions:\n\nPython (Microsoft)\n\nOptional:\n\nGitHub Pull Requests and Issues (GitHub)\n\n\n\n\n\nFor each assignment, follow the GitHub Classroom Workflow Guide."
   },
   {
-    "objectID": "resources/faq.html#general-questions",
-    "href": "resources/faq.html#general-questions",
-    "title": "Course FAQ",
+    "objectID": "resources/initial_setup_windows.html#creating-with-ai-in-the-loop-one-time-windows-setup",
+    "href": "resources/initial_setup_windows.html#creating-with-ai-in-the-loop-one-time-windows-setup",
+    "title": "Initial Setup (Windows)",
     "section": "",
-    "text": "No FAQs have been added yet. Please check back later for updates."
+    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13). Download: https://www.python.org/downloads/latest/python3.13/"
   },
   {
-    "objectID": "resources/day1_setup_macos.html",
-    "href": "resources/day1_setup_macos.html",
-    "title": "Day 1 Setup (macOS)",
+    "objectID": "resources/initial_setup_windows.html#what-you-need",
+    "href": "resources/initial_setup_windows.html#what-you-need",
+    "title": "Initial Setup (Windows)",
     "section": "",
-    "text": "This guide gets you to the same “ready for class” baseline as Windows: - VS Code + Git + Python installed - Clone a GitHub Classroom repo - Create a .venv and install dependencies with pip - Run a quick sanity check and commit + push\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13).\n\n\n\n\n\n\nmacOS (recent version)\nAdmin access for installs\nA GitHub account\n\n\n\n\n\nOpen Terminal and run:\nxcode-select --install\nVerify:\ngit --version\n\n\n\n\nRun the official installer:\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\nIf the installer prints a line that starts with eval \"$(...)\", copy/paste it into Terminal (this adds Homebrew to your PATH).\nVerify:\nbrew --version\n\n\n\n\nInstall:\nbrew install python@3.13\nVerify:\npython3.13 --version\npython3.13 -m pip --version\n\nIf python3.13 is not found, run:\nbrew info python@3.13\nand follow the “caveats” it prints (Homebrew will tell you what to add to your PATH).\n\n\n\n\n\n\n\n\nDownload: https://code.visualstudio.com/download\nDrag Visual Studio Code.app to Applications\nOpen VS Code once\n\n\n\n\nbrew install --cask visual-studio-code\n\n\n\n\n\nIn VS Code → Extensions: - Python (Microsoft)\nOptional: - GitHub Pull Requests and Issues (GitHub)\n\n\nIn VS Code: - Cmd+Shift+P → Shell Command: Install ‘code’ command in PATH\nVerify in Terminal:\ncode --version\n\n\n\n\n\n\n\n\nClick the Classroom invite link\nClick Accept assignment\nGitHub creates your repo and takes you to it\n\n\n\n\nPick a folder (example):\ncd ~/Documents\nClone (paste your repo URL):\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\nOpen in VS Code:\ncode .\n\n\n\n\n\nFrom the repo root:\npython3.13 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\nIf your repo has requirements.txt:\npip install -r requirements.txt\nVerify you’re using the venv Python:\nwhich python\npython --version\n\n\n\n\npython -c \"print('Hello from Python!')\"\nIf the repo has tests:\npytest -q\n\n\n\n\ngit status\ngit add SUBMISSION.md\ngit commit -m \"Complete submission\"\ngit push\nIf autograding is enabled, you’ll see ✅/❌ on GitHub after pushing."
+    "text": "Windows 10/11\nA GitHub account (the same one you’ll use to accept GitHub Classroom assignments)"
   },
   {
-    "objectID": "resources/day1_setup_macos.html#creating-with-ai-in-the-loop-macos-local-setup-homebrew-required-no-wsl",
-    "href": "resources/day1_setup_macos.html#creating-with-ai-in-the-loop-macos-local-setup-homebrew-required-no-wsl",
-    "title": "Day 1 Setup (macOS)",
+    "objectID": "resources/initial_setup_windows.html#install-visual-studio-code-vs-code",
+    "href": "resources/initial_setup_windows.html#install-visual-studio-code-vs-code",
+    "title": "Initial Setup (Windows)",
     "section": "",
-    "text": "This guide gets you to the same “ready for class” baseline as Windows: - VS Code + Git + Python installed - Clone a GitHub Classroom repo - Create a .venv and install dependencies with pip - Run a quick sanity check and commit + push\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13)."
+    "text": "https://code.visualstudio.com/download\n\n\n\n\nRun the installer.\nAccept defaults unless you know you want something else.\nRecommended: enable “Add to PATH”.\n\n(Official Windows setup doc: https://code.visualstudio.com/docs/setup/windows)\n\n\n\nOpen VS Code from the Start menu."
   },
   {
-    "objectID": "resources/day1_setup_macos.html#what-you-need",
-    "href": "resources/day1_setup_macos.html#what-you-need",
-    "title": "Day 1 Setup (macOS)",
+    "objectID": "resources/initial_setup_windows.html#install-git-git-for-windows",
+    "href": "resources/initial_setup_windows.html#install-git-git-for-windows",
+    "title": "Initial Setup (Windows)",
     "section": "",
-    "text": "macOS (recent version)\nAdmin access for installs\nA GitHub account"
+    "text": "Use either official source:\n\nhttps://git-scm.com/download/win\nhttps://gitforwindows.org/\n\n\n\n\nAccept defaults unless you know you need different settings.\n\n\n\nOpen PowerShell and run:\ngit --version\n\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list"
   },
   {
-    "objectID": "resources/day1_setup_macos.html#install-apple-command-line-tools-includes-git",
-    "href": "resources/day1_setup_macos.html#install-apple-command-line-tools-includes-git",
-    "title": "Day 1 Setup (macOS)",
+    "objectID": "resources/initial_setup_windows.html#install-python-course-standard-3.13.x",
+    "href": "resources/initial_setup_windows.html#install-python-course-standard-3.13.x",
+    "title": "Initial Setup (Windows)",
     "section": "",
-    "text": "Open Terminal and run:\nxcode-select --install\nVerify:\ngit --version"
+    "text": "https://www.python.org/downloads/latest/python3.13/\n\n\n\nWhen running the installer: 1. Check “Add python.exe to PATH” 2. Keep pip included (default) 3. Keep the Python launcher (py) enabled if offered (default)\n\n\n\nClose and reopen PowerShell, then run:\npython --version\npy --version\npip --version"
   },
   {
-    "objectID": "resources/day1_setup_macos.html#install-homebrew",
-    "href": "resources/day1_setup_macos.html#install-homebrew",
-    "title": "Day 1 Setup (macOS)",
+    "objectID": "resources/initial_setup_windows.html#install-vs-code-extensions",
+    "href": "resources/initial_setup_windows.html#install-vs-code-extensions",
+    "title": "Initial Setup (Windows)",
     "section": "",
-    "text": "Run the official installer:\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\nIf the installer prints a line that starts with eval \"$(...)\", copy/paste it into Terminal (this adds Homebrew to your PATH).\nVerify:\nbrew --version"
+    "text": "In VS Code, go to Extensions:\n\nPython (Microsoft)\n\nOptional:\n\nGitHub Pull Requests and Issues (GitHub)"
   },
   {
-    "objectID": "resources/day1_setup_macos.html#install-python-3.13.x-via-homebrew",
-    "href": "resources/day1_setup_macos.html#install-python-3.13.x-via-homebrew",
-    "title": "Day 1 Setup (macOS)",
+    "objectID": "resources/initial_setup_windows.html#youre-done-with-one-time-setup",
+    "href": "resources/initial_setup_windows.html#youre-done-with-one-time-setup",
+    "title": "Initial Setup (Windows)",
     "section": "",
-    "text": "Install:\nbrew install python@3.13\nVerify:\npython3.13 --version\npython3.13 -m pip --version\n\nIf python3.13 is not found, run:\nbrew info python@3.13\nand follow the “caveats” it prints (Homebrew will tell you what to add to your PATH)."
+    "text": "For each assignment, follow the GitHub Classroom Workflow Guide."
   },
   {
-    "objectID": "resources/day1_setup_macos.html#install-vs-code",
-    "href": "resources/day1_setup_macos.html#install-vs-code",
-    "title": "Day 1 Setup (macOS)",
-    "section": "",
-    "text": "Download: https://code.visualstudio.com/download\nDrag Visual Studio Code.app to Applications\nOpen VS Code once\n\n\n\n\nbrew install --cask visual-studio-code"
+    "objectID": "resources/initial_setup_windows.html#git-not-found-in-vs-code",
+    "href": "resources/initial_setup_windows.html#git-not-found-in-vs-code",
+    "title": "Initial Setup (Windows)",
+    "section": "Git not found in VS Code",
+    "text": "Git not found in VS Code\n\nInstall Git for Windows (https://git-scm.com/download/win)\nQuit and restart VS Code\nVerify:\ngit --version"
   },
   {
-    "objectID": "resources/day1_setup_macos.html#install-vs-code-extensions",
-    "href": "resources/day1_setup_macos.html#install-vs-code-extensions",
-    "title": "Day 1 Setup (macOS)",
-    "section": "",
-    "text": "In VS Code → Extensions: - Python (Microsoft)\nOptional: - GitHub Pull Requests and Issues (GitHub)\n\n\nIn VS Code: - Cmd+Shift+P → Shell Command: Install ‘code’ command in PATH\nVerify in Terminal:\ncode --version"
+    "objectID": "resources/initial_setup_windows.html#python-not-recognized-or-opens-microsoft-store",
+    "href": "resources/initial_setup_windows.html#python-not-recognized-or-opens-microsoft-store",
+    "title": "Initial Setup (Windows)",
+    "section": "python not recognized or opens Microsoft Store",
+    "text": "python not recognized or opens Microsoft Store\n\nInstall Python 3.13.x from https://www.python.org/downloads/latest/python3.13/\nMake sure Add to PATH is checked\nRestart PowerShell and verify:\npython --version\npy --version"
   },
   {
-    "objectID": "resources/day1_setup_macos.html#accept-the-github-classroom-assignment-and-clone-the-repo",
-    "href": "resources/day1_setup_macos.html#accept-the-github-classroom-assignment-and-clone-the-repo",
-    "title": "Day 1 Setup (macOS)",
-    "section": "",
-    "text": "Click the Classroom invite link\nClick Accept assignment\nGitHub creates your repo and takes you to it\n\n\n\n\nPick a folder (example):\ncd ~/Documents\nClone (paste your repo URL):\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\nOpen in VS Code:\ncode ."
+    "objectID": "resources/initial_setup_windows.html#powershell-wont-run-scripts-execution-policy",
+    "href": "resources/initial_setup_windows.html#powershell-wont-run-scripts-execution-policy",
+    "title": "Initial Setup (Windows)",
+    "section": "PowerShell won’t run scripts (execution policy)",
+    "text": "PowerShell won’t run scripts (execution policy)\nUse Command Prompt terminal in VS Code instead, or (advanced) allow local scripts:\nSet-ExecutionPolicy -Scope CurrentUser RemoteSigned"
   },
   {
-    "objectID": "resources/day1_setup_macos.html#create-a-virtual-environment-.venv-and-install-dependencies",
-    "href": "resources/day1_setup_macos.html#create-a-virtual-environment-.venv-and-install-dependencies",
-    "title": "Day 1 Setup (macOS)",
-    "section": "",
-    "text": "From the repo root:\npython3.13 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\nIf your repo has requirements.txt:\npip install -r requirements.txt\nVerify you’re using the venv Python:\nwhich python\npython --version"
-  },
-  {
-    "objectID": "resources/day1_setup_macos.html#sanity-checks",
-    "href": "resources/day1_setup_macos.html#sanity-checks",
-    "title": "Day 1 Setup (macOS)",
-    "section": "",
-    "text": "python -c \"print('Hello from Python!')\"\nIf the repo has tests:\npytest -q"
-  },
-  {
-    "objectID": "resources/day1_setup_macos.html#make-a-change-commit-and-push",
-    "href": "resources/day1_setup_macos.html#make-a-change-commit-and-push",
-    "title": "Day 1 Setup (macOS)",
-    "section": "",
-    "text": "git status\ngit add SUBMISSION.md\ngit commit -m \"Complete submission\"\ngit push\nIf autograding is enabled, you’ll see ✅/❌ on GitHub after pushing."
-  },
-  {
-    "objectID": "resources/day1_setup_macos.html#homebrew-brew-command-not-found",
-    "href": "resources/day1_setup_macos.html#homebrew-brew-command-not-found",
-    "title": "Day 1 Setup (macOS)",
-    "section": "Homebrew: brew: command not found",
-    "text": "Homebrew: brew: command not found\nRe-run the PATH line the installer printed (the eval ... line), then restart Terminal and try:\nbrew --version"
-  },
-  {
-    "objectID": "resources/day1_setup_macos.html#python-3.13-not-found-python3.13-command-not-found",
-    "href": "resources/day1_setup_macos.html#python-3.13-not-found-python3.13-command-not-found",
-    "title": "Day 1 Setup (macOS)",
-    "section": "Python 3.13 not found (python3.13: command not found)",
-    "text": "Python 3.13 not found (python3.13: command not found)\nRun:\nbrew info python@3.13\nand follow the “caveats” (it tells you exactly what to add to your PATH). Then open a new Terminal and retry:\npython3.13 --version"
-  },
-  {
-    "objectID": "resources/day1_setup_macos.html#vs-code-code-command-not-found",
-    "href": "resources/day1_setup_macos.html#vs-code-code-command-not-found",
-    "title": "Day 1 Setup (macOS)",
-    "section": "VS Code: code: command not found",
-    "text": "VS Code: code: command not found\nIn VS Code: - Cmd+Shift+P → Shell Command: Install ‘code’ command in PATH Restart Terminal."
-  },
-  {
-    "objectID": "resources/day1_setup_macos.html#git-push-authentication-failures",
-    "href": "resources/day1_setup_macos.html#git-push-authentication-failures",
-    "title": "Day 1 Setup (macOS)",
-    "section": "git push authentication failures",
-    "text": "git push authentication failures\nMake sure you accepted the assignment with the correct GitHub account. Retry git push and complete any browser/device login prompts."
-  },
-  {
-    "objectID": "resources/day1_setup_macos.html#if-youre-stuck-include-these-in-your-help-request",
-    "href": "resources/day1_setup_macos.html#if-youre-stuck-include-these-in-your-help-request",
-    "title": "Day 1 Setup (macOS)",
+    "objectID": "resources/initial_setup_windows.html#if-youre-stuck-include-these-in-your-help-request",
+    "href": "resources/initial_setup_windows.html#if-youre-stuck-include-these-in-your-help-request",
+    "title": "Initial Setup (Windows)",
     "section": "If you’re stuck, include these in your help request",
-    "text": "If you’re stuck, include these in your help request\ngit --version\npython3.13 --version\nwhich python"
+    "text": "If you’re stuck, include these in your help request\ngit --version\npython --version\npy --version"
   },
   {
-    "objectID": "policies/late-work.html",
-    "href": "policies/late-work.html",
-    "title": "Late Work & Extensions",
+    "objectID": "resources/github_classroom_workflow.html",
+    "href": "resources/github_classroom_workflow.html",
+    "title": "GitHub Classroom Workflow",
     "section": "",
-    "text": "Placeholder for late work policy content.\n\n\n\n Back to top"
+    "text": "This guide covers the steps you’ll follow for each GitHub Classroom assignment:\n\nAccept the assignment and clone the repo\nCreate a virtual environment and install dependencies\nDo the work\nCommit and push (submit)\n\n\nPrerequisite: Complete the one-time setup first: Initial Setup (Windows) | Initial Setup (macOS)\n\n\n\n\n\n\nClick the Classroom invite link (from the Assignments page or Schedule).\nClick Accept assignment.\nGitHub creates a repo for you and takes you to it.\n\n\n\n\n\nCopy the repo HTTPS URL from GitHub (click Code → HTTPS).\n\nWindows (VS Code)Windows (Terminal)macOS (Terminal)\n\n\n\nIn VS Code: Ctrl+Shift+P → Git: Clone\nPaste the URL\nPick a folder\nOpen the repo when prompted\n\n\n\ncd C:\\Users\\YourName\\Documents\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\ncode .\n\n\ncd ~/Documents\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\ncode .\n\n\n\n\n\n\n\nOpen a terminal in VS Code: Terminal → New Terminal\n\nWindows (PowerShell)Windows (Command Prompt)macOS\n\n\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\Activate.ps1\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\nIf PowerShell blocks the activation script:\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\activate.bat\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\npython3.13 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\n\n\n\n\nWindowsmacOS\n\n\npython --version\nwhere python\nThe where python output should show a path inside .venv.\n\n\npython --version\nwhich python\nThe which python output should show a path inside .venv.\n\n\n\n\n\n\n\n\nIf the repo has tests:\npytest -q\nOr run a quick Python check:\npython -c \"print('Hello from Python!')\"\n\n\n\n\nComplete the assignment according to the instructions in the repo’s README.\n\n\n\n\nTypical “submission” is commit + push. Autograding (if enabled) runs after you push.\n\nVS Code UITerminal\n\n\n\nOpen the Source Control panel (left sidebar)\nStage changes (click + next to files)\nEnter a commit message\nClick Commit\nClick Sync Changes (pushes to GitHub)\n\n\n\ngit status\ngit add .\ngit commit -m \"Complete submission\"\ngit push\n\n\n\nAfter pushing, check your repo on GitHub. If autograding is enabled, you’ll see a ✅ or ❌ next to your commit."
   },
   {
-    "objectID": "policies/collaboration.html",
-    "href": "policies/collaboration.html",
-    "title": "Collaboration Policy",
+    "objectID": "resources/github_classroom_workflow.html#creating-with-ai-in-the-loop-assignment-workflow-repeat-for-each-assignment",
+    "href": "resources/github_classroom_workflow.html#creating-with-ai-in-the-loop-assignment-workflow-repeat-for-each-assignment",
+    "title": "GitHub Classroom Workflow",
     "section": "",
-    "text": "Placeholder for collaboration policy content.\n\n\n\n Back to top"
+    "text": "This guide covers the steps you’ll follow for each GitHub Classroom assignment:\n\nAccept the assignment and clone the repo\nCreate a virtual environment and install dependencies\nDo the work\nCommit and push (submit)\n\n\nPrerequisite: Complete the one-time setup first: Initial Setup (Windows) | Initial Setup (macOS)"
   },
   {
-    "objectID": "syllabus.html",
-    "href": "syllabus.html",
-    "title": "Syllabus",
+    "objectID": "resources/github_classroom_workflow.html#accept-the-github-classroom-assignment",
+    "href": "resources/github_classroom_workflow.html#accept-the-github-classroom-assignment",
+    "title": "GitHub Classroom Workflow",
     "section": "",
-    "text": "NoteAI Use Policy (click to expand)\n\n\n\n\n\nPlaceholder for AI Use Policy content.\n\n\n\n\n\n\n\n\n\nNoteAI Use Policy\n\n\n\nPlaceholder for AI Use Policy content.\n\n\n\n\n\n Back to top"
+    "text": "Click the Classroom invite link (from the Assignments page or Schedule).\nClick Accept assignment.\nGitHub creates a repo for you and takes you to it."
   },
   {
-    "objectID": "schedule.html",
-    "href": "schedule.html",
-    "title": "Schedule",
+    "objectID": "resources/github_classroom_workflow.html#clone-the-repo",
+    "href": "resources/github_classroom_workflow.html#clone-the-repo",
+    "title": "GitHub Classroom Workflow",
     "section": "",
-    "text": "This page is the authoritative course schedule and the main entry point for weekly materials."
+    "text": "Copy the repo HTTPS URL from GitHub (click Code → HTTPS).\n\nWindows (VS Code)Windows (Terminal)macOS (Terminal)\n\n\n\nIn VS Code: Ctrl+Shift+P → Git: Clone\nPaste the URL\nPick a folder\nOpen the repo when prompted\n\n\n\ncd C:\\Users\\YourName\\Documents\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\ncode .\n\n\ncd ~/Documents\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\ncode ."
   },
   {
-    "objectID": "schedule.html#week-1",
-    "href": "schedule.html#week-1",
-    "title": "Schedule",
-    "section": "Week 1",
-    "text": "Week 1\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nCourse overview + workflow setup\nCourse Overview and Workflow Setup\n—\n\n\nThursday\n(Fill in)\n—\n—"
-  },
-  {
-    "objectID": "schedule.html#future-weeks-placeholder",
-    "href": "schedule.html#future-weeks-placeholder",
-    "title": "Schedule",
-    "section": "Future weeks (placeholder)",
-    "text": "Future weeks (placeholder)\nAdd additional weeks as you finalize topics and dates. A nice pattern is:\n\none row per meeting\nlinks to slides\nlinks to relevant resources\ndue items (assignment checkpoints) in the “Due” column"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Creating with AI in the Loop",
+    "objectID": "resources/github_classroom_workflow.html#create-a-virtual-environment-and-install-dependencies",
+    "href": "resources/github_classroom_workflow.html#create-a-virtual-environment-and-install-dependencies",
+    "title": "GitHub Classroom Workflow",
     "section": "",
-    "text": "Welcome! This is the course hub for Creating with AI in the Loop.\nIf you’re ever unsure where to find something, start here."
+    "text": "Open a terminal in VS Code: Terminal → New Terminal\n\nWindows (PowerShell)Windows (Command Prompt)macOS\n\n\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\Activate.ps1\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\nIf PowerShell blocks the activation script:\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\activate.bat\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\npython3.13 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\n\n\n\n\nWindowsmacOS\n\n\npython --version\nwhere python\nThe where python output should show a path inside .venv.\n\n\npython --version\nwhich python\nThe which python output should show a path inside .venv."
   },
   {
-    "objectID": "index.html#what-you-should-do-first-week-1",
-    "href": "index.html#what-you-should-do-first-week-1",
-    "title": "Creating with AI in the Loop",
-    "section": "What you should do first (Week 1)",
-    "text": "What you should do first (Week 1)\n\nRead the Syllabus and the AI Use Policy.\nFollow the Day 1 Setup guide (Windows) or Day 1 Setup guide (macOS).\nAccept A0 — Setup Verification using the link on the Assignments page.\nMake sure you understand how “submission” works (commit + push)."
+    "objectID": "resources/github_classroom_workflow.html#sanity-checks",
+    "href": "resources/github_classroom_workflow.html#sanity-checks",
+    "title": "GitHub Classroom Workflow",
+    "section": "",
+    "text": "If the repo has tests:\npytest -q\nOr run a quick Python check:\npython -c \"print('Hello from Python!')\""
   },
   {
-    "objectID": "index.html#quick-links",
-    "href": "index.html#quick-links",
-    "title": "Creating with AI in the Loop",
-    "section": "Quick links",
-    "text": "Quick links\n\nSchedule: Schedule\nAssignments: Assignments\nPolicies: Policies\nResources: Resources"
+    "objectID": "resources/github_classroom_workflow.html#do-the-work",
+    "href": "resources/github_classroom_workflow.html#do-the-work",
+    "title": "GitHub Classroom Workflow",
+    "section": "",
+    "text": "Complete the assignment according to the instructions in the repo’s README."
   },
   {
-    "objectID": "index.html#how-announcements-work",
-    "href": "index.html#how-announcements-work",
-    "title": "Creating with AI in the Loop",
-    "section": "How announcements work",
-    "text": "How announcements work\n\nPrimary channel: (fill in: LMS announcements / email / GitHub Discussions)\nWhere to ask questions: (fill in: LMS forum / GitHub Discussions)\nOffice hours: (fill in link/time)"
+    "objectID": "resources/github_classroom_workflow.html#commit-and-push-submit",
+    "href": "resources/github_classroom_workflow.html#commit-and-push-submit",
+    "title": "GitHub Classroom Workflow",
+    "section": "",
+    "text": "Typical “submission” is commit + push. Autograding (if enabled) runs after you push.\n\nVS Code UITerminal\n\n\n\nOpen the Source Control panel (left sidebar)\nStage changes (click + next to files)\nEnter a commit message\nClick Commit\nClick Sync Changes (pushes to GitHub)\n\n\n\ngit status\ngit add .\ngit commit -m \"Complete submission\"\ngit push\n\n\n\nAfter pushing, check your repo on GitHub. If autograding is enabled, you’ll see a ✅ or ❌ next to your commit."
   },
   {
-    "objectID": "index.html#what-this-course-is-about-short-version",
-    "href": "index.html#what-this-course-is-about-short-version",
-    "title": "Creating with AI in the Loop",
-    "section": "What this course is about (short version)",
-    "text": "What this course is about (short version)\nYou will learn to: - use AI tools effectively in a software development workflow - build software that calls model APIs (Gemini) and uses tools/data - test and evaluate non-deterministic components - ship a final project with clear design choices and limitations"
+    "objectID": "resources/github_classroom_workflow.html#git-push-permissionauth-errors",
+    "href": "resources/github_classroom_workflow.html#git-push-permissionauth-errors",
+    "title": "GitHub Classroom Workflow",
+    "section": "git push permission/auth errors",
+    "text": "git push permission/auth errors\n\nMake sure you accepted the assignment with the correct GitHub account\nRetry push and complete the browser sign-in flow if prompted\nCheck that the repo URL matches your GitHub username"
   },
   {
-    "objectID": "index.html#course-defaults-so-you-dont-have-to-guess",
-    "href": "index.html#course-defaults-so-you-dont-have-to-guess",
-    "title": "Creating with AI in the Loop",
-    "section": "Course “defaults” (so you don’t have to guess)",
-    "text": "Course “defaults” (so you don’t have to guess)\n\nPython: 3.13.x (supported)\n\nEnvironment: venv + pip\n\nRepo workflow (early weeks): commit to main\n\nAutograding: usually runs on push (check ✅/❌ on GitHub)"
+    "objectID": "resources/github_classroom_workflow.html#powershell-wont-activate-.venv-execution-policy",
+    "href": "resources/github_classroom_workflow.html#powershell-wont-activate-.venv-execution-policy",
+    "title": "GitHub Classroom Workflow",
+    "section": "PowerShell won’t activate .venv (execution policy)",
+    "text": "PowerShell won’t activate .venv (execution policy)\nUse Command Prompt instead:\n.\\.venv\\Scripts\\activate.bat\nOr (advanced) allow local scripts in PowerShell:\nSet-ExecutionPolicy -Scope CurrentUser RemoteSigned"
+  },
+  {
+    "objectID": "resources/github_classroom_workflow.html#requirements.txt-not-found",
+    "href": "resources/github_classroom_workflow.html#requirements.txt-not-found",
+    "title": "GitHub Classroom Workflow",
+    "section": "requirements.txt not found",
+    "text": "requirements.txt not found\nNot all assignments have a requirements.txt. Skip the pip install -r requirements.txt step if the file doesn’t exist."
+  },
+  {
+    "objectID": "resources/github_classroom_workflow.html#tests-failing-after-push",
+    "href": "resources/github_classroom_workflow.html#tests-failing-after-push",
+    "title": "GitHub Classroom Workflow",
+    "section": "Tests failing after push",
+    "text": "Tests failing after push\n\nRead the error message in the GitHub Actions log\nFix the issue locally\nCommit and push again"
+  },
+  {
+    "objectID": "resources/github_classroom_workflow.html#quick-reference-common-commands",
+    "href": "resources/github_classroom_workflow.html#quick-reference-common-commands",
+    "title": "GitHub Classroom Workflow",
+    "section": "Quick reference: common commands",
+    "text": "Quick reference: common commands\n\n\n\n\n\n\n\n\nTask\nWindows (PowerShell)\nmacOS\n\n\n\n\nCreate venv\npy -3.13 -m venv .venv\npython3.13 -m venv .venv\n\n\nActivate venv\n.\\.venv\\Scripts\\Activate.ps1\nsource .venv/bin/activate\n\n\nDeactivate venv\ndeactivate\ndeactivate\n\n\nInstall deps\npip install -r requirements.txt\npip install -r requirements.txt\n\n\nRun tests\npytest -q\npytest -q\n\n\nCommit all\ngit add . && git commit -m \"msg\"\ngit add . && git commit -m \"msg\"\n\n\nPush\ngit push\ngit push"
+  },
+  {
+    "objectID": "resources/index.html",
+    "href": "resources/index.html",
+    "title": "Resources",
+    "section": "",
+    "text": "Use this page as the single place to find setup guides, FAQs, and “how-to” docs."
+  },
+  {
+    "objectID": "resources/index.html#featured",
+    "href": "resources/index.html#featured",
+    "title": "Resources",
+    "section": "Featured",
+    "text": "Featured\n\nInitial Setup (one-time)\n\nInitial Setup (Windows) — VS Code, Git, Python 3.13\nInitial Setup (macOS) — Homebrew, VS Code, Git, Python 3.13\n\n\n\nGitHub Classroom Workflow (every assignment)\n\nGitHub Classroom Workflow — Accept, clone, venv, commit, push"
+  },
+  {
+    "objectID": "resources/index.html#all-resources",
+    "href": "resources/index.html#all-resources",
+    "title": "Resources",
+    "section": "All resources",
+    "text": "All resources\nThe list below is generated automatically from the files in this folder."
+  },
+  {
+    "objectID": "policies/index.html",
+    "href": "policies/index.html",
+    "title": "Policies",
+    "section": "",
+    "text": "Use this page as the single place to find course policies."
+  },
+  {
+    "objectID": "policies/index.html#featured-core-policies",
+    "href": "policies/index.html#featured-core-policies",
+    "title": "Policies",
+    "section": "Featured: Core policies",
+    "text": "Featured: Core policies\n\nAI Use Policy\nCollaboration Policy\nLate Work & Extensions"
+  },
+  {
+    "objectID": "policies/index.html#all-policies",
+    "href": "policies/index.html#all-policies",
+    "title": "Policies",
+    "section": "All policies",
+    "text": "All policies\nThe list below is generated automatically from the files in this folder."
+  },
+  {
+    "objectID": "policies/ai-use.html",
+    "href": "policies/ai-use.html",
+    "title": "AI Use Policy",
+    "section": "",
+    "text": "Placeholder for AI Use Policy content.\n\n\n\n Back to top"
   },
   {
     "objectID": "assignments.html",
     "href": "assignments.html",
     "title": "Assignments",
     "section": "",
-    "text": "This page is the single canonical place for: - assignment links (GitHub Classroom invites) - due dates/times - submission expectations"
+    "text": "This page is the single canonical place for:"
   },
   {
     "objectID": "assignments.html#assignment-calendar-overview",
@@ -305,168 +312,196 @@
     "href": "assignments.html#faq-my-assignment-says-not-submitted",
     "title": "Assignments",
     "section": "FAQ: “My assignment says Not Submitted”",
-    "text": "FAQ: “My assignment says Not Submitted”\nGitHub Classroom submission status is often tied to the assignment deadline/cutoff. In most cases, pushing commits before the deadline is what matters.\nIf you have pushed and are unsure, check: - your repo shows your latest commit on main - autograding checks (✅/❌) next to your commit (if enabled)"
+    "text": "FAQ: “My assignment says Not Submitted”\nGitHub Classroom submission status is often tied to the assignment deadline/cutoff. In most cases, pushing commits before the deadline is what matters.\nIf you have pushed and are unsure, check:\n\nyour repo shows your latest commit on main\nautograding checks (✅/❌) next to your commit (if enabled)"
   },
   {
-    "objectID": "policies/ai-use.html",
-    "href": "policies/ai-use.html",
-    "title": "AI Use Policy",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Creating with AI in the Loop",
     "section": "",
-    "text": "Placeholder for AI Use Policy content.\n\n\n\n Back to top"
+    "text": "Welcome! This is the course hub for Creating with AI in the Loop.\nIf you’re ever unsure where to find something, start here."
   },
   {
-    "objectID": "policies/index.html",
-    "href": "policies/index.html",
-    "title": "Policies",
+    "objectID": "index.html#what-you-should-do-first-week-1",
+    "href": "index.html#what-you-should-do-first-week-1",
+    "title": "Creating with AI in the Loop",
+    "section": "What you should do first (Week 1)",
+    "text": "What you should do first (Week 1)\n\nRead the Syllabus and the AI Use Policy.\nFollow the Initial Setup (Windows) or Initial Setup (macOS).\nAccept A0 — Setup Verification using the link on the Assignments page.\nMake sure you understand how “submission” works (commit + push)."
+  },
+  {
+    "objectID": "index.html#quick-links",
+    "href": "index.html#quick-links",
+    "title": "Creating with AI in the Loop",
+    "section": "Quick links",
+    "text": "Quick links\n\nSchedule: Schedule\nAssignments: Assignments\nPolicies: Policies\nResources: Resources"
+  },
+  {
+    "objectID": "index.html#how-announcements-work",
+    "href": "index.html#how-announcements-work",
+    "title": "Creating with AI in the Loop",
+    "section": "How announcements work",
+    "text": "How announcements work\n\nPrimary channel: (fill in: LMS announcements / email / GitHub Discussions)\nWhere to ask questions: (fill in: LMS forum / GitHub Discussions)\nOffice hours: (fill in link/time)"
+  },
+  {
+    "objectID": "index.html#what-this-course-is-about-short-version",
+    "href": "index.html#what-this-course-is-about-short-version",
+    "title": "Creating with AI in the Loop",
+    "section": "What this course is about (short version)",
+    "text": "What this course is about (short version)\nYou will learn to:\n\nuse AI tools effectively in a software development workflow\nbuild software that calls model APIs (Gemini) and uses tools/data\ntest and evaluate non-deterministic components\nship a final project with clear design choices and limitations"
+  },
+  {
+    "objectID": "index.html#course-defaults-so-you-dont-have-to-guess",
+    "href": "index.html#course-defaults-so-you-dont-have-to-guess",
+    "title": "Creating with AI in the Loop",
+    "section": "Course “defaults” (so you don’t have to guess)",
+    "text": "Course “defaults” (so you don’t have to guess)\n\nPython: 3.13.x (supported)\n\nEnvironment: venv + pip\n\nRepo workflow (early weeks): commit to main\n\nAutograding: usually runs on push (check ✅/❌ on GitHub)"
+  },
+  {
+    "objectID": "schedule.html",
+    "href": "schedule.html",
+    "title": "Schedule",
     "section": "",
-    "text": "Use this page as the single place to find course policies."
+    "text": "This page is the authoritative course schedule and the main entry point for weekly materials."
   },
   {
-    "objectID": "policies/index.html#featured-core-policies",
-    "href": "policies/index.html#featured-core-policies",
-    "title": "Policies",
-    "section": "Featured: Core policies",
-    "text": "Featured: Core policies\n\nAI Use Policy\nCollaboration Policy\nLate Work & Extensions"
+    "objectID": "schedule.html#week-1",
+    "href": "schedule.html#week-1",
+    "title": "Schedule",
+    "section": "Week 1",
+    "text": "Week 1\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nCourse overview + workflow setup\nCourse Overview and Workflow Setup\n—\n\n\nThursday\n(Fill in)\n—\n—"
   },
   {
-    "objectID": "policies/index.html#all-policies",
-    "href": "policies/index.html#all-policies",
-    "title": "Policies",
-    "section": "All policies",
-    "text": "All policies\nThe list below is generated automatically from the files in this folder."
+    "objectID": "schedule.html#future-weeks-placeholder",
+    "href": "schedule.html#future-weeks-placeholder",
+    "title": "Schedule",
+    "section": "Future weeks (placeholder)",
+    "text": "Future weeks (placeholder)\nAdd additional weeks as you finalize topics and dates. A nice pattern is:\n\none row per meeting\nlinks to slides\nlinks to relevant resources\ndue items (assignment checkpoints) in the “Due” column"
   },
   {
-    "objectID": "resources/index.html",
-    "href": "resources/index.html",
-    "title": "Resources",
+    "objectID": "syllabus.html",
+    "href": "syllabus.html",
+    "title": "Syllabus",
     "section": "",
-    "text": "Use this page as the single place to find setup guides, FAQs, and “how-to” docs."
+    "text": "NoteAI Use Policy (click to expand)\n\n\n\n\n\nPlaceholder for AI Use Policy content.\n\n\n\n\n\n\n\n\n\nNoteAI Use Policy\n\n\n\nPlaceholder for AI Use Policy content.\n\n\n\n\n\n Back to top"
   },
   {
-    "objectID": "resources/index.html#featured-day-1-setup",
-    "href": "resources/index.html#featured-day-1-setup",
-    "title": "Resources",
-    "section": "Featured: Day 1 setup",
-    "text": "Featured: Day 1 setup\n\nDay 1 Setup (Windows)\nDay 1 Setup (macOS)"
-  },
-  {
-    "objectID": "resources/index.html#all-resources",
-    "href": "resources/index.html#all-resources",
-    "title": "Resources",
-    "section": "All resources",
-    "text": "All resources\nThe list below is generated automatically from the files in this folder."
-  },
-  {
-    "objectID": "resources/day1_setup_windows.html",
-    "href": "resources/day1_setup_windows.html",
-    "title": "Day 1 Setup (Windows)",
+    "objectID": "policies/collaboration.html",
+    "href": "policies/collaboration.html",
+    "title": "Collaboration Policy",
     "section": "",
-    "text": "This guide gets you to the “ready for class” baseline: - VS Code + Git + Python installed - Clone a GitHub Classroom repo - Create a .venv and install dependencies with pip - Run a quick sanity check and commit + push (what “submission” usually looks like)\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13).\nDownload: https://www.python.org/downloads/latest/python3.13/\n\n\n\n\n\n\nWindows 10/11\nA GitHub account (the same one you’ll use to accept GitHub Classroom assignments)\n\n\n\n\n\n\n\nhttps://code.visualstudio.com/download\n\n\n\n\nRun the installer.\nAccept defaults unless you know you want something else.\nRecommended: enable “Add to PATH”.\n\n(Official Windows setup doc: https://code.visualstudio.com/docs/setup/windows)\n\n\n\nOpen VS Code from the Start menu.\n\n\n\n\n\n\n\nUse either official source: - https://git-scm.com/download/win - https://gitforwindows.org/\n\n\n\nAccept defaults unless you know you need different settings.\n\n\n\nOpen PowerShell and run:\ngit --version\n\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list\n\n\n\n\n\n\n\nhttps://www.python.org/downloads/latest/python3.13/\n\n\n\nWhen running the installer: 1. ✅ Check “Add python.exe to PATH” 2. ✅ Keep pip included (default) 3. ✅ Keep the Python launcher (py) enabled if offered (default)\n\n\n\nClose and reopen PowerShell, then run:\npython --version\npy --version\npip --version\n\n\n\n\n\nIn VS Code → Extensions: - Python (Microsoft)\nOptional: - GitHub Pull Requests and Issues (GitHub)\n\n\n\n\n\n\n\nClick the Classroom invite link.\nClick Accept assignment.\nGitHub creates a repo and takes you to it.\n\n\n\n\n\nCopy the repo HTTPS URL from GitHub (Code → HTTPS).\nIn VS Code:\n\nCtrl+Shift+P → Git: Clone\npaste the URL\npick a folder\n\nOpen the repo when prompted.\n\n\n\n\n\n\nOpen Terminal in VS Code: Terminal → New Terminal\n\n\nFrom the repo root:\npy -3.13 -m venv .venv\n\n\n\nPowerShell:\n.\\.venv\\Scripts\\Activate.ps1\n\n\n\npython -m pip install --upgrade pip\n\n\n\nIf your repo has requirements.txt:\npip install -r requirements.txt\n\n\n\n\n\npython --version\nwhere python\nIf the repo has tests:\npytest -q\n\n\n\n\nTypical “submission” is commit + push.\n\n\n\nSource Control panel\nStage changes (+)\nCommit message\nCommit\nSync Changes (push)\n\n\n\n\ngit status\ngit add SUBMISSION.md\ngit commit -m \"Complete submission\"\ngit push\nIf autograding is enabled, you’ll see ✅/❌ on GitHub after pushing."
+    "text": "Placeholder for collaboration policy content.\n\n\n\n Back to top"
   },
   {
-    "objectID": "resources/day1_setup_windows.html#creating-with-ai-in-the-loop-windows-local-setup-no-wsl",
-    "href": "resources/day1_setup_windows.html#creating-with-ai-in-the-loop-windows-local-setup-no-wsl",
-    "title": "Day 1 Setup (Windows)",
+    "objectID": "policies/late-work.html",
+    "href": "policies/late-work.html",
+    "title": "Late Work & Extensions",
     "section": "",
-    "text": "This guide gets you to the “ready for class” baseline: - VS Code + Git + Python installed - Clone a GitHub Classroom repo - Create a .venv and install dependencies with pip - Run a quick sanity check and commit + push (what “submission” usually looks like)\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13).\nDownload: https://www.python.org/downloads/latest/python3.13/"
+    "text": "Placeholder for late work policy content.\n\n\n\n Back to top"
   },
   {
-    "objectID": "resources/day1_setup_windows.html#what-you-need",
-    "href": "resources/day1_setup_windows.html#what-you-need",
-    "title": "Day 1 Setup (Windows)",
+    "objectID": "resources/faq.html",
+    "href": "resources/faq.html",
+    "title": "Course FAQ",
     "section": "",
-    "text": "Windows 10/11\nA GitHub account (the same one you’ll use to accept GitHub Classroom assignments)"
+    "text": "No FAQs have been added yet. Please check back later for updates."
   },
   {
-    "objectID": "resources/day1_setup_windows.html#install-visual-studio-code-vs-code",
-    "href": "resources/day1_setup_windows.html#install-visual-studio-code-vs-code",
-    "title": "Day 1 Setup (Windows)",
+    "objectID": "resources/faq.html#general-questions",
+    "href": "resources/faq.html#general-questions",
+    "title": "Course FAQ",
     "section": "",
-    "text": "https://code.visualstudio.com/download\n\n\n\n\nRun the installer.\nAccept defaults unless you know you want something else.\nRecommended: enable “Add to PATH”.\n\n(Official Windows setup doc: https://code.visualstudio.com/docs/setup/windows)\n\n\n\nOpen VS Code from the Start menu."
+    "text": "No FAQs have been added yet. Please check back later for updates."
   },
   {
-    "objectID": "resources/day1_setup_windows.html#install-git-git-for-windows",
-    "href": "resources/day1_setup_windows.html#install-git-git-for-windows",
-    "title": "Day 1 Setup (Windows)",
+    "objectID": "resources/initial_setup_macos.html",
+    "href": "resources/initial_setup_macos.html",
+    "title": "Initial Setup (macOS)",
     "section": "",
-    "text": "Use either official source: - https://git-scm.com/download/win - https://gitforwindows.org/\n\n\n\nAccept defaults unless you know you need different settings.\n\n\n\nOpen PowerShell and run:\ngit --version\n\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list"
+    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13).\n\n\n\n\n\n\nmacOS (recent version)\nAdmin access for installs\nA GitHub account\n\n\n\n\n\nOpen Terminal and run:\nxcode-select --install\nVerify:\ngit --version\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list\n\n\n\n\n\nRun the official installer:\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\nIf the installer prints a line that starts with eval \"$(...)\", copy/paste it into Terminal (this adds Homebrew to your PATH).\nVerify:\nbrew --version\n\n\n\n\nInstall:\nbrew install python@3.13\nVerify:\npython3.13 --version\npython3.13 -m pip --version\n\nIf python3.13 is not found, run:\nbrew info python@3.13\nand follow the “caveats” it prints (Homebrew will tell you what to add to your PATH).\n\n\n\n\n\n\n\n\nDownload: https://code.visualstudio.com/download\nDrag Visual Studio Code.app to Applications\nOpen VS Code once\n\n\n\n\nbrew install --cask visual-studio-code\n\n\n\n\n\nIn VS Code, go to Extensions:\n\nPython (Microsoft)\n\nOptional:\n\nGitHub Pull Requests and Issues (GitHub)\n\n\n\nIn VS Code:\n\nCmd+Shift+P → Shell Command: Install ‘code’ command in PATH\n\nVerify in Terminal:\ncode --version\n\n\n\n\n\nFor each assignment, follow the GitHub Classroom Workflow Guide."
   },
   {
-    "objectID": "resources/day1_setup_windows.html#install-python-course-standard-3.13.x",
-    "href": "resources/day1_setup_windows.html#install-python-course-standard-3.13.x",
-    "title": "Day 1 Setup (Windows)",
+    "objectID": "resources/initial_setup_macos.html#creating-with-ai-in-the-loop-one-time-macos-setup",
+    "href": "resources/initial_setup_macos.html#creating-with-ai-in-the-loop-one-time-macos-setup",
+    "title": "Initial Setup (macOS)",
     "section": "",
-    "text": "https://www.python.org/downloads/latest/python3.13/\n\n\n\nWhen running the installer: 1. ✅ Check “Add python.exe to PATH” 2. ✅ Keep pip included (default) 3. ✅ Keep the Python launcher (py) enabled if offered (default)\n\n\n\nClose and reopen PowerShell, then run:\npython --version\npy --version\npip --version"
+    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13)."
   },
   {
-    "objectID": "resources/day1_setup_windows.html#install-vs-code-extensions",
-    "href": "resources/day1_setup_windows.html#install-vs-code-extensions",
-    "title": "Day 1 Setup (Windows)",
+    "objectID": "resources/initial_setup_macos.html#what-you-need",
+    "href": "resources/initial_setup_macos.html#what-you-need",
+    "title": "Initial Setup (macOS)",
     "section": "",
-    "text": "In VS Code → Extensions: - Python (Microsoft)\nOptional: - GitHub Pull Requests and Issues (GitHub)"
+    "text": "macOS (recent version)\nAdmin access for installs\nA GitHub account"
   },
   {
-    "objectID": "resources/day1_setup_windows.html#accept-the-github-classroom-assignment-and-clone-the-repo",
-    "href": "resources/day1_setup_windows.html#accept-the-github-classroom-assignment-and-clone-the-repo",
-    "title": "Day 1 Setup (Windows)",
+    "objectID": "resources/initial_setup_macos.html#install-apple-command-line-tools-includes-git",
+    "href": "resources/initial_setup_macos.html#install-apple-command-line-tools-includes-git",
+    "title": "Initial Setup (macOS)",
     "section": "",
-    "text": "Click the Classroom invite link.\nClick Accept assignment.\nGitHub creates a repo and takes you to it.\n\n\n\n\n\nCopy the repo HTTPS URL from GitHub (Code → HTTPS).\nIn VS Code:\n\nCtrl+Shift+P → Git: Clone\npaste the URL\npick a folder\n\nOpen the repo when prompted."
+    "text": "Open Terminal and run:\nxcode-select --install\nVerify:\ngit --version\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list"
   },
   {
-    "objectID": "resources/day1_setup_windows.html#create-a-virtual-environment-.venv-and-install-dependencies",
-    "href": "resources/day1_setup_windows.html#create-a-virtual-environment-.venv-and-install-dependencies",
-    "title": "Day 1 Setup (Windows)",
+    "objectID": "resources/initial_setup_macos.html#install-homebrew",
+    "href": "resources/initial_setup_macos.html#install-homebrew",
+    "title": "Initial Setup (macOS)",
     "section": "",
-    "text": "Open Terminal in VS Code: Terminal → New Terminal\n\n\nFrom the repo root:\npy -3.13 -m venv .venv\n\n\n\nPowerShell:\n.\\.venv\\Scripts\\Activate.ps1\n\n\n\npython -m pip install --upgrade pip\n\n\n\nIf your repo has requirements.txt:\npip install -r requirements.txt"
+    "text": "Run the official installer:\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\nIf the installer prints a line that starts with eval \"$(...)\", copy/paste it into Terminal (this adds Homebrew to your PATH).\nVerify:\nbrew --version"
   },
   {
-    "objectID": "resources/day1_setup_windows.html#sanity-checks",
-    "href": "resources/day1_setup_windows.html#sanity-checks",
-    "title": "Day 1 Setup (Windows)",
+    "objectID": "resources/initial_setup_macos.html#install-python-3.13.x-via-homebrew",
+    "href": "resources/initial_setup_macos.html#install-python-3.13.x-via-homebrew",
+    "title": "Initial Setup (macOS)",
     "section": "",
-    "text": "python --version\nwhere python\nIf the repo has tests:\npytest -q"
+    "text": "Install:\nbrew install python@3.13\nVerify:\npython3.13 --version\npython3.13 -m pip --version\n\nIf python3.13 is not found, run:\nbrew info python@3.13\nand follow the “caveats” it prints (Homebrew will tell you what to add to your PATH)."
   },
   {
-    "objectID": "resources/day1_setup_windows.html#make-a-change-commit-and-push",
-    "href": "resources/day1_setup_windows.html#make-a-change-commit-and-push",
-    "title": "Day 1 Setup (Windows)",
+    "objectID": "resources/initial_setup_macos.html#install-vs-code",
+    "href": "resources/initial_setup_macos.html#install-vs-code",
+    "title": "Initial Setup (macOS)",
     "section": "",
-    "text": "Typical “submission” is commit + push.\n\n\n\nSource Control panel\nStage changes (+)\nCommit message\nCommit\nSync Changes (push)\n\n\n\n\ngit status\ngit add SUBMISSION.md\ngit commit -m \"Complete submission\"\ngit push\nIf autograding is enabled, you’ll see ✅/❌ on GitHub after pushing."
+    "text": "Download: https://code.visualstudio.com/download\nDrag Visual Studio Code.app to Applications\nOpen VS Code once\n\n\n\n\nbrew install --cask visual-studio-code"
   },
   {
-    "objectID": "resources/day1_setup_windows.html#git-not-found-in-vs-code",
-    "href": "resources/day1_setup_windows.html#git-not-found-in-vs-code",
-    "title": "Day 1 Setup (Windows)",
-    "section": "Git not found in VS Code",
-    "text": "Git not found in VS Code\n\nInstall Git for Windows (https://git-scm.com/download/win)\nQuit and restart VS Code\nVerify:\ngit --version"
+    "objectID": "resources/initial_setup_macos.html#install-vs-code-extensions",
+    "href": "resources/initial_setup_macos.html#install-vs-code-extensions",
+    "title": "Initial Setup (macOS)",
+    "section": "",
+    "text": "In VS Code, go to Extensions:\n\nPython (Microsoft)\n\nOptional:\n\nGitHub Pull Requests and Issues (GitHub)\n\n\n\nIn VS Code:\n\nCmd+Shift+P → Shell Command: Install ‘code’ command in PATH\n\nVerify in Terminal:\ncode --version"
   },
   {
-    "objectID": "resources/day1_setup_windows.html#python-not-recognized-or-opens-microsoft-store",
-    "href": "resources/day1_setup_windows.html#python-not-recognized-or-opens-microsoft-store",
-    "title": "Day 1 Setup (Windows)",
-    "section": "python not recognized or opens Microsoft Store",
-    "text": "python not recognized or opens Microsoft Store\n\nInstall Python 3.13.x from https://www.python.org/downloads/latest/python3.13/\nMake sure Add to PATH is checked\nRestart PowerShell and verify:\npython --version\npy --version"
+    "objectID": "resources/initial_setup_macos.html#youre-done-with-one-time-setup",
+    "href": "resources/initial_setup_macos.html#youre-done-with-one-time-setup",
+    "title": "Initial Setup (macOS)",
+    "section": "",
+    "text": "For each assignment, follow the GitHub Classroom Workflow Guide."
   },
   {
-    "objectID": "resources/day1_setup_windows.html#powershell-wont-activate-.venv-execution-policy",
-    "href": "resources/day1_setup_windows.html#powershell-wont-activate-.venv-execution-policy",
-    "title": "Day 1 Setup (Windows)",
-    "section": "PowerShell won’t activate .venv (execution policy)",
-    "text": "PowerShell won’t activate .venv (execution policy)\nUse Command Prompt terminal in VS Code and run:\n.\\.venv\\Scripts\u0007ctivate.bat\nOr (advanced) allow local scripts:\nSet-ExecutionPolicy -Scope CurrentUser RemoteSigned"
+    "objectID": "resources/initial_setup_macos.html#homebrew-brew-command-not-found",
+    "href": "resources/initial_setup_macos.html#homebrew-brew-command-not-found",
+    "title": "Initial Setup (macOS)",
+    "section": "Homebrew: brew: command not found",
+    "text": "Homebrew: brew: command not found\nRe-run the PATH line the installer printed (the eval ... line), then restart Terminal and try:\nbrew --version"
   },
   {
-    "objectID": "resources/day1_setup_windows.html#git-push-permissionauth-errors",
-    "href": "resources/day1_setup_windows.html#git-push-permissionauth-errors",
-    "title": "Day 1 Setup (Windows)",
-    "section": "git push permission/auth errors",
-    "text": "git push permission/auth errors\n\nMake sure you accepted the assignment with the correct GitHub account\nRetry push and complete the browser sign-in flow if prompted"
+    "objectID": "resources/initial_setup_macos.html#python-3.13-not-found-python3.13-command-not-found",
+    "href": "resources/initial_setup_macos.html#python-3.13-not-found-python3.13-command-not-found",
+    "title": "Initial Setup (macOS)",
+    "section": "Python 3.13 not found (python3.13: command not found)",
+    "text": "Python 3.13 not found (python3.13: command not found)\nRun:\nbrew info python@3.13\nand follow the “caveats” (it tells you exactly what to add to your PATH). Then open a new Terminal and retry:\npython3.13 --version"
   },
   {
-    "objectID": "resources/day1_setup_windows.html#if-youre-stuck-include-these-in-your-help-request",
-    "href": "resources/day1_setup_windows.html#if-youre-stuck-include-these-in-your-help-request",
-    "title": "Day 1 Setup (Windows)",
+    "objectID": "resources/initial_setup_macos.html#vs-code-code-command-not-found",
+    "href": "resources/initial_setup_macos.html#vs-code-code-command-not-found",
+    "title": "Initial Setup (macOS)",
+    "section": "VS Code: code: command not found",
+    "text": "VS Code: code: command not found\nIn VS Code:\n\nCmd+Shift+P → Shell Command: Install ‘code’ command in PATH Restart Terminal."
+  },
+  {
+    "objectID": "resources/initial_setup_macos.html#if-youre-stuck-include-these-in-your-help-request",
+    "href": "resources/initial_setup_macos.html#if-youre-stuck-include-these-in-your-help-request",
+    "title": "Initial Setup (macOS)",
     "section": "If you’re stuck, include these in your help request",
-    "text": "If you’re stuck, include these in your help request\ngit --version\npython --version\npy --version"
+    "text": "If you’re stuck, include these in your help request\ngit --version\npython3.13 --version\nbrew --version"
   },
   {
     "objectID": "slides/index.html",
