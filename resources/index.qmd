@@ -29,5 +29,11 @@ Use this page as the **single place** to find setup guides, FAQs, and "how-to" d
 
 - [GitHub Classroom Workflow](github_classroom_workflow.md) — Accept, clone, venv, commit, push
 
+### Gemini
+
+- [Getting a Gemini API Key](gemini_api_key.md) — For assignments that call Gemini models
+- [Installing Gemini Code Assist](gemini_code_assist.md) — AI coding assistant in VS Code
+- [Installing Gemini CLI](gemini_cli.md) — AI assistant in your terminal
+
 ## All resources
 The list below is generated automatically from the files in this folder.
