@@ -6,55 +6,67 @@
   </url>
   <url>
     <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/resources/initial_setup_windows.html</loc>
-    <lastmod>2025-12-31T14:01:48.128Z</lastmod>
+    <lastmod>2025-12-31T14:33:44.675Z</lastmod>
   </url>
   <url>
     <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/resources/github_classroom_workflow.html</loc>
-    <lastmod>2025-12-31T13:53:04.609Z</lastmod>
+    <lastmod>2026-01-01T14:55:43.415Z</lastmod>
   </url>
   <url>
-    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/resources/index.html</loc>
-    <lastmod>2025-12-31T13:52:12.392Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/policies/index.html</loc>
-    <lastmod>2025-12-31T13:56:29.156Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/policies/ai-use.html</loc>
-    <lastmod>2025-12-30T22:15:20.853Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/assignments.html</loc>
-    <lastmod>2025-12-31T14:00:17.675Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/index.html</loc>
-    <lastmod>2025-12-31T14:02:55.243Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/schedule.html</loc>
-    <lastmod>2025-12-30T22:15:20.855Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/syllabus.html</loc>
-    <lastmod>2025-12-30T22:15:20.855Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/policies/collaboration.html</loc>
-    <lastmod>2025-12-30T22:15:20.853Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/policies/late-work.html</loc>
-    <lastmod>2025-12-30T22:15:20.854Z</lastmod>
+    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/resources/gemini_cli.html</loc>
+    <lastmod>2026-01-01T21:04:48.663Z</lastmod>
   </url>
   <url>
     <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/resources/faq.html</loc>
     <lastmod>2025-12-30T22:15:20.854Z</lastmod>
   </url>
   <url>
+    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/policies/late-work.html</loc>
+    <lastmod>2025-12-30T22:15:20.854Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/policies/collaboration.html</loc>
+    <lastmod>2025-12-30T22:15:20.853Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/syllabus.html</loc>
+    <lastmod>2025-12-31T14:19:08.643Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/schedule.html</loc>
+    <lastmod>2025-12-31T18:23:03.121Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/index.html</loc>
+    <lastmod>2026-01-01T19:42:16.081Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/assignments.html</loc>
+    <lastmod>2026-01-01T19:44:54.059Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/policies/ai-use.html</loc>
+    <lastmod>2025-12-30T22:15:20.853Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/policies/index.html</loc>
+    <lastmod>2025-12-31T13:56:29.156Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/resources/index.html</loc>
+    <lastmod>2026-01-01T21:05:16.200Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/resources/gemini_api_key.html</loc>
+    <lastmod>2026-01-01T20:51:29.048Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/resources/gemini_code_assist.html</loc>
+    <lastmod>2026-01-01T20:49:42.400Z</lastmod>
+  </url>
+  <url>
     <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/resources/initial_setup_macos.html</loc>
-    <lastmod>2025-12-31T14:02:27.949Z</lastmod>
+    <lastmod>2025-12-31T15:11:02.855Z</lastmod>
   </url>
   <url>
     <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/slides/index.html</loc>

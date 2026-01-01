@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-12-30">
-<meta name="description" content="Accept an assignment, clone the repo, set up a virtual environment, and submit your work.">
+<meta name="dcterms.date" content="2026-01-01">
+<meta name="description" content="Set up Google’s Gemini CLI for AI assistance in your terminal.">
 
-<title>GitHub Classroom Workflow – Creating with AI in the Loop</title>
+<title>Installing Gemini CLI – Creating with AI in the Loop</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -184,26 +184,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#github-classroom-workflow" id="toc-github-classroom-workflow" class="nav-link active" data-scroll-target="#github-classroom-workflow">GitHub Classroom Workflow</a>
+  <li><a href="#installing-gemini-cli" id="toc-installing-gemini-cli" class="nav-link active" data-scroll-target="#installing-gemini-cli">Installing Gemini CLI</a>
   <ul class="collapse">
-  <li><a href="#creating-with-ai-in-the-loop-assignment-workflow-repeat-for-each-assignment" id="toc-creating-with-ai-in-the-loop-assignment-workflow-repeat-for-each-assignment" class="nav-link" data-scroll-target="#creating-with-ai-in-the-loop-assignment-workflow-repeat-for-each-assignment">Creating with AI in the Loop — Assignment workflow (repeat for each assignment)</a></li>
-  <li><a href="#accept-the-github-classroom-assignment" id="toc-accept-the-github-classroom-assignment" class="nav-link" data-scroll-target="#accept-the-github-classroom-assignment">1) Accept the GitHub Classroom assignment</a></li>
-  <li><a href="#clone-the-repo" id="toc-clone-the-repo" class="nav-link" data-scroll-target="#clone-the-repo">2) Clone the repo</a></li>
-  <li><a href="#create-a-virtual-environment-and-install-dependencies" id="toc-create-a-virtual-environment-and-install-dependencies" class="nav-link" data-scroll-target="#create-a-virtual-environment-and-install-dependencies">3) Create a virtual environment and install dependencies</a>
+  <li><a href="#creating-with-ai-in-the-loop-terminal-ai-assistant" id="toc-creating-with-ai-in-the-loop-terminal-ai-assistant" class="nav-link" data-scroll-target="#creating-with-ai-in-the-loop-terminal-ai-assistant">Creating with AI in the Loop — Terminal AI assistant</a></li>
+  <li><a href="#macos" id="toc-macos" class="nav-link" data-scroll-target="#macos">macOS</a></li>
+  <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows">Windows</a>
   <ul class="collapse">
-  <li><a href="#verify-the-venv-is-active" id="toc-verify-the-venv-is-active" class="nav-link" data-scroll-target="#verify-the-venv-is-active">Verify the venv is active</a></li>
+  <li><a href="#install-node.js-version-20-or-higher" id="toc-install-node.js-version-20-or-higher" class="nav-link" data-scroll-target="#install-node.js-version-20-or-higher">1) Install Node.js (version 20 or higher)</a></li>
+  <li><a href="#install-gemini-cli" id="toc-install-gemini-cli" class="nav-link" data-scroll-target="#install-gemini-cli">2) Install Gemini CLI</a></li>
   </ul></li>
-  <li><a href="#sanity-checks" id="toc-sanity-checks" class="nav-link" data-scroll-target="#sanity-checks">4) Sanity checks</a></li>
-  <li><a href="#do-the-work" id="toc-do-the-work" class="nav-link" data-scroll-target="#do-the-work">5) Do the work</a></li>
-  <li><a href="#commit-and-push-submit" id="toc-commit-and-push-submit" class="nav-link" data-scroll-target="#commit-and-push-submit">6) Commit and push (submit)</a></li>
+  <li><a href="#first-run-sign-in" id="toc-first-run-sign-in" class="nav-link" data-scroll-target="#first-run-sign-in">First run: Sign in</a></li>
+  <li><a href="#free-tier" id="toc-free-tier" class="nav-link" data-scroll-target="#free-tier">Free tier</a></li>
   </ul></li>
   <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a>
   <ul class="collapse">
-  <li><a href="#git-push-permissionauth-errors" id="toc-git-push-permissionauth-errors" class="nav-link" data-scroll-target="#git-push-permissionauth-errors"><code>git push</code> permission/auth errors</a></li>
-  <li><a href="#powershell-wont-activate-.venv-execution-policy" id="toc-powershell-wont-activate-.venv-execution-policy" class="nav-link" data-scroll-target="#powershell-wont-activate-.venv-execution-policy">PowerShell won’t activate <code>.venv</code> (execution policy)</a></li>
-  <li><a href="#requirements.txt-not-found" id="toc-requirements.txt-not-found" class="nav-link" data-scroll-target="#requirements.txt-not-found"><code>requirements.txt</code> not found</a></li>
-  <li><a href="#tests-failing-after-push" id="toc-tests-failing-after-push" class="nav-link" data-scroll-target="#tests-failing-after-push">Tests failing after push</a></li>
-  <li><a href="#quick-reference-common-commands" id="toc-quick-reference-common-commands" class="nav-link" data-scroll-target="#quick-reference-common-commands">Quick reference: common commands</a></li>
+  <li><a href="#macos-brew-command-not-found" id="toc-macos-brew-command-not-found" class="nav-link" data-scroll-target="#macos-brew-command-not-found">macOS: <code>brew: command not found</code></a></li>
+  <li><a href="#windows-node-or-npm-not-recognized" id="toc-windows-node-or-npm-not-recognized" class="nav-link" data-scroll-target="#windows-node-or-npm-not-recognized">Windows: <code>node</code> or <code>npm</code> not recognized</a></li>
+  <li><a href="#authentication-issues" id="toc-authentication-issues" class="nav-link" data-scroll-target="#authentication-issues">Authentication issues</a></li>
+  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ai-in-the-loop-2026/ai-in-the-loop-hub/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
@@ -213,15 +211,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">GitHub Classroom Workflow</h1>
+<h1 class="title">Installing Gemini CLI</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">GitHub</div>
+    <div class="quarto-category">Setup</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Accept an assignment, clone the repo, set up a virtual environment, and submit your work.
+    Set up Google’s Gemini CLI for AI assistance in your terminal.
   </div>
 </div>
 
@@ -232,7 +230,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 30, 2025</p>
+      <p class="date">January 1, 2026</p>
     </div>
   </div>
   
@@ -244,237 +242,76 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="github-classroom-workflow" class="level1">
-<h1>GitHub Classroom Workflow</h1>
-<section id="creating-with-ai-in-the-loop-assignment-workflow-repeat-for-each-assignment" class="level2">
-<h2 class="anchored" data-anchor-id="creating-with-ai-in-the-loop-assignment-workflow-repeat-for-each-assignment">Creating with AI in the Loop — Assignment workflow (repeat for each assignment)</h2>
-<p>This guide covers the steps you’ll follow for each GitHub Classroom assignment:</p>
+<section id="installing-gemini-cli" class="level1">
+<h1>Installing Gemini CLI</h1>
+<section id="creating-with-ai-in-the-loop-terminal-ai-assistant" class="level2">
+<h2 class="anchored" data-anchor-id="creating-with-ai-in-the-loop-terminal-ai-assistant">Creating with AI in the Loop — Terminal AI assistant</h2>
+<p>Gemini CLI brings Gemini AI directly to your terminal. You can ask questions, generate code, and work with your codebase from the command line.</p>
+<hr>
+</section>
+<section id="macos" class="level2">
+<h2 class="anchored" data-anchor-id="macos">macOS</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install gemini-cli</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Verify: <code>gemini --version</code></p>
+<hr>
+</section>
+<section id="windows" class="level2">
+<h2 class="anchored" data-anchor-id="windows">Windows</h2>
+<section id="install-node.js-version-20-or-higher" class="level3">
+<h3 class="anchored" data-anchor-id="install-node.js-version-20-or-higher">1) Install Node.js (version 20 or higher)</h3>
+<p>Download the LTS installer from <a href="https://nodejs.org" class="uri">https://nodejs.org</a> and run it. Reboot if prompted.</p>
+<p>Verify:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>node <span class="op">-</span>v</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>npm <span class="op">-</span>v</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="install-gemini-cli" class="level3">
+<h3 class="anchored" data-anchor-id="install-gemini-cli">2) Install Gemini CLI</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>npm install <span class="op">-</span>g @google<span class="op">/</span>gemini-cli</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Verify: <code>gemini --version</code></p>
+<hr>
+</section>
+</section>
+<section id="first-run-sign-in" class="level2">
+<h2 class="anchored" data-anchor-id="first-run-sign-in">First run: Sign in</h2>
 <ol type="1">
-<li>Accept the assignment and clone the repo</li>
-<li>Create a virtual environment and install dependencies</li>
-<li>Do the work</li>
-<li>Commit and push (submit)</li>
+<li>Open a terminal in your project directory.</li>
+<li>Run <code>gemini</code>.</li>
+<li>Select <strong>Login with Google</strong>.</li>
+<li>Sign in with your <strong>personal Google account</strong> (not your .edu account).</li>
 </ol>
-<blockquote class="blockquote">
-<p><strong>Prerequisite:</strong> Complete the one-time setup first: <a href="../resources/initial_setup_windows.html">Initial Setup (Windows)</a> | <a href="../resources/initial_setup_macos.html">Initial Setup (macOS)</a></p>
-</blockquote>
+<p>After signing in, you can start chatting with Gemini about your code.</p>
 <hr>
 </section>
-<section id="accept-the-github-classroom-assignment" class="level2">
-<h2 class="anchored" data-anchor-id="accept-the-github-classroom-assignment">1) Accept the GitHub Classroom assignment</h2>
-<ol type="1">
-<li>Click the Classroom invite link (from the <a href="../assignments.html">Assignments page</a>).</li>
-<li>Click <strong>Accept assignment</strong>.</li>
-<li>GitHub creates a repo for you and takes you to it.</li>
-</ol>
-<hr>
-</section>
-<section id="clone-the-repo" class="level2">
-<h2 class="anchored" data-anchor-id="clone-the-repo">2) Clone the repo</h2>
-<p>Copy the repo <strong>HTTPS</strong> URL from GitHub (click <strong>Code</strong> → <strong>HTTPS</strong>).</p>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Windows (VS Code)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Windows (Terminal)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">macOS (Terminal)</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<ol type="1">
-<li>In VS Code: <code>Ctrl+Shift+P</code> → <code>Git: Clone</code></li>
-<li>Paste the URL</li>
-<li>Pick a folder</li>
-<li>Open the repo when prompted</li>
-</ol>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> C<span class="op">:</span>\Users\YourName\Documents</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>git clone <span class="op">&lt;</span>PASTE-REPO-URL-HERE<span class="op">&gt;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="op">&lt;</span>REPO-FOLDER<span class="op">&gt;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>code <span class="op">.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/Documents</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="op">&lt;</span>PASTE-REPO-URL-HERE<span class="op">&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="op">&lt;</span>REPO-FOLDER<span class="op">&gt;</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
-</div>
-<hr>
-</section>
-<section id="create-a-virtual-environment-and-install-dependencies" class="level2">
-<h2 class="anchored" data-anchor-id="create-a-virtual-environment-and-install-dependencies">3) Create a virtual environment and install dependencies</h2>
-<p>Open a terminal in VS Code: <strong>Terminal → New Terminal</strong></p>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Windows (PowerShell)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">Windows (Command Prompt)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false" href="">macOS</a></li></ul>
-<div class="tab-content">
-<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>py <span class="op">-</span><span class="dv">3.13</span> <span class="op">-</span>m venv <span class="op">.</span><span class="fu">venv</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="op">.</span>\<span class="op">.</span><span class="fu">venv</span>\Scripts\Activate<span class="op">.</span><span class="fu">ps1</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>python <span class="op">-</span>m pip install <span class="op">--</span>upgrade pip</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>pip install <span class="op">-</span>r requirements<span class="op">.</span><span class="fu">txt</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<p>If PowerShell blocks the activation script:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bat code-with-copy"><code class="sourceCode dosbat"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>py <span class="at">-3</span>.13 <span class="at">-m</span> venv .venv</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>.\.venv\Scripts\activate.bat</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>python <span class="at">-m</span> pip install -<span class="at">-upgrade</span> pip</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>pip install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3.13</span> <span class="at">-m</span> venv .venv</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">--upgrade</span> pip</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
-</div>
-<p>If the repo has a <code>pyproject.toml</code> or <code>setup.py</code>, also run:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-e</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<section id="verify-the-venv-is-active" class="level3">
-<h3 class="anchored" data-anchor-id="verify-the-venv-is-active">Verify the venv is active</h3>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">Windows</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">macOS</a></li></ul>
-<div class="tab-content">
-<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>python <span class="op">--</span>version</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">where</span> python</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The <code>where python</code> output should show a path inside <code>.venv</code>.</p>
-</div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">--version</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> python</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The <code>which python</code> output should show a path inside <code>.venv</code>.</p>
-</div>
-</div>
-</div>
-<hr>
-</section>
-</section>
-<section id="sanity-checks" class="level2">
-<h2 class="anchored" data-anchor-id="sanity-checks">4) Sanity checks</h2>
-<p>If the repo has tests:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pytest</span> <span class="at">-q</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Or run a quick Python check:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"print('Hello from Python!')"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<hr>
-</section>
-<section id="do-the-work" class="level2">
-<h2 class="anchored" data-anchor-id="do-the-work">5) Do the work</h2>
-<p>Complete the assignment according to the instructions in the repo’s README.</p>
-<hr>
-</section>
-<section id="commit-and-push-submit" class="level2">
-<h2 class="anchored" data-anchor-id="commit-and-push-submit">6) Commit and push (submit)</h2>
-<p>Typical “submission” is <strong>commit + push</strong>. Autograding (if enabled) runs after you push.</p>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">VS Code UI</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">Terminal</a></li></ul>
-<div class="tab-content">
-<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
-<ol type="1">
-<li>Open the <strong>Source Control</strong> panel (left sidebar)</li>
-<li>Stage changes (click <code>+</code> next to files)</li>
-<li>Enter a commit message</li>
-<li>Click <strong>Commit</strong></li>
-<li>Click <strong>Sync Changes</strong> (pushes to GitHub)</li>
-</ol>
-</div>
-<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Complete submission"</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
-</div>
-<p>After pushing, check your repo on GitHub. If autograding is enabled, you’ll see a ✅ or ❌ next to your commit.</p>
+<section id="free-tier" class="level2">
+<h2 class="anchored" data-anchor-id="free-tier">Free tier</h2>
+<p>Gemini CLI is free. The daily limits are sufficient for course assignments.</p>
 <hr>
 </section>
 </section>
 <section id="troubleshooting" class="level1">
 <h1>Troubleshooting</h1>
-<section id="git-push-permissionauth-errors" class="level2">
-<h2 class="anchored" data-anchor-id="git-push-permissionauth-errors"><code>git push</code> permission/auth errors</h2>
+<section id="macos-brew-command-not-found" class="level2">
+<h2 class="anchored" data-anchor-id="macos-brew-command-not-found">macOS: <code>brew: command not found</code></h2>
+<p>Install Homebrew first. See <a href="../resources/initial_setup_macos.html">Initial Setup (macOS)</a>.</p>
+</section>
+<section id="windows-node-or-npm-not-recognized" class="level2">
+<h2 class="anchored" data-anchor-id="windows-node-or-npm-not-recognized">Windows: <code>node</code> or <code>npm</code> not recognized</h2>
+<p>Restart your terminal after installing Node.js. If still not working, reinstall Node.js and make sure “Add to PATH” is checked.</p>
+</section>
+<section id="authentication-issues" class="level2">
+<h2 class="anchored" data-anchor-id="authentication-issues">Authentication issues</h2>
 <ul>
-<li>Make sure you accepted the assignment with the correct GitHub account</li>
-<li>Retry push and complete the browser sign-in flow if prompted</li>
-<li>Check that the repo URL matches your GitHub username</li>
-</ul>
-<p>If issues persist, run these commands and include the output in your help request:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote <span class="at">-v</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> credential.helper</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--show-origin</span> <span class="at">--get-all</span> credential.helper</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="powershell-wont-activate-.venv-execution-policy" class="level2">
-<h2 class="anchored" data-anchor-id="powershell-wont-activate-.venv-execution-policy">PowerShell won’t activate <code>.venv</code> (execution policy)</h2>
-<p>Use <strong>Command Prompt</strong> instead:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bat code-with-copy"><code class="sourceCode dosbat"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>.\.venv\Scripts\activate.bat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Or (advanced) allow local scripts in PowerShell:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Set-ExecutionPolicy</span> <span class="op">-</span>Scope CurrentUser RemoteSigned</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="requirements.txt-not-found" class="level2">
-<h2 class="anchored" data-anchor-id="requirements.txt-not-found"><code>requirements.txt</code> not found</h2>
-<p>Not all assignments have a <code>requirements.txt</code>. Skip the <code>pip install -r requirements.txt</code> step if the file doesn’t exist.</p>
-</section>
-<section id="tests-failing-after-push" class="level2">
-<h2 class="anchored" data-anchor-id="tests-failing-after-push">Tests failing after push</h2>
-<ul>
-<li>Read the error message in the GitHub Actions log</li>
-<li>Fix the issue locally</li>
-<li>Commit and push again</li>
+<li>Use a personal Google account, not your .edu account</li>
+<li>Try signing out and back in: <code>gemini --logout</code> then <code>gemini</code></li>
 </ul>
 <hr>
 </section>
-<section id="quick-reference-common-commands" class="level2">
-<h2 class="anchored" data-anchor-id="quick-reference-common-commands">Quick reference: common commands</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 17%">
-<col style="width: 61%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Task</th>
-<th>Windows (PowerShell)</th>
-<th>macOS</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Create venv</td>
-<td><code>py -3.13 -m venv .venv</code></td>
-<td><code>python3.13 -m venv .venv</code></td>
-</tr>
-<tr class="even">
-<td>Activate venv</td>
-<td><code>.\.venv\Scripts\Activate.ps1</code></td>
-<td><code>source .venv/bin/activate</code></td>
-</tr>
-<tr class="odd">
-<td>Deactivate venv</td>
-<td><code>deactivate</code></td>
-<td><code>deactivate</code></td>
-</tr>
-<tr class="even">
-<td>Install deps</td>
-<td><code>pip install -r requirements.txt</code></td>
-<td><code>pip install -r requirements.txt</code></td>
-</tr>
-<tr class="odd">
-<td>Run tests</td>
-<td><code>pytest -q</code></td>
-<td><code>pytest -q</code></td>
-</tr>
-<tr class="even">
-<td>Commit all</td>
-<td><code>git add . &amp;&amp; git commit -m "msg"</code></td>
-<td><code>git add . &amp;&amp; git commit -m "msg"</code></td>
-</tr>
-<tr class="odd">
-<td>Push</td>
-<td><code>git push</code></td>
-<td><code>git push</code></td>
-</tr>
-</tbody>
-</table>
+<section id="resources" class="level2">
+<h2 class="anchored" data-anchor-id="resources">Resources</h2>
+<ul>
+<li>Official docs: <a href="https://geminicli.com/docs/" class="uri">https://geminicli.com/docs/</a></li>
+<li>GitHub: <a href="https://github.com/google-gemini/gemini-cli" class="uri">https://github.com/google-gemini/gemini-cli</a></li>
+</ul>
 
 
 </section>

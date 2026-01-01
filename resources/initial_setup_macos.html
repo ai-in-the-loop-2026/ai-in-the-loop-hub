@@ -193,13 +193,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#one-time-git-identity-setup" id="toc-one-time-git-identity-setup" class="nav-link" data-scroll-target="#one-time-git-identity-setup">One-time Git identity setup</a></li>
   </ul></li>
   <li><a href="#install-homebrew" id="toc-install-homebrew" class="nav-link" data-scroll-target="#install-homebrew">2) Install Homebrew</a></li>
-  <li><a href="#install-python-3.13.x-via-homebrew" id="toc-install-python-3.13.x-via-homebrew" class="nav-link" data-scroll-target="#install-python-3.13.x-via-homebrew">3) Install Python 3.13.x via Homebrew</a></li>
-  <li><a href="#install-vs-code" id="toc-install-vs-code" class="nav-link" data-scroll-target="#install-vs-code">4) Install VS Code</a>
+  <li><a href="#install-git-credential-manager-gcm" id="toc-install-git-credential-manager-gcm" class="nav-link" data-scroll-target="#install-git-credential-manager-gcm">3) Install Git Credential Manager (GCM)</a></li>
+  <li><a href="#install-python-3.13.x-via-homebrew" id="toc-install-python-3.13.x-via-homebrew" class="nav-link" data-scroll-target="#install-python-3.13.x-via-homebrew">4) Install Python 3.13.x via Homebrew</a></li>
+  <li><a href="#install-vs-code" id="toc-install-vs-code" class="nav-link" data-scroll-target="#install-vs-code">5) Install VS Code</a>
   <ul class="collapse">
   <li><a href="#option-a-recommended-download-from-microsoft" id="toc-option-a-recommended-download-from-microsoft" class="nav-link" data-scroll-target="#option-a-recommended-download-from-microsoft">Option A (recommended): download from Microsoft</a></li>
   <li><a href="#option-b-homebrew" id="toc-option-b-homebrew" class="nav-link" data-scroll-target="#option-b-homebrew">Option B: Homebrew</a></li>
   </ul></li>
-  <li><a href="#install-vs-code-extensions" id="toc-install-vs-code-extensions" class="nav-link" data-scroll-target="#install-vs-code-extensions">5) Install VS Code extensions</a>
+  <li><a href="#install-vs-code-extensions" id="toc-install-vs-code-extensions" class="nav-link" data-scroll-target="#install-vs-code-extensions">6) Install VS Code extensions</a>
   <ul class="collapse">
   <li><a href="#enable-the-code-command-recommended" id="toc-enable-the-code-command-recommended" class="nav-link" data-scroll-target="#enable-the-code-command-recommended">Enable the <code>code</code> command (recommended)</a></li>
   </ul></li>
@@ -293,38 +294,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <hr>
 </section>
-<section id="install-python-3.13.x-via-homebrew" class="level2">
-<h2 class="anchored" data-anchor-id="install-python-3.13.x-via-homebrew">3) Install Python 3.13.x via Homebrew</h2>
+<section id="install-git-credential-manager-gcm" class="level2">
+<h2 class="anchored" data-anchor-id="install-git-credential-manager-gcm">3) Install Git Credential Manager (GCM)</h2>
+<p>GCM securely stores your GitHub credentials so you don’t have to re-authenticate on every push.</p>
 <p>Install:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install python@3.13</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install git-credential-manager</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Verify:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3.13</span> <span class="at">--version</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3.13</span> <span class="at">-m</span> pip <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">git-credential-manager</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The first time you <code>git push</code>, GCM will open a browser window to authenticate with GitHub. After that, your credentials are stored securely.</p>
+<hr>
+</section>
+<section id="install-python-3.13.x-via-homebrew" class="level2">
+<h2 class="anchored" data-anchor-id="install-python-3.13.x-via-homebrew">4) Install Python 3.13.x via Homebrew</h2>
+<p>Install:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install python@3.13</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Verify:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3.13</span> <span class="at">--version</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3.13</span> <span class="at">-m</span> pip <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <blockquote class="blockquote">
 <p>If <code>python3.13</code> is not found, run:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> info python@3.13</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> info python@3.13</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>and follow the “caveats” it prints (Homebrew will tell you what to add to your PATH).</p>
 </blockquote>
 <hr>
 </section>
 <section id="install-vs-code" class="level2">
-<h2 class="anchored" data-anchor-id="install-vs-code">4) Install VS Code</h2>
+<h2 class="anchored" data-anchor-id="install-vs-code">5) Install VS Code</h2>
 <section id="option-a-recommended-download-from-microsoft" class="level3">
 <h3 class="anchored" data-anchor-id="option-a-recommended-download-from-microsoft">Option A (recommended): download from Microsoft</h3>
 <ul>
-<li>Download: <code>https://code.visualstudio.com/download</code></li>
+<li>Download: <a href="https://code.visualstudio.com/download" class="uri">https://code.visualstudio.com/download</a></li>
 <li>Drag <strong>Visual Studio Code.app</strong> to <strong>Applications</strong></li>
 <li>Open VS Code once</li>
 </ul>
 </section>
 <section id="option-b-homebrew" class="level3">
 <h3 class="anchored" data-anchor-id="option-b-homebrew">Option B: Homebrew</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install <span class="at">--cask</span> visual-studio-code</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install <span class="at">--cask</span> visual-studio-code</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <hr>
 </section>
 </section>
 <section id="install-vs-code-extensions" class="level2">
-<h2 class="anchored" data-anchor-id="install-vs-code-extensions">5) Install VS Code extensions</h2>
+<h2 class="anchored" data-anchor-id="install-vs-code-extensions">6) Install VS Code extensions</h2>
 <p>In VS Code, go to Extensions:</p>
 <ul>
 <li><strong>Python</strong> (Microsoft)</li>
@@ -340,7 +351,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>Cmd+Shift+P</code> → <strong>Shell Command: Install ‘code’ command in PATH</strong></li>
 </ul>
 <p>Verify in Terminal:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <hr>
 </section>
 </section>
@@ -355,14 +366,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="homebrew-brew-command-not-found" class="level2">
 <h2 class="anchored" data-anchor-id="homebrew-brew-command-not-found">Homebrew: <code>brew: command not found</code></h2>
 <p>Re-run the PATH line the installer printed (the <code>eval ...</code> line), then restart Terminal and try:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="python-3.13-not-found-python3.13-command-not-found" class="level2">
 <h2 class="anchored" data-anchor-id="python-3.13-not-found-python3.13-command-not-found">Python 3.13 not found (<code>python3.13: command not found</code>)</h2>
 <p>Run:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> info python@3.13</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> info python@3.13</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>and follow the “caveats” (it tells you exactly what to add to your PATH). Then open a new Terminal and retry:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3.13</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3.13</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="vs-code-code-command-not-found" class="level2">
 <h2 class="anchored" data-anchor-id="vs-code-code-command-not-found">VS Code: <code>code: command not found</code></h2>
@@ -374,9 +385,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="if-youre-stuck-include-these-in-your-help-request" class="level2">
 <h2 class="anchored" data-anchor-id="if-youre-stuck-include-these-in-your-help-request">If you’re stuck, include these in your help request</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3.13</span> <span class="at">--version</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3.13</span> <span class="at">--version</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>

@@ -53,14 +53,14 @@
     "href": "resources/initial_setup_windows.html",
     "title": "Initial Setup (Windows)",
     "section": "",
-    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13). Download: https://www.python.org/downloads/latest/python3.13/\n\n\n\n\n\n\nWindows 10/11\nA GitHub account (the same one you’ll use to accept GitHub Classroom assignments)\n\n\n\n\n\n\n\nhttps://code.visualstudio.com/download\n\n\n\n\nRun the installer.\nAccept defaults unless you know you want something else.\nRecommended: enable “Add to PATH”.\n\n(Official Windows setup doc: https://code.visualstudio.com/docs/setup/windows)\n\n\n\nOpen VS Code from the Start menu.\n\n\n\n\n\n\n\nUse either official source:\n\nhttps://git-scm.com/download/win\nhttps://gitforwindows.org/\n\n\n\n\nAccept defaults unless you know you need different settings.\n\n\n\nOpen PowerShell and run:\ngit --version\n\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list\n\n\n\n\n\n\n\nhttps://www.python.org/downloads/latest/python3.13/\n\n\n\nWhen running the installer: 1. Check “Add python.exe to PATH” 2. Keep pip included (default) 3. Keep the Python launcher (py) enabled if offered (default)\n\n\n\nClose and reopen PowerShell, then run:\npython --version\npy --version\npip --version\n\n\n\n\n\nIn VS Code, go to Extensions:\n\nPython (Microsoft)\n\nOptional:\n\nGitHub Pull Requests and Issues (GitHub)\n\n\n\n\n\nFor each assignment, follow the GitHub Classroom Workflow Guide."
+    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13). Download: https://www.python.org/downloads/\n\n\n\n\n\n\nWindows 10/11\nA GitHub account (the same one you’ll use to accept GitHub Classroom assignments)\n\n\n\n\n\n\n\nhttps://code.visualstudio.com/download\n\n\n\n\nRun the installer.\nAccept defaults unless you know you want something else.\nRecommended: enable “Add to PATH”.\n\n(Official Windows setup doc: https://code.visualstudio.com/docs/setup/windows)\n\n\n\nOpen VS Code from the Start menu.\n\n\n\n\n\n\n\nUse either official source:\n\nhttps://git-scm.com/download/win\nhttps://gitforwindows.org/\n\n\n\n\nAccept defaults unless you know you need different settings.\n\n\n\nOpen PowerShell and run:\ngit --version\n\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list\n\n\n\n\n\n\n\nhttps://www.python.org/downloads/\n\n\n\nWhen running the installer: 1. Check “Add python.exe to PATH” 2. Keep pip included (default) 3. Keep the Python launcher (py) enabled if offered (default)\n\n\n\nClose and reopen PowerShell, then run:\npython --version\npy --version\npip --version\n\n\n\n\n\nIn VS Code, go to Extensions:\n\nPython (Microsoft)\n\nOptional:\n\nGitHub Pull Requests and Issues (GitHub)\n\n\n\n\n\nFor each assignment, follow the GitHub Classroom Workflow Guide."
   },
   {
     "objectID": "resources/initial_setup_windows.html#creating-with-ai-in-the-loop-one-time-windows-setup",
     "href": "resources/initial_setup_windows.html#creating-with-ai-in-the-loop-one-time-windows-setup",
     "title": "Initial Setup (Windows)",
     "section": "",
-    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13). Download: https://www.python.org/downloads/latest/python3.13/"
+    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13). Download: https://www.python.org/downloads/"
   },
   {
     "objectID": "resources/initial_setup_windows.html#what-you-need",
@@ -88,7 +88,7 @@
     "href": "resources/initial_setup_windows.html#install-python-course-standard-3.13.x",
     "title": "Initial Setup (Windows)",
     "section": "",
-    "text": "https://www.python.org/downloads/latest/python3.13/\n\n\n\nWhen running the installer: 1. Check “Add python.exe to PATH” 2. Keep pip included (default) 3. Keep the Python launcher (py) enabled if offered (default)\n\n\n\nClose and reopen PowerShell, then run:\npython --version\npy --version\npip --version"
+    "text": "https://www.python.org/downloads/\n\n\n\nWhen running the installer: 1. Check “Add python.exe to PATH” 2. Keep pip included (default) 3. Keep the Python launcher (py) enabled if offered (default)\n\n\n\nClose and reopen PowerShell, then run:\npython --version\npy --version\npip --version"
   },
   {
     "objectID": "resources/initial_setup_windows.html#install-vs-code-extensions",
@@ -109,14 +109,14 @@
     "href": "resources/initial_setup_windows.html#git-not-found-in-vs-code",
     "title": "Initial Setup (Windows)",
     "section": "Git not found in VS Code",
-    "text": "Git not found in VS Code\n\nInstall Git for Windows (https://git-scm.com/download/win)\nQuit and restart VS Code\nVerify:\ngit --version"
+    "text": "Git not found in VS Code\n\nInstall Git for Windows\nQuit and restart VS Code\nVerify:\ngit --version"
   },
   {
     "objectID": "resources/initial_setup_windows.html#python-not-recognized-or-opens-microsoft-store",
     "href": "resources/initial_setup_windows.html#python-not-recognized-or-opens-microsoft-store",
     "title": "Initial Setup (Windows)",
     "section": "python not recognized or opens Microsoft Store",
-    "text": "python not recognized or opens Microsoft Store\n\nInstall Python 3.13.x from https://www.python.org/downloads/latest/python3.13/\nMake sure Add to PATH is checked\nRestart PowerShell and verify:\npython --version\npy --version"
+    "text": "python not recognized or opens Microsoft Store\n\nInstall Python 3.13.x\nMake sure Add to PATH is checked\nRestart PowerShell and verify:\npython --version\npy --version"
   },
   {
     "objectID": "resources/initial_setup_windows.html#powershell-wont-run-scripts-execution-policy",
@@ -137,7 +137,7 @@
     "href": "resources/github_classroom_workflow.html",
     "title": "GitHub Classroom Workflow",
     "section": "",
-    "text": "This guide covers the steps you’ll follow for each GitHub Classroom assignment:\n\nAccept the assignment and clone the repo\nCreate a virtual environment and install dependencies\nDo the work\nCommit and push (submit)\n\n\nPrerequisite: Complete the one-time setup first: Initial Setup (Windows) | Initial Setup (macOS)\n\n\n\n\n\n\nClick the Classroom invite link (from the Assignments page or Schedule).\nClick Accept assignment.\nGitHub creates a repo for you and takes you to it.\n\n\n\n\n\nCopy the repo HTTPS URL from GitHub (click Code → HTTPS).\n\nWindows (VS Code)Windows (Terminal)macOS (Terminal)\n\n\n\nIn VS Code: Ctrl+Shift+P → Git: Clone\nPaste the URL\nPick a folder\nOpen the repo when prompted\n\n\n\ncd C:\\Users\\YourName\\Documents\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\ncode .\n\n\ncd ~/Documents\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\ncode .\n\n\n\n\n\n\n\nOpen a terminal in VS Code: Terminal → New Terminal\n\nWindows (PowerShell)Windows (Command Prompt)macOS\n\n\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\Activate.ps1\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\nIf PowerShell blocks the activation script:\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\activate.bat\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\npython3.13 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\n\n\n\n\nWindowsmacOS\n\n\npython --version\nwhere python\nThe where python output should show a path inside .venv.\n\n\npython --version\nwhich python\nThe which python output should show a path inside .venv.\n\n\n\n\n\n\n\n\nIf the repo has tests:\npytest -q\nOr run a quick Python check:\npython -c \"print('Hello from Python!')\"\n\n\n\n\nComplete the assignment according to the instructions in the repo’s README.\n\n\n\n\nTypical “submission” is commit + push. Autograding (if enabled) runs after you push.\n\nVS Code UITerminal\n\n\n\nOpen the Source Control panel (left sidebar)\nStage changes (click + next to files)\nEnter a commit message\nClick Commit\nClick Sync Changes (pushes to GitHub)\n\n\n\ngit status\ngit add .\ngit commit -m \"Complete submission\"\ngit push\n\n\n\nAfter pushing, check your repo on GitHub. If autograding is enabled, you’ll see a ✅ or ❌ next to your commit."
+    "text": "This guide covers the steps you’ll follow for each GitHub Classroom assignment:\n\nAccept the assignment and clone the repo\nCreate a virtual environment and install dependencies\nDo the work\nCommit and push (submit)\n\n\nPrerequisite: Complete the one-time setup first: Initial Setup (Windows) | Initial Setup (macOS)\n\n\n\n\n\n\nClick the Classroom invite link (from the Assignments page).\nClick Accept assignment.\nGitHub creates a repo for you and takes you to it.\n\n\n\n\n\nCopy the repo HTTPS URL from GitHub (click Code → HTTPS).\n\nWindows (VS Code)Windows (Terminal)macOS (Terminal)\n\n\n\nIn VS Code: Ctrl+Shift+P → Git: Clone\nPaste the URL\nPick a folder\nOpen the repo when prompted\n\n\n\ncd C:\\Users\\YourName\\Documents\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\ncode .\n\n\ncd ~/Documents\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\ncode .\n\n\n\n\n\n\n\nOpen a terminal in VS Code: Terminal → New Terminal\n\nWindows (PowerShell)Windows (Command Prompt)macOS\n\n\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\Activate.ps1\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\nIf PowerShell blocks the activation script:\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\activate.bat\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\npython3.13 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\n\nIf the repo has a pyproject.toml or setup.py, also run:\npip install -e .\n\n\n\nWindowsmacOS\n\n\npython --version\nwhere python\nThe where python output should show a path inside .venv.\n\n\npython --version\nwhich python\nThe which python output should show a path inside .venv.\n\n\n\n\n\n\n\n\nIf the repo has tests:\npytest -q\nOr run a quick Python check:\npython -c \"print('Hello from Python!')\"\n\n\n\n\nComplete the assignment according to the instructions in the repo’s README.\n\n\n\n\nTypical “submission” is commit + push. Autograding (if enabled) runs after you push.\n\nVS Code UITerminal\n\n\n\nOpen the Source Control panel (left sidebar)\nStage changes (click + next to files)\nEnter a commit message\nClick Commit\nClick Sync Changes (pushes to GitHub)\n\n\n\ngit status\ngit add .\ngit commit -m \"Complete submission\"\ngit push\n\n\n\nAfter pushing, check your repo on GitHub. If autograding is enabled, you’ll see a ✅ or ❌ next to your commit."
   },
   {
     "objectID": "resources/github_classroom_workflow.html#creating-with-ai-in-the-loop-assignment-workflow-repeat-for-each-assignment",
@@ -151,7 +151,7 @@
     "href": "resources/github_classroom_workflow.html#accept-the-github-classroom-assignment",
     "title": "GitHub Classroom Workflow",
     "section": "",
-    "text": "Click the Classroom invite link (from the Assignments page or Schedule).\nClick Accept assignment.\nGitHub creates a repo for you and takes you to it."
+    "text": "Click the Classroom invite link (from the Assignments page).\nClick Accept assignment.\nGitHub creates a repo for you and takes you to it."
   },
   {
     "objectID": "resources/github_classroom_workflow.html#clone-the-repo",
@@ -165,7 +165,7 @@
     "href": "resources/github_classroom_workflow.html#create-a-virtual-environment-and-install-dependencies",
     "title": "GitHub Classroom Workflow",
     "section": "",
-    "text": "Open a terminal in VS Code: Terminal → New Terminal\n\nWindows (PowerShell)Windows (Command Prompt)macOS\n\n\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\Activate.ps1\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\nIf PowerShell blocks the activation script:\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\activate.bat\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\npython3.13 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\n\n\n\n\nWindowsmacOS\n\n\npython --version\nwhere python\nThe where python output should show a path inside .venv.\n\n\npython --version\nwhich python\nThe which python output should show a path inside .venv."
+    "text": "Open a terminal in VS Code: Terminal → New Terminal\n\nWindows (PowerShell)Windows (Command Prompt)macOS\n\n\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\Activate.ps1\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\nIf PowerShell blocks the activation script:\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\activate.bat\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\npython3.13 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\n\nIf the repo has a pyproject.toml or setup.py, also run:\npip install -e .\n\n\n\nWindowsmacOS\n\n\npython --version\nwhere python\nThe where python output should show a path inside .venv.\n\n\npython --version\nwhich python\nThe which python output should show a path inside .venv."
   },
   {
     "objectID": "resources/github_classroom_workflow.html#sanity-checks",
@@ -193,7 +193,7 @@
     "href": "resources/github_classroom_workflow.html#git-push-permissionauth-errors",
     "title": "GitHub Classroom Workflow",
     "section": "git push permission/auth errors",
-    "text": "git push permission/auth errors\n\nMake sure you accepted the assignment with the correct GitHub account\nRetry push and complete the browser sign-in flow if prompted\nCheck that the repo URL matches your GitHub username"
+    "text": "git push permission/auth errors\n\nMake sure you accepted the assignment with the correct GitHub account\nRetry push and complete the browser sign-in flow if prompted\nCheck that the repo URL matches your GitHub username\n\nIf issues persist, run these commands and include the output in your help request:\ngit remote -v\ngit config --global credential.helper\ngit config --show-origin --get-all credential.helper"
   },
   {
     "objectID": "resources/github_classroom_workflow.html#powershell-wont-activate-.venv-execution-policy",
@@ -224,95 +224,130 @@
     "text": "Quick reference: common commands\n\n\n\n\n\n\n\n\nTask\nWindows (PowerShell)\nmacOS\n\n\n\n\nCreate venv\npy -3.13 -m venv .venv\npython3.13 -m venv .venv\n\n\nActivate venv\n.\\.venv\\Scripts\\Activate.ps1\nsource .venv/bin/activate\n\n\nDeactivate venv\ndeactivate\ndeactivate\n\n\nInstall deps\npip install -r requirements.txt\npip install -r requirements.txt\n\n\nRun tests\npytest -q\npytest -q\n\n\nCommit all\ngit add . && git commit -m \"msg\"\ngit add . && git commit -m \"msg\"\n\n\nPush\ngit push\ngit push"
   },
   {
-    "objectID": "resources/index.html",
-    "href": "resources/index.html",
-    "title": "Resources",
+    "objectID": "resources/gemini_cli.html",
+    "href": "resources/gemini_cli.html",
+    "title": "Installing Gemini CLI",
     "section": "",
-    "text": "Use this page as the single place to find setup guides, FAQs, and “how-to” docs."
+    "text": "Gemini CLI brings Gemini AI directly to your terminal. You can ask questions, generate code, and work with your codebase from the command line.\n\n\n\n\nbrew install gemini-cli\nVerify: gemini --version\n\n\n\n\n\n\nDownload the LTS installer from https://nodejs.org and run it. Reboot if prompted.\nVerify:\nnode -v\nnpm -v\n\n\n\nnpm install -g @google/gemini-cli\nVerify: gemini --version\n\n\n\n\n\n\nOpen a terminal in your project directory.\nRun gemini.\nSelect Login with Google.\nSign in with your personal Google account (not your .edu account).\n\nAfter signing in, you can start chatting with Gemini about your code.\n\n\n\n\nGemini CLI is free. The daily limits are sufficient for course assignments."
   },
   {
-    "objectID": "resources/index.html#featured",
-    "href": "resources/index.html#featured",
-    "title": "Resources",
-    "section": "Featured",
-    "text": "Featured\n\nInitial Setup (one-time)\n\nInitial Setup (Windows) — VS Code, Git, Python 3.13\nInitial Setup (macOS) — Homebrew, VS Code, Git, Python 3.13\n\n\n\nGitHub Classroom Workflow (every assignment)\n\nGitHub Classroom Workflow — Accept, clone, venv, commit, push"
-  },
-  {
-    "objectID": "resources/index.html#all-resources",
-    "href": "resources/index.html#all-resources",
-    "title": "Resources",
-    "section": "All resources",
-    "text": "All resources\nThe list below is generated automatically from the files in this folder."
-  },
-  {
-    "objectID": "policies/index.html",
-    "href": "policies/index.html",
-    "title": "Policies",
+    "objectID": "resources/gemini_cli.html#creating-with-ai-in-the-loop-terminal-ai-assistant",
+    "href": "resources/gemini_cli.html#creating-with-ai-in-the-loop-terminal-ai-assistant",
+    "title": "Installing Gemini CLI",
     "section": "",
-    "text": "Use this page as the single place to find course policies."
+    "text": "Gemini CLI brings Gemini AI directly to your terminal. You can ask questions, generate code, and work with your codebase from the command line."
   },
   {
-    "objectID": "policies/index.html#featured-core-policies",
-    "href": "policies/index.html#featured-core-policies",
-    "title": "Policies",
-    "section": "Featured: Core policies",
-    "text": "Featured: Core policies\n\nAI Use Policy\nCollaboration Policy\nLate Work & Extensions"
-  },
-  {
-    "objectID": "policies/index.html#all-policies",
-    "href": "policies/index.html#all-policies",
-    "title": "Policies",
-    "section": "All policies",
-    "text": "All policies\nThe list below is generated automatically from the files in this folder."
-  },
-  {
-    "objectID": "policies/ai-use.html",
-    "href": "policies/ai-use.html",
-    "title": "AI Use Policy",
+    "objectID": "resources/gemini_cli.html#macos",
+    "href": "resources/gemini_cli.html#macos",
+    "title": "Installing Gemini CLI",
     "section": "",
-    "text": "Placeholder for AI Use Policy content.\n\n\n\n Back to top"
+    "text": "brew install gemini-cli\nVerify: gemini --version"
   },
   {
-    "objectID": "assignments.html",
-    "href": "assignments.html",
-    "title": "Assignments",
+    "objectID": "resources/gemini_cli.html#windows",
+    "href": "resources/gemini_cli.html#windows",
+    "title": "Installing Gemini CLI",
     "section": "",
-    "text": "This page is the single canonical place for:"
+    "text": "Download the LTS installer from https://nodejs.org and run it. Reboot if prompted.\nVerify:\nnode -v\nnpm -v\n\n\n\nnpm install -g @google/gemini-cli\nVerify: gemini --version"
   },
   {
-    "objectID": "assignments.html#assignment-calendar-overview",
-    "href": "assignments.html#assignment-calendar-overview",
-    "title": "Assignments",
-    "section": "Assignment calendar (overview)",
-    "text": "Assignment calendar (overview)\n\nWeeks 1–10: individual “build” assignments (A0–A8, plus possibly A9)\nWeeks 11–15: final project work + checkpoints\nWeek 16: final presentations\n\n(Your instructor will keep the authoritative details below.)"
+    "objectID": "resources/gemini_cli.html#first-run-sign-in",
+    "href": "resources/gemini_cli.html#first-run-sign-in",
+    "title": "Installing Gemini CLI",
+    "section": "",
+    "text": "Open a terminal in your project directory.\nRun gemini.\nSelect Login with Google.\nSign in with your personal Google account (not your .edu account).\n\nAfter signing in, you can start chatting with Gemini about your code."
   },
   {
-    "objectID": "assignments.html#individual-assignments-github-classroom",
-    "href": "assignments.html#individual-assignments-github-classroom",
-    "title": "Assignments",
-    "section": "Individual assignments (GitHub Classroom)",
-    "text": "Individual assignments (GitHub Classroom)\n\nA0 — Setup Verification\n\nDue: Sunday (Week 1) 11:59pm\nPurpose: verify you can accept a Classroom assignment, set up Python/venv, and push a commit.\nInvite link: (paste GitHub Classroom link here)\nSpec: (link to the assignment repo README or a separate spec page)\n\n\n\nA1 — API Call + Prompt Patterns\n\nDue: Tuesday (Week 2) 11:59pm\nInvite link: (paste link)\nSpec: (link)\n\n\n\nA2 — Tools + Routing (Calculator)\n\nDue: Tuesday (Week 3) 11:59pm\nInvite link: (paste link)\nSpec: (link)\n\n\n\nA3 — Tool Use with External Data/Search\n\nDue: Tuesday (Week 4) 11:59pm\nInvite link: (paste link)\nSpec: (link)\n\n\n\nA4 — Embeddings + Retrieval (RAG)\n\nDue: Tuesday (Week 5) 11:59pm\nInvite link: (paste link)\nSpec: (link)\n\n\n\nA5 — Memory + Multi-turn Behavior\n\nDue: Tuesday (Week 6) 11:59pm\nInvite link: (paste link)\nSpec: (link)\n\n\n\nA6 — Sandboxed Code Execution\n\nDue: Tuesday (Week 7) 11:59pm\nInvite link: (paste link)\nSpec: (link)\n\n\n\nA7 — Multi-agent Coordination (LangGraph)\n\nDue: Tuesday (Week 8) 11:59pm\nInvite link: (paste link)\nSpec: (link)\n\n\n\nA8 — Multimodal / Structured Outputs\n\nDue: Tuesday (Week 9) 11:59pm\nInvite link: (paste link)\nSpec: (link)\n\n\nNote: Dates above are placeholders aligned to the course plan. Replace with your actual calendar dates once the semester schedule is set."
+    "objectID": "resources/gemini_cli.html#free-tier",
+    "href": "resources/gemini_cli.html#free-tier",
+    "title": "Installing Gemini CLI",
+    "section": "",
+    "text": "Gemini CLI is free. The daily limits are sufficient for course assignments."
   },
   {
-    "objectID": "assignments.html#final-project-team-repo",
-    "href": "assignments.html#final-project-team-repo",
-    "title": "Assignments",
-    "section": "Final project (team repo)",
-    "text": "Final project (team repo)\n\nTeam repo creation\n\nWhen: (e.g., Week 8)\nHow: GitHub Classroom group assignment (one repo per team)\n\n\n\nProject checkpoints (typical)\n\nProposal: Week 9 (Tue)\nPlan: Week 12 (Tue)\nMidpoint demo: Week 12 (Sun)\nEthics memo: Week 14 (Tue)\nFinal submission: Week 16 (Fri)\n\n(Replace with your confirmed milestone dates.)"
+    "objectID": "resources/gemini_cli.html#macos-brew-command-not-found",
+    "href": "resources/gemini_cli.html#macos-brew-command-not-found",
+    "title": "Installing Gemini CLI",
+    "section": "macOS: brew: command not found",
+    "text": "macOS: brew: command not found\nInstall Homebrew first. See Initial Setup (macOS)."
   },
   {
-    "objectID": "assignments.html#grading-notes-keep-it-short-here",
-    "href": "assignments.html#grading-notes-keep-it-short-here",
-    "title": "Assignments",
-    "section": "Grading notes (keep it short here)",
-    "text": "Grading notes (keep it short here)\n\nAutograding checks correctness and basic engineering requirements.\nSome assignments include a short reflection or demo component.\nSee the Syllabus for grading weights."
+    "objectID": "resources/gemini_cli.html#windows-node-or-npm-not-recognized",
+    "href": "resources/gemini_cli.html#windows-node-or-npm-not-recognized",
+    "title": "Installing Gemini CLI",
+    "section": "Windows: node or npm not recognized",
+    "text": "Windows: node or npm not recognized\nRestart your terminal after installing Node.js. If still not working, reinstall Node.js and make sure “Add to PATH” is checked."
   },
   {
-    "objectID": "assignments.html#faq-my-assignment-says-not-submitted",
-    "href": "assignments.html#faq-my-assignment-says-not-submitted",
-    "title": "Assignments",
-    "section": "FAQ: “My assignment says Not Submitted”",
-    "text": "FAQ: “My assignment says Not Submitted”\nGitHub Classroom submission status is often tied to the assignment deadline/cutoff. In most cases, pushing commits before the deadline is what matters.\nIf you have pushed and are unsure, check:\n\nyour repo shows your latest commit on main\nautograding checks (✅/❌) next to your commit (if enabled)"
+    "objectID": "resources/gemini_cli.html#authentication-issues",
+    "href": "resources/gemini_cli.html#authentication-issues",
+    "title": "Installing Gemini CLI",
+    "section": "Authentication issues",
+    "text": "Authentication issues\n\nUse a personal Google account, not your .edu account\nTry signing out and back in: gemini --logout then gemini"
+  },
+  {
+    "objectID": "resources/gemini_cli.html#resources",
+    "href": "resources/gemini_cli.html#resources",
+    "title": "Installing Gemini CLI",
+    "section": "Resources",
+    "text": "Resources\n\nOfficial docs: https://geminicli.com/docs/\nGitHub: https://github.com/google-gemini/gemini-cli"
+  },
+  {
+    "objectID": "resources/faq.html",
+    "href": "resources/faq.html",
+    "title": "Course FAQ",
+    "section": "",
+    "text": "No FAQs have been added yet. Please check back later for updates."
+  },
+  {
+    "objectID": "resources/faq.html#general-questions",
+    "href": "resources/faq.html#general-questions",
+    "title": "Course FAQ",
+    "section": "",
+    "text": "No FAQs have been added yet. Please check back later for updates."
+  },
+  {
+    "objectID": "policies/late-work.html",
+    "href": "policies/late-work.html",
+    "title": "Late Work & Extensions",
+    "section": "",
+    "text": "Placeholder for late work policy content.\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "policies/collaboration.html",
+    "href": "policies/collaboration.html",
+    "title": "Collaboration Policy",
+    "section": "",
+    "text": "Placeholder for collaboration policy content.\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "syllabus.html",
+    "href": "syllabus.html",
+    "title": "Syllabus",
+    "section": "",
+    "text": "NoteAI Use Policy (click to expand)\n\n\n\n\n\nPlaceholder for AI Use Policy content.\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "schedule.html",
+    "href": "schedule.html",
+    "title": "Schedule",
+    "section": "",
+    "text": "This page is the authoritative course schedule and the main entry point for weekly materials."
+  },
+  {
+    "objectID": "schedule.html#week-1",
+    "href": "schedule.html#week-1",
+    "title": "Schedule",
+    "section": "Week 1",
+    "text": "Week 1\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nCourse overview + workflow setup\nCourse Overview and Workflow Setup\n—\n\n\nThursday\n(Fill in)\n—\nA0 — Git and GitHub Fundamentals (before class)"
+  },
+  {
+    "objectID": "schedule.html#week-2",
+    "href": "schedule.html#week-2",
+    "title": "Schedule",
+    "section": "Week 2",
+    "text": "Week 2\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\n(Fill in)\n—\nA1 — Setup Verification (before class)\n\n\nThursday\n(Fill in)\n—\n—"
   },
   {
     "objectID": "index.html",
@@ -326,7 +361,7 @@
     "href": "index.html#what-you-should-do-first-week-1",
     "title": "Creating with AI in the Loop",
     "section": "What you should do first (Week 1)",
-    "text": "What you should do first (Week 1)\n\nRead the Syllabus and the AI Use Policy.\nFollow the Initial Setup (Windows) or Initial Setup (macOS).\nAccept A0 — Setup Verification using the link on the Assignments page.\nMake sure you understand how “submission” works (commit + push)."
+    "text": "What you should do first (Week 1)\n\nRead the Syllabus and the AI Use Policy.\nFollow the Initial Setup (Windows) or Initial Setup (macOS).\nAccept/complete A0 — Git and GitHub Fundamentals using the link/instructions on the Assignments page.\nAccept/complete A1 — Setup Verification using the link/instructions on the Assignments page."
   },
   {
     "objectID": "index.html#quick-links",
@@ -357,67 +392,263 @@
     "text": "Course “defaults” (so you don’t have to guess)\n\nPython: 3.13.x (supported)\n\nEnvironment: venv + pip\n\nRepo workflow (early weeks): commit to main\n\nAutograding: usually runs on push (check ✅/❌ on GitHub)"
   },
   {
-    "objectID": "schedule.html",
-    "href": "schedule.html",
-    "title": "Schedule",
+    "objectID": "assignments.html",
+    "href": "assignments.html",
+    "title": "Assignments",
     "section": "",
-    "text": "This page is the authoritative course schedule and the main entry point for weekly materials."
+    "text": "This page is the single canonical place for:"
   },
   {
-    "objectID": "schedule.html#week-1",
-    "href": "schedule.html#week-1",
-    "title": "Schedule",
-    "section": "Week 1",
-    "text": "Week 1\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nCourse overview + workflow setup\nCourse Overview and Workflow Setup\n—\n\n\nThursday\n(Fill in)\n—\n—"
+    "objectID": "assignments.html#assignment-calendar-overview",
+    "href": "assignments.html#assignment-calendar-overview",
+    "title": "Assignments",
+    "section": "Assignment calendar (overview)",
+    "text": "Assignment calendar (overview)\n\nWeeks 1–X: individual “build” assignments (A0–AZ)\nWeeks (X+1)–14: final project work + checkpoints\nWeek 15: final presentations\n\n(Your instructor will keep the authoritative details below.)"
   },
   {
-    "objectID": "schedule.html#future-weeks-placeholder",
-    "href": "schedule.html#future-weeks-placeholder",
-    "title": "Schedule",
-    "section": "Future weeks (placeholder)",
-    "text": "Future weeks (placeholder)\nAdd additional weeks as you finalize topics and dates. A nice pattern is:\n\none row per meeting\nlinks to slides\nlinks to relevant resources\ndue items (assignment checkpoints) in the “Due” column"
+    "objectID": "assignments.html#individual-build-assignments-github-classroom",
+    "href": "assignments.html#individual-build-assignments-github-classroom",
+    "title": "Assignments",
+    "section": "Individual build assignments (GitHub Classroom)",
+    "text": "Individual build assignments (GitHub Classroom)\n\nA0 — Git and GitHub Fundamentals\n\nDue: Thursday (Week 1) before class\nPurpose: Git and GitHub overview, verify you can accept a Classroom assignment, and push a commit.\nInvite link: https://classroom.github.com/a/hE8dbBM3\nSpec: Follow the GitHub Classroom Workflow instructions (skip steps 3-4), and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA1 — Setup Verification\n\nDue: Tuesday (Week 2) before class\nPurpose: More practice with Git/GitHub workflow, set up Python/venv.\nInvite link: https://classroom.github.com/a/lH2a7o-K\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding."
   },
   {
-    "objectID": "syllabus.html",
-    "href": "syllabus.html",
-    "title": "Syllabus",
+    "objectID": "assignments.html#final-project-team-repo",
+    "href": "assignments.html#final-project-team-repo",
+    "title": "Assignments",
+    "section": "Final project (team repo)",
+    "text": "Final project (team repo)\n\nTeam repo creation\n\nWhen: (e.g., Week X-2)\nHow: GitHub Classroom group assignment (one repo per team)\n\n\n\nProject checkpoints (typical)\n\nProposal: Week X-1 (Tue?)\nPlan: Week X (Tue?)\n…\nFinal submission: Week 15 (Fri?)"
+  },
+  {
+    "objectID": "assignments.html#grading-notes",
+    "href": "assignments.html#grading-notes",
+    "title": "Assignments",
+    "section": "Grading notes",
+    "text": "Grading notes\n\nAutograding checks correctness and basic engineering requirements.\nSome assignments include a short reflection or demo component.\nSee the Syllabus for grading weights."
+  },
+  {
+    "objectID": "assignments.html#faq-my-assignment-says-not-submitted",
+    "href": "assignments.html#faq-my-assignment-says-not-submitted",
+    "title": "Assignments",
+    "section": "FAQ: “My assignment says Not Submitted”",
+    "text": "FAQ: “My assignment says Not Submitted”\nGitHub Classroom submission status is often tied to the assignment deadline/cutoff. In most cases, pushing commits before the deadline is what matters.\nIf you have pushed and are unsure, check:\n\nyour repo shows your latest commit on main\nautograding checks (✅/❌) next to your commit (if enabled)"
+  },
+  {
+    "objectID": "policies/ai-use.html",
+    "href": "policies/ai-use.html",
+    "title": "AI Use Policy",
     "section": "",
-    "text": "NoteAI Use Policy (click to expand)\n\n\n\n\n\nPlaceholder for AI Use Policy content.\n\n\n\n\n\n\n\n\n\nNoteAI Use Policy\n\n\n\nPlaceholder for AI Use Policy content.\n\n\n\n\n\n Back to top"
+    "text": "Placeholder for AI Use Policy content.\n\n\n\n Back to top"
   },
   {
-    "objectID": "policies/collaboration.html",
-    "href": "policies/collaboration.html",
-    "title": "Collaboration Policy",
+    "objectID": "policies/index.html",
+    "href": "policies/index.html",
+    "title": "Policies",
     "section": "",
-    "text": "Placeholder for collaboration policy content.\n\n\n\n Back to top"
+    "text": "Use this page as the single place to find course policies."
   },
   {
-    "objectID": "policies/late-work.html",
-    "href": "policies/late-work.html",
-    "title": "Late Work & Extensions",
-    "section": "",
-    "text": "Placeholder for late work policy content.\n\n\n\n Back to top"
+    "objectID": "policies/index.html#featured-core-policies",
+    "href": "policies/index.html#featured-core-policies",
+    "title": "Policies",
+    "section": "Featured: Core policies",
+    "text": "Featured: Core policies\n\nAI Use Policy\nCollaboration Policy\nLate Work & Extensions"
   },
   {
-    "objectID": "resources/faq.html",
-    "href": "resources/faq.html",
-    "title": "Course FAQ",
-    "section": "",
-    "text": "No FAQs have been added yet. Please check back later for updates."
+    "objectID": "policies/index.html#all-policies",
+    "href": "policies/index.html#all-policies",
+    "title": "Policies",
+    "section": "All policies",
+    "text": "All policies\nThe list below is generated automatically from the files in this folder."
   },
   {
-    "objectID": "resources/faq.html#general-questions",
-    "href": "resources/faq.html#general-questions",
-    "title": "Course FAQ",
+    "objectID": "resources/index.html",
+    "href": "resources/index.html",
+    "title": "Resources",
     "section": "",
-    "text": "No FAQs have been added yet. Please check back later for updates."
+    "text": "Use this page as the single place to find setup guides, FAQs, and “how-to” docs."
+  },
+  {
+    "objectID": "resources/index.html#featured",
+    "href": "resources/index.html#featured",
+    "title": "Resources",
+    "section": "Featured",
+    "text": "Featured\n\nInitial Setup (one-time)\n\nInitial Setup (Windows) — VS Code, Git, Python 3.13\nInitial Setup (macOS) — Homebrew, VS Code, Git, Python 3.13\n\n\n\nGitHub Classroom Workflow (every build assignment)\n\nGitHub Classroom Workflow — Accept, clone, venv, commit, push\n\n\n\nGemini\n\nGetting a Gemini API Key — For assignments that call Gemini models\nInstalling Gemini Code Assist — AI coding assistant in VS Code\nInstalling Gemini CLI — AI assistant in your terminal"
+  },
+  {
+    "objectID": "resources/index.html#all-resources",
+    "href": "resources/index.html#all-resources",
+    "title": "Resources",
+    "section": "All resources",
+    "text": "All resources\nThe list below is generated automatically from the files in this folder."
+  },
+  {
+    "objectID": "resources/gemini_api_key.html",
+    "href": "resources/gemini_api_key.html",
+    "title": "Getting a Gemini API Key",
+    "section": "",
+    "text": "This guide shows you how to get a free Gemini API key using Google AI Studio. You’ll need this for assignments that interact with Gemini models.\n\n\n\n\n\nA personal Google account (Gmail or Google Workspace)\n\n\n\n\n\n\nSign in to your personal Google account (not your .edu account), then go to https://aistudio.google.com.\nIf prompted, accept the Terms of Service.\nClick Get API key in the left sidebar.\nClick the Create API key button (upper right).\nEnter a name for your key (e.g., myFirstGeminiKey).\nUnder Choose an imported project, click + Create a new project and name it (e.g., AI in the Loop). You may need to re-enter the key name after creating the project.\nClick Create. You do not need to set up billing—the free tier is sufficient for this course.\nClick the copy icon to copy your API key. Store it immediately (see next section).\n\n\n\n\n\nIf you don’t have an assignment yet: Save your API key somewhere safe (e.g., a password manager or private notes app). You’ll add it to a .env file when you start your first assignment that needs it.\nWhen working on an assignment: Store your key in a .env file in your repo:\n\nCreate a file named .env in your assignment repo (note the leading dot)\nAdd your key:\nGEMINI_API_KEY=your-api-key-here\nVerify .env is in your .gitignore (it should be by default)\n\nYour code will load the key from this file using a library like python-dotenv.\nNever commit your API key to Git.\n\n\n\n\nIf you suspect your API key has been compromised (e.g., accidentally pushed to GitHub or shared publicly):\n\nGo to https://aistudio.google.com/app/apikey\nClick the Create API key button to generate a new key\nFollow steps 5-8 above to create and copy your new key\nUpdate your .env file with the new key\nTest that your code works with the new key\nReturn to the API keys page and click the delete icon (trash can) next to your old, compromised key\n\nAlways delete the old key to ensure the compromised key can’t be used.\n\n\n\n\nIf you need to copy your key again, go to https://aistudio.google.com/app/apikey and click the copy icon next to your key.\n\n\n\n\nGoogle AI Studio provides a free tier with rate limits:\n\nSufficient for course assignments\nIf you exceed limits, you’ll get a rate limit error (not a charge)\nSee current limits: https://ai.google.dev/pricing"
+  },
+  {
+    "objectID": "resources/gemini_api_key.html#creating-with-ai-in-the-loop-google-ai-studio-setup",
+    "href": "resources/gemini_api_key.html#creating-with-ai-in-the-loop-google-ai-studio-setup",
+    "title": "Getting a Gemini API Key",
+    "section": "",
+    "text": "This guide shows you how to get a free Gemini API key using Google AI Studio. You’ll need this for assignments that interact with Gemini models."
+  },
+  {
+    "objectID": "resources/gemini_api_key.html#what-you-need",
+    "href": "resources/gemini_api_key.html#what-you-need",
+    "title": "Getting a Gemini API Key",
+    "section": "",
+    "text": "A personal Google account (Gmail or Google Workspace)"
+  },
+  {
+    "objectID": "resources/gemini_api_key.html#step-by-step-get-your-api-key",
+    "href": "resources/gemini_api_key.html#step-by-step-get-your-api-key",
+    "title": "Getting a Gemini API Key",
+    "section": "",
+    "text": "Sign in to your personal Google account (not your .edu account), then go to https://aistudio.google.com.\nIf prompted, accept the Terms of Service.\nClick Get API key in the left sidebar.\nClick the Create API key button (upper right).\nEnter a name for your key (e.g., myFirstGeminiKey).\nUnder Choose an imported project, click + Create a new project and name it (e.g., AI in the Loop). You may need to re-enter the key name after creating the project.\nClick Create. You do not need to set up billing—the free tier is sufficient for this course.\nClick the copy icon to copy your API key. Store it immediately (see next section)."
+  },
+  {
+    "objectID": "resources/gemini_api_key.html#storing-your-api-key-securely",
+    "href": "resources/gemini_api_key.html#storing-your-api-key-securely",
+    "title": "Getting a Gemini API Key",
+    "section": "",
+    "text": "If you don’t have an assignment yet: Save your API key somewhere safe (e.g., a password manager or private notes app). You’ll add it to a .env file when you start your first assignment that needs it.\nWhen working on an assignment: Store your key in a .env file in your repo:\n\nCreate a file named .env in your assignment repo (note the leading dot)\nAdd your key:\nGEMINI_API_KEY=your-api-key-here\nVerify .env is in your .gitignore (it should be by default)\n\nYour code will load the key from this file using a library like python-dotenv.\nNever commit your API key to Git."
+  },
+  {
+    "objectID": "resources/gemini_api_key.html#if-your-api-key-is-compromised",
+    "href": "resources/gemini_api_key.html#if-your-api-key-is-compromised",
+    "title": "Getting a Gemini API Key",
+    "section": "",
+    "text": "If you suspect your API key has been compromised (e.g., accidentally pushed to GitHub or shared publicly):\n\nGo to https://aistudio.google.com/app/apikey\nClick the Create API key button to generate a new key\nFollow steps 5-8 above to create and copy your new key\nUpdate your .env file with the new key\nTest that your code works with the new key\nReturn to the API keys page and click the delete icon (trash can) next to your old, compromised key\n\nAlways delete the old key to ensure the compromised key can’t be used."
+  },
+  {
+    "objectID": "resources/gemini_api_key.html#retrieving-your-api-key-later",
+    "href": "resources/gemini_api_key.html#retrieving-your-api-key-later",
+    "title": "Getting a Gemini API Key",
+    "section": "",
+    "text": "If you need to copy your key again, go to https://aistudio.google.com/app/apikey and click the copy icon next to your key."
+  },
+  {
+    "objectID": "resources/gemini_api_key.html#free-tier-limits",
+    "href": "resources/gemini_api_key.html#free-tier-limits",
+    "title": "Getting a Gemini API Key",
+    "section": "",
+    "text": "Google AI Studio provides a free tier with rate limits:\n\nSufficient for course assignments\nIf you exceed limits, you’ll get a rate limit error (not a charge)\nSee current limits: https://ai.google.dev/pricing"
+  },
+  {
+    "objectID": "resources/gemini_api_key.html#api-key-not-valid-errors",
+    "href": "resources/gemini_api_key.html#api-key-not-valid-errors",
+    "title": "Getting a Gemini API Key",
+    "section": "“API key not valid” errors",
+    "text": "“API key not valid” errors\n\nMake sure you copied the entire key (no extra spaces)\nVerify your .env file has the correct variable name (check the assignment README)\nEnsure .env is in the same directory as your Python script (or follow the assignment’s instructions)"
+  },
+  {
+    "objectID": "resources/gemini_api_key.html#cant-access-google-ai-studio",
+    "href": "resources/gemini_api_key.html#cant-access-google-ai-studio",
+    "title": "Getting a Gemini API Key",
+    "section": "Can’t access Google AI Studio",
+    "text": "Can’t access Google AI Studio\n\nUse a personal Google account, not your .edu account\nTry a different browser or incognito mode\nClear your browser cache and cookies"
+  },
+  {
+    "objectID": "resources/gemini_api_key.html#rate-limit-exceeded",
+    "href": "resources/gemini_api_key.html#rate-limit-exceeded",
+    "title": "Getting a Gemini API Key",
+    "section": "Rate limit exceeded",
+    "text": "Rate limit exceeded\n\nWait a few minutes and try again\nIf persistent, check that you’re not making requests in a loop by accident"
+  },
+  {
+    "objectID": "resources/gemini_api_key.html#resources",
+    "href": "resources/gemini_api_key.html#resources",
+    "title": "Getting a Gemini API Key",
+    "section": "Resources",
+    "text": "Resources\n\nOfficial docs: https://ai.google.dev/gemini-api/docs/api-key\nGoogle AI Studio: https://aistudio.google.com\nPricing and limits: https://ai.google.dev/pricing"
+  },
+  {
+    "objectID": "resources/gemini_api_key.html#if-youre-stuck-include-these-in-your-help-request",
+    "href": "resources/gemini_api_key.html#if-youre-stuck-include-these-in-your-help-request",
+    "title": "Getting a Gemini API Key",
+    "section": "If you’re stuck, include these in your help request",
+    "text": "If you’re stuck, include these in your help request\n\nThe exact error message you’re seeing\nConfirmation that your .env file exists and is in the correct location\nThe contents of your .env file (with the actual key replaced by xxx)"
+  },
+  {
+    "objectID": "resources/gemini_code_assist.html",
+    "href": "resources/gemini_code_assist.html",
+    "title": "Installing Gemini Code Assist",
+    "section": "",
+    "text": "Gemini Code Assist is a free AI coding assistant from Google that integrates directly into VS Code. It provides code completions, chat-based help, and code generation.\n\n\n\n\n\nVS Code installed\nA personal Google account (not your .edu account)\n\n\n\n\n\n\nOpen VS Code.\nGo to the Extensions view (Ctrl+Shift+X on Windows, Cmd+Shift+X on macOS).\nSearch for Gemini Code Assist. Look for the one by Google with a verified badge.\nClick Install. Restart VS Code if prompted.\nClick the Gemini icon in the left sidebar (a pinched diamond shape).\nClick Login to Google and sign in with your personal Google account (not your .edu account).\nIf prompted to open an external website, click Open.\nReview and accept the privacy notice that appears in the chat panel.\n\n\n\n\n\nAfter signing in, you should see the Gemini chat panel. Try typing a question like “How do I read a file in Python?” to confirm it’s working.\n\n\n\n\nGemini Code Assist is free. The daily limits are sufficient for course assignments."
+  },
+  {
+    "objectID": "resources/gemini_code_assist.html#creating-with-ai-in-the-loop-vs-code-extension-setup",
+    "href": "resources/gemini_code_assist.html#creating-with-ai-in-the-loop-vs-code-extension-setup",
+    "title": "Installing Gemini Code Assist",
+    "section": "",
+    "text": "Gemini Code Assist is a free AI coding assistant from Google that integrates directly into VS Code. It provides code completions, chat-based help, and code generation."
+  },
+  {
+    "objectID": "resources/gemini_code_assist.html#what-you-need",
+    "href": "resources/gemini_code_assist.html#what-you-need",
+    "title": "Installing Gemini Code Assist",
+    "section": "",
+    "text": "VS Code installed\nA personal Google account (not your .edu account)"
+  },
+  {
+    "objectID": "resources/gemini_code_assist.html#step-by-step-install-and-sign-in",
+    "href": "resources/gemini_code_assist.html#step-by-step-install-and-sign-in",
+    "title": "Installing Gemini Code Assist",
+    "section": "",
+    "text": "Open VS Code.\nGo to the Extensions view (Ctrl+Shift+X on Windows, Cmd+Shift+X on macOS).\nSearch for Gemini Code Assist. Look for the one by Google with a verified badge.\nClick Install. Restart VS Code if prompted.\nClick the Gemini icon in the left sidebar (a pinched diamond shape).\nClick Login to Google and sign in with your personal Google account (not your .edu account).\nIf prompted to open an external website, click Open.\nReview and accept the privacy notice that appears in the chat panel."
+  },
+  {
+    "objectID": "resources/gemini_code_assist.html#verify-its-working",
+    "href": "resources/gemini_code_assist.html#verify-its-working",
+    "title": "Installing Gemini Code Assist",
+    "section": "",
+    "text": "After signing in, you should see the Gemini chat panel. Try typing a question like “How do I read a file in Python?” to confirm it’s working."
+  },
+  {
+    "objectID": "resources/gemini_code_assist.html#free-tier",
+    "href": "resources/gemini_code_assist.html#free-tier",
+    "title": "Installing Gemini Code Assist",
+    "section": "",
+    "text": "Gemini Code Assist is free. The daily limits are sufficient for course assignments."
+  },
+  {
+    "objectID": "resources/gemini_code_assist.html#cant-sign-in-authentication-errors",
+    "href": "resources/gemini_code_assist.html#cant-sign-in-authentication-errors",
+    "title": "Installing Gemini Code Assist",
+    "section": "Can’t sign in / authentication errors",
+    "text": "Can’t sign in / authentication errors\n\nMake sure you’re using a personal Google account, not your .edu account\nTry signing out and back in\nTry a different browser for the authentication flow"
+  },
+  {
+    "objectID": "resources/gemini_code_assist.html#extension-not-appearing-in-sidebar",
+    "href": "resources/gemini_code_assist.html#extension-not-appearing-in-sidebar",
+    "title": "Installing Gemini Code Assist",
+    "section": "Extension not appearing in sidebar",
+    "text": "Extension not appearing in sidebar\n\nRestart VS Code after installation\nCheck that the extension is enabled in the Extensions view"
+  },
+  {
+    "objectID": "resources/gemini_code_assist.html#usage-limit-exceeded",
+    "href": "resources/gemini_code_assist.html#usage-limit-exceeded",
+    "title": "Installing Gemini Code Assist",
+    "section": "“Usage limit exceeded”",
+    "text": "“Usage limit exceeded”\n\nWait until the next day for limits to reset"
+  },
+  {
+    "objectID": "resources/gemini_code_assist.html#resources",
+    "href": "resources/gemini_code_assist.html#resources",
+    "title": "Installing Gemini Code Assist",
+    "section": "Resources",
+    "text": "Resources\n\nOfficial setup guide: https://developers.google.com/gemini-code-assist/docs/set-up-gemini\nVS Code Marketplace: https://marketplace.visualstudio.com/items?itemName=Google.geminicodeassist"
   },
   {
     "objectID": "resources/initial_setup_macos.html",
     "href": "resources/initial_setup_macos.html",
     "title": "Initial Setup (macOS)",
     "section": "",
-    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13).\n\n\n\n\n\n\nmacOS (recent version)\nAdmin access for installs\nA GitHub account\n\n\n\n\n\nOpen Terminal and run:\nxcode-select --install\nVerify:\ngit --version\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list\n\n\n\n\n\nRun the official installer:\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\nIf the installer prints a line that starts with eval \"$(...)\", copy/paste it into Terminal (this adds Homebrew to your PATH).\nVerify:\nbrew --version\n\n\n\n\nInstall:\nbrew install python@3.13\nVerify:\npython3.13 --version\npython3.13 -m pip --version\n\nIf python3.13 is not found, run:\nbrew info python@3.13\nand follow the “caveats” it prints (Homebrew will tell you what to add to your PATH).\n\n\n\n\n\n\n\n\nDownload: https://code.visualstudio.com/download\nDrag Visual Studio Code.app to Applications\nOpen VS Code once\n\n\n\n\nbrew install --cask visual-studio-code\n\n\n\n\n\nIn VS Code, go to Extensions:\n\nPython (Microsoft)\n\nOptional:\n\nGitHub Pull Requests and Issues (GitHub)\n\n\n\nIn VS Code:\n\nCmd+Shift+P → Shell Command: Install ‘code’ command in PATH\n\nVerify in Terminal:\ncode --version\n\n\n\n\n\nFor each assignment, follow the GitHub Classroom Workflow Guide."
+    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13).\n\n\n\n\n\n\nmacOS (recent version)\nAdmin access for installs\nA GitHub account\n\n\n\n\n\nOpen Terminal and run:\nxcode-select --install\nVerify:\ngit --version\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list\n\n\n\n\n\nRun the official installer:\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\nIf the installer prints a line that starts with eval \"$(...)\", copy/paste it into Terminal (this adds Homebrew to your PATH).\nVerify:\nbrew --version\n\n\n\n\nGCM securely stores your GitHub credentials so you don’t have to re-authenticate on every push.\nInstall:\nbrew install git-credential-manager\nVerify:\ngit-credential-manager --version\nThe first time you git push, GCM will open a browser window to authenticate with GitHub. After that, your credentials are stored securely.\n\n\n\n\nInstall:\nbrew install python@3.13\nVerify:\npython3.13 --version\npython3.13 -m pip --version\n\nIf python3.13 is not found, run:\nbrew info python@3.13\nand follow the “caveats” it prints (Homebrew will tell you what to add to your PATH).\n\n\n\n\n\n\n\n\nDownload: https://code.visualstudio.com/download\nDrag Visual Studio Code.app to Applications\nOpen VS Code once\n\n\n\n\nbrew install --cask visual-studio-code\n\n\n\n\n\nIn VS Code, go to Extensions:\n\nPython (Microsoft)\n\nOptional:\n\nGitHub Pull Requests and Issues (GitHub)\n\n\n\nIn VS Code:\n\nCmd+Shift+P → Shell Command: Install ‘code’ command in PATH\n\nVerify in Terminal:\ncode --version\n\n\n\n\n\nFor each assignment, follow the GitHub Classroom Workflow Guide."
   },
   {
     "objectID": "resources/initial_setup_macos.html#creating-with-ai-in-the-loop-one-time-macos-setup",
@@ -446,6 +677,13 @@
     "title": "Initial Setup (macOS)",
     "section": "",
     "text": "Run the official installer:\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\nIf the installer prints a line that starts with eval \"$(...)\", copy/paste it into Terminal (this adds Homebrew to your PATH).\nVerify:\nbrew --version"
+  },
+  {
+    "objectID": "resources/initial_setup_macos.html#install-git-credential-manager-gcm",
+    "href": "resources/initial_setup_macos.html#install-git-credential-manager-gcm",
+    "title": "Initial Setup (macOS)",
+    "section": "",
+    "text": "GCM securely stores your GitHub credentials so you don’t have to re-authenticate on every push.\nInstall:\nbrew install git-credential-manager\nVerify:\ngit-credential-manager --version\nThe first time you git push, GCM will open a browser window to authenticate with GitHub. After that, your credentials are stored securely."
   },
   {
     "objectID": "resources/initial_setup_macos.html#install-python-3.13.x-via-homebrew",
