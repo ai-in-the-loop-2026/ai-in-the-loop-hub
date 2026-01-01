@@ -35,9 +35,9 @@ This page is the **single canonical place** for:
 ### A1 — Setup Verification
 
 - **Due:** Tuesday (Week 2) before class
-- **Purpose:** More practice with Git/GitHub workflow, set up Python/venv, understand basic langchain program structure
-- **Invite link:** *(paste link)*
-- **Spec:** *(link)*
+- **Purpose:** More practice with Git/GitHub workflow, set up Python/venv.
+- **Invite link:** <https://classroom.github.com/a/lH2a7o-K>
+- **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
 
 ---
 

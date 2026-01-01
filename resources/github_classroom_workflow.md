@@ -94,6 +94,12 @@ pip install -r requirements.txt
 
 :::
 
+If the repo has a `pyproject.toml` or `setup.py`, also run:
+
+```bash
+pip install -e .
+```
+
 ### Verify the venv is active
 
 ::: {.panel-tabset}
