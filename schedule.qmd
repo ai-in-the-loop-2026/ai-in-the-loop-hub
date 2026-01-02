@@ -2,6 +2,8 @@
 title: "Schedule"
 ---
 
+# MATH 395.02 Creating with AI in the Loop
+
 This page is the **authoritative course schedule** and the main entry point for weekly materials.
 
 - Slide decks are linked here (rendered HTML).
