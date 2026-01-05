@@ -13,10 +13,11 @@ This hub contains **instructions, links, slides, and policies**—not your submi
 
 ## What you should do first (Week 1)
 
-1. Read the [Syllabus](syllabus.qmd) and the [AI Use Policy](policies/ai-use.qmd).
-2. Follow the [Initial Setup (Windows)](resources/initial_setup_windows.md) or [Initial Setup (macOS)](resources/initial_setup_macos.md).
-3. Accept/complete **A0 — Git and GitHub Fundamentals** using the link/instructions on the [Assignments](assignments.qmd) page.
-4. Accept/complete **A1 — Setup Verification** using the link/instructions on the [Assignments](assignments.qmd) page.
+1. Read the [Syllabus](syllabus.qmd) before our first class.
+2. Create a [GitHub](https://github.com) account if you don't already have one
+3. Follow the [Initial Setup (Windows)](resources/initial_setup_windows.md) or [Initial Setup (macOS)](resources/initial_setup_macos.md).
+4. Accept/complete **A0 — Git and GitHub Fundamentals** using the link/instructions on the [Assignments](assignments.qmd) page.
+5. Accept/complete **A1 — Setup Verification** using the link/instructions on the [Assignments](assignments.qmd) page.
 
 ## Quick links
 
@@ -25,20 +26,21 @@ This hub contains **instructions, links, slides, and policies**—not your submi
 - **Policies:** [Policies](policies/index.qmd)
 - **Resources:** [Resources](resources/index.qmd)
 
-## How announcements work
+## Other Information Channels
 
-- **Primary channel:** (fill in: LMS announcements / email / GitHub Discussions)
-- **Where to ask questions:** (fill in: LMS forum / GitHub Discussions)
-- **Office hours:** (fill in link/time)
+- **Primary channel:** Announcements will be made in class, through Moodle, or via email
+- **Where to ask questions:** Email questions to yurk@hope.edu
+- **Office hours:** M 10:00-10:50, W 12:00-12:50, R 11:00-11:50, or by appointment
+- **Grades:** Grades will be posted on our Moodle site
 
 ## What this course is about (short version)
 
-You will learn to:
+This course combines hands-on Python development with a clear understanding of how large language models work in practice. You will:
 
-- use AI tools effectively in a software development workflow
-- build software that calls model APIs (Gemini) and uses tools/data
-- test and evaluate non-deterministic components
-- ship a final project with clear design choices and limitations
+- Develop **generative AI literacy**: understand what LLMs can and cannot reliably do, design effective prompts, and reason about reliability and evaluation
+- Explore **AI-assisted programming** across a spectrum: coding assistants, "vibe coding" workflows, and agentic tools that plan and execute multi-step tasks
+- Build **applications that integrate LLMs** to solve real problems
+- Consider **ethics, privacy, bias, and real-world risks** of AI systems
 
 ## Course "defaults" (so you don't have to guess)
 

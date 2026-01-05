@@ -1,42 +1,36 @@
 ---
 title: "Course Overview and Workflow Setup"
-description: "What this course is, how we’ll work, and how to use GitHub Classroom + autograding successfully."
+description: "What this course is, how we'll work, and how to use GitHub Classroom + autograding successfully."
 date: 2026-01-13
 categories: [Workflow]
 tags: [github, setup, python]
-repo-actions: false
-format:
-  revealjs:
-    theme: simple
-    slide-number: true
-    center: false
-    transition: fade
-    code-line-numbers: true
 ---
 
-## What you’ll be able to do by the end of this course
+## What this course is about
 
-- Build software that calls model APIs (Gemini) safely and reliably
-- Design tool-using and multi-step agent workflows
-- Test and evaluate non-deterministic components
-- Ship a final project with clear limitations + documentation
+This course combines hands-on Python development with a clear understanding of how large language models work in practice. You will:
+
+- Develop **generative AI literacy**: understand what LLMs can and cannot reliably do, design effective prompts, and reason about reliability and evaluation
+- Explore **AI-assisted programming**: coding assistants, "vibe coding," and agentic tools
+- Build **applications that integrate LLMs** to solve real problems
+- Consider **ethics, privacy, bias, and real-world risks**
 
 ---
 
-## How we’ll work
+## How we'll work
 
-- **Course hub site:** schedule, policies, resources
-- **GitHub Classroom repos:** where graded work happens
-- **AI use:** allowed (and expected) with transparency
+- **Course hub:** schedule, policies, resources, slides
+- **Moodle:** announcements, grades
+- **GitHub Classroom:** where you submit assignments
+- **AI use:** required for many assignments, with transparency (see AI Use Policy)
 
 ---
 
 ## Tools for Week 1
 
-- Python 3.13.x
-- `venv` + `pip`
-- VS Code (recommended)
-- Git + GitHub
+- **VS Code** with extensions
+- **Git + GitHub** for version control and submission (A0-A1)
+- **Python 3.13.x** with `venv` + `pip` (A1)
 
 ---
 
@@ -51,12 +45,10 @@ format:
 
 ## Setup checklist (high level)
 
-1. Install VS Code
-2. Install Git
-3. Install Python 3.13.x
-4. Clone your A0 repo
-5. Create `.venv`, install dependencies
-6. Commit + push a small change
+1. Install VS Code, Git, Python 3.13.x (see Initial Setup guide)
+2. Accept A0 — Git and GitHub Fundamentals
+3. Clone your A0 repo
+4. Make changes (see README.md), commit + push
 
 ---
 
@@ -70,6 +62,6 @@ format:
 
 ## Next steps
 
-- Read the syllabus + policies
-- Complete Day 1 setup
-- Start A0 (Setup Verification)
+- Read the syllabus and AI Use Policy
+- Complete Initial Setup (Windows or macOS guide)
+- Complete A0 — Git and GitHub Fundamentals

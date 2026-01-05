@@ -1,0 +1,9 @@
+# Shared settings for all slide decks in this folder
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    center: false
+    transition: fade
+    code-line-numbers: true
+    footer: "[Course Home](../index.qmd)"

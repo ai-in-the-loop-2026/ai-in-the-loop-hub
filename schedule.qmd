@@ -13,14 +13,24 @@ This page is the **authoritative course schedule** and the main entry point for 
 This course is under active development, and the schedule will be filled in as we go.
 :::
 
-## Week 1
+## Week 1: January 12-18
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
 | Tuesday | Course overview + workflow setup | [Course Overview and Workflow Setup](slides/01-course-overview-setup.qmd) | — |
-| Thursday | (Fill in) | — | A0 — Git and GitHub Fundamentals (*before class*) |
+| Thursday | Large language models | [Introduction to LLMs](slides/02-intro-to-llms.qmd) | A0 — Git and GitHub Fundamentals (*before class*) |
 
-## Week 2
+**Learn more**
+
+<!--
+[*The Math Behind Attention: Keys, Queries, and Values Matrices*](https://youtu.be/UPtG_38Oq8o) - YouTube video from Serrano.Academy.
+-->
+
+[*What are Transformer Models and how do they work?*](https://www.youtube.com/watch?v=qaWMOYf4ri8) - YouTube video from Serrano.Academy.
+
+[*Attention Is All You Need*](https://papers.nips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf) - paper by Vaswani et al. (2017).
+
+## Week 2: January 19-25
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|

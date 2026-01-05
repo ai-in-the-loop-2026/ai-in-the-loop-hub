@@ -1,0 +1,323 @@
+---
+title: "Introduction to Large Language Models"
+description: "Neural network basics, transformer architecture, and how LLMs generate text."
+date: 2026-01-15
+categories: [Concepts]
+tags: [llm, neural-networks, transformers]
+---
+
+## Today's goals
+
+- Understand what a neural network is (high level)
+- Learn how transformers work (the architecture behind LLMs)
+- See how LLMs generate text
+- Preview A1 — your first Python assignment
+
+---
+
+## What is an LLM?
+
+A **Large Language Model** is a neural network trained on massive amounts of text to predict the next word (token).
+
+- "Large" = billions of parameters (learned weights)
+- "Language" = trained on text data
+- "Model" = a mathematical function that maps input → output
+
+Examples: GPT-5, Claude, Gemini
+
+---
+
+## Neural networks: the basic idea
+
+A neural network is a function that:
+
+1. Takes input (e.g., words, pixels, numbers)
+2. Passes it through layers of simple computations
+3. Produces output (e.g., next word prediction)
+
+Each layer transforms the data, learning increasingly abstract patterns.
+
+---
+
+## A single neuron
+
+![](images/02-neuron.png)
+
+<!-- IMAGE: ![](images/02-neuron.png)
+
+     DESCRIPTION: Diagram of a single neuron with inputs x1, x2, x3, weights w1, w2, w3, bias b,
+     summation, activation function, and output. Shows the formula: y = f(Σ(wi*xi) + b)
+
+     PROMPT FOR NANO BANANA PRO: Create a clean diagram of a single artificial neuron. Show 3 inputs
+     (x1, x2, x3) on the left, each with a weight (w1, w2, w3) on the connecting lines. These feed
+     into a circle (the neuron body) that shows summation (Σ). Add a bias input (b). Show the
+     activation function f() applied to the sum, with a single output on the right. Include the
+     formula: y = f(Σ(wi*xi) + b). Use a clean, minimal style with soft colors.
+
+     FOLLOW-UP PROMPT: in the previous image of a single artificial neuron: modify the image so that the neuron body (circle) only includes the summation. It should output to f(), which should output to y. Format the formula so that it is prettier and use a \cdot instead of * for the product.
+
+     https://gemini.google.com/app/f7507e36487a8de8?utm_source=app_launcher&utm_medium=owned&utm_campaign=base_all
+
+```
+       x₁ ──w₁──╲
+                 ╲
+       x₂ ──w₂───→ [Σ] → f(·) → output
+                 ╱
+       x₃ ──w₃──╱
+                ↑
+               bias
+```
+-->
+
+**Key idea:** Each neuron computes a weighted sum of inputs, then applies an activation function.
+
+---
+
+## Layers of neurons
+
+![](images/02-feedforward-network.png)
+
+<!-- IMAGE: ![](images/02-feedforward-network.png)
+
+     DESCRIPTION: Simple feedforward neural network with input layer (4 nodes), hidden layer
+     (3 nodes), and output layer (2 nodes). Lines connect every node in adjacent layers.
+
+     PROMPT FOR NANO BANANA PRO: Create a diagram of a simple feedforward neural network. Show
+     an input layer with 4 circles on the left, a hidden layer with 3 circles in the middle,
+     and an output layer with 2 circles on the right. Draw lines connecting every node in one
+     layer to every node in the next layer. Label the layers. Use a clean style with the layers
+     in different soft colors. 
+
+     https://gemini.google.com/app/f7507e36487a8de8?utm_source=app_launcher&utm_medium=owned&utm_campaign=base_all
+
+```
+  Input        Hidden       Output
+  Layer        Layer        Layer
+
+   (•)─────────(•)─────────(•)
+    │ ╲       ╱ │ ╲       ╱
+   (•)──╳────(•)──╳────(•)
+    │ ╱       ╲ │ ╱
+   (•)─────────(•)
+    │         ╱
+   (•)───────╱
+```
+
+-->
+
+- Each connection has a **weight** (learned during training)
+- The network learns by adjusting weights to minimize prediction errors
+
+---
+
+## How neural networks learn
+
+1. **Forward pass:** Input flows through the network → prediction
+2. **Loss calculation:** Compare prediction to correct answer
+3. **Backward pass:** Calculate how each weight contributed to the error
+4. **Update weights:** Adjust weights to reduce error
+5. **Repeat** millions of times on training data
+
+This process is called **gradient descent** + **backpropagation**.
+
+---
+
+## From basic networks to transformers
+
+Early neural networks for language had problems:
+
+- **Recurrent networks (RNNs):** Process words one at a time → slow, forget long-range context
+- **Attention breakthrough (2017):** Process all words at once, learn which words to "pay attention to"
+
+The **Transformer** architecture uses attention to handle long text efficiently.
+
+---
+
+## The transformer: key components
+
+<!-- IMAGE: ![](images/02-transformer-block.png)
+
+     DESCRIPTION: Simplified transformer block showing vertical flow: Input Embeddings →
+     Self-Attention → Add & Norm → Feed Forward → Add & Norm → Output, with skip connections.
+
+     PROMPT FOR NANO BANANA PRO: Create a simplified diagram of a single transformer block.
+     Show a vertical flow: "Input Embeddings" at bottom, arrow up to "Self-Attention" box,
+     arrow to "Add & Normalize" box, arrow to "Feed Forward" box, arrow to another
+     "Add & Normalize" box, arrow to "Output" at top. Add skip connections (curved arrows)
+     from before Self-Attention to after it, and from before Feed Forward to after it.
+     Use clean boxes with rounded corners and soft colors. -->
+
+```
+        ┌─────────────────┐
+        │     Output      │
+        └────────┬────────┘
+                 │
+        ┌────────▼────────┐
+        │  Feed Forward   │◄──┐
+        └────────┬────────┘   │ (skip connection)
+                 │            │
+        ┌────────▼────────┐   │
+        │  Add & Norm     │───┘
+        └────────┬────────┘
+                 │
+        ┌────────▼────────┐
+        │ Self-Attention  │◄──┐
+        └────────┬────────┘   │ (skip connection)
+                 │            │
+        ┌────────▼────────┐   │
+        │  Add & Norm     │───┘
+        └────────┬────────┘
+                 │
+        ┌────────▼────────┐
+        │ Input Embedding │
+        └─────────────────┘
+```
+
+---
+
+## Self-attention: the key insight
+
+**Question:** When predicting the next word, which previous words matter most?
+
+*"The cat sat on the mat because it was tired."*
+
+To understand "it" → need to attend to "cat" (not "mat")
+
+**Self-attention** lets the model learn these relationships for every word pair.
+
+---
+
+## How attention works (simplified)
+
+For each word, compute three vectors:
+
+- **Query (Q):** "What am I looking for?"
+- **Key (K):** "What do I contain?"
+- **Value (V):** "What information do I provide?"
+
+Attention score = how well Query matches each Key
+
+Output = weighted sum of Values based on attention scores
+
+---
+
+## Attention visualized
+
+![](images/02-attention-heatmap.png)
+
+<!-- IMAGE: ![](images/02-attention-heatmap.png)
+
+     DESCRIPTION: Attention heatmap for "The cat sat on the mat" showing which words attend
+     to which other words. 6x6 grid with color intensity indicating attention weights.
+
+     PROMPT FOR NANO BANANA PRO: Create an attention visualization heatmap for the sentence
+     "The cat sat on the mat". Show a 6x6 grid where rows and columns are both labeled with
+     the words. Use color intensity to show attention weights - darker means stronger attention.
+     Make "cat" strongly attend to "The" and itself. Make "sat" attend to "cat". Make "mat"
+     attend to "the" (second one) and "on". Use a blue color gradient. Include a legend. 
+     
+     REVISED PROMPT: Create an attention (e.g., for a transformer model) visualization heatmap for the sentence "The cat sat on the mat because it was tired". Show a 10x10 grid where rows and columns are both labeled with the words. Use color intensity to show attention weights - darker means stronger attention. Use a blue color gradient. Include a legend. 
+     
+     https://gemini.google.com/app/08626c2583eff1c8?utm_source=app_launcher&utm_medium=owned&utm_campaign=base_all
+
+```
+          The   cat   sat   on   the   mat
+    The   ███   ░░░   ░░░   ░░░   ░░░   ░░░
+    cat   ██░   ███   ░░░   ░░░   ░░░   ░░░
+    sat   ░░░   ██░   ███   ░░░   ░░░   ░░░
+    on    ░░░   ░░░   █░░   ███   ░░░   ░░░
+    the   ░░░   ░░░   ░░░   ██░   ███   ░░░
+    mat   ░░░   ░░░   ░░░   █░░   ██░   ███
+```
+-->
+
+Each word "attends" to relevant context words when making predictions.
+
+---
+
+## Tokens, not words
+
+LLMs don't see words—they see **tokens** (subword pieces):
+
+| Text | Tokens |
+|------|--------|
+| "Hello" | ["Hello"] |
+| "unhappiness" | ["un", "happiness"] |
+| "ChatGPT" | ["Chat", "G", "PT"] |
+
+**Why?** Handles rare words, typos, new words efficiently.
+
+Typical vocab: 100,000+ tokens
+
+---
+
+## How LLMs generate text
+
+1. **Input:** "The weather today is"
+2. **Model predicts** probability distribution over all tokens
+3. **Sample** next token: "sunny" (p=0.3), "cold" (p=0.2), "nice" (p=0.15)...
+4. **Append** chosen token: "The weather today is sunny"
+5. **Repeat** until done
+
+This is **autoregressive generation**—each token depends on all previous tokens.
+
+---
+
+## Temperature and sampling
+
+**Temperature** controls randomness:
+
+- **Low (0.0–0.3):** More deterministic, picks highest probability
+- **Medium (0.5–0.7):** Balanced creativity and coherence
+- **High (0.8–1.0+):** More random, creative, sometimes nonsensical
+
+```
+Temperature 0.1: "The cat sat on the mat."
+Temperature 0.7: "The cat lounged on the soft carpet."
+Temperature 1.2: "The cat philosophized atop the cosmic rug."
+```
+
+---
+
+## Key takeaways
+
+- Neural networks learn patterns by adjusting weights
+- **Transformers** use self-attention to understand context
+- LLMs predict the **next token** based on all previous tokens
+- Generation is **probabilistic**—same prompt can give different outputs
+- **Temperature** controls creativity vs. consistency
+
+---
+
+## A1 — Mock LLM Chat
+
+Your first Python assignment builds a **chat application** structure:
+
+- Set up Python environment (`.venv`, dependencies)
+- Use **LangGraph** to structure conversation flow
+- Build a simple **command-line interface (CLI)**
+- Use a **mock model** (no API calls yet)
+
+---
+
+## Why a mock model?
+
+- Focus on **structure and workflow** first
+- No API keys or costs to worry about
+- Predictable behavior for testing
+- **A2** will connect to a real LLM via API
+
+This pattern (mock → real) is common in software development!
+
+---
+
+## A1 setup overview
+
+1. Accept A1 from GitHub Classroom
+2. Clone the repo
+3. Create virtual environment: `python -m venv .venv`
+4. Activate it and install dependencies
+5. Follow the README to complete the assignment
+
+See the **GitHub Classroom Workflow** guide for details.
+

@@ -55,7 +55,7 @@ Grades will be determined as follows:
 |----------------|--------|
 | Attendance, in-class participation | 10% |
 | Written reflections (10-15) | 5% |
-| Buid assignments (8) | 20% |
+| Build assignments (8) | 20% |
 | Individual code reviews (2) | 30% |
 | Group-led discussion | 5% |
 | Final project repository | 5% |
@@ -116,6 +116,40 @@ The final exam for this class (group code review) is on **Monday, May 4 from 12:
 ## AI Use Policy
 
 {{< include /policies/_includes/ai-use.md >}}
+:::
+:::
+
+
+::: {.content-visible when-format="html"}
+::: {.callout-note collapse="true"}
+## Collaboration Policy (click to expand)
+
+{{< include /policies/_includes/collaboration.md >}}
+:::
+:::
+
+::: {.content-visible when-format="pdf"}
+::: {.callout-note}
+## Collaboriation Policy
+
+{{< include /policies/_includes/collaboration.md >}}
+:::
+:::
+
+
+::: {.content-visible when-format="html"}
+::: {.callout-note collapse="true"}
+## Late Work Policy (click to expand)
+
+{{< include /policies/_includes/late-work.md >}}
+:::
+:::
+
+::: {.content-visible when-format="pdf"}
+::: {.callout-note}
+## Late Work Policy
+
+{{< include /policies/_includes/late-work.md >}}
 :::
 :::
 

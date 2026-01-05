@@ -4,7 +4,7 @@ title: "Assignments"
 
 This page is the **single canonical place** for:
 
-- assignment links (GitHub Classroom invites)
+- Build Assignment links (GitHub Classroom invites)
 - due dates/times
 - submission expectations
 
@@ -15,11 +15,9 @@ This page is the **single canonical place** for:
 
 ## Assignment calendar (overview)
 
-- Weeks 1–X: individual "build" assignments (A0–AZ)
-- Weeks (X+1)–14: final project work + checkpoints
+- Weeks 1–10: individual "build" assignments (A0–AZ)
+- Weeks 11-14: final project work + checkpoints
 - Week 15: final presentations
-
-(Your instructor will keep the authoritative details below.)
 
 ---
 
@@ -45,13 +43,13 @@ This page is the **single canonical place** for:
 
 ### Team repo creation
 
-- **When:** (e.g., Week X-2)
+- **When:** (e.g., Week 8)
 - **How:** GitHub Classroom **group assignment** (one repo per team)
 
 ### Project checkpoints (typical)
 
-- **Proposal:** Week X-1 (Tue?)
-- **Plan:** Week X (Tue?)
+- **Proposal:** Week 9 (Tue?)
+- **Plan:** Week 10 (Tue?)
 - ...
 - **Final submission:** Week 15 (Fri?)
 
