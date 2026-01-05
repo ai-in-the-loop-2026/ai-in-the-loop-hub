@@ -43,25 +43,12 @@ This course combines hands-on Python development with a clear understanding of h
 
 ---
 
-## Setup checklist (high level)
-
-1. Install VS Code, Git, Python 3.13.x (see Initial Setup guide)
-2. Accept A0 — Git and GitHub Fundamentals
-3. Clone your A0 repo
-4. Make changes (see README.md), commit + push
-
----
-
-## Expectations and norms
-
-- You are responsible for keeping your repos private unless instructed otherwise
-- Don’t commit secrets (API keys) — use `.env` locally
-- Ask for help early; include exact error messages
-
----
-
 ## Next steps
 
-- Read the syllabus and AI Use Policy
-- Complete Initial Setup (Windows or macOS guide)
-- Complete A0 — Git and GitHub Fundamentals
+1. Complete Initial Setup (Windows or macOS guide)
+2. Follow GitHub Classroom Workflow Instructions (A0: skip steps 3-4):
+
+    a. Accept A0 — Git and GitHub Fundamentals
+    b. Clone your A0 repo
+    c. Make changes (see README.md), commit + push
+

@@ -122,82 +122,111 @@ This process is called **gradient descent** + **backpropagation**.
 
 ---
 
+## Tokens, not words
+
+LLMs don't see words—they see **tokens** (subword pieces):
+
+| Text | Tokens | Token IDs |
+|------|--------|----|
+| "Hello" | ["Hello"] | [13225] |
+| "unhappiness" | ["un", "h", "appiness"] | [373, 71, 117779] |
+| "ChatGPT" | ["Chat", "GPT"] | [14065, 162016] |
+
+**Why?** Handles rare words, typos, new words efficiently.
+
+Each token is represented by a unique token ID (positive integer)
+
+Typical vocab: 100,000+ tokens
+
+---
+
 ## From basic networks to transformers
 
 Early neural networks for language had problems:
 
-- **Recurrent networks (RNNs):** Process words one at a time → slow, forget long-range context
-- **Attention breakthrough (2017):** Process all words at once, learn which words to "pay attention to"
+- **Recurrent networks (RNNs):** Process tokens sequentially → hard to parallelize, long-range dependencies can be difficult
+- **Attention breakthrough (2017):** Process tokens in parallel; for each token compute attention weights over other tokens to combine the most relevant context
 
-The **Transformer** architecture uses attention to handle long text efficiently.
+The **Transformer** architecture uses attention to handle long text efficiently
 
 ---
 
 ## The transformer: key components
 
-<!-- IMAGE: ![](images/02-transformer-block.png)
+::: {style="text-align: center;"}
+  ![](images/02-transformer-pipeline.png){width=85%}
+:::
 
-     DESCRIPTION: Simplified transformer block showing vertical flow: Input Embeddings →
-     Self-Attention → Add & Norm → Feed Forward → Add & Norm → Output, with skip connections.
+<!-- IMAGE: ![](images/02-transformer-pipeline.png){width="90%"}
 
-     PROMPT FOR NANO BANANA PRO: Create a simplified diagram of a single transformer block.
-     Show a vertical flow: "Input Embeddings" at bottom, arrow up to "Self-Attention" box,
-     arrow to "Add & Normalize" box, arrow to "Feed Forward" box, arrow to another
-     "Add & Normalize" box, arrow to "Output" at top. Add skip connections (curved arrows)
-     from before Self-Attention to after it, and from before Feed Forward to after it.
-     Use clean boxes with rounded corners and soft colors. -->
+     DESCRIPTION: End-to-end transformer pipeline showing the full flow from tokens to output.
+
+     PROMPT FOR NANO BANANA PRO: Create a horizontal pipeline diagram for a transformer LLM.
+     Show boxes connected by arrows in this order: "Tokens" → "Embeddings + Position" →
+     a box labeled "Transformer Blocks (×N)" containing "Self-Attention" and "Feed-Forward" stacked →
+     "Linear + Softmax" → "Next Token Probs". Use clean boxes with rounded corners
+     and soft colors. Make the transformer blocks box slightly larger to show it repeats.
 
 ```
-        ┌─────────────────┐
-        │     Output      │
-        └────────┬────────┘
-                 │
-        ┌────────▼────────┐
-        │  Feed Forward   │◄──┐
-        └────────┬────────┘   │ (skip connection)
-                 │            │
-        ┌────────▼────────┐   │
-        │  Add & Norm     │───┘
-        └────────┬────────┘
-                 │
-        ┌────────▼────────┐
-        │ Self-Attention  │◄──┐
-        └────────┬────────┘   │ (skip connection)
-                 │            │
-        ┌────────▼────────┐   │
-        │  Add & Norm     │───┘
-        └────────┬────────┘
-                 │
-        ┌────────▼────────┐
-        │ Input Embedding │
-        └─────────────────┘
+┌────────┐   ┌─────────────────┐   ┌─────────────────────────┐   ┌───────────────┐   ┌─────────────┐
+│ Tokens │ → │ Embeddings +    │ → │  Transformer Blocks(×N) │ → │ Linear +      │ → │ Next Token  │
+│        │   │ Position Info   │   │  ┌─────────────────┐    │   │ Softmax       │   │ Probs       │
+└────────┘   └─────────────────┘   │  │ Self-Attention  │    │   └───────────────┘   └─────────────┘
+                                   │  │ Feed-Forward    │    │
+                                   │  └─────────────────┘    │
+                                   └─────────────────────────┘
 ```
+-->
+
+- **Embeddings + Position:** Convert token IDs to vectors, add position information
+- **Transformer Blocks:** Repeated layers of attention + feed-forward (dozens of these)
+- **Output:** Probability distribution over all possible next tokens
 
 ---
 
-## Self-attention: the key insight
+## Embeddings: tokens as vectors
 
-**Question:** When predicting the next word, which previous words matter most?
+Each token maps to a **vector** (list of numbers):
 
-*"The cat sat on the mat because it was tired."*
+```
+"cat" → [0.2, -0.5, 0.8, 0.1, ...]   
+"dog" → [0.3, -0.4, 0.7, 0.2, ...]   (similar to "cat")
+"run" → [-0.1, 0.9, -0.3, 0.6, ...]  (different direction)
+```
 
-To understand "it" → need to attend to "cat" (not "mat")
-
-**Self-attention** lets the model learn these relationships for every word pair.
+- Embeddings are vectors in $\mathbb{R}^d$ ($d$ typically in the thousands)
+- Similar words have similar vectors 
+- Embeddings are **learned** during training
+- Sequence of $L$ input tokens → $L$ vectors → $L\times d$ input matrix
 
 ---
 
-## How attention works (simplified)
+## Positional encoding
 
-For each word, compute three vectors:
+Transformers process tokens in parallel—but token order matters!
 
-- **Query (Q):** "What am I looking for?"
-- **Key (K):** "What do I contain?"
-- **Value (V):** "What information do I provide?"
+*"The cat chased the dog"* ≠ *"The dog chased the cat"*
 
-Attention score = how well Query matches each Key
+**Solution:** Inject position info into each token representation.
 
-Output = weighted sum of Values based on attention scores
+- Each position gets its own positional encoding (e.g., a vector for position 1, 2, 3, …)
+- Often **added** to the token embedding  
+  *(some modern LLMs encode position inside the attention computation instead)*
+- This gives the model the information it needs to learn how order affects meaning
+
+
+---
+
+## Self-attention: how tokens share information
+
+For each token, the model computes **attention weights** over other tokens, then
+forms a new representation as a **weighted mix** of their information.
+
+*"The cat sat on the mat because it was tired."*  
+To interpret **"it"**, the model should weight **"cat"** more than **"mat"**.
+
+This happens **for every token**, in every transformer block.
+
 
 ---
 
@@ -214,10 +243,10 @@ Output = weighted sum of Values based on attention scores
      "The cat sat on the mat". Show a 6x6 grid where rows and columns are both labeled with
      the words. Use color intensity to show attention weights - darker means stronger attention.
      Make "cat" strongly attend to "The" and itself. Make "sat" attend to "cat". Make "mat"
-     attend to "the" (second one) and "on". Use a blue color gradient. Include a legend. 
-     
-     REVISED PROMPT: Create an attention (e.g., for a transformer model) visualization heatmap for the sentence "The cat sat on the mat because it was tired". Show a 10x10 grid where rows and columns are both labeled with the words. Use color intensity to show attention weights - darker means stronger attention. Use a blue color gradient. Include a legend. 
-     
+     attend to "the" (second one) and "on". Use a blue color gradient. Include a legend.
+
+     REVISED PROMPT: Create an attention (e.g., for a transformer model) visualization heatmap for the sentence "The cat sat on the mat because it was tired". Show a 10x10 grid where rows and columns are both labeled with the words. Use color intensity to show attention weights - darker means stronger attention. Use a blue color gradient. Include a legend.
+
      https://gemini.google.com/app/08626c2583eff1c8?utm_source=app_launcher&utm_medium=owned&utm_campaign=base_all
 
 ```
@@ -231,23 +260,7 @@ Output = weighted sum of Values based on attention scores
 ```
 -->
 
-Each word "attends" to relevant context words when making predictions.
-
----
-
-## Tokens, not words
-
-LLMs don't see words—they see **tokens** (subword pieces):
-
-| Text | Tokens |
-|------|--------|
-| "Hello" | ["Hello"] |
-| "unhappiness" | ["un", "happiness"] |
-| "ChatGPT" | ["Chat", "G", "PT"] |
-
-**Why?** Handles rare words, typos, new words efficiently.
-
-Typical vocab: 100,000+ tokens
+Each token's representation is updated by combining information from other tokens via learned weights.
 
 ---
 
@@ -263,9 +276,16 @@ This is **autoregressive generation**—each token depends on all previous token
 
 ---
 
+## Randomness
+
+- At inference the transformer's forward pass is **deterministic**
+- After probabilities have been computed, the next token is chosen using a random draw according to the probabilities
+
+___
+
 ## Temperature and sampling
 
-**Temperature** controls randomness:
+**Temperature** flattens ($T>1$) or sharpens ($T<1$) the probability distribution
 
 - **Low (0.0–0.3):** More deterministic, picks highest probability
 - **Medium (0.5–0.7):** Balanced creativity and coherence
@@ -313,11 +333,32 @@ This pattern (mock → real) is common in software development!
 
 ## A1 setup overview
 
+**Follow GitHub Classroom Workflow Instructions**
+
 1. Accept A1 from GitHub Classroom
 2. Clone the repo
-3. Create virtual environment: `python -m venv .venv`
+3. Create virtual environment
 4. Activate it and install dependencies
 5. Follow the README to complete the assignment
 
-See the **GitHub Classroom Workflow** guide for details.
+___
+
+## AI Dev Log
+
+- Starting with A1 you will complete an *AI Dev Log* for each build assignment
+- Look for it in the `docs` folder in the repo
+- Some entries probably won't be relevant for A1--write: "none" or "NA"
+
+```
+## Entry N - [Brief title]
+
+**Date:** YYYY-MM-DD
+**Goal:** [What you were trying to accomplish]
+**Tool used:** [e.g., ChatGPT, Claude, Copilot, none]
+**Prompt/Question:** [What you asked the AI, or describe the problem]
+**AI Response:** [Key suggestions or guidance received]
+**Changes Made:** [Actual code/files modified]
+**Testing:** [How you verified it works]
+**Result:** [Did it work? Any issues?]
+```
 
