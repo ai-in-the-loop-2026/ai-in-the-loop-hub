@@ -21,7 +21,7 @@ This page is the **single canonical place** for:
 
 ---
 
-## Individual build assignments (GitHub Classroom)
+## Individual Build Assignments (GitHub Classroom)
 
 ### A0 — Git and GitHub Fundamentals
 
@@ -36,6 +36,18 @@ This page is the **single canonical place** for:
 - **Purpose:** More practice with Git/GitHub workflow, set up Python/venv.
 - **Invite link:** <https://classroom.github.com/a/lH2a7o-K>
 - **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
+
+---
+
+## Writing Reflections (GitHub Classroom)
+
+### WR1 - AI and Critical Thinking
+
+- **Due:** Thursday (Week 2) during class
+<!--
+**Invite link:** <https://classroom.github.com/a/05DwK0_c> 
+-->
+- **Resource Links:** [The age of de-skilling](https://infoweb.newsbank.com/apps/news/document-view?p=NewsBank&t=pubname%3AANA2W%21Atlantic%253A%2BWeb%2BEdition%2BArticles%2B%2528USA%2529/year%3A2025%212025/mody%3A1026%21October%2B26&action=browse&year=2025&format=text&docref=news/1A3FC2862E610C00), [The people outsourcing their thinking to AI](https://infoweb.newsbank.com/apps/news/openurl?ctx_ver=z39.88-2004&rft_id=info%3Asid/infoweb.newsbank.com&svc_dat=NewsBank&req_dat=C8AE3582ADFA449FA0E0874A2C7B1E7E&rft_val_format=info%3Aofi/fmt%3Akev%3Amtx%3Actx&rft_dat=document_id%3Anews%252F1A4BA34541530128), [The cognitive paradox of AI in education: Between enhancement and erosion](https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2025.1550621/full)
 
 ---
 

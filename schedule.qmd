@@ -26,16 +26,34 @@ This course is under active development, and the schedule will be filled in as w
 [*The Math Behind Attention: Keys, Queries, and Values Matrices*](https://youtu.be/UPtG_38Oq8o) - YouTube video from Serrano.Academy.
 -->
 
-[*OpenAI Tokenizer*](https://platform.openai.com/tokenizer) - Demonstrates how text is tokenized by a language model.
+[*OpenAI tokenizer*](https://platform.openai.com/tokenizer) - Demonstrates how text is tokenized by a language model.
 
-[*What are Transformer Models and how do they work?*](https://www.youtube.com/watch?v=qaWMOYf4ri8) - YouTube video from Serrano.Academy.
+[*What are transformer models and how do they work?*](https://www.youtube.com/watch?v=qaWMOYf4ri8) - YouTube video from Serrano.Academy.
 
-[*Attention Is All You Need*](https://papers.nips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf) - paper by Vaswani et al. (2017).
+[*Attention is all you need*](https://papers.nips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf) - paper by Vaswani et al. (2017).
 
 ## Week 2: January 19-25
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
 | Tuesday | (Fill in) | — | A1 — Setup Verification (*before class*)  |
-| Thursday | (Fill in) | — | — |
+| Thursday | AI and critical thinking | — | Read 3 discussion articles (*before class*) |
+
+**Resources for discussion**
+
+[The age of de-skilling](https://infoweb.newsbank.com/apps/news/document-view?p=NewsBank&t=pubname%3AANA2W%21Atlantic%253A%2BWeb%2BEdition%2BArticles%2B%2528USA%2529/year%3A2025%212025/mody%3A1026%21October%2B26&action=browse&year=2025&format=text&docref=news/1A3FC2862E610C00) - article by Kwaime Anthony Appiah published in web edition of the *Atlantic*
+
+[The people outsourcing their thinking to AI](https://infoweb.newsbank.com/apps/news/openurl?ctx_ver=z39.88-2004&rft_id=info%3Asid/infoweb.newsbank.com&svc_dat=NewsBank&req_dat=C8AE3582ADFA449FA0E0874A2C7B1E7E&rft_val_format=info%3Aofi/fmt%3Akev%3Amtx%3Actx&rft_dat=document_id%3Anews%252F1A4BA34541530128) - article by Lila Shroff published in web edition of the *Atlantic*
+
+[The cognitive paradox of AI in education: Between enhancement and erosion](https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2025.1550621/full) - opinion article by Jose et al. from *Frontiers in Psychology*
+
+**Learn more**
+
+[How AI could save (not destroy) education](https://www.ted.com/talks/sal_khan_how_ai_could_save_not_destroy_education) - Ted Talk by Sal Kahn (founder and CEO of Khan Academy)
+
+[Generative AI without guardrails can harm learning: Evidence from high school mathematics](https://www.pnas.org/doi/10.1073/pnas.2422633122) - by Bastani and Sungu (2025) from *PNAS*
+
+[The widening gap: The benefits and harms of generative AI for novice programmers](https://dl.acm.org/doi/10.1145/3632620.3671116) - a research article by Prather et al. from *ICER '24: Proceedings of the 2024 ACM Conference on International Computing Education Research*.
+
+[The impact of generative AI on critical thinking: Self-reported reductions in cognitive effort and confidence effects from a survey of knowledge workers](https://dl.acm.org/doi/10.1145/3706598.3713778) - a research article by Lee et al. from *CHI '25: Proceedings of the 2025 CHI Conference on Human Factors in Computing Systems*
 
