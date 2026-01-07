@@ -36,8 +36,8 @@ This course is under active development, and the schedule will be filled in as w
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
-| Tuesday | (Fill in) | — | A1 — Setup Verification (*before class*)  |
-| Thursday | AI and critical thinking | — | Read 3 discussion articles (*before class*) |
+| Tuesday | Python, Code Assist, API | [Python, APIs, and Code Assist](slides/03-python-apis-code-assist.qmd) | A1 — Setup Verification (*before class*)  |
+| Thursday | Prompting, AI and critical thinking | [Prompt Patterns and Best Practices](slides/04-prompt-patterns.qmd) | Read 3 discussion articles (*before class*) |
 
 **Resources for discussion**
 

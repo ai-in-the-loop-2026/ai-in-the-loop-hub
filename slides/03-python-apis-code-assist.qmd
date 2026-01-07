@@ -1,0 +1,367 @@
+---
+title: "Python, APIs, and Code Assist"
+description: "Python essentials, working with LLM APIs, and AI-assisted coding in VS Code."
+date: 2026-01-21
+categories: [Python, APIs, Tools]
+tags: [python, api, gemini, langraph, code-assist]
+---
+
+## Today's goals
+
+- Get comfortable with Python basics (for those coming from other languages)
+- Understand what an API is and how to call one
+- See how we interact with LLMs programmatically
+- Learn to protect API keys
+- Meet Gemini Code Assist
+
+---
+
+## Python: if you know another language
+
+Python will feel familiar. Key differences:
+
+- **Indentation matters** — blocks are defined by whitespace, not braces
+- **Dynamic typing** — no type declarations required (but type hints are optional)
+- **Everything is an object** — functions, classes, modules
+
+```python
+def greet(name):
+    if name:
+        return f"Hello, {name}!"
+    else:
+        return "Hello, stranger!"
+```
+
+---
+
+## Python: variables and types
+
+```python
+# No declarations needed
+message = "Hello"          # str
+count = 42                 # int
+temperature = 98.6         # float
+is_valid = True            # bool
+items = [1, 2, 3]          # list
+config = {"key": "value"}  # dict
+```
+
+Type hints (optional but recommended):
+
+```python
+def add(a: int, b: int) -> int:
+    return a + b
+```
+
+---
+
+## Python: common patterns
+
+```python
+# List comprehension
+squares = [x**2 for x in range(10)]
+
+# Dictionary comprehension
+word_lengths = {word: len(word) for word in ["cat", "dog"]}
+
+# f-strings for formatting
+name = "Alice"
+print(f"Hello, {name}!")
+
+# Unpacking
+first, *rest = [1, 2, 3, 4]  # first=1, rest=[2,3,4]
+```
+
+---
+
+## Python: imports and modules
+
+```python
+# Import entire module
+import os
+print(os.getcwd())
+
+# Import specific items
+from pathlib import Path
+config_path = Path("config.json")
+
+# Import with alias
+import numpy as np
+```
+
+Packages are installed with `pip`:
+```bash
+pip install google-genai langgraph python-dotenv
+```
+
+---
+
+## What is an API?
+
+**API** = Application Programming Interface
+
+A way for programs to talk to each other using defined rules.
+
+::: {style="text-align: center;"}
+![](images/03-api-concept.png){width=80%}
+:::
+
+<!-- IMAGE: ![](images/03-api-concept.png){width=80%}
+
+     DESCRIPTION: Simple diagram showing a client application sending a request to a server/API
+     and receiving a response back.
+
+     PROMPT FOR NANO BANANA PRO: Create a simple diagram showing API communication. On the left,
+     show a box labeled "Your Code (Client)" with a Python logo. On the right, show a cloud or
+     server box labeled "LLM Service (Server)". Draw an arrow going right labeled "Request
+     (prompt, parameters)" and an arrow going left labeled "Response (generated text)".
+     Use clean, minimal style with soft colors. -->
+
+- **Request:** Your code sends data (prompt, settings)
+- **Response:** The service sends back results (generated text)
+
+---
+
+## Web APIs: the basics
+
+Most modern APIs use HTTP:
+
+- **Endpoint:** A URL you send requests to
+  `https://api.example.com/v1/generate`
+
+- **Method:** Usually `POST` for sending data, `GET` for retrieving
+
+- **Headers:** Metadata including authentication
+  `Authorization: Bearer sk-abc123...`
+
+- **Body:** The actual data (often JSON)
+  `{"prompt": "Hello", "max_tokens": 100}`
+
+---
+
+## Calling an LLM via API
+
+Instead of chatting in a browser, your code sends requests:
+
+```python
+from google import genai
+
+client = genai.Client(api_key="...")  # Your API key
+
+response = client.models.generate_content(
+    model="gemini-2.0-flash",
+    contents=["Explain quantum computing in one sentence."],
+)
+print(response.text)
+```
+
+This is how we build applications that use AI!
+
+---
+
+## Our stack: Python + LangGraph + Gemini
+
+- **Python:** The programming language
+- **LangGraph:** Framework for building LLM applications with state and control flow
+- **Gemini API:** Google's LLM service
+
+<!-- IMAGE: ![](images/03-stack-diagram.png){width=70%}
+
+     DESCRIPTION: Layered diagram showing the technology stack.
+
+     PROMPT FOR NANO BANANA PRO: Create a layered stack diagram with 3 layers. Bottom layer:
+     "Python" with Python logo. Middle layer: "LangGraph" (framework for LLM apps). Top layer:
+     "Gemini API" with a cloud icon. Draw arrows showing how they connect - Python provides
+     the foundation, LangGraph structures the app, Gemini provides the AI. Use clean boxes
+     with rounded corners and soft colors. -->
+
+---
+
+## LangGraph: state-based workflows
+
+LangGraph uses a **graph** to define how your app flows:
+
+```python
+from typing_extensions import TypedDict
+from langgraph.graph import StateGraph, START, END
+
+class State(TypedDict):
+    prompt: str
+    response: str
+
+graph = StateGraph(State)
+graph.add_node("respond", respond_fn)
+graph.add_edge(START, "respond")
+graph.add_edge("respond", END)
+
+app = graph.compile()
+result = app.invoke({"prompt": "Hello!", "response": ""})
+```
+
+---
+
+## API keys: what and why
+
+An **API key** is like a password for your code:
+
+- Identifies who is making requests
+- Tracks usage for billing and rate limits
+- Can be revoked if compromised
+
+**Your API key = your identity + your credit card**
+
+---
+
+## API key security: the rules
+
+::: {.callout-warning}
+## Never share your API key!
+:::
+
+- **Never commit keys to git** — they become public forever
+- **Never paste keys in code** — use environment variables
+- **Never share keys with classmates** — each person needs their own
+- **Revoke immediately** if exposed — generate a new one
+
+---
+
+## Protecting keys: .env files
+
+Store secrets in a `.env` file (never committed to git):
+
+```bash
+# .env file (in your project root)
+GEMINI_API_KEY=AIzaSyB...your-key-here...
+```
+
+Load in Python:
+
+```python
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Reads .env file
+api_key = os.getenv("GEMINI_API_KEY")
+```
+
+---
+
+## Protecting keys: .gitignore
+
+Your `.gitignore` file tells git what NOT to track:
+
+```gitignore
+# .gitignore (from your assignment repos)
+.venv/
+.env
+__pycache__/
+*.pyc
+```
+
+**Check your assignment repos** — `.env` should already be in `.gitignore`
+
+Before committing, verify with:
+```bash
+git status  # .env should NOT appear
+```
+
+---
+
+## If you accidentally commit a key...
+
+1. **Revoke the key immediately** — generate a new one
+2. The old key is compromised forever (git history)
+3. Even if you delete the file, it's still in history
+4. Automated bots scan GitHub for exposed keys
+
+**Prevention is much easier than cleanup!**
+
+---
+
+## Gemini Code Assist
+
+An AI coding assistant built into VS Code:
+
+- **Code completion** — suggests code as you type
+- **Chat interface** — ask questions about your code
+- **Explain code** — select code and ask for explanations
+- **Generate code** — describe what you want in natural language
+
+---
+
+## Code Assist: inline suggestions
+
+As you type, Code Assist suggests completions:
+
+<!-- IMAGE: ![](images/03-code-assist-inline.png){width=85%}
+
+     DESCRIPTION: Screenshot-style mockup of VS Code showing inline code suggestion.
+
+     PROMPT FOR NANO BANANA PRO: Create a mockup of a VS Code editor window. Show a Python
+     file with a few lines of code. On one line, show the user has typed "def calculate_"
+     and show a grayed-out AI suggestion completing it as "def calculate_average(numbers):"
+     with the function body suggested below in lighter gray. Include the VS Code sidebar
+     and a "Gemini" icon in the status bar. Use realistic VS Code dark theme colors. -->
+
+- Suggestions appear in gray
+- Press `Tab` to accept
+- Keep typing to ignore
+
+---
+
+## Code Assist: chat panel
+
+Open the Gemini chat panel to ask questions:
+
+- "How do I read a JSON file in Python?"
+- "Explain what this function does" (with code selected)
+- "Write a function that validates email addresses"
+- "Why is this test failing?"
+
+The chat understands your current file and workspace context.
+
+---
+
+## Code Assist: effective use
+
+**Do:**
+
+- Use it to learn new syntax and patterns
+- Ask it to explain unfamiliar code
+- Let it handle boilerplate
+- Verify suggestions before accepting
+
+**Don't:**
+
+- Accept code you don't understand
+- Trust it blindly for logic/correctness
+- Use it during red-light assessments
+
+---
+
+## Code Assist + understanding
+
+Remember the course philosophy:
+
+- **You are the developer** — AI is your assistant
+- **You must understand** all code you submit
+- Code reviews will test **your** understanding
+- Use AI to **learn**, not to bypass learning
+
+---
+
+## Key takeaways
+
+- Python: indentation matters, dynamic typing, everything is an object
+- APIs let your code talk to services like Gemini
+- **Protect API keys:** use `.env` files, never commit secrets
+- Gemini Code Assist helps you code faster—but you stay in charge
+
+---
+
+## Next steps
+
+- Complete **A1** using the GitHub Classroom Workflow
+- Get your **Gemini API key** (see resources page)
+- Install **Gemini Code Assist** in VS Code (see resources page)
+- Start experimenting with Code Assist as you work!

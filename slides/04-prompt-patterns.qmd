@@ -1,0 +1,371 @@
+---
+title: "Prompt Patterns and Best Practices"
+description: "Effective prompting techniques for chat interfaces and API-based LLM applications."
+date: 2026-01-23
+categories: [Prompting, Concepts]
+tags: [prompts, patterns, gemini, api, best-practices]
+---
+
+## Today's goals
+
+- Learn prompt patterns that work across LLMs
+- Understand what makes prompts effective
+- Apply patterns to chat interfaces (like ChatGPT, Gemini)
+- Apply patterns to API-based applications
+- Avoid common prompting mistakes
+
+---
+
+## Why prompting matters
+
+The same model can give wildly different outputs based on how you ask.
+
+**Vague prompt:**
+> "Tell me about climate change"
+
+**Better prompt:**
+> "Summarize the three main causes of climate change in 2-3 sentences each, suitable for a high school science class"
+
+Small changes in wording → big changes in output quality
+
+---
+
+## The core principle
+
+::: {.callout-tip}
+## Be explicit about what you want
+Don't assume the model will infer your intentions—state them directly.
+:::
+
+- What task should it perform?
+- What format should the output take?
+- What constraints or requirements apply?
+- What audience or context is this for?
+
+---
+
+## Pattern 1: Be specific and direct
+
+❌ **Vague:**
+> "Write something about Python"
+
+✅ **Specific:**
+> "Write a 100-word introduction to Python for programmers who know Java, highlighting the key syntax differences"
+
+**Include:**
+
+- The task (write, summarize, explain, compare)
+- Constraints (length, format, audience)
+- Context (what the reader already knows)
+
+---
+
+## Pattern 2: Specify output format
+
+Tell the model exactly how to structure its response:
+
+> "List the top 5 Python web frameworks. For each one, provide:
+> - Name
+> - One-sentence description
+> - Best use case
+> Format as a markdown table."
+
+**Common formats:**
+
+- Bullet points, numbered lists
+- Tables, JSON, code blocks
+- Specific section headings
+
+---
+
+## Pattern 3: Role/persona prompting
+
+Give the model a perspective to adopt:
+
+> "You are an experienced Python developer reviewing code written by a beginner. Review this code and provide constructive feedback focusing on readability and best practices."
+
+**Useful personas:**
+
+- Expert in a field
+- Teacher explaining to a specific audience
+- Editor improving writing
+- Devil's advocate finding flaws
+
+---
+
+## Pattern 4: Few-shot examples
+
+Show the model what you want with examples:
+
+> "Convert these informal phrases to formal business language:
+>
+> Informal: 'Hey, can you send that over?'
+> Formal: 'Could you please forward that document at your earliest convenience?'
+>
+> Informal: 'That's not gonna work'
+> Formal: 'Unfortunately, that approach may not be feasible'
+>
+> Informal: 'Let's grab coffee and hash this out'
+> Formal: [model completes]"
+
+2-3 examples usually suffice; too many can cause overfitting.
+
+---
+
+## Pattern 5: Chain-of-thought
+
+Ask the model to show its reasoning:
+
+> "A store has 45 apples. They sell 12 in the morning and receive a shipment of 30 more. How many apples do they have now? **Think through this step by step.**"
+
+**When to use:**
+
+- Math and logic problems
+- Multi-step reasoning
+- When you need to verify the logic
+
+---
+
+## Chain-of-thought: example output
+
+With "think step by step":
+
+> 1. Start with 45 apples
+> 2. Sell 12: 45 - 12 = 33 apples
+> 3. Receive 30: 33 + 30 = 63 apples
+> 4. **Answer: 63 apples**
+
+The reasoning steps help catch errors and make the output verifiable.
+
+---
+
+## Pattern 6: Iterative refinement
+
+Prompting is rarely one-and-done:
+
+<!-- IMAGE: ![](images/04-iterative-prompting.png){width=75%}
+
+     DESCRIPTION: Circular diagram showing the iterative prompting process.
+
+     PROMPT FOR NANO BANANA PRO: Create a circular flow diagram showing iterative prompt refinement.
+     Show 4 connected steps in a cycle: "Write Prompt" → "Get Response" → "Evaluate Output" →
+     "Refine Prompt" → back to "Write Prompt". In the center, write "Iterate until satisfied".
+     Use clean arrows connecting the steps and soft colors. Make it look like a continuous
+     improvement cycle. -->
+
+1. Start with a reasonable prompt
+2. Evaluate the output
+3. Identify what's missing or wrong
+4. Refine the prompt
+5. Repeat
+
+---
+
+## Chat interface tips
+
+When using ChatGPT, Claude, Gemini chat:
+
+- **Use follow-ups:** "Make it shorter" / "Add more examples"
+- **Reference previous context:** "In the code above, explain line 5"
+- **Ask for alternatives:** "Give me 3 different approaches to this"
+- **Request explanations:** "Why did you choose that approach?"
+
+The conversation history is your friend—build on it.
+
+---
+
+## Moving to API: what changes?
+
+In chat interfaces, you iterate conversationally.
+
+In API applications, you need to:
+
+- Design prompts that work consistently
+- Handle the response programmatically
+- Often use **system instructions** for persistent context
+- Consider **structured outputs** for parsing
+
+---
+
+## The PTCF framework
+
+A reliable structure for API prompts:
+
+<!-- IMAGE: ![](images/04-ptcf-framework.png){width=80%}
+
+     DESCRIPTION: Four-quadrant diagram showing the PTCF framework components.
+
+     PROMPT FOR NANO BANANA PRO: Create a 2x2 grid diagram for the PTCF framework. Four boxes:
+     Top-left "P - Persona" (Who should the model be?), Top-right "T - Task" (What should it do?),
+     Bottom-left "C - Context" (What background info is needed?), Bottom-right "F - Format"
+     (How should output be structured?). Use distinct soft colors for each quadrant. Add a
+     small icon in each box representing the concept. Clean, professional style. -->
+
+- **P**ersona: Who should the model act as?
+- **T**ask: What specifically should it do?
+- **C**ontext: What background information is relevant?
+- **F**ormat: How should the output be structured?
+
+---
+
+## PTCF example
+
+```python
+prompt = """
+**Persona:** You are a senior software engineer conducting code review.
+
+**Task:** Review the following Python function for bugs, style issues,
+and potential improvements.
+
+**Context:** This code is from a beginner learning Python. Be constructive
+and educational in your feedback.
+
+**Format:** Provide feedback as a numbered list. For each issue, explain
+the problem and suggest a fix.
+
+**Code to review:**
+{code}
+"""
+```
+
+---
+
+## System instructions (Gemini API)
+
+System instructions set persistent context for all messages:
+
+```python
+model = genai.GenerativeModel(
+    model_name="gemini-2.0-flash",
+    system_instruction="""You are a helpful coding assistant.
+    Always provide code examples in Python.
+    Keep explanations concise but complete.
+    If you're unsure, say so rather than guessing."""
+)
+```
+
+System instructions are sent with every request—use them for:
+
+- Persona and role definition
+- Output constraints and formatting rules
+- Safety guidelines
+
+---
+
+## Structured outputs
+
+For programmatic use, request structured formats:
+
+```python
+prompt = """Extract the following from this product review:
+- sentiment: positive, negative, or neutral
+- key_points: list of main points (max 3)
+- rating_guess: estimated star rating (1-5)
+
+Respond in valid JSON only, no other text.
+
+Review: {review_text}"""
+```
+
+Modern Gemini APIs support `response_schema` for guaranteed JSON structure.
+
+---
+
+## Temperature for API calls
+
+**Temperature** controls randomness (0.0 to 2.0):
+
+| Temperature | Behavior | Use case |
+|-------------|----------|----------|
+| 0.0 - 0.3 | Deterministic, focused | Code, facts, structured data |
+| 0.5 - 0.7 | Balanced | General tasks |
+| 0.8 - 1.0 | Creative, varied | Brainstorming, writing |
+
+**Note:** Gemini 3 models work best at temperature 1.0 (the default).
+
+---
+
+## Prompt chaining
+
+Break complex tasks into steps:
+
+<!-- IMAGE: ![](images/04-prompt-chain.png){width=85%}
+
+     DESCRIPTION: Linear flow diagram showing prompt chaining with multiple steps.
+
+     PROMPT FOR NANO BANANA PRO: Create a horizontal flow diagram showing prompt chaining.
+     Show 3 boxes connected by arrows: "Prompt 1: Summarize" → "Prompt 2: Analyze" →
+     "Prompt 3: Recommend". Below each box, show a small document icon representing the
+     output that feeds into the next step. Label the arrows "output → input". Use clean
+     style with soft colors and rounded boxes. -->
+
+```python
+# Step 1: Summarize
+summary = model.generate(f"Summarize this article: {article}")
+
+# Step 2: Extract key points
+points = model.generate(f"List 3 key points from: {summary}")
+
+# Step 3: Generate questions
+questions = model.generate(f"Create quiz questions about: {points}")
+```
+
+Each step is focused → better results than one giant prompt.
+
+---
+
+## What to avoid
+
+::: {.callout-warning}
+## Common prompting mistakes
+:::
+
+- **Over-engineering:** Longer prompts aren't always better
+- **Assuming mind-reading:** Be explicit, not implicit
+- **Negative constraints:** "Don't do X" is weaker than "Do Y instead"
+- **Ignoring iteration:** Your first prompt rarely works perfectly
+- **One-size-fits-all:** Different models may need different approaches
+
+---
+
+## Less is more (for modern models)
+
+Older advice emphasized lengthy, detailed prompts.
+
+Modern models (Gemini 3, GPT-5, Claude 4) often respond better to:
+
+- Clear, concise instructions
+- Direct statements of goals
+- Less "prompt engineering theater"
+
+**Test both approaches** — sometimes simple wins.
+
+---
+
+## Debugging prompts
+
+When outputs aren't what you expect:
+
+1. **Check the basics:** Is the task clear? Is the format specified?
+2. **Add examples:** Show what good output looks like
+3. **Break it down:** Is the task too complex for one prompt?
+4. **Adjust temperature:** Too random? Lower it. Too repetitive? Raise it.
+5. **Try rephrasing:** Sometimes different words trigger different behaviors
+
+---
+
+## Key takeaways
+
+- **Be specific:** State task, format, constraints, audience
+- **Use patterns:** Personas, few-shot examples, chain-of-thought
+- **Iterate:** Refine prompts based on actual outputs
+- **For APIs:** Use system instructions, structured outputs, prompt chaining
+- **Modern models:** Often prefer clarity over complexity
+
+---
+
+## Resources
+
+- [Prompt Engineering Guide](https://www.promptingguide.ai/)
+- [Gemini Prompt Design Strategies](https://ai.google.dev/gemini-api/docs/prompting-strategies)
+- [Gemini 3 Prompting Guide](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/start/gemini-3-prompting-guide)
