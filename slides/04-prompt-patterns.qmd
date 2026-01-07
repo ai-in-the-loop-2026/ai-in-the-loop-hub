@@ -235,12 +235,18 @@ the problem and suggest a fix.
 System instructions set persistent context for all messages:
 
 ```python
-model = genai.GenerativeModel(
-    model_name="gemini-2.0-flash",
-    system_instruction="""You are a helpful coding assistant.
-    Always provide code examples in Python.
-    Keep explanations concise but complete.
-    If you're unsure, say so rather than guessing."""
+from google import genai
+from google.genai import types
+
+client = genai.Client(api_key=api_key)
+
+response = client.models.generate_content(
+    model="gemini-2.0-flash",
+    contents=["Your prompt here"],
+    config=types.GenerateContentConfig(
+        system_instruction="You are a helpful coding assistant...",
+        temperature=0.7,
+    ),
 )
 ```
 
@@ -300,14 +306,20 @@ Break complex tasks into steps:
      style with soft colors and rounded boxes. -->
 
 ```python
+def generate(prompt: str) -> str:
+    response = client.models.generate_content(
+        model="gemini-2.0-flash", contents=[prompt]
+    )
+    return response.text
+
 # Step 1: Summarize
-summary = model.generate(f"Summarize this article: {article}")
+summary = generate(f"Summarize this article: {article}")
 
 # Step 2: Extract key points
-points = model.generate(f"List 3 key points from: {summary}")
+points = generate(f"List 3 key points from: {summary}")
 
 # Step 3: Generate questions
-questions = model.generate(f"Create quiz questions about: {points}")
+questions = generate(f"Create quiz questions about: {points}")
 ```
 
 Each step is focused → better results than one giant prompt.

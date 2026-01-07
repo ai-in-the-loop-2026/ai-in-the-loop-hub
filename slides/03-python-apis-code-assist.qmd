@@ -165,6 +165,10 @@ This is how we build applications that use AI!
 - **LangGraph:** Framework for building LLM applications with state and control flow
 - **Gemini API:** Google's LLM service
 
+::: {style="text-align: center;"}
+![](images/03-stack-diagram.png){width=40%}
+:::
+
 <!-- IMAGE: ![](images/03-stack-diagram.png){width=70%}
 
      DESCRIPTION: Layered diagram showing the technology stack.
@@ -173,7 +177,12 @@ This is how we build applications that use AI!
      "Python" with Python logo. Middle layer: "LangGraph" (framework for LLM apps). Top layer:
      "Gemini API" with a cloud icon. Draw arrows showing how they connect - Python provides
      the foundation, LangGraph structures the app, Gemini provides the AI. Use clean boxes
-     with rounded corners and soft colors. -->
+     with rounded corners and soft colors. 
+     
+     REVISED PROMPT: Create a layered stack diagram with 3 layers. Bottom layer:  
+     "Python" with Python logo. Middle layer: "LangGraph" (framework for LLM apps). Top layer:  
+     "Gemini API" with a cloud icon. Draw arrows showing how they connect. Use clean boxes  
+     with rounded corners and soft colors.-->
 
 ---
 
@@ -189,8 +198,12 @@ class State(TypedDict):
     prompt: str
     response: str
 
+def respond(state: State) -> dict:
+    # Call LLM here and return updated state
+    return {"response": "Hello back!"}
+
 graph = StateGraph(State)
-graph.add_node("respond", respond_fn)
+graph.add_node("respond", respond)
 graph.add_edge(START, "respond")
 graph.add_edge("respond", END)
 
@@ -293,6 +306,8 @@ An AI coding assistant built into VS Code:
 
 As you type, Code Assist suggests completions:
 
+![](images/03-code-assist-inline.png){width=85%}
+
 <!-- IMAGE: ![](images/03-code-assist-inline.png){width=85%}
 
      DESCRIPTION: Screenshot-style mockup of VS Code showing inline code suggestion.
@@ -301,9 +316,11 @@ As you type, Code Assist suggests completions:
      file with a few lines of code. On one line, show the user has typed "def calculate_"
      and show a grayed-out AI suggestion completing it as "def calculate_average(numbers):"
      with the function body suggested below in lighter gray. Include the VS Code sidebar
-     and a "Gemini" icon in the status bar. Use realistic VS Code dark theme colors. -->
+     and a "Gemini" icon in the status bar. Use realistic VS Code dark theme colors. 
+     
+     Used actual screenshot instead-->
 
-- Suggestions appear in gray
+- Suggestions appear grayed out
 - Press `Tab` to accept
 - Keep typing to ignore
 
@@ -335,7 +352,6 @@ The chat understands your current file and workspace context.
 
 - Accept code you don't understand
 - Trust it blindly for logic/correctness
-- Use it during red-light assessments
 
 ---
 
@@ -361,7 +377,7 @@ Remember the course philosophy:
 
 ## Next steps
 
-- Complete **A1** using the GitHub Classroom Workflow
 - Get your **Gemini API key** (see resources page)
 - Install **Gemini Code Assist** in VS Code (see resources page)
+- Start **A2** using the GitHub Classroom Workflow
 - Start experimenting with Code Assist as you work!
