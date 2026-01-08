@@ -12,7 +12,7 @@ project:
     - policies/**/*.qmd
     - resources/**/*.qmd
     - resources/**/*.md
-    - slides/index.qmd
+    - slides-listing.qmd
     - slides/**/[0-9][0-9]-*.qmd
 
 # Quarto does not render files/directories that start with `_`
@@ -41,7 +41,7 @@ website:
         text: Schedule
       - href: assignments.qmd
         text: Assignments
-      - href: slides/index.qmd
+      - href: slides-listing.qmd
         text: Slides
       - href: syllabus.qmd
         text: Syllabus

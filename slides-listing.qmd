@@ -1,0 +1,24 @@
+---
+title: "Slides"
+listing:
+  id: slides
+  # Only include numbered slide decks (e.g., 01-..., 02-...)
+  contents:
+    - "slides/[0-9][0-9]-*.qmd"
+  type: default
+  sort:
+    - date desc
+    - title
+  fields: [title, description, categories, tags, date]
+  filter-ui: true
+  page-size: 50
+---
+
+This page provides a second way to find slide decks (in addition to the [Schedule](schedule.qmd)).
+
+::: {.callout-tip}
+If you're looking for *what we're doing this week*, use the [Schedule](schedule.qmd).
+If you're looking for slides by topic, browse below (use the filters).
+:::
+
+## Slide decks

@@ -4,7 +4,11 @@ This folder contains **Quarto RevealJS** slide sources (`.qmd`).
 
 Students access slides through:
 1. the course website (rendered HTML), linked from `schedule.qmd`, and/or
-2. the Slides index page (`slides/index.qmd`), which auto-lists decks by metadata.
+2. the Slides listing page (`slides-listing.qmd` in the repo root), which auto-lists decks by metadata.
+
+> **Note:** The listing page lives at the root level (not `slides/index.qmd`) because
+> `_metadata.yml` sets `format: revealjs` for all files in this directory. Quarto has
+> issues when mixing HTML and RevealJS formats in the same directory via `_metadata.yml`.
 
 ---
 
@@ -21,7 +25,7 @@ Use **numbered filenames** so decks sort naturally:
 ---
 
 ## Slide metadata (categories + tags)
-We use **categories** and **tags** so students can browse slides by topic on `slides/index.qmd`.
+We use **categories** and **tags** so students can browse slides by topic on the slides listing page.
 
 ### Recommended practice
 - **categories:** 1–2 broad buckets (kept consistent across the term)
