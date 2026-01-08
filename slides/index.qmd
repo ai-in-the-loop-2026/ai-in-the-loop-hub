@@ -1,5 +1,6 @@
 ---
 title: "Slides"
+format: html
 listing:
   id: slides
   # Only include numbered slide decks (e.g., 01-..., 02-...)
