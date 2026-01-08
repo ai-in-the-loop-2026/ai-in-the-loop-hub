@@ -65,9 +65,11 @@ Don't assume the model will infer your intentions—state them directly.
 Tell the model exactly how to structure its response:
 
 > "List the top 5 Python web frameworks. For each one, provide:
+>
 > - Name
 > - One-sentence description
 > - Best use case
+>
 > Format as a markdown table."
 
 **Common formats:**
@@ -128,12 +130,15 @@ Ask the model to show its reasoning:
 
 ## Chain-of-thought: example output
 
-With "think step by step":
+With "think step by step" (ChatGPT 5.2):
 
-> 1. Start with 45 apples
-> 2. Sell 12: 45 - 12 = 33 apples
-> 3. Receive 30: 33 + 30 = 63 apples
-> 4. **Answer: 63 apples**
+> Let's do it step by step:
+>
+> 1. Start with **45** apples
+> 2. They sell **12** in the morning: $45-12=33$.
+> 3. They receive **30** more: $33 + 30 = 63$.
+>
+> So they have **63** apples now.
 
 The reasoning steps help catch errors and make the output verifiable.
 
@@ -142,6 +147,10 @@ The reasoning steps help catch errors and make the output verifiable.
 ## Pattern 6: Iterative refinement
 
 Prompting is rarely one-and-done:
+
+::: {style="text-align: center;"}
+![](images/04-iterative-prompting.png){width=60%}
+:::
 
 <!-- IMAGE: ![](images/04-iterative-prompting.png){width=75%}
 
@@ -152,12 +161,6 @@ Prompting is rarely one-and-done:
      "Refine Prompt" → back to "Write Prompt". In the center, write "Iterate until satisfied".
      Use clean arrows connecting the steps and soft colors. Make it look like a continuous
      improvement cycle. -->
-
-1. Start with a reasonable prompt
-2. Evaluate the output
-3. Identify what's missing or wrong
-4. Refine the prompt
-5. Repeat
 
 ---
 
@@ -191,6 +194,10 @@ In API applications, you need to:
 
 A reliable structure for API prompts:
 
+::: {style="text-align: center;"}
+![](images/04-ptcf-framework.png){width=60%}
+:::
+
 <!-- IMAGE: ![](images/04-ptcf-framework.png){width=80%}
 
      DESCRIPTION: Four-quadrant diagram showing the PTCF framework components.
@@ -200,11 +207,6 @@ A reliable structure for API prompts:
      Bottom-left "C - Context" (What background info is needed?), Bottom-right "F - Format"
      (How should output be structured?). Use distinct soft colors for each quadrant. Add a
      small icon in each box representing the concept. Clean, professional style. -->
-
-- **P**ersona: Who should the model act as?
-- **T**ask: What specifically should it do?
-- **C**ontext: What background information is relevant?
-- **F**ormat: How should the output be structured?
 
 ---
 
@@ -226,31 +228,67 @@ the problem and suggest a fix.
 **Code to review:**
 {code}
 """
+
+# Usage: prompt.format(code=user_code)
 ```
 
 ---
 
-## System instructions (Gemini API)
+## System instructions
 
-System instructions set persistent context for all messages:
+System instructions set persistent context for all messages.
+
+Example LangGraph node function:
 
 ```python
+def respond(state: State) -> dict:
+    response = client.models.generate_content(
+        model="gemini-3-flash-preview",
+        contents=[state["prompt"]],
+        config=types.GenerateContentConfig(
+            system_instruction="You are a helpful coding assistant...",
+            temperature=0.7,
+        ),
+    )
+    return {"response": response.text}
+```
+
+<!-- FULL CODE for reference:
+```python
+from typing_extensions import TypedDict
+from langgraph.graph import StateGraph, START, END
 from google import genai
 from google.genai import types
 
 client = genai.Client(api_key=api_key)
 
-response = client.models.generate_content(
-    model="gemini-2.0-flash",
-    contents=["Your prompt here"],
-    config=types.GenerateContentConfig(
-        system_instruction="You are a helpful coding assistant...",
-        temperature=0.7,
-    ),
-)
-```
+class State(TypedDict):
+    prompt: str
+    response: str
 
-System instructions are sent with every request—use them for:
+def respond(state: State) -> dict:
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=[state["prompt"]],
+        config=types.GenerateContentConfig(
+            system_instruction="You are a helpful coding assistant...",
+            temperature=0.7,
+        ),
+    )
+    return {"response": response.text}
+
+def build_app():
+    graph = StateGraph(State)
+    graph.add_node("respond", respond)
+    graph.add_edge(START, "respond")
+    graph.add_edge("respond", END)
+    return graph.compile()
+```
+-->
+
+---
+
+## When to use system instructions
 
 - Persona and role definition
 - Output constraints and formatting rules
@@ -271,55 +309,176 @@ prompt = """Extract the following from this product review:
 Respond in valid JSON only, no other text.
 
 Review: {review_text}"""
+
+# Usage: prompt.format(review_text=user_review)
 ```
 
 Modern Gemini APIs support `response_schema` for guaranteed JSON structure.
 
 ---
 
-## Temperature for API calls
+## Structured outputs: `response_schema`
 
-**Temperature** controls randomness (0.0 to 2.0):
+Example LangGraph node function with guaranteed JSON:
 
-| Temperature | Behavior | Use case |
-|-------------|----------|----------|
-| 0.0 - 0.3 | Deterministic, focused | Code, facts, structured data |
-| 0.5 - 0.7 | Balanced | General tasks |
-| 0.8 - 1.0 | Creative, varied | Brainstorming, writing |
+```python
+def analyze_review(state: State) -> dict:
+    response = client.models.generate_content(
+        model="gemini-3-flash-preview",
+        contents=[state["review"]],
+        config=types.GenerateContentConfig(
+            system_instruction="Extract sentiment, key points, and rating guess.",
+            response_mime_type="application/json",
+            response_schema={
+                "type": "object",
+                "properties": {
+                    "sentiment": {
+                        "type": "string",
+                        "enum": ["positive", "negative", "neutral"]
+                    },
+                    "key_points": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "maxItems": 3
+                    },
+                    "rating_guess": {"type": "integer", "minimum": 1, "maximum": 5}
+                }
+            }
+        ),
+    )
+    return {"analysis": json.loads(response.text)}
+```
 
-**Note:** Gemini 3 models work best at temperature 1.0 (the default).
+`response_mime_type`: `"application/json"`, `"text/x.enum"`, or `"text/plain"` (default)
+
+<!-- FULL CODE for reference:
+```python
+import json
+from typing_extensions import TypedDict
+from langgraph.graph import StateGraph, START, END
+from google import genai
+from google.genai import types
+
+client = genai.Client(api_key=api_key)
+
+class State(TypedDict):
+    review: str
+    analysis: dict
+
+def analyze_review(state: State) -> dict:
+    response = client.models.generate_content(
+        model="gemini-3-flash-preview",
+        contents=[state["review"]],
+        config=types.GenerateContentConfig(
+            system_instruction="Extract sentiment, key points, and rating guess.",
+            response_mime_type="application/json",
+            response_schema={
+                "type": "object",
+                "properties": {
+                    "sentiment": {
+                        "type": "string",
+                        "enum": ["positive", "negative", "neutral"]
+                    },
+                    "key_points": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "maxItems": 3
+                    },
+                    "rating_guess": {"type": "integer", "minimum": 1, "maximum": 5}
+                }
+            }
+        ),
+    )
+    # response.text is guaranteed valid JSON matching the schema
+    return {"analysis": json.loads(response.text)}
+
+def build_app():
+    graph = StateGraph(State)
+    graph.add_node("analyze", analyze_review)
+    graph.add_edge(START, "analyze")
+    graph.add_edge("analyze", END)
+    return graph.compile()
+```
+-->
 
 ---
 
-## Prompt chaining
+## Temperature for API calls
 
-Break complex tasks into steps:
+**Temperature** controls randomness (0.0 to 2.0).
 
-<!-- IMAGE: ![](images/04-prompt-chain.png){width=85%}
+Start at **1.0** (the default for Gemini 3), then adjust:
 
-     DESCRIPTION: Linear flow diagram showing prompt chaining with multiple steps.
+| Direction | Effect | When to use |
+|-----------|--------|-------------|
+| Lower (toward 0) | More deterministic, focused | Code, facts, structured data |
+| Higher (toward 2) | More creative, varied | Brainstorming, writing |
 
-     PROMPT FOR NANO BANANA PRO: Create a horizontal flow diagram showing prompt chaining.
-     Show 3 boxes connected by arrows: "Prompt 1: Summarize" → "Prompt 2: Analyze" →
-     "Prompt 3: Recommend". Below each box, show a small document icon representing the
-     output that feeds into the next step. Label the arrows "output → input". Use clean
-     style with soft colors and rounded boxes. -->
+---
+
+## Prompt chaining: state and nodes
+
+Break complex tasks into steps. Define state and node functions:
 
 ```python
-def generate(prompt: str) -> str:
+class State(TypedDict):
+    article: str
+    summary: str
+    points: str
+    questions: str
+
+def summarize(state: State) -> dict:
     response = client.models.generate_content(
-        model="gemini-2.0-flash", contents=[prompt]
+        model="gemini-3-flash-preview",
+        contents=[f"Summarize this article: {state['article']}"]
     )
-    return response.text
+    return {"summary": response.text}
 
-# Step 1: Summarize
-summary = generate(f"Summarize this article: {article}")
+def extract_points(state: State) -> dict:
+    response = client.models.generate_content(
+        model="gemini-3-flash-preview",
+        contents=[f"List 3 key points from: {state['summary']}"]
+    )
+    return {"points": response.text}
 
-# Step 2: Extract key points
-points = generate(f"List 3 key points from: {summary}")
+def generate_questions(state: State) -> dict:
+    response = client.models.generate_content(
+        model="gemini-3-flash-preview",
+        contents=[f"Create quiz questions about: {state['points']}"]
+    )
+    return {"questions": response.text}
+```
 
-# Step 3: Generate questions
-questions = generate(f"Create quiz questions about: {points}")
+---
+
+## Prompt chaining: the graph
+
+::: {style="text-align: center;"}
+![](images/04-prompt-chain.png){width=60%}
+:::
+
+<!-- IMAGE: ![](images/04-prompt-chain.png){width=70%}
+
+     DESCRIPTION: LangGraph-style flow diagram showing prompt chaining.
+
+     PROMPT FOR NANO BANANA PRO: Create a LangGraph-style flow diagram showing prompt chaining.
+     Show a horizontal graph with labeled nodes connected by arrows:
+     START (small circle) → "summarize" (rounded box) → "extract_points" (rounded box) →
+     "generate_questions" (rounded box) → END (small circle).
+     Above the chain, show a "State" box with fields: article, summary, points, questions.
+     Draw a dotted line from State to the nodes indicating state flows through.
+     Use clean style with soft colors. Label it "LangGraph Prompt Chain". -->
+
+```python
+graph = StateGraph(State)
+graph.add_node("summarize", summarize)
+graph.add_node("extract_points", extract_points)
+graph.add_node("generate_questions", generate_questions)
+graph.add_edge(START, "summarize")
+graph.add_edge("summarize", "extract_points")
+graph.add_edge("extract_points", "generate_questions")
+graph.add_edge("generate_questions", END)
+app = graph.compile()
 ```
 
 Each step is focused → better results than one giant prompt.
