@@ -39,12 +39,12 @@ The final weeks shift toward group project work: maintaining a well-organized pr
 
 - A fairly recent Mac or Windows laptop that you can install software on (iPads or Android tablets, Chromebooks, etc. are not sufficient/supported) for working on assignments in and out of class. Linux is welcome, but self-supported
 - GitHub account for accepting and submitting assignments, developing and maintaining code repositories
-- Personal Google account (separate from .edu account), like a GMail account, for accessing Google AI Studio and other resources. *A free account should be sufficient for this course*
+- Personal Google account (separate from .edu account), like a GMail account, for accessing Google AI Studio and other resources.
 - Software necessary for the course installed on your laptop. This includes VS Code with various extensions, Python development tools, various Python packages, Gemini CLI, etc. You do not need to set this up before the class starts
-- An API key for using Gemini models. You do not need to set this up before the class starts. *The free tier should be sufficient for this course*
+- An API key for using Gemini models. You do not need to set this up before the class starts.
 - A public website (github pages) "portfolio piece" that summarizes/demonstrates your final project. You do not need to set this up before the class starts, and there is no hosting cost
 
-**Use of other generative AI tools.** We will primarily use Google/Gemini generative AI tools, which allow a substantial amount of free use. You are encouraged to responsibly explore other free and paid generative AI tools (e.g., Claude Code, Codex, Anthropic or OpenAI API, Cursor, etc.) when it is appropriate in the course. However, your instructor will not typically provide technical support for these tools.
+**Use of other generative AI tools.** We will primarily use Google/Gemini generative AI tools. You are encouraged to responsibly explore other free and paid generative AI tools (e.g., Claude Code, Codex, Anthropic or OpenAI API, Cursor, etc.) when it is appropriate in the course. However, your instructor will not typically provide technical support for these tools.
 
 
 ## Evaluation

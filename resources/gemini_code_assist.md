@@ -9,7 +9,7 @@ tags: [gemini, vscode, extension, ai-assistant]
 # Installing Gemini Code Assist
 ## Creating with AI in the Loop — VS Code extension setup
 
-Gemini Code Assist is a free AI coding assistant from Google that integrates directly into VS Code. It provides code completions, chat-based help, and code generation.
+Gemini Code Assist is an AI coding assistant from Google that integrates directly into VS Code. It provides code completions, chat-based help, and code generation.
 
 ---
 
@@ -48,7 +48,9 @@ After signing in, you should see the Gemini chat panel. Try typing a question li
 
 ## Free tier
 
-Gemini Code Assist is free. The daily limits are sufficient for course assignments.
+- Gemini Code Assist can be used for free with a free tier Google Account
+- If you hit usage limits, you may need to wait until the next day for limits to reset
+- There is also a paid tier with higher limits if needed
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "Getting a Gemini API Key"
-description: "How to obtain a free Gemini API key from Google AI Studio for course assignments."
+description: "How to obtain a Gemini API key from Google AI Studio for course assignments."
 date: 2026-01-01
 categories: [Setup]
 tags: [gemini, api-key, google-ai-studio, authentication]
@@ -9,7 +9,7 @@ tags: [gemini, api-key, google-ai-studio, authentication]
 # Getting a Gemini API Key
 ## Creating with AI in the Loop — Google AI Studio setup
 
-This guide shows you how to get a free Gemini API key using Google AI Studio. You'll need this for assignments that interact with Gemini models.
+This guide shows you how to get a Gemini API key using Google AI Studio. You'll need this for assignments that interact with Gemini models.
 
 ---
 
@@ -33,7 +33,7 @@ This guide shows you how to get a free Gemini API key using Google AI Studio. Yo
 
 6. Under **Choose an imported project**, click **+ Create a new project** and name it (e.g., `AI in the Loop`). You may need to re-enter the key name after creating the project.
 
-7. Click **Create**. You do not need to set up billing—the free tier is sufficient for this course.
+7. Click **Create**. Initially you do not need to set up billing.
 
 8. Click the **copy icon** to copy your API key. Store it immediately (see next section).
 
@@ -83,8 +83,11 @@ If you need to copy your key again, go to <https://aistudio.google.com/app/apike
 
 Google AI Studio provides a free tier with rate limits:
 
-- Sufficient for course assignments
 - If you exceed limits, you'll get a rate limit error (not a charge)
+- You are likely to reach this limit during normal assignment work
+- If you need more usage (you will), you can upgrade to a paid plan in Google AI Studio
+- Currently, when you upgrade, you get $300 free credit for the first 90 days
+- You will need to add billing information to upgrade
 - See current limits: <https://ai.google.dev/pricing>
 
 ---

@@ -59,7 +59,10 @@ After signing in, you can start chatting with Gemini about your code.
 
 ## Free tier
 
-Gemini CLI is free. The daily limits are sufficient for course assignments.
+- Gemini CLI can be used for free with a free tier Google Account
+- Gemini CLI and Gemini Code Assist agent mode share quotas
+- If you hit usage limits, you may need to wait until the next day for limits to reset
+- There is also a paid tier with higher limits if needed
 
 ---
 
