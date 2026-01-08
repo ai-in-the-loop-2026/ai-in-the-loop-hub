@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-01-01">
-<meta name="description" content="Set up Google’s Gemini CLI for AI assistance in your terminal.">
 
-<title>Installing Gemini CLI – Creating with AI in the Loop</title>
+<title>Slides – Creating with AI in the Loop</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,62 +20,29 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-2a504c98ff87331e1512fcad2ebb3bdc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-listing/list.min.js"></script>
+<script src="site_libs/quarto-listing/quarto-listing.js"></script>
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-2a504c98ff87331e1512fcad2ebb3bdc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,8 +69,66 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-slides .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-description','listing-categories','listing-tags','listing-date',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-slides'] = new List('listing-slides', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -116,9 +139,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
     </a>
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Creating with AI in the Loop</span>
     </a>
   </div>
@@ -129,31 +152,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../schedule.html"> 
+    <a class="nav-link" href="./schedule.html"> 
 <span class="menu-text">Schedule</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../assignments.html"> 
+    <a class="nav-link" href="./assignments.html"> 
 <span class="menu-text">Assignments</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../slides-listing.html"> 
+    <a class="nav-link active" href="./slides-listing.html" aria-current="page"> 
 <span class="menu-text">Slides</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../syllabus.html"> 
+    <a class="nav-link" href="./syllabus.html"> 
 <span class="menu-text">Syllabus</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../policies/index.html"> 
+    <a class="nav-link" href="./policies/index.html"> 
 <span class="menu-text">Policies</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../resources/index.html"> 
+    <a class="nav-link" href="./resources/index.html"> 
 <span class="menu-text">Resources</span></a>
   </li>  
 </ul>
@@ -184,25 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#installing-gemini-cli" id="toc-installing-gemini-cli" class="nav-link active" data-scroll-target="#installing-gemini-cli">Installing Gemini CLI</a>
-  <ul class="collapse">
-  <li><a href="#creating-with-ai-in-the-loop-terminal-ai-assistant" id="toc-creating-with-ai-in-the-loop-terminal-ai-assistant" class="nav-link" data-scroll-target="#creating-with-ai-in-the-loop-terminal-ai-assistant">Creating with AI in the Loop — Terminal AI assistant</a></li>
-  <li><a href="#macos" id="toc-macos" class="nav-link" data-scroll-target="#macos">macOS</a></li>
-  <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows">Windows</a>
-  <ul class="collapse">
-  <li><a href="#install-node.js-version-20-or-higher" id="toc-install-node.js-version-20-or-higher" class="nav-link" data-scroll-target="#install-node.js-version-20-or-higher">1) Install Node.js (version 20 or higher)</a></li>
-  <li><a href="#install-gemini-cli" id="toc-install-gemini-cli" class="nav-link" data-scroll-target="#install-gemini-cli">2) Install Gemini CLI</a></li>
-  </ul></li>
-  <li><a href="#first-run-sign-in" id="toc-first-run-sign-in" class="nav-link" data-scroll-target="#first-run-sign-in">First run: Sign in</a></li>
-  <li><a href="#free-tier" id="toc-free-tier" class="nav-link" data-scroll-target="#free-tier">Free tier</a></li>
-  </ul></li>
-  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a>
-  <ul class="collapse">
-  <li><a href="#macos-brew-command-not-found" id="toc-macos-brew-command-not-found" class="nav-link" data-scroll-target="#macos-brew-command-not-found">macOS: <code>brew: command not found</code></a></li>
-  <li><a href="#windows-node-or-npm-not-recognized" id="toc-windows-node-or-npm-not-recognized" class="nav-link" data-scroll-target="#windows-node-or-npm-not-recognized">Windows: <code>node</code> or <code>npm</code> not recognized</a></li>
-  <li><a href="#authentication-issues" id="toc-authentication-issues" class="nav-link" data-scroll-target="#authentication-issues">Authentication issues</a></li>
-  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a></li>
-  </ul></li>
+  <li><a href="#slide-decks" id="toc-slide-decks" class="nav-link active" data-scroll-target="#slide-decks">Slide decks</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ai-in-the-loop-2026/ai-in-the-loop-hub/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -211,28 +216,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Installing Gemini CLI</h1>
-  <div class="quarto-categories">
-    <div class="quarto-category">Setup</div>
-  </div>
-  </div>
-
-<div>
-  <div class="description">
-    Set up Google’s Gemini CLI for AI assistance in your terminal.
-  </div>
+<h1 class="title">Slides</h1>
 </div>
+
 
 
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">January 1, 2026</p>
-    </div>
-  </div>
   
     
   </div>
@@ -242,87 +233,144 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="installing-gemini-cli" class="level1">
-<h1>Installing Gemini CLI</h1>
-<section id="creating-with-ai-in-the-loop-terminal-ai-assistant" class="level2">
-<h2 class="anchored" data-anchor-id="creating-with-ai-in-the-loop-terminal-ai-assistant">Creating with AI in the Loop — Terminal AI assistant</h2>
-<p>Gemini CLI brings Gemini AI directly to your terminal. You can ask questions, generate code, and work with your codebase from the command line.</p>
-<hr>
-</section>
-<section id="macos" class="level2">
-<h2 class="anchored" data-anchor-id="macos">macOS</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install gemini-cli</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Verify: <code>gemini --version</code></p>
-<hr>
-</section>
-<section id="windows" class="level2">
-<h2 class="anchored" data-anchor-id="windows">Windows</h2>
-<section id="install-node.js-version-20-or-higher" class="level3">
-<h3 class="anchored" data-anchor-id="install-node.js-version-20-or-higher">1) Install Node.js (version 20 or higher)</h3>
-<p>Download the LTS installer from <a href="https://nodejs.org" class="uri">https://nodejs.org</a> and run it. Reboot if prompted.</p>
-<p>Verify:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>node <span class="op">-</span>v</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>npm <span class="op">-</span>v</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="install-gemini-cli" class="level3">
-<h3 class="anchored" data-anchor-id="install-gemini-cli">2) Install Gemini CLI</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>npm install <span class="op">-</span>g @google<span class="op">/</span>gemini-cli</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Verify: <code>gemini --version</code></p>
-<hr>
-</section>
-</section>
-<section id="first-run-sign-in" class="level2">
-<h2 class="anchored" data-anchor-id="first-run-sign-in">First run: Sign in</h2>
-<ol type="1">
-<li>Open a terminal in your project directory.</li>
-<li>Run <code>gemini</code>.</li>
-<li>Select <strong>Login with Google</strong>.</li>
-<li>Sign in with your <strong>personal Google account</strong> (not your .edu account).</li>
-</ol>
-<p>After signing in, you can start chatting with Gemini about your code.</p>
-<hr>
-</section>
-<section id="free-tier" class="level2">
-<h2 class="anchored" data-anchor-id="free-tier">Free tier</h2>
-<ul>
-<li>Gemini CLI can be used for free with a free tier Google Account</li>
-<li>Gemini CLI and Gemini Code Assist agent mode share quotas</li>
-<li>If you hit usage limits, you may need to wait until the next day for limits to reset</li>
-<li>There is also a paid tier with higher limits if needed</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="troubleshooting" class="level1">
-<h1>Troubleshooting</h1>
-<section id="macos-brew-command-not-found" class="level2">
-<h2 class="anchored" data-anchor-id="macos-brew-command-not-found">macOS: <code>brew: command not found</code></h2>
-<p>Install Homebrew first. See <a href="../resources/initial_setup_macos.html">Initial Setup (macOS)</a>.</p>
-</section>
-<section id="windows-node-or-npm-not-recognized" class="level2">
-<h2 class="anchored" data-anchor-id="windows-node-or-npm-not-recognized">Windows: <code>node</code> or <code>npm</code> not recognized</h2>
-<p>Restart your terminal after installing Node.js. If still not working, reinstall Node.js and make sure “Add to PATH” is checked.</p>
-</section>
-<section id="authentication-issues" class="level2">
-<h2 class="anchored" data-anchor-id="authentication-issues">Authentication issues</h2>
-<ul>
-<li>Use a personal Google account, not your .edu account</li>
-<li>Try signing out and back in: <code>gemini --logout</code> then <code>gemini</code></li>
-</ul>
-<hr>
-</section>
-<section id="resources" class="level2">
-<h2 class="anchored" data-anchor-id="resources">Resources</h2>
-<ul>
-<li>Official docs: <a href="https://geminicli.com/docs/" class="uri">https://geminicli.com/docs/</a></li>
-<li>GitHub: <a href="https://github.com/google-gemini/gemini-cli" class="uri">https://github.com/google-gemini/gemini-cli</a></li>
-</ul>
+<p>This page provides a second way to find slide decks (in addition to the <a href="./schedule.html">Schedule</a>).</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you’re looking for <em>what we’re doing this week</em>, use the <a href="./schedule.html">Schedule</a>. If you’re looking for slides by topic, browse below (use the filters).</p>
+</div>
+</div>
+<section id="slide-decks" class="level2">
+<h2 class="anchored" data-anchor-id="slide-decks">Slide decks</h2>
+
 
 
 </section>
-</section>
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<div class="quarto-listing quarto-listing-container-default" id="listing-slides">
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="UHJvbXB0aW5nJTJDQ29uY2VwdHM=" data-listing-date-sort="1769144400000" data-listing-file-modified-sort="1767896942747" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2521">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./slides/04-prompt-patterns.html" class="no-external">Prompt Patterns and Best Practices</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('UHJvbXB0aW5n'); return false;">Prompting</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29uY2VwdHM='); return false;">Concepts</div>
+
+</div>
+<div class="delink listing-description"><a href="./slides/04-prompt-patterns.html" class="no-external">
+<p>Effective prompting techniques for chat interfaces and API-based LLM applications.</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="./slides/04-prompt-patterns.html" class="no-external">
+<div class="listing-date">
+Jan 23, 2026
+</div>
+<div class="metadata-value listing-tags">
+prompts,patterns,gemini,api,best-practices
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="UHl0aG9uJTJDQVBJcyUyQ1Rvb2xz" data-listing-date-sort="1768971600000" data-listing-file-modified-sort="1767825217835" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1370">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./slides/03-python-apis-code-assist.html" class="no-external">Python, APIs, and Code Assist</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('QVBJcw=='); return false;">APIs</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('VG9vbHM='); return false;">Tools</div>
+
+</div>
+<div class="delink listing-description"><a href="./slides/03-python-apis-code-assist.html" class="no-external">
+<p>Python essentials, working with LLM APIs, and AI-assisted coding in VS Code.</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="./slides/03-python-apis-code-assist.html" class="no-external">
+<div class="listing-date">
+Jan 21, 2026
+</div>
+<div class="metadata-value listing-tags">
+python,api,gemini,langraph,code-assist
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="Q29uY2VwdHM=" data-listing-date-sort="1768453200000" data-listing-file-modified-sort="1767648178474" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2162">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./slides/02-intro-to-llms.html" class="no-external">Introduction to Large Language Models</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29uY2VwdHM='); return false;">Concepts</div>
+
+</div>
+<div class="delink listing-description"><a href="./slides/02-intro-to-llms.html" class="no-external">
+<p>Neural network basics, transformer architecture, and how LLMs generate text.</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="./slides/02-intro-to-llms.html" class="no-external">
+<div class="listing-date">
+Jan 15, 2026
+</div>
+<div class="metadata-value listing-tags">
+llm,neural-networks,transformers
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-categories="V29ya2Zsb3c=" data-listing-date-sort="1768280400000" data-listing-file-modified-sort="1767645642108" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="202">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./slides/01-course-overview-setup.html" class="no-external">Course Overview and Workflow Setup</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('V29ya2Zsb3c='); return false;">Workflow</div>
+
+</div>
+<div class="delink listing-description"><a href="./slides/01-course-overview-setup.html" class="no-external">
+<p>What this course is, how we’ll work, and how to use GitHub Classroom + autograding successfully.</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="./slides/01-course-overview-setup.html" class="no-external">
+<div class="listing-date">
+Jan 13, 2026
+</div>
+<div class="metadata-value listing-tags">
+github,setup,python
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -752,5 +800,5 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

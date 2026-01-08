@@ -329,8 +329,15 @@
     "text": "AI Dev Log\n\nStarting with A1 you will complete an AI Dev Log for each build assignment\nLook for it in the docs folder in the repo\nSome entries probably won’t be relevant for A1–write: “none” or “NA”\n\n## Entry N - [Brief title]\n\n**Date:** YYYY-MM-DD\n**Goal:** [What you were trying to accomplish]\n**Tool used:** [e.g., ChatGPT, Claude, Copilot, none]\n**Prompt/Question:** [What you asked the AI, or describe the problem]\n**AI Response:** [Key suggestions or guidance received]\n**Changes Made:** [Actual code/files modified]\n**Testing:** [How you verified it works]\n**Result:** [Did it work? Any issues?]"
   },
   {
-    "objectID": "slides/index.html#slide-decks",
-    "href": "slides/index.html#slide-decks",
+    "objectID": "slides-listing.html",
+    "href": "slides-listing.html",
+    "title": "Slides",
+    "section": "",
+    "text": "This page provides a second way to find slide decks (in addition to the Schedule)."
+  },
+  {
+    "objectID": "slides-listing.html#slide-decks",
+    "href": "slides-listing.html#slide-decks",
     "title": "Slides",
     "section": "Slide decks",
     "text": "Slide decks"

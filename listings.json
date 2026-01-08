@@ -1,5 +1,14 @@
 [
   {
+    "listing": "/slides-listing.html",
+    "items": [
+      "/slides/04-prompt-patterns.html",
+      "/slides/03-python-apis-code-assist.html",
+      "/slides/02-intro-to-llms.html",
+      "/slides/01-course-overview-setup.html"
+    ]
+  },
+  {
     "listing": "/resources/index.html",
     "items": [
       "/resources/faq.html",
