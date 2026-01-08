@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-html/tabby.min.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -11,7 +9,8 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.24">
 
-  <title>Creating with AI in the Loop – Slides</title>
+  <meta name="dcterms.date" content="2026-01-15">
+  <title>Creating with AI in the Loop – Introduction to Large Language Models</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -31,35 +30,6 @@
     }
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-0fde88a82f0356838740f155f1088782.css">
-  <script>
-
-    window.document.addEventListener("DOMContentLoaded", function (_event) {
-      const listingTargetEl = window.document.querySelector('#listing-slides .list');
-      if (!listingTargetEl) {
-        // No listing discovered, do not attach.
-        return; 
-      }
-
-      const options = {
-        valueNames: ['listing-title','listing-description','listing-categories','listing-tags','listing-date',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-        
-        searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
-      };
-
-      window['quarto-listings'] = window['quarto-listings'] || {};
-      window['quarto-listings']['listing-slides'] = new List('listing-slides', options);
-
-      if (window['quarto-listing-loaded']) {
-        window['quarto-listing-loaded']();
-      }
-    });
-
-    window.addEventListener('hashchange',() => {
-      if (window['quarto-listing-loaded']) {
-        window['quarto-listing-loaded']();
-      }
-    })
-    </script>
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -157,33 +127,341 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Slides</h1>
+  <h1 class="title">Introduction to Large Language Models</h1>
 
 <div class="quarto-title-authors">
 </div>
 
+  <p class="date">2026-01-15</p>
 </section>
-<section class="slide level2">
-
-<p>This page provides a second way to find slide decks (in addition to the <a href="../schedule.html">Schedule</a>).</p>
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Tip</strong></p>
-</div>
-<div class="callout-content">
-<p>If you’re looking for <em>what we’re doing this week</em>, use the <a href="../schedule.html">Schedule</a>.<br>
-If you’re looking for slides by topic, browse below (use the filters).</p>
-</div>
-</div>
-</div>
+<section id="todays-goals" class="slide level2">
+<h2>Today’s goals</h2>
+<ul>
+<li>Understand what a neural network is (high level)</li>
+<li>Learn how transformers work (the architecture behind LLMs)</li>
+<li>See how LLMs generate text</li>
+<li>Preview A1 — your first Python assignment</li>
+</ul>
 </section>
-<section id="slide-decks" class="slide level2">
-<h2>Slide decks</h2>
+<section id="what-is-an-llm" class="slide level2">
+<h2>What is an LLM?</h2>
+<p>A <strong>Large Language Model</strong> is a neural network trained on massive amounts of text to predict the next word (token).</p>
+<ul>
+<li>“Large” = billions of parameters (learned weights)</li>
+<li>“Language” = trained on text data</li>
+<li>“Model” = a mathematical function that maps input → output</li>
+</ul>
+<p>Examples: GPT-5, Claude, Gemini</p>
+</section>
+<section id="neural-networks-the-basic-idea" class="slide level2">
+<h2>Neural networks: the basic idea</h2>
+<p>A neural network is a function that:</p>
+<ol type="1">
+<li>Takes input (e.g., words, pixels, numbers)</li>
+<li>Passes it through layers of simple computations</li>
+<li>Produces output (e.g., next word prediction)</li>
+</ol>
+<p>Each layer transforms the data, learning increasingly abstract patterns.</p>
+</section>
+<section id="a-single-neuron" class="slide level2">
+<h2>A single neuron</h2>
 
+<!-- IMAGE: ![](images/02-neuron.png)
+
+     DESCRIPTION: Diagram of a single neuron with inputs x1, x2, x3, weights w1, w2, w3, bias b,
+     summation, activation function, and output. Shows the formula: y = f(Σ(wi*xi) + b)
+
+     PROMPT FOR NANO BANANA PRO: Create a clean diagram of a single artificial neuron. Show 3 inputs
+     (x1, x2, x3) on the left, each with a weight (w1, w2, w3) on the connecting lines. These feed
+     into a circle (the neuron body) that shows summation (Σ). Add a bias input (b). Show the
+     activation function f() applied to the sum, with a single output on the right. Include the
+     formula: y = f(Σ(wi*xi) + b). Use a clean, minimal style with soft colors.
+
+     FOLLOW-UP PROMPT: in the previous image of a single artificial neuron: modify the image so that the neuron body (circle) only includes the summation. It should output to f(), which should output to y. Format the formula so that it is prettier and use a \cdot instead of * for the product.
+
+     https://gemini.google.com/app/f7507e36487a8de8?utm_source=app_launcher&utm_medium=owned&utm_campaign=base_all
+
+```
+       x₁ ──w₁──╲
+                 ╲
+       x₂ ──w₂───→ [Σ] → f(·) → output
+                 ╱
+       x₃ ──w₃──╱
+                ↑
+               bias
+```
+-->
+<img data-src="images/02-neuron.png" class="r-stretch"><p><strong>Key idea:</strong> Each neuron computes a weighted sum of inputs, then applies an activation function.</p>
+</section>
+<section id="layers-of-neurons" class="slide level2">
+<h2>Layers of neurons</h2>
+
+<!-- IMAGE: ![](images/02-feedforward-network.png)
+
+     DESCRIPTION: Simple feedforward neural network with input layer (4 nodes), hidden layer
+     (3 nodes), and output layer (2 nodes). Lines connect every node in adjacent layers.
+
+     PROMPT FOR NANO BANANA PRO: Create a diagram of a simple feedforward neural network. Show
+     an input layer with 4 circles on the left, a hidden layer with 3 circles in the middle,
+     and an output layer with 2 circles on the right. Draw lines connecting every node in one
+     layer to every node in the next layer. Label the layers. Use a clean style with the layers
+     in different soft colors. 
+
+     https://gemini.google.com/app/f7507e36487a8de8?utm_source=app_launcher&utm_medium=owned&utm_campaign=base_all
+
+```
+  Input        Hidden       Output
+  Layer        Layer        Layer
+
+   (•)─────────(•)─────────(•)
+    │ ╲       ╱ │ ╲       ╱
+   (•)──╳────(•)──╳────(•)
+    │ ╱       ╲ │ ╱
+   (•)─────────(•)
+    │         ╱
+   (•)───────╱
+```
+
+-->
+<img data-src="images/02-feedforward-network.png" class="r-stretch"><ul>
+<li>Each connection has a <strong>weight</strong> (learned during training)</li>
+<li>The network learns by adjusting weights to minimize prediction errors</li>
+</ul>
+</section>
+<section id="how-neural-networks-learn" class="slide level2">
+<h2>How neural networks learn</h2>
+<ol type="1">
+<li><strong>Forward pass:</strong> Input flows through the network → prediction</li>
+<li><strong>Loss calculation:</strong> Compare prediction to correct answer</li>
+<li><strong>Backward pass:</strong> Calculate how each weight contributed to the error</li>
+<li><strong>Update weights:</strong> Adjust weights to reduce error</li>
+<li><strong>Repeat</strong> millions of times on training data</li>
+</ol>
+<p>This process is called <strong>gradient descent</strong> + <strong>backpropagation</strong>.</p>
+</section>
+<section id="tokens-not-words" class="slide level2">
+<h2>Tokens, not words</h2>
+<p>LLMs don’t see words—they see <strong>tokens</strong> (subword pieces):</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Text</th>
+<th>Tokens</th>
+<th>Token IDs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>“Hello”</td>
+<td>[“Hello”]</td>
+<td>[13225]</td>
+</tr>
+<tr class="even">
+<td>“unhappiness”</td>
+<td>[“un”, “h”, “appiness”]</td>
+<td>[373, 71, 117779]</td>
+</tr>
+<tr class="odd">
+<td>“ChatGPT”</td>
+<td>[“Chat”, “GPT”]</td>
+<td>[14065, 162016]</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why?</strong> Handles rare words, typos, new words efficiently.</p>
+<p>Each token is represented by a unique token ID (positive integer)</p>
+<p>Typical vocab: 100,000+ tokens</p>
+</section>
+<section id="from-basic-networks-to-transformers" class="slide level2">
+<h2>From basic networks to transformers</h2>
+<p>Early neural networks for language had problems:</p>
+<ul>
+<li><strong>Recurrent networks (RNNs):</strong> Process tokens sequentially → hard to parallelize, long-range dependencies can be difficult</li>
+<li><strong>Attention breakthrough (2017):</strong> Process tokens in parallel; for each token compute attention weights over other tokens to combine the most relevant context</li>
+</ul>
+<p>The <strong>Transformer</strong> architecture uses attention to handle long text efficiently</p>
+</section>
+<section id="the-transformer-key-components" class="slide level2">
+<h2>The transformer: key components</h2>
+<div style="text-align: center;">
+<p><img data-src="images/02-transformer-pipeline.png" style="width:85.0%"></p>
+</div>
+<!-- IMAGE: ![](images/02-transformer-pipeline.png){width="90%"}
+
+     DESCRIPTION: End-to-end transformer pipeline showing the full flow from tokens to output.
+
+     PROMPT FOR NANO BANANA PRO: Create a horizontal pipeline diagram for a transformer LLM.
+     Show boxes connected by arrows in this order: "Tokens" → "Embeddings + Position" →
+     a box labeled "Transformer Blocks (×N)" containing "Self-Attention" and "Feed-Forward" stacked →
+     "Linear + Softmax" → "Next Token Probs". Use clean boxes with rounded corners
+     and soft colors. Make the transformer blocks box slightly larger to show it repeats.
+
+```
+┌────────┐   ┌─────────────────┐   ┌─────────────────────────┐   ┌───────────────┐   ┌─────────────┐
+│ Tokens │ → │ Embeddings +    │ → │  Transformer Blocks(×N) │ → │ Linear +      │ → │ Next Token  │
+│        │   │ Position Info   │   │  ┌─────────────────┐    │   │ Softmax       │   │ Probs       │
+└────────┘   └─────────────────┘   │  │ Self-Attention  │    │   └───────────────┘   └─────────────┘
+                                   │  │ Feed-Forward    │    │
+                                   │  └─────────────────┘    │
+                                   └─────────────────────────┘
+```
+-->
+<ul>
+<li><strong>Embeddings + Position:</strong> Convert token IDs to vectors, add position information</li>
+<li><strong>Transformer Blocks:</strong> Repeated layers of attention + feed-forward (dozens of these)</li>
+<li><strong>Output:</strong> Probability distribution over all possible next tokens</li>
+</ul>
+</section>
+<section id="embeddings-tokens-as-vectors" class="slide level2">
+<h2>Embeddings: tokens as vectors</h2>
+<p>Each token maps to a <strong>vector</strong> (list of numbers):</p>
+<pre><code>"cat" → [0.2, -0.5, 0.8, 0.1, ...]   
+"dog" → [0.3, -0.4, 0.7, 0.2, ...]   (similar to "cat")
+"run" → [-0.1, 0.9, -0.3, 0.6, ...]  (different direction)</code></pre>
+<ul>
+<li>Embeddings are vectors in <span class="math inline">\(\mathbb{R}^d\)</span> (<span class="math inline">\(d\)</span> typically in the thousands)</li>
+<li>Similar words have similar vectors</li>
+<li>Embeddings are <strong>learned</strong> during training</li>
+<li>Sequence of <span class="math inline">\(L\)</span> input tokens → <span class="math inline">\(L\)</span> vectors → <span class="math inline">\(L\times d\)</span> input matrix</li>
+</ul>
+</section>
+<section id="positional-encoding" class="slide level2">
+<h2>Positional encoding</h2>
+<p>Transformers process tokens in parallel—but token order matters!</p>
+<p><em>“The cat chased the dog”</em> ≠ <em>“The dog chased the cat”</em></p>
+<p><strong>Solution:</strong> Inject position info into each token representation.</p>
+<ul>
+<li>Each position gets its own positional encoding (e.g., a vector for position 1, 2, 3, …)</li>
+<li>Often <strong>added</strong> to the token embedding<br>
+<em>(some modern LLMs encode position inside the attention computation instead)</em></li>
+<li>This gives the model the information it needs to learn how order affects meaning</li>
+</ul>
+</section>
+<section id="self-attention-how-tokens-share-information" class="slide level2">
+<h2>Self-attention: how tokens share information</h2>
+<p>For each token, the model computes <strong>attention weights</strong> over other tokens, then forms a new representation as a <strong>weighted mix</strong> of their information.</p>
+<p><em>“The cat sat on the mat because it was tired.”</em><br>
+To interpret <strong>“it”</strong>, the model should weight <strong>“cat”</strong> more than <strong>“mat”</strong>.</p>
+<p>This happens <strong>for every token</strong>, in every transformer block.</p>
+</section>
+<section id="attention-visualized" class="slide level2">
+<h2>Attention visualized</h2>
+
+<!-- IMAGE: ![](images/02-attention-heatmap.png)
+
+     DESCRIPTION: Attention heatmap for "The cat sat on the mat" showing which words attend
+     to which other words. 6x6 grid with color intensity indicating attention weights.
+
+     PROMPT FOR NANO BANANA PRO: Create an attention visualization heatmap for the sentence
+     "The cat sat on the mat". Show a 6x6 grid where rows and columns are both labeled with
+     the words. Use color intensity to show attention weights - darker means stronger attention.
+     Make "cat" strongly attend to "The" and itself. Make "sat" attend to "cat". Make "mat"
+     attend to "the" (second one) and "on". Use a blue color gradient. Include a legend.
+
+     REVISED PROMPT: Create an attention (e.g., for a transformer model) visualization heatmap for the sentence "The cat sat on the mat because it was tired". Show a 10x10 grid where rows and columns are both labeled with the words. Use color intensity to show attention weights - darker means stronger attention. Use a blue color gradient. Include a legend.
+
+     https://gemini.google.com/app/08626c2583eff1c8?utm_source=app_launcher&utm_medium=owned&utm_campaign=base_all
+
+```
+          The   cat   sat   on   the   mat
+    The   ███   ░░░   ░░░   ░░░   ░░░   ░░░
+    cat   ██░   ███   ░░░   ░░░   ░░░   ░░░
+    sat   ░░░   ██░   ███   ░░░   ░░░   ░░░
+    on    ░░░   ░░░   █░░   ███   ░░░   ░░░
+    the   ░░░   ░░░   ░░░   ██░   ███   ░░░
+    mat   ░░░   ░░░   ░░░   █░░   ██░   ███
+```
+-->
+<img data-src="images/02-attention-heatmap.png" class="r-stretch"><p>Each token’s representation is updated by combining information from other tokens via learned weights.</p>
+</section>
+<section id="how-llms-generate-text" class="slide level2">
+<h2>How LLMs generate text</h2>
+<ol type="1">
+<li><strong>Input:</strong> “The weather today is”</li>
+<li><strong>Model predicts</strong> probability distribution over all tokens</li>
+<li><strong>Sample</strong> next token: “sunny” (p=0.3), “cold” (p=0.2), “nice” (p=0.15)…</li>
+<li><strong>Append</strong> chosen token: “The weather today is sunny”</li>
+<li><strong>Repeat</strong> until done</li>
+</ol>
+<p>This is <strong>autoregressive generation</strong>—each token depends on all previous tokens.</p>
+</section>
+<section id="randomness" class="slide level2">
+<h2>Randomness</h2>
+<ul>
+<li>At inference the transformer’s forward pass is <strong>deterministic</strong></li>
+<li>After probabilities have been computed, the next token is chosen using a random draw according to the probabilities</li>
+</ul>
+</section>
+<section id="temperature-and-sampling" class="slide level2">
+<h2>Temperature and sampling</h2>
+<p><strong>Temperature</strong> flattens (<span class="math inline">\(T&gt;1\)</span>) or sharpens (<span class="math inline">\(T&lt;1\)</span>) the probability distribution</p>
+<ul>
+<li><strong>Low (0.0–0.3):</strong> More deterministic, picks highest probability</li>
+<li><strong>Medium (0.5–0.7):</strong> Balanced creativity and coherence</li>
+<li><strong>High (0.8–1.0+):</strong> More random, creative, sometimes nonsensical</li>
+</ul>
+<pre><code>Temperature 0.1: "The cat sat on the mat."
+Temperature 0.7: "The cat lounged on the soft carpet."
+Temperature 1.2: "The cat philosophized atop the cosmic rug."</code></pre>
+</section>
+<section id="key-takeaways" class="slide level2">
+<h2>Key takeaways</h2>
+<ul>
+<li>Neural networks learn patterns by adjusting weights</li>
+<li><strong>Transformers</strong> use self-attention to understand context</li>
+<li>LLMs predict the <strong>next token</strong> based on all previous tokens</li>
+<li>Generation is <strong>probabilistic</strong>—same prompt can give different outputs</li>
+<li><strong>Temperature</strong> controls creativity vs.&nbsp;consistency</li>
+</ul>
+</section>
+<section id="a1-mock-llm-chat" class="slide level2">
+<h2>A1 — Mock LLM Chat</h2>
+<p>Your first Python assignment builds a <strong>chat application</strong> structure:</p>
+<ul>
+<li>Set up Python environment (<code>.venv</code>, dependencies)</li>
+<li>Use <strong>LangGraph</strong> to structure conversation flow</li>
+<li>Build a simple <strong>command-line interface (CLI)</strong></li>
+<li>Use a <strong>mock model</strong> (no API calls yet)</li>
+</ul>
+</section>
+<section id="why-a-mock-model" class="slide level2">
+<h2>Why a mock model?</h2>
+<ul>
+<li>Focus on <strong>structure and workflow</strong> first</li>
+<li>No API keys or costs to worry about</li>
+<li>Predictable behavior for testing</li>
+<li><strong>A2</strong> will connect to a real LLM via API</li>
+</ul>
+<p>This pattern (mock → real) is common in software development!</p>
+</section>
+<section id="a1-setup-overview" class="slide level2">
+<h2>A1 setup overview</h2>
+<p><strong>Follow GitHub Classroom Workflow Instructions</strong></p>
+<ol type="1">
+<li>Accept A1 from GitHub Classroom</li>
+<li>Clone the repo</li>
+<li>Create virtual environment</li>
+<li>Activate it and install dependencies</li>
+<li>Follow the README to complete the assignment</li>
+</ol>
+</section>
+<section id="ai-dev-log" class="slide level2">
+<h2>AI Dev Log</h2>
+<ul>
+<li>Starting with A1 you will complete an <em>AI Dev Log</em> for each build assignment</li>
+<li>Look for it in the <code>docs</code> folder in the repo</li>
+<li>Some entries probably won’t be relevant for A1–write: “none” or “NA”</li>
+</ul>
+<pre><code>## Entry N - [Brief title]
+
+**Date:** YYYY-MM-DD
+**Goal:** [What you were trying to accomplish]
+**Tool used:** [e.g., ChatGPT, Claude, Copilot, none]
+**Prompt/Question:** [What you asked the AI, or describe the problem]
+**AI Response:** [Key suggestions or guidance received]
+**Changes Made:** [Actual code/files modified]
+**Testing:** [How you verified it works]
+**Result:** [Did it work? Any issues?]</code></pre>
 
 
 </section>
@@ -572,120 +850,4 @@ If you’re looking for slides by topic, browse below (use the filters).</p>
       </script>
     
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-slides">
-<div class="listing-actions-group">
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
-</div>
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="UHJvbXB0aW5nJTJDQ29uY2VwdHM=" data-listing-date-sort="1769144400000" data-listing-file-modified-sort="1767896942747" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2521">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../slides/04-prompt-patterns.html" class="no-external">Prompt Patterns and Best Practices</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHJvbXB0aW5n'); return false;">Prompting</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q29uY2VwdHM='); return false;">Concepts</div>
-
-</div>
-<div class="delink listing-description"><a href="../slides/04-prompt-patterns.html" class="no-external">
-<p>Effective prompting techniques for chat interfaces and API-based LLM applications.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../slides/04-prompt-patterns.html" class="no-external">
-<div class="listing-date">
-Jan 23, 2026
-</div>
-<div class="metadata-value listing-tags">
-prompts,patterns,gemini,api,best-practices
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="UHl0aG9uJTJDQVBJcyUyQ1Rvb2xz" data-listing-date-sort="1768971600000" data-listing-file-modified-sort="1767825217835" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1370">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../slides/03-python-apis-code-assist.html" class="no-external">Python, APIs, and Code Assist</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QVBJcw=='); return false;">APIs</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('VG9vbHM='); return false;">Tools</div>
-
-</div>
-<div class="delink listing-description"><a href="../slides/03-python-apis-code-assist.html" class="no-external">
-<p>Python essentials, working with LLM APIs, and AI-assisted coding in VS Code.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../slides/03-python-apis-code-assist.html" class="no-external">
-<div class="listing-date">
-Jan 21, 2026
-</div>
-<div class="metadata-value listing-tags">
-python,api,gemini,langraph,code-assist
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="Q29uY2VwdHM=" data-listing-date-sort="1768453200000" data-listing-file-modified-sort="1767648178474" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2162">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../slides/02-intro-to-llms.html" class="no-external">Introduction to Large Language Models</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q29uY2VwdHM='); return false;">Concepts</div>
-
-</div>
-<div class="delink listing-description"><a href="../slides/02-intro-to-llms.html" class="no-external">
-<p>Neural network basics, transformer architecture, and how LLMs generate text.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../slides/02-intro-to-llms.html" class="no-external">
-<div class="listing-date">
-Jan 15, 2026
-</div>
-<div class="metadata-value listing-tags">
-llm,neural-networks,transformers
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="V29ya2Zsb3c=" data-listing-date-sort="1768280400000" data-listing-file-modified-sort="1767645642108" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="202">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../slides/01-course-overview-setup.html" class="no-external">Course Overview and Workflow Setup</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('V29ya2Zsb3c='); return false;">Workflow</div>
-
-</div>
-<div class="delink listing-description"><a href="../slides/01-course-overview-setup.html" class="no-external">
-<p>What this course is, how we’ll work, and how to use GitHub Classroom + autograding successfully.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../slides/01-course-overview-setup.html" class="no-external">
-<div class="listing-date">
-Jan 13, 2026
-</div>
-<div class="metadata-value listing-tags">
-github,setup,python
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></body></html>
+</body></html>
