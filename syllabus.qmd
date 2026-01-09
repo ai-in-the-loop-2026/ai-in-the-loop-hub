@@ -54,7 +54,7 @@ Grades will be determined as follows:
 | Assignment Type | Weight |
 |----------------|--------|
 | Attendance, in-class participation | 10% |
-| Written reflections (10-15) | 5% |
+| Written reflections (8-10) | 5% |
 | Build assignments (8) | 20% |
 | Individual code reviews (2) | 30% |
 | Group-led discussion | 5% |
