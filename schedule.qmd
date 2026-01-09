@@ -57,3 +57,9 @@ This course is under active development, and the schedule will be filled in as w
 
 [The impact of generative AI on critical thinking: Self-reported reductions in cognitive effort and confidence effects from a survey of knowledge workers](https://dl.acm.org/doi/10.1145/3706598.3713778) - a research article by Lee et al. from *CHI '25: Proceedings of the 2025 CHI Conference on Human Factors in Computing Systems*
 
+## Week 3: January 26-February 1
+
+| Meeting | Topic | Slides | Due |
+|---|---|---|---|
+| Tuesday | - | - | A2 — API and Prompt Patterns (*before class*)  |
+| Thursday | - | - | - |
