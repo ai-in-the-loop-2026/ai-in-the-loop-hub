@@ -373,12 +373,16 @@ def build_app():
 
 **Temperature** controls randomness (0.0 to 2.0).
 
-Start at **1.0** (the default for Gemini 3), then adjust:
+```python
+llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview", temperature=0.2)
+```
+
+Start at **1.0** (default), then adjust:
 
 | Direction | Effect | When to use |
 |-----------|--------|-------------|
-| Lower (toward 0) | More deterministic, focused | Code, facts, structured data |
-| Higher (toward 2) | More creative, varied | Brainstorming, writing |
+| Lower (toward 0) | More deterministic | Code, facts, structured data |
+| Higher (toward 2) | More creative | Brainstorming, writing |
 
 ---
 
