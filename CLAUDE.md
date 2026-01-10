@@ -55,6 +55,38 @@ Use `draft: true` in front matter to hide work-in-progress pages.
 ### Slide Naming Convention
 Slides use topic-driven names (not "Week 1 Tue"): `01-course-overview-setup.qmd`, `02-model-apis-and-keys.qmd`, etc. The schedule provides the "when."
 
+## Technology Stack Philosophy
+
+This course teaches **model-agnostic patterns** using LangChain/LangGraph abstractions:
+
+- **LangChain** provides unified interfaces for chat models (`ChatGoogleGenerativeAI`, `ChatOpenAI`, `ChatAnthropic`), tools (`@tool` decorator), and messages
+- **LangGraph** provides workflow orchestration (`StateGraph`, `MessagesState`), prebuilt components (`ToolNode`, `tools_condition`), and state management
+
+### Why model-agnostic?
+
+Students should be able to swap LLM providers with minimal code changes:
+
+```python
+# Swap one line to change providers
+from langchain_google_genai import ChatGoogleGenerativeAI
+# from langchain_openai import ChatOpenAI
+# from langchain_anthropic import ChatAnthropic
+
+llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
+```
+
+### When showing code examples
+
+- **Prefer** LangChain chat models over raw provider SDKs (e.g., `google.genai`)
+- **Use** `@tool` decorator for tool definitions, not provider-specific JSON schemas
+- **Use** `bind_tools()` for attaching tools to models
+- **Use** `MessagesState` and `ToolNode` for LangGraph workflows
+- **Exception:** When explaining "what's underneath" or provider-specific features (like Gemini's built-in Google Search), raw SDK examples are appropriate
+
+### Current default model
+
+We use `gemini-3-flash-preview` as the default model in examples (via `ChatGoogleGenerativeAI`).
+
 ## Quarto Formatting Notes
 
 - **Blank line before lists:** Quarto requires a blank line before bulleted/numbered lists to render them correctly.

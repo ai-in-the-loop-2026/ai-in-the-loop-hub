@@ -3,7 +3,7 @@ title: "Python, APIs, and Code Assist"
 description: "Python essentials, working with LLM APIs, and AI-assisted coding in VS Code."
 date: 2026-01-21
 categories: [Python, APIs, Tools]
-tags: [python, api, gemini, langraph, code-assist]
+tags: [python, api, langchain, langgraph, code-assist]
 ---
 
 ## Today's goals
@@ -91,7 +91,7 @@ import numpy as np
 
 Packages are installed with `pip`:
 ```bash
-pip install google-genai langgraph python-dotenv
+pip install langchain-google-genai langgraph python-dotenv
 ```
 
 ---
@@ -149,21 +149,38 @@ from google import genai
 client = genai.Client(api_key="...")  # Your API key
 
 response = client.models.generate_content(
-    model="gemini-2.0-flash",
+    model="gemini-3-flash-preview",
     contents=["Explain quantum computing in one sentence."],
 )
 print(response.text)
 ```
 
-This is how we build applications that use AI!
+This is the raw Gemini SDK — useful to understand what's underneath.
 
 ---
 
-## Our stack: Python + LangGraph + Gemini
+## LangChain: model-agnostic abstractions
+
+Going forward, we'll use **LangChain** to write portable code:
+
+```python
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
+response = llm.invoke("Explain quantum computing in one sentence.")
+print(response.content)
+```
+
+**Why?** Swap one import to change providers (OpenAI, Anthropic, etc.).
+
+---
+
+## Our stack: Python + LangChain + LangGraph
 
 - **Python:** The programming language
-- **LangGraph:** Framework for building LLM applications with state and control flow
-- **Gemini API:** Google's LLM service
+- **LangChain:** Model-agnostic abstractions for LLMs
+- **LangGraph:** Workflow orchestration with state and control flow
+- **Gemini** (default): The LLM provider (swappable)
 
 ::: {style="text-align: center;"}
 ![](images/03-stack-diagram.png){width=40%}
@@ -173,11 +190,11 @@ This is how we build applications that use AI!
 
      DESCRIPTION: Layered diagram showing the technology stack.
 
-     PROMPT FOR NANO BANANA PRO: Create a layered stack diagram with 3 layers. Bottom layer:
-     "Python" with Python logo. Middle layer: "LangGraph" (framework for LLM apps). Top layer:
-     "Gemini API" with a cloud icon. Draw arrows showing how they connect - Python provides
-     the foundation, LangGraph structures the app, Gemini provides the AI. Use clean boxes
-     with rounded corners and soft colors. 
+     PROMPT FOR NANO BANANA PRO: Create a layered stack diagram with 4 layers. Bottom layer:
+     "Python" with Python logo. Second layer: "LangChain" (model-agnostic abstractions).
+     Third layer: "LangGraph" (workflow orchestration). Top layer: "LLM Provider" with
+     icons for Gemini, OpenAI, Anthropic showing they are swappable. Draw arrows showing
+     how they connect. Use clean boxes with rounded corners and soft colors. 
      
      REVISED PROMPT: Create a layered stack diagram with 3 layers. Bottom layer:  
      "Python" with Python logo. Middle layer: "LangGraph" (framework for LLM apps). Top layer:  

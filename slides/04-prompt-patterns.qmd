@@ -3,7 +3,7 @@ title: "Prompt Patterns and Best Practices"
 description: "Effective prompting techniques for chat interfaces and API-based LLM applications."
 date: 2026-01-23
 categories: [Prompting, Concepts]
-tags: [prompts, patterns, gemini, api, best-practices]
+tags: [prompts, patterns, langchain, langgraph, api, best-practices]
 ---
 
 ## Today's goals
@@ -238,47 +238,40 @@ the problem and suggest a fix.
 
 System instructions set persistent context for all messages.
 
-Example LangGraph node function:
+LangChain uses `SystemMessage` in the message list:
 
 ```python
-def respond(state: State) -> dict:
-    response = client.models.generate_content(
-        model="gemini-3-flash-preview",
-        contents=[state["prompt"]],
-        config=types.GenerateContentConfig(
-            system_instruction="You are a helpful coding assistant...",
-            temperature=0.7,
-        ),
-    )
-    return {"response": response.text}
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.messages import SystemMessage, HumanMessage
+
+llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
+
+messages = [
+    SystemMessage(content="You are a helpful coding assistant..."),
+    HumanMessage(content=state["prompt"])
+]
+response = llm.invoke(messages)
 ```
+
+The system message persists across the conversation.
 
 <!-- FULL CODE for reference:
 ```python
-from typing_extensions import TypedDict
-from langgraph.graph import StateGraph, START, END
-from google import genai
-from google.genai import types
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.messages import SystemMessage, HumanMessage
+from langgraph.graph import StateGraph, MessagesState, START, END
 
-client = genai.Client(api_key=api_key)
+llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
 
-class State(TypedDict):
-    prompt: str
-    response: str
+SYSTEM_PROMPT = "You are a helpful coding assistant. Be concise and accurate."
 
-def respond(state: State) -> dict:
-    response = client.models.generate_content(
-        model="gemini-2.0-flash",
-        contents=[state["prompt"]],
-        config=types.GenerateContentConfig(
-            system_instruction="You are a helpful coding assistant...",
-            temperature=0.7,
-        ),
-    )
-    return {"response": response.text}
+def respond(state: MessagesState):
+    messages = [SystemMessage(content=SYSTEM_PROMPT)] + state["messages"]
+    response = llm.invoke(messages)
+    return {"messages": [response]}
 
 def build_app():
-    graph = StateGraph(State)
+    graph = StateGraph(MessagesState)
     graph.add_node("respond", respond)
     graph.add_edge(START, "respond")
     graph.add_edge("respond", END)
@@ -313,84 +306,57 @@ Review: {review_text}"""
 # Usage: prompt.format(review_text=user_review)
 ```
 
-Modern Gemini APIs support `response_schema` for guaranteed JSON structure.
+LangChain provides `with_structured_output()` for guaranteed structure.
 
 ---
 
-## Structured outputs: `response_schema`
+## Structured outputs: Pydantic models
 
-Example LangGraph node function with guaranteed JSON:
+Define your output schema with Pydantic, then use `with_structured_output()`:
 
 ```python
-def analyze_review(state: State) -> dict:
-    response = client.models.generate_content(
-        model="gemini-3-flash-preview",
-        contents=[state["review"]],
-        config=types.GenerateContentConfig(
-            system_instruction="Extract sentiment, key points, and rating guess.",
-            response_mime_type="application/json",
-            response_schema={
-                "type": "object",
-                "properties": {
-                    "sentiment": {
-                        "type": "string",
-                        "enum": ["positive", "negative", "neutral"]
-                    },
-                    "key_points": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                        "maxItems": 3
-                    },
-                    "rating_guess": {"type": "integer", "minimum": 1, "maximum": 5}
-                }
-            }
-        ),
-    )
-    return {"analysis": json.loads(response.text)}
+from pydantic import BaseModel, Field
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+class ReviewAnalysis(BaseModel):
+    """Analysis of a product review."""
+    sentiment: str = Field(description="positive, negative, or neutral")
+    key_points: list[str] = Field(description="Main points (max 3)")
+    rating_guess: int = Field(description="Estimated star rating 1-5")
+
+llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
+structured_llm = llm.with_structured_output(ReviewAnalysis)
+
+result = structured_llm.invoke("This product is amazing! Great quality.")
+print(result.sentiment)  # "positive"
 ```
 
-`response_mime_type`: `"application/json"`, `"text/x.enum"`, or `"text/plain"` (default)
+Returns a Pydantic object—no JSON parsing needed!
 
 <!-- FULL CODE for reference:
 ```python
-import json
-from typing_extensions import TypedDict
+from pydantic import BaseModel, Field
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.messages import HumanMessage
 from langgraph.graph import StateGraph, START, END
-from google import genai
-from google.genai import types
+from typing_extensions import TypedDict
 
-client = genai.Client(api_key=api_key)
+class ReviewAnalysis(BaseModel):
+    """Analysis of a product review."""
+    sentiment: str = Field(description="positive, negative, or neutral")
+    key_points: list[str] = Field(description="Main points (max 3)")
+    rating_guess: int = Field(description="Estimated star rating 1-5")
 
 class State(TypedDict):
     review: str
-    analysis: dict
+    analysis: ReviewAnalysis | None
+
+llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
+structured_llm = llm.with_structured_output(ReviewAnalysis)
 
 def analyze_review(state: State) -> dict:
-    response = client.models.generate_content(
-        model="gemini-3-flash-preview",
-        contents=[state["review"]],
-        config=types.GenerateContentConfig(
-            system_instruction="Extract sentiment, key points, and rating guess.",
-            response_mime_type="application/json",
-            response_schema={
-                "type": "object",
-                "properties": {
-                    "sentiment": {
-                        "type": "string",
-                        "enum": ["positive", "negative", "neutral"]
-                    },
-                    "key_points": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                        "maxItems": 3
-                    },
-                    "rating_guess": {"type": "integer", "minimum": 1, "maximum": 5}
-                }
-            }
-        ),
-    )
-    # response.text is guaranteed valid JSON matching the schema
-    return {"analysis": json.loads(response.text)}
+    result = structured_llm.invoke(state["review"])
+    return {"analysis": result}
 
 def build_app():
     graph = StateGraph(State)
@@ -421,6 +387,11 @@ Start at **1.0** (the default for Gemini 3), then adjust:
 Break complex tasks into steps. Define state and node functions:
 
 ```python
+from langchain_google_genai import ChatGoogleGenerativeAI
+from typing_extensions import TypedDict
+
+llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
+
 class State(TypedDict):
     article: str
     summary: str
@@ -428,25 +399,16 @@ class State(TypedDict):
     questions: str
 
 def summarize(state: State) -> dict:
-    response = client.models.generate_content(
-        model="gemini-3-flash-preview",
-        contents=[f"Summarize this article: {state['article']}"]
-    )
-    return {"summary": response.text}
+    response = llm.invoke(f"Summarize this article: {state['article']}")
+    return {"summary": response.content}
 
 def extract_points(state: State) -> dict:
-    response = client.models.generate_content(
-        model="gemini-3-flash-preview",
-        contents=[f"List 3 key points from: {state['summary']}"]
-    )
-    return {"points": response.text}
+    response = llm.invoke(f"List 3 key points from: {state['summary']}")
+    return {"points": response.content}
 
 def generate_questions(state: State) -> dict:
-    response = client.models.generate_content(
-        model="gemini-3-flash-preview",
-        contents=[f"Create quiz questions about: {state['points']}"]
-    )
-    return {"questions": response.text}
+    response = llm.invoke(f"Create quiz questions about: {state['points']}")
+    return {"questions": response.content}
 ```
 
 ---
@@ -538,5 +500,6 @@ When outputs aren't what you expect:
 ## Resources
 
 - [Prompt Engineering Guide](https://www.promptingguide.ai/)
-- [Gemini Prompt Design Strategies](https://ai.google.dev/gemini-api/docs/prompting-strategies)
-- [Gemini 3 Prompting Guide](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/start/gemini-3-prompting-guide)
+- [LangChain Chat Models](https://python.langchain.com/docs/concepts/chat_models/)
+- [LangChain Structured Output](https://python.langchain.com/docs/concepts/structured_outputs/)
+- [LangGraph Documentation](https://langchain-ai.github.io/langgraph/)
