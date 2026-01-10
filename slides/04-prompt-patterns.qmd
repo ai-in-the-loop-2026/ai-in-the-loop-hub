@@ -404,15 +404,15 @@ class State(TypedDict):
 
 def summarize(state: State) -> dict:
     response = llm.invoke(f"Summarize this article: {state['article']}")
-    return {"summary": response.content}
+    return {"summary": get_text(response)}
 
 def extract_points(state: State) -> dict:
     response = llm.invoke(f"List 3 key points from: {state['summary']}")
-    return {"points": response.content}
+    return {"points": get_text(response)}
 
 def generate_questions(state: State) -> dict:
     response = llm.invoke(f"Create quiz questions about: {state['points']}")
-    return {"questions": response.content}
+    return {"questions": get_text(response)}
 ```
 
 ---
