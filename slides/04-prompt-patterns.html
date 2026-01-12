@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.24">
 
-  <meta name="dcterms.date" content="2026-01-23">
+  <meta name="dcterms.date" content="2026-01-22">
   <title>Creating with AI in the Loop – Prompt Patterns and Best Practices</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -198,7 +198,7 @@
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">2026-01-23</p>
+  <p class="date">2026-01-22</p>
 </section>
 <section id="todays-goals" class="slide level2">
 <h2>Today’s goals</h2>
@@ -262,12 +262,7 @@
 </ul>
 <p>Format as a markdown table.”</p>
 </blockquote>
-<p><strong>Common formats:</strong></p>
-<ul>
-<li>Bullet points, numbered lists</li>
-<li>Tables, JSON, code blocks</li>
-<li>Specific section headings</li>
-</ul>
+<p><strong>Common formats:</strong> Bullet points, numbered lists, Tables, JSON, specific section headings</p>
 </section>
 <section id="pattern-3-rolepersona-prompting" class="slide level2">
 <h2>Pattern 3: Role/persona prompting</h2>
@@ -279,7 +274,6 @@
 <ul>
 <li>Expert in a field</li>
 <li>Teacher explaining to a specific audience</li>
-<li>Editor improving writing</li>
 <li>Devil’s advocate finding flaws</li>
 </ul>
 </section>
@@ -292,7 +286,7 @@
 <p>Informal: ‘That’s not gonna work’ Formal: ‘Unfortunately, that approach may not be feasible’</p>
 <p>Informal: ‘Let’s grab coffee and hash this out’ Formal: [model completes]”</p>
 </blockquote>
-<p>2-3 examples usually suffice; too many can cause overfitting.</p>
+<p>2-3 examples usually suffice.</p>
 </section>
 <section id="pattern-5-chain-of-thought" class="slide level2">
 <h2>Pattern 5: Chain-of-thought</h2>
@@ -398,43 +392,35 @@
 <section id="system-instructions" class="slide level2">
 <h2>System instructions</h2>
 <p>System instructions set persistent context for all messages.</p>
-<p>Example LangGraph node function:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> respond(state: State) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
-<span id="cb2-2"><a></a>    response <span class="op">=</span> client.models.generate_content(</span>
-<span id="cb2-3"><a></a>        model<span class="op">=</span><span class="st">"gemini-3-flash-preview"</span>,</span>
-<span id="cb2-4"><a></a>        contents<span class="op">=</span>[state[<span class="st">"prompt"</span>]],</span>
-<span id="cb2-5"><a></a>        config<span class="op">=</span>types.GenerateContentConfig(</span>
-<span id="cb2-6"><a></a>            system_instruction<span class="op">=</span><span class="st">"You are a helpful coding assistant..."</span>,</span>
-<span id="cb2-7"><a></a>            temperature<span class="op">=</span><span class="fl">0.7</span>,</span>
-<span id="cb2-8"><a></a>        ),</span>
-<span id="cb2-9"><a></a>    )</span>
-<span id="cb2-10"><a></a>    <span class="cf">return</span> {<span class="st">"response"</span>: response.text}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>LangChain uses <code>SystemMessage</code> in the message list:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="im">from</span> langchain_google_genai <span class="im">import</span> ChatGoogleGenerativeAI</span>
+<span id="cb2-2"><a></a><span class="im">from</span> langchain_core.messages <span class="im">import</span> SystemMessage, HumanMessage</span>
+<span id="cb2-3"><a></a></span>
+<span id="cb2-4"><a></a>llm <span class="op">=</span> ChatGoogleGenerativeAI(model<span class="op">=</span><span class="st">"gemini-3-flash-preview"</span>)</span>
+<span id="cb2-5"><a></a></span>
+<span id="cb2-6"><a></a>messages <span class="op">=</span> [</span>
+<span id="cb2-7"><a></a>    SystemMessage(content<span class="op">=</span><span class="st">"You are a helpful coding assistant..."</span>),</span>
+<span id="cb2-8"><a></a>    HumanMessage(content<span class="op">=</span>state[<span class="st">"prompt"</span>])</span>
+<span id="cb2-9"><a></a>]</span>
+<span id="cb2-10"><a></a>response <span class="op">=</span> llm.invoke(messages)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The system message persists across the conversation.</p>
 <!-- FULL CODE for reference:
 ```python
-from typing_extensions import TypedDict
-from langgraph.graph import StateGraph, START, END
-from google import genai
-from google.genai import types
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.messages import SystemMessage, HumanMessage
+from langgraph.graph import StateGraph, MessagesState, START, END
 
-client = genai.Client(api_key=api_key)
+llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
 
-class State(TypedDict):
-    prompt: str
-    response: str
+SYSTEM_PROMPT = "You are a helpful coding assistant. Be concise and accurate."
 
-def respond(state: State) -> dict:
-    response = client.models.generate_content(
-        model="gemini-2.0-flash",
-        contents=[state["prompt"]],
-        config=types.GenerateContentConfig(
-            system_instruction="You are a helpful coding assistant...",
-            temperature=0.7,
-        ),
-    )
-    return {"response": response.text}
+def respond(state: MessagesState):
+    messages = [SystemMessage(content=SYSTEM_PROMPT)] + state["messages"]
+    response = llm.invoke(messages)
+    return {"messages": [response]}
 
 def build_app():
-    graph = StateGraph(State)
+    graph = StateGraph(MessagesState)
     graph.add_node("respond", respond)
     graph.add_edge(START, "respond")
     graph.add_edge("respond", END)
@@ -463,77 +449,50 @@ def build_app():
 <span id="cb3-8"><a></a><span class="st">Review: </span><span class="sc">{review_text}</span><span class="st">"""</span></span>
 <span id="cb3-9"><a></a></span>
 <span id="cb3-10"><a></a><span class="co"># Usage: prompt.format(review_text=user_review)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Modern Gemini APIs support <code>response_schema</code> for guaranteed JSON structure.</p>
+<p>LangChain provides <code>with_structured_output()</code> for guaranteed structure.</p>
 </section>
-<section id="structured-outputs-response_schema" class="slide level2">
-<h2>Structured outputs: <code>response_schema</code></h2>
-<p>Example LangGraph node function with guaranteed JSON:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> analyze_review(state: State) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
-<span id="cb4-2"><a></a>    response <span class="op">=</span> client.models.generate_content(</span>
-<span id="cb4-3"><a></a>        model<span class="op">=</span><span class="st">"gemini-3-flash-preview"</span>,</span>
-<span id="cb4-4"><a></a>        contents<span class="op">=</span>[state[<span class="st">"review"</span>]],</span>
-<span id="cb4-5"><a></a>        config<span class="op">=</span>types.GenerateContentConfig(</span>
-<span id="cb4-6"><a></a>            system_instruction<span class="op">=</span><span class="st">"Extract sentiment, key points, and rating guess."</span>,</span>
-<span id="cb4-7"><a></a>            response_mime_type<span class="op">=</span><span class="st">"application/json"</span>,</span>
-<span id="cb4-8"><a></a>            response_schema<span class="op">=</span>{</span>
-<span id="cb4-9"><a></a>                <span class="st">"type"</span>: <span class="st">"object"</span>,</span>
-<span id="cb4-10"><a></a>                <span class="st">"properties"</span>: {</span>
-<span id="cb4-11"><a></a>                    <span class="st">"sentiment"</span>: {</span>
-<span id="cb4-12"><a></a>                        <span class="st">"type"</span>: <span class="st">"string"</span>,</span>
-<span id="cb4-13"><a></a>                        <span class="st">"enum"</span>: [<span class="st">"positive"</span>, <span class="st">"negative"</span>, <span class="st">"neutral"</span>]</span>
-<span id="cb4-14"><a></a>                    },</span>
-<span id="cb4-15"><a></a>                    <span class="st">"key_points"</span>: {</span>
-<span id="cb4-16"><a></a>                        <span class="st">"type"</span>: <span class="st">"array"</span>,</span>
-<span id="cb4-17"><a></a>                        <span class="st">"items"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>},</span>
-<span id="cb4-18"><a></a>                        <span class="st">"maxItems"</span>: <span class="dv">3</span></span>
-<span id="cb4-19"><a></a>                    },</span>
-<span id="cb4-20"><a></a>                    <span class="st">"rating_guess"</span>: {<span class="st">"type"</span>: <span class="st">"integer"</span>, <span class="st">"minimum"</span>: <span class="dv">1</span>, <span class="st">"maximum"</span>: <span class="dv">5</span>}</span>
-<span id="cb4-21"><a></a>                }</span>
-<span id="cb4-22"><a></a>            }</span>
-<span id="cb4-23"><a></a>        ),</span>
-<span id="cb4-24"><a></a>    )</span>
-<span id="cb4-25"><a></a>    <span class="cf">return</span> {<span class="st">"analysis"</span>: json.loads(response.text)}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>response_mime_type</code>: <code>"application/json"</code>, <code>"text/x.enum"</code>, or <code>"text/plain"</code> (default)</p>
+<section id="structured-outputs-pydantic-models" class="slide level2">
+<h2>Structured outputs: Pydantic models</h2>
+<p>Define your output schema with Pydantic, then use <code>with_structured_output()</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel, Field</span>
+<span id="cb4-2"><a></a><span class="im">from</span> langchain_google_genai <span class="im">import</span> ChatGoogleGenerativeAI</span>
+<span id="cb4-3"><a></a></span>
+<span id="cb4-4"><a></a><span class="kw">class</span> ReviewAnalysis(BaseModel):</span>
+<span id="cb4-5"><a></a>    <span class="co">"""Analysis of a product review."""</span></span>
+<span id="cb4-6"><a></a>    sentiment: <span class="bu">str</span> <span class="op">=</span> Field(description<span class="op">=</span><span class="st">"positive, negative, or neutral"</span>)</span>
+<span id="cb4-7"><a></a>    key_points: <span class="bu">list</span>[<span class="bu">str</span>] <span class="op">=</span> Field(description<span class="op">=</span><span class="st">"Main points (max 3)"</span>)</span>
+<span id="cb4-8"><a></a>    rating_guess: <span class="bu">int</span> <span class="op">=</span> Field(description<span class="op">=</span><span class="st">"Estimated star rating 1-5"</span>)</span>
+<span id="cb4-9"><a></a></span>
+<span id="cb4-10"><a></a>llm <span class="op">=</span> ChatGoogleGenerativeAI(model<span class="op">=</span><span class="st">"gemini-3-flash-preview"</span>)</span>
+<span id="cb4-11"><a></a>structured_llm <span class="op">=</span> llm.with_structured_output(ReviewAnalysis)</span>
+<span id="cb4-12"><a></a></span>
+<span id="cb4-13"><a></a>result <span class="op">=</span> structured_llm.invoke(<span class="st">"This product is amazing! Great quality."</span>)</span>
+<span id="cb4-14"><a></a><span class="bu">print</span>(result.sentiment)  <span class="co"># "positive"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Returns a Pydantic object—no JSON parsing needed!</p>
 <!-- FULL CODE for reference:
 ```python
-import json
-from typing_extensions import TypedDict
+from pydantic import BaseModel, Field
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.messages import HumanMessage
 from langgraph.graph import StateGraph, START, END
-from google import genai
-from google.genai import types
+from typing_extensions import TypedDict
 
-client = genai.Client(api_key=api_key)
+class ReviewAnalysis(BaseModel):
+    """Analysis of a product review."""
+    sentiment: str = Field(description="positive, negative, or neutral")
+    key_points: list[str] = Field(description="Main points (max 3)")
+    rating_guess: int = Field(description="Estimated star rating 1-5")
 
 class State(TypedDict):
     review: str
-    analysis: dict
+    analysis: ReviewAnalysis | None
+
+llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
+structured_llm = llm.with_structured_output(ReviewAnalysis)
 
 def analyze_review(state: State) -> dict:
-    response = client.models.generate_content(
-        model="gemini-3-flash-preview",
-        contents=[state["review"]],
-        config=types.GenerateContentConfig(
-            system_instruction="Extract sentiment, key points, and rating guess.",
-            response_mime_type="application/json",
-            response_schema={
-                "type": "object",
-                "properties": {
-                    "sentiment": {
-                        "type": "string",
-                        "enum": ["positive", "negative", "neutral"]
-                    },
-                    "key_points": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                        "maxItems": 3
-                    },
-                    "rating_guess": {"type": "integer", "minimum": 1, "maximum": 5}
-                }
-            }
-        ),
-    )
-    # response.text is guaranteed valid JSON matching the schema
-    return {"analysis": json.loads(response.text)}
+    result = structured_llm.invoke(state["review"])
+    return {"analysis": result}
 
 def build_app():
     graph = StateGraph(State)
@@ -547,13 +506,9 @@ def build_app():
 <section id="temperature-for-api-calls" class="slide level2">
 <h2>Temperature for API calls</h2>
 <p><strong>Temperature</strong> controls randomness (0.0 to 2.0).</p>
-<p>Start at <strong>1.0</strong> (the default for Gemini 3), then adjust:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>llm <span class="op">=</span> ChatGoogleGenerativeAI(model<span class="op">=</span><span class="st">"gemini-3-flash-preview"</span>, temperature<span class="op">=</span><span class="fl">0.2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Start at <strong>1.0</strong> (default), then adjust:</p>
 <table class="caption-top">
-<colgroup>
-<col style="width: 34%">
-<col style="width: 25%">
-<col style="width: 40%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Direction</th>
@@ -564,12 +519,12 @@ def build_app():
 <tbody>
 <tr class="odd">
 <td>Lower (toward 0)</td>
-<td>More deterministic, focused</td>
+<td>More deterministic</td>
 <td>Code, facts, structured data</td>
 </tr>
 <tr class="even">
 <td>Higher (toward 2)</td>
-<td>More creative, varied</td>
+<td>More creative</td>
 <td>Brainstorming, writing</td>
 </tr>
 </tbody>
@@ -578,32 +533,28 @@ def build_app():
 <section id="prompt-chaining-state-and-nodes" class="slide level2">
 <h2>Prompt chaining: state and nodes</h2>
 <p>Break complex tasks into steps. Define state and node functions:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">class</span> State(TypedDict):</span>
-<span id="cb5-2"><a></a>    article: <span class="bu">str</span></span>
-<span id="cb5-3"><a></a>    summary: <span class="bu">str</span></span>
-<span id="cb5-4"><a></a>    points: <span class="bu">str</span></span>
-<span id="cb5-5"><a></a>    questions: <span class="bu">str</span></span>
-<span id="cb5-6"><a></a></span>
-<span id="cb5-7"><a></a><span class="kw">def</span> summarize(state: State) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
-<span id="cb5-8"><a></a>    response <span class="op">=</span> client.models.generate_content(</span>
-<span id="cb5-9"><a></a>        model<span class="op">=</span><span class="st">"gemini-3-flash-preview"</span>,</span>
-<span id="cb5-10"><a></a>        contents<span class="op">=</span>[<span class="ss">f"Summarize this article: </span><span class="sc">{</span>state[<span class="st">'article'</span>]<span class="sc">}</span><span class="ss">"</span>]</span>
-<span id="cb5-11"><a></a>    )</span>
-<span id="cb5-12"><a></a>    <span class="cf">return</span> {<span class="st">"summary"</span>: response.text}</span>
-<span id="cb5-13"><a></a></span>
-<span id="cb5-14"><a></a><span class="kw">def</span> extract_points(state: State) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
-<span id="cb5-15"><a></a>    response <span class="op">=</span> client.models.generate_content(</span>
-<span id="cb5-16"><a></a>        model<span class="op">=</span><span class="st">"gemini-3-flash-preview"</span>,</span>
-<span id="cb5-17"><a></a>        contents<span class="op">=</span>[<span class="ss">f"List 3 key points from: </span><span class="sc">{</span>state[<span class="st">'summary'</span>]<span class="sc">}</span><span class="ss">"</span>]</span>
-<span id="cb5-18"><a></a>    )</span>
-<span id="cb5-19"><a></a>    <span class="cf">return</span> {<span class="st">"points"</span>: response.text}</span>
-<span id="cb5-20"><a></a></span>
-<span id="cb5-21"><a></a><span class="kw">def</span> generate_questions(state: State) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
-<span id="cb5-22"><a></a>    response <span class="op">=</span> client.models.generate_content(</span>
-<span id="cb5-23"><a></a>        model<span class="op">=</span><span class="st">"gemini-3-flash-preview"</span>,</span>
-<span id="cb5-24"><a></a>        contents<span class="op">=</span>[<span class="ss">f"Create quiz questions about: </span><span class="sc">{</span>state[<span class="st">'points'</span>]<span class="sc">}</span><span class="ss">"</span>]</span>
-<span id="cb5-25"><a></a>    )</span>
-<span id="cb5-26"><a></a>    <span class="cf">return</span> {<span class="st">"questions"</span>: response.text}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="im">from</span> langchain_google_genai <span class="im">import</span> ChatGoogleGenerativeAI</span>
+<span id="cb6-2"><a></a><span class="im">from</span> typing_extensions <span class="im">import</span> TypedDict</span>
+<span id="cb6-3"><a></a></span>
+<span id="cb6-4"><a></a>llm <span class="op">=</span> ChatGoogleGenerativeAI(model<span class="op">=</span><span class="st">"gemini-3-flash-preview"</span>)</span>
+<span id="cb6-5"><a></a></span>
+<span id="cb6-6"><a></a><span class="kw">class</span> State(TypedDict):</span>
+<span id="cb6-7"><a></a>    article: <span class="bu">str</span></span>
+<span id="cb6-8"><a></a>    summary: <span class="bu">str</span></span>
+<span id="cb6-9"><a></a>    points: <span class="bu">str</span></span>
+<span id="cb6-10"><a></a>    questions: <span class="bu">str</span></span>
+<span id="cb6-11"><a></a></span>
+<span id="cb6-12"><a></a><span class="kw">def</span> summarize(state: State) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb6-13"><a></a>    response <span class="op">=</span> llm.invoke(<span class="ss">f"Summarize this article: </span><span class="sc">{</span>state[<span class="st">'article'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-14"><a></a>    <span class="cf">return</span> {<span class="st">"summary"</span>: get_text(response)}</span>
+<span id="cb6-15"><a></a></span>
+<span id="cb6-16"><a></a><span class="kw">def</span> extract_points(state: State) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb6-17"><a></a>    response <span class="op">=</span> llm.invoke(<span class="ss">f"List 3 key points from: </span><span class="sc">{</span>state[<span class="st">'summary'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-18"><a></a>    <span class="cf">return</span> {<span class="st">"points"</span>: get_text(response)}</span>
+<span id="cb6-19"><a></a></span>
+<span id="cb6-20"><a></a><span class="kw">def</span> generate_questions(state: State) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb6-21"><a></a>    response <span class="op">=</span> llm.invoke(<span class="ss">f"Create quiz questions about: </span><span class="sc">{</span>state[<span class="st">'points'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-22"><a></a>    <span class="cf">return</span> {<span class="st">"questions"</span>: get_text(response)}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="prompt-chaining-the-graph" class="slide level2">
 <h2>Prompt chaining: the graph</h2>
@@ -621,15 +572,15 @@ def build_app():
      Above the chain, show a "State" box with fields: article, summary, points, questions.
      Draw a dotted line from State to the nodes indicating state flows through.
      Use clean style with soft colors. Label it "LangGraph Prompt Chain". -->
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>graph <span class="op">=</span> StateGraph(State)</span>
-<span id="cb6-2"><a></a>graph.add_node(<span class="st">"summarize"</span>, summarize)</span>
-<span id="cb6-3"><a></a>graph.add_node(<span class="st">"extract_points"</span>, extract_points)</span>
-<span id="cb6-4"><a></a>graph.add_node(<span class="st">"generate_questions"</span>, generate_questions)</span>
-<span id="cb6-5"><a></a>graph.add_edge(START, <span class="st">"summarize"</span>)</span>
-<span id="cb6-6"><a></a>graph.add_edge(<span class="st">"summarize"</span>, <span class="st">"extract_points"</span>)</span>
-<span id="cb6-7"><a></a>graph.add_edge(<span class="st">"extract_points"</span>, <span class="st">"generate_questions"</span>)</span>
-<span id="cb6-8"><a></a>graph.add_edge(<span class="st">"generate_questions"</span>, END)</span>
-<span id="cb6-9"><a></a>app <span class="op">=</span> graph.<span class="bu">compile</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>graph <span class="op">=</span> StateGraph(State)</span>
+<span id="cb7-2"><a></a>graph.add_node(<span class="st">"summarize"</span>, summarize)</span>
+<span id="cb7-3"><a></a>graph.add_node(<span class="st">"extract_points"</span>, extract_points)</span>
+<span id="cb7-4"><a></a>graph.add_node(<span class="st">"generate_questions"</span>, generate_questions)</span>
+<span id="cb7-5"><a></a>graph.add_edge(START, <span class="st">"summarize"</span>)</span>
+<span id="cb7-6"><a></a>graph.add_edge(<span class="st">"summarize"</span>, <span class="st">"extract_points"</span>)</span>
+<span id="cb7-7"><a></a>graph.add_edge(<span class="st">"extract_points"</span>, <span class="st">"generate_questions"</span>)</span>
+<span id="cb7-8"><a></a>graph.add_edge(<span class="st">"generate_questions"</span>, END)</span>
+<span id="cb7-9"><a></a>app <span class="op">=</span> graph.<span class="bu">compile</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Each step is focused → better results than one giant prompt.</p>
 </section>
 <section id="what-to-avoid" class="slide level2">
@@ -691,8 +642,9 @@ def build_app():
 <h2>Resources</h2>
 <ul>
 <li><a href="https://www.promptingguide.ai/">Prompt Engineering Guide</a></li>
-<li><a href="https://ai.google.dev/gemini-api/docs/prompting-strategies">Gemini Prompt Design Strategies</a></li>
-<li><a href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/start/gemini-3-prompting-guide">Gemini 3 Prompting Guide</a></li>
+<li><a href="https://python.langchain.com/docs/concepts/chat_models/">LangChain Chat Models</a></li>
+<li><a href="https://python.langchain.com/docs/concepts/structured_outputs/">LangChain Structured Output</a></li>
+<li><a href="https://langchain-ai.github.io/langgraph/">LangGraph Documentation</a></li>
 </ul>
 
 

@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.24">
 
-  <meta name="dcterms.date" content="2026-01-21">
+  <meta name="dcterms.date" content="2026-01-20">
   <title>Creating with AI in the Loop – Python, APIs, and Code Assist</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -198,7 +198,7 @@
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">2026-01-21</p>
+  <p class="date">2026-01-20</p>
 </section>
 <section id="todays-goals" class="slide level2">
 <h2>Today’s goals</h2>
@@ -265,7 +265,7 @@
 <span id="cb5-9"><a></a><span class="co"># Import with alias</span></span>
 <span id="cb5-10"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Packages are installed with <code>pip</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a></a><span class="ex">pip</span> install google-genai langgraph python-dotenv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a></a><span class="ex">pip</span> install langchain-google-genai langgraph python-dotenv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="what-is-an-api" class="slide level2">
 <h2>What is an API?</h2>
@@ -307,19 +307,39 @@
 <span id="cb7-3"><a></a>client <span class="op">=</span> genai.Client(api_key<span class="op">=</span><span class="st">"..."</span>)  <span class="co"># Your API key</span></span>
 <span id="cb7-4"><a></a></span>
 <span id="cb7-5"><a></a>response <span class="op">=</span> client.models.generate_content(</span>
-<span id="cb7-6"><a></a>    model<span class="op">=</span><span class="st">"gemini-2.0-flash"</span>,</span>
+<span id="cb7-6"><a></a>    model<span class="op">=</span><span class="st">"gemini-3-flash-preview"</span>,</span>
 <span id="cb7-7"><a></a>    contents<span class="op">=</span>[<span class="st">"Explain quantum computing in one sentence."</span>],</span>
 <span id="cb7-8"><a></a>)</span>
 <span id="cb7-9"><a></a><span class="bu">print</span>(response.text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This is how we build applications that use AI!</p>
+<p>This is the raw Gemini SDK — useful to understand what’s underneath.</p>
 </section>
-<section id="our-stack-python-langgraph-gemini" class="slide level2">
-<h2>Our stack: Python + LangGraph + Gemini</h2>
-<ul>
-<li><strong>Python:</strong> The programming language</li>
-<li><strong>LangGraph:</strong> Framework for building LLM applications with state and control flow</li>
-<li><strong>Gemini API:</strong> Google’s LLM service</li>
-</ul>
+<section id="langchain-model-agnostic-abstractions" class="slide level2">
+<h2>LangChain: model-agnostic abstractions</h2>
+<p>Going forward, we’ll use <strong>LangChain</strong> to write portable code:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="im">from</span> langchain_google_genai <span class="im">import</span> ChatGoogleGenerativeAI</span>
+<span id="cb8-2"><a></a></span>
+<span id="cb8-3"><a></a>llm <span class="op">=</span> ChatGoogleGenerativeAI(model<span class="op">=</span><span class="st">"gemini-3-flash-preview"</span>)</span>
+<span id="cb8-4"><a></a>response <span class="op">=</span> llm.invoke(<span class="st">"Explain quantum computing in one sentence."</span>)</span>
+<span id="cb8-5"><a></a><span class="bu">print</span>(get_text(response))  <span class="co"># Helper function (next slide)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Why?</strong> Swap one import to change providers (OpenAI, Anthropic, etc.).</p>
+</section>
+<section id="extracting-text-from-responses" class="slide level2">
+<h2>Extracting text from responses</h2>
+<p>Gemini 3 models return structured content (for “thinking” features). Use this helper:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="kw">def</span> get_text(response) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb9-2"><a></a>    <span class="co">"""Extract text from LLM response."""</span></span>
+<span id="cb9-3"><a></a>    content <span class="op">=</span> response.content</span>
+<span id="cb9-4"><a></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(content, <span class="bu">str</span>):</span>
+<span id="cb9-5"><a></a>        <span class="cf">return</span> content</span>
+<span id="cb9-6"><a></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(content, <span class="bu">list</span>):</span>
+<span id="cb9-7"><a></a>        <span class="cf">return</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(</span>
+<span id="cb9-8"><a></a>            b.get(<span class="st">"text"</span>, <span class="st">""</span>) <span class="cf">for</span> b <span class="kw">in</span> content <span class="cf">if</span> <span class="bu">isinstance</span>(b, <span class="bu">dict</span>)</span>
+<span id="cb9-9"><a></a>        ).strip()</span>
+<span id="cb9-10"><a></a>    <span class="cf">return</span> <span class="st">""</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We’ll use <code>get_text(response)</code> instead of <code>response.content</code> throughout.</p>
+</section>
+<section id="our-stack-python-langchain-langgraph" class="slide level2">
+<h2>Our stack: Python + LangChain + LangGraph</h2>
 <div style="text-align: center;">
 <p><img data-src="images/03-stack-diagram.png" style="width:40.0%"></p>
 </div>
@@ -327,11 +347,11 @@
 
      DESCRIPTION: Layered diagram showing the technology stack.
 
-     PROMPT FOR NANO BANANA PRO: Create a layered stack diagram with 3 layers. Bottom layer:
-     "Python" with Python logo. Middle layer: "LangGraph" (framework for LLM apps). Top layer:
-     "Gemini API" with a cloud icon. Draw arrows showing how they connect - Python provides
-     the foundation, LangGraph structures the app, Gemini provides the AI. Use clean boxes
-     with rounded corners and soft colors. 
+     PROMPT FOR NANO BANANA PRO: Create a layered stack diagram with 4 layers. Bottom layer:
+     "Python" with Python logo. Second layer: "LangChain" (model-agnostic abstractions).
+     Third layer: "LangGraph" (workflow orchestration). Top layer: "LLM Provider" with
+     icons for Gemini, OpenAI, Anthropic showing they are swappable. Draw arrows showing
+     how they connect. Use clean boxes with rounded corners and soft colors. 
      
      REVISED PROMPT: Create a layered stack diagram with 3 layers. Bottom layer:  
      "Python" with Python logo. Middle layer: "LangGraph" (framework for LLM apps). Top layer:  
@@ -341,24 +361,24 @@
 <section id="langgraph-state-based-workflows" class="slide level2">
 <h2>LangGraph: state-based workflows</h2>
 <p>LangGraph uses a <strong>graph</strong> to define how your app flows:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="im">from</span> typing_extensions <span class="im">import</span> TypedDict</span>
-<span id="cb8-2"><a></a><span class="im">from</span> langgraph.graph <span class="im">import</span> StateGraph, START, END</span>
-<span id="cb8-3"><a></a></span>
-<span id="cb8-4"><a></a><span class="kw">class</span> State(TypedDict):</span>
-<span id="cb8-5"><a></a>    prompt: <span class="bu">str</span></span>
-<span id="cb8-6"><a></a>    response: <span class="bu">str</span></span>
-<span id="cb8-7"><a></a></span>
-<span id="cb8-8"><a></a><span class="kw">def</span> respond(state: State) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
-<span id="cb8-9"><a></a>    <span class="co"># Call LLM here and return updated state</span></span>
-<span id="cb8-10"><a></a>    <span class="cf">return</span> {<span class="st">"response"</span>: <span class="st">"Hello back!"</span>}</span>
-<span id="cb8-11"><a></a></span>
-<span id="cb8-12"><a></a>graph <span class="op">=</span> StateGraph(State)</span>
-<span id="cb8-13"><a></a>graph.add_node(<span class="st">"respond"</span>, respond)</span>
-<span id="cb8-14"><a></a>graph.add_edge(START, <span class="st">"respond"</span>)</span>
-<span id="cb8-15"><a></a>graph.add_edge(<span class="st">"respond"</span>, END)</span>
-<span id="cb8-16"><a></a></span>
-<span id="cb8-17"><a></a>app <span class="op">=</span> graph.<span class="bu">compile</span>()</span>
-<span id="cb8-18"><a></a>result <span class="op">=</span> app.invoke({<span class="st">"prompt"</span>: <span class="st">"Hello!"</span>, <span class="st">"response"</span>: <span class="st">""</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="im">from</span> typing_extensions <span class="im">import</span> TypedDict</span>
+<span id="cb10-2"><a></a><span class="im">from</span> langgraph.graph <span class="im">import</span> StateGraph, START, END</span>
+<span id="cb10-3"><a></a></span>
+<span id="cb10-4"><a></a><span class="kw">class</span> State(TypedDict):</span>
+<span id="cb10-5"><a></a>    prompt: <span class="bu">str</span></span>
+<span id="cb10-6"><a></a>    response: <span class="bu">str</span></span>
+<span id="cb10-7"><a></a></span>
+<span id="cb10-8"><a></a><span class="kw">def</span> respond(state: State) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb10-9"><a></a>    <span class="co"># Call LLM here and return updated state</span></span>
+<span id="cb10-10"><a></a>    <span class="cf">return</span> {<span class="st">"response"</span>: <span class="st">"Hello back!"</span>}</span>
+<span id="cb10-11"><a></a></span>
+<span id="cb10-12"><a></a>graph <span class="op">=</span> StateGraph(State)</span>
+<span id="cb10-13"><a></a>graph.add_node(<span class="st">"respond"</span>, respond)</span>
+<span id="cb10-14"><a></a>graph.add_edge(START, <span class="st">"respond"</span>)</span>
+<span id="cb10-15"><a></a>graph.add_edge(<span class="st">"respond"</span>, END)</span>
+<span id="cb10-16"><a></a></span>
+<span id="cb10-17"><a></a>app <span class="op">=</span> graph.<span class="bu">compile</span>()</span>
+<span id="cb10-18"><a></a>result <span class="op">=</span> app.invoke({<span class="st">"prompt"</span>: <span class="st">"Hello!"</span>, <span class="st">"response"</span>: <span class="st">""</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="api-keys-what-and-why" class="slide level2">
 <h2>API keys: what and why</h2>
@@ -395,26 +415,26 @@
 <section id="protecting-keys-.env-files" class="slide level2">
 <h2>Protecting keys: .env files</h2>
 <p>Store secrets in a <code>.env</code> file (never committed to git):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a></a><span class="co"># .env file (in your project root)</span></span>
-<span id="cb9-2"><a></a><span class="va">GEMINI_API_KEY</span><span class="op">=</span>AIzaSyB...your-key-here...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a></a><span class="co"># .env file (in your project root)</span></span>
+<span id="cb11-2"><a></a><span class="va">GEMINI_API_KEY</span><span class="op">=</span>AIzaSyB...your-key-here...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Load in Python:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
-<span id="cb10-2"><a></a><span class="im">import</span> os</span>
-<span id="cb10-3"><a></a></span>
-<span id="cb10-4"><a></a>load_dotenv()  <span class="co"># Reads .env file</span></span>
-<span id="cb10-5"><a></a>api_key <span class="op">=</span> os.getenv(<span class="st">"GEMINI_API_KEY"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
+<span id="cb12-2"><a></a><span class="im">import</span> os</span>
+<span id="cb12-3"><a></a></span>
+<span id="cb12-4"><a></a>load_dotenv()  <span class="co"># Reads .env file</span></span>
+<span id="cb12-5"><a></a>api_key <span class="op">=</span> os.getenv(<span class="st">"GEMINI_API_KEY"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="protecting-keys-.gitignore" class="slide level2">
 <h2>Protecting keys: .gitignore</h2>
 <p>Your <code>.gitignore</code> file tells git what NOT to track:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource gitignore number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1"><a></a># .gitignore (from your assignment repos)</span>
-<span id="cb11-2"><a></a>.venv/</span>
-<span id="cb11-3"><a></a>.env</span>
-<span id="cb11-4"><a></a>__pycache__/</span>
-<span id="cb11-5"><a></a>*.pyc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource gitignore number-lines code-with-copy"><code class="sourceCode"><span id="cb13-1"><a></a># .gitignore (from your assignment repos)</span>
+<span id="cb13-2"><a></a>.venv/</span>
+<span id="cb13-3"><a></a>.env</span>
+<span id="cb13-4"><a></a>__pycache__/</span>
+<span id="cb13-5"><a></a>*.pyc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Check your assignment repos</strong> — <code>.env</code> should already be in <code>.gitignore</code></p>
 <p>Before committing, verify with:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a></a><span class="fu">git</span> status  <span class="co"># .env should NOT appear</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a></a><span class="fu">git</span> status  <span class="co"># .env should NOT appear</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="if-you-accidentally-commit-a-key" class="slide level2">
 <h2>If you accidentally commit a key…</h2>
