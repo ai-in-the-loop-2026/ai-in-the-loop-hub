@@ -120,7 +120,7 @@ In VS Code, go to Extensions:
 
 Optional:
 
-- **GitHub Pull Requests and Issues** (GitHub)
+- **GitHub Pull Requests** (GitHub)
 
 ### Enable the `code` command (recommended)
 

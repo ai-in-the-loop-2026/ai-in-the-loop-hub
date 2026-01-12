@@ -1,7 +1,7 @@
 ---
 title: "Tool Calling for LLMs"
 description: "Understanding how LLMs use tools, from chat interfaces to API implementations."
-date: 2026-01-28
+date: 2026-01-27
 categories: [Tool Use, APIs]
 tags: [tools, function-calling, langgraph, langchain, code-execution, web-search]
 ---
@@ -54,13 +54,7 @@ The model *requests* tool calls; your application *executes* them.
 
 ## Built-in tools in chat interfaces
 
-Modern chat interfaces come with tools pre-configured:
-
-| Interface | Built-in Tools |
-|-----------|---------------|
-| ChatGPT | Code Interpreter, Web Search, DALL-E, File Analysis |
-| Claude | Computer Use, MCP Servers, Artifacts |
-| Gemini | Code Execution, Google Search, Extensions |
+Modern chat interfaces come with tools pre-configured
 
 These are **not** part of the model weights—they're part of the product.
 
@@ -92,23 +86,22 @@ Models are trained to output tool calls through **reinforcement learning (RL)**.
 
 **Reinforcement Learning from Human Feedback (RLHF):**
 
-1. **Collect preferences** — humans rank model outputs
-2. **Train reward model** — learns to predict human preferences
-3. **Fine-tune with RL** — model learns to maximize reward
+1. **Collect preferences** — show humans pairs of outputs; they pick the better one
+2. **Train reward model** — a separate model learns to score outputs like humans would
+3. **Fine-tune with RL** — the LLM weights are adjusted to produce higher-scoring outputs
 
-For tools: humans prefer responses that correctly use tools over hallucinated answers.
+For tools: humans prefer responses that correctly use tools
 
 ---
 
 ## RLVR: learning from verification
 
-In 2025, **Reinforcement Learning from Verifiable Rewards (RLVR)** emerged:
+**Reinforcement Learning from Verifiable Rewards (RLVR)** skips human labeling:
 
 - For code: does it run correctly?
 - For math: is the answer right?
-- For search: does retrieved info match the query?
 
-No human labeling needed—rewards are computed automatically.
+Rewards are binary (correct/incorrect)—computed automatically from objective checks.
 
 ---
 
@@ -139,26 +132,9 @@ No human labeling needed—rewards are computed automatically.
 
 ---
 
-## Why model-agnostic code?
-
-We use **LangChain/LangGraph abstractions** instead of provider-specific APIs:
-
-```python
-# Model-agnostic: swap one line to change providers
-from langchain_google_genai import ChatGoogleGenerativeAI
-# from langchain_openai import ChatOpenAI
-# from langchain_anthropic import ChatAnthropic
-
-llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
-```
-
-Same tool definitions, same graph structure—different model.
-
----
-
 ## Defining tools with `@tool`
 
-The `@tool` decorator creates model-agnostic tool definitions:
+The `@tool` decorator (LangChain) creates model-agnostic tool definitions:
 
 ```python
 from langchain_core.tools import tool
@@ -174,7 +150,7 @@ def get_weather(city: str) -> str:
     return f"Weather in {city}: Sunny, 72°F"
 ```
 
-The **docstring becomes the tool description** the model sees.
+The **triple-quoted description becomes the tool description** the model sees.
 
 ---
 
@@ -435,7 +411,7 @@ def search_web(query: str, num_results: int = 3) -> str:
 
 ## Built-in search (Gemini)
 
-Gemini offers built-in Google Search:
+Gemini offers built-in Google Search—executed server-side, no graph loop needed:
 
 ```python
 # Gemini-specific: built-in Google Search
@@ -444,7 +420,7 @@ llm_with_search = llm.bind_tools([{"google_search": {}}])
 response = llm_with_search.invoke("What happened in tech news today?")
 ```
 
-For model-agnostic code, prefer custom search tools with APIs like Tavily.
+For model-agnostic code, prefer custom `@tool` with Tavily or Google's Custom Search API.
 
 ---
 

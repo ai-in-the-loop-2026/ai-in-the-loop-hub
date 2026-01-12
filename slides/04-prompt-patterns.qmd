@@ -1,7 +1,7 @@
 ---
 title: "Prompt Patterns and Best Practices"
 description: "Effective prompting techniques for chat interfaces and API-based LLM applications."
-date: 2026-01-23
+date: 2026-01-22
 categories: [Prompting, Concepts]
 tags: [prompts, patterns, langchain, langgraph, api, best-practices]
 ---
@@ -72,11 +72,7 @@ Tell the model exactly how to structure its response:
 >
 > Format as a markdown table."
 
-**Common formats:**
-
-- Bullet points, numbered lists
-- Tables, JSON, code blocks
-- Specific section headings
+**Common formats:** Bullet points, numbered lists, Tables, JSON, specific section headings
 
 ---
 
@@ -90,7 +86,6 @@ Give the model a perspective to adopt:
 
 - Expert in a field
 - Teacher explaining to a specific audience
-- Editor improving writing
 - Devil's advocate finding flaws
 
 ---
@@ -110,7 +105,7 @@ Show the model what you want with examples:
 > Informal: 'Let's grab coffee and hash this out'
 > Formal: [model completes]"
 
-2-3 examples usually suffice; too many can cause overfitting.
+2-3 examples usually suffice.
 
 ---
 

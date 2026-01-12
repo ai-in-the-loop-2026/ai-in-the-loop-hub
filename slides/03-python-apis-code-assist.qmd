@@ -1,7 +1,7 @@
 ---
 title: "Python, APIs, and Code Assist"
 description: "Python essentials, working with LLM APIs, and AI-assisted coding in VS Code."
-date: 2026-01-21
+date: 2026-01-20
 categories: [Python, APIs, Tools]
 tags: [python, api, langchain, langgraph, code-assist]
 ---
@@ -197,11 +197,6 @@ We'll use `get_text(response)` instead of `response.content` throughout.
 ---
 
 ## Our stack: Python + LangChain + LangGraph
-
-- **Python:** The programming language
-- **LangChain:** Model-agnostic abstractions for LLMs
-- **LangGraph:** Workflow orchestration with state and control flow
-- **Gemini** (default): The LLM provider (swappable)
 
 ::: {style="text-align: center;"}
 ![](images/03-stack-diagram.png){width=40%}
