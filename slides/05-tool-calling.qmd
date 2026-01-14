@@ -220,7 +220,8 @@ The agent calls the LLM; if tools are needed, execute them and loop back.
 ```python
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.tools import tool
-from langgraph.graph import StateGraph, MessagesState, START, END
+from langgraph.graph import StateGraph, START, END
+from langgraph.graph.message import MessagesState  # Prebuilt state
 from langgraph.prebuilt import ToolNode, tools_condition
 
 @tool
@@ -296,7 +297,9 @@ def get_weather(city: str) -> str:
 @tool
 def calculate(expression: str) -> str:
     """Evaluate a math expression."""
-    return str(eval(expression))  # Note: eval is unsafe! Demo only.
+    # WARNING: eval() is unsafe! Use AST-based safe_eval for production.
+    # See a3 assignment for a safe implementation using ast.parse().
+    return str(eval(expression))
 
 @tool
 def search_web(query: str) -> str:
@@ -358,7 +361,8 @@ def execute_python(code: str) -> str:
 
 ```python
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langgraph.graph import StateGraph, MessagesState, START, END
+from langgraph.graph import StateGraph, START, END
+from langgraph.graph.message import MessagesState
 from langgraph.prebuilt import ToolNode, tools_condition
 
 tools = [execute_python]
