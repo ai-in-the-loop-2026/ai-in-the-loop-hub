@@ -30,6 +30,8 @@ This course is under active development, and the schedule will be filled in as w
 
 [*What are transformer models and how do they work?*](https://www.youtube.com/watch?v=qaWMOYf4ri8) - YouTube video from Serrano.Academy.
 
+[*Deep Dive into LLMs like ChatGPT*](https://www.youtube.com/watch?v=7xTGNNLPyMI) - YouTube video by Andrej Karpathy.
+
 [*Attention is all you need*](https://papers.nips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf) - paper by Vaswani et al. (2017).
 
 ## Week 2: January 19-25
