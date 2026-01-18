@@ -105,33 +105,6 @@ Rewards are binary (correct/incorrect)—computed automatically from objective c
 
 ---
 
-## The tool calling loop
-
-::: {style="text-align: center;"}
-![](images/05-tool-loop.png){width=75%}
-:::
-
-<!-- IMAGE: ![](images/05-tool-loop.png){width=75%}
-
-     DESCRIPTION: Sequence diagram showing the tool calling loop between user, LLM, and tools.
-
-     PROMPT FOR NANO BANANA PRO: Create a sequence diagram showing the tool calling loop.
-     Three vertical lanes: "User", "LLM", "Tool". Show the flow:
-     1. User sends prompt to LLM
-     2. LLM returns function_call (not text)
-     3. Application executes tool
-     4. Tool result sent back to LLM
-     5. LLM generates final response to User
-     Use arrows between lanes, number the steps. Clean, technical style. -->
-
-1. User sends prompt
-2. Model returns a **tool call** (not text)
-3. Your code executes the tool
-4. Result sent back to model
-5. Model generates final response
-
----
-
 ## Defining tools with `@tool`
 
 The `@tool` decorator (LangChain) creates model-agnostic tool definitions:
@@ -174,6 +147,8 @@ response = llm_with_tools.invoke("What's the weather in Paris?")
 print(response.tool_calls)  # Unified format across providers
 ```
 
+This doesn't execute the tool—it just shows what the model requested.
+
 ---
 
 ## Tool calls in the response
@@ -197,7 +172,7 @@ This format is **the same regardless of which LLM provider** you use.
 ## LangGraph with tools: the pattern
 
 ::: {style="text-align: center;"}
-![](images/05-langgraph-tools.png){width=70%}
+![](images/05-langgraph-tools.png){width=75%}
 :::
 
 <!-- IMAGE: ![](images/05-langgraph-tools.png){width=70%}
@@ -212,6 +187,17 @@ This format is **the same regardless of which LLM provider** you use.
      Label the edges. Clean style with soft colors. Title: "LangGraph Tool Loop". -->
 
 The agent calls the LLM; if tools are needed, execute them and loop back.
+
+---
+
+## LangGraph: conditional edges
+
+Graphs can route to different nodes based on conditions:
+
+- `add_edge(A, B)` — always go from A to B
+- `add_conditional_edges(A, func)` — call `func` to decide where to go next
+
+This lets graphs **branch** and **loop** based on what the LLM returns.
 
 ---
 
@@ -233,7 +219,7 @@ tools = [get_weather]
 llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
 llm_with_tools = llm.bind_tools(tools)
 
-def agent(state: MessagesState):
+def agent(state: MessagesState):  # Node function: takes state, returns updates
     return {"messages": [llm_with_tools.invoke(state["messages"])]}
 
 graph = StateGraph(MessagesState)
@@ -247,14 +233,65 @@ app = graph.compile()
 
 ---
 
+## How node functions work
+
+Node functions in LangGraph:
+
+1. **Receive** the current state
+2. **Return** a dict of updates (not the full state)
+3. LangGraph **merges** updates into existing state
+
+For `MessagesState`, new messages are *appended* (not replaced).
+
+---
+
+## State updates through the loop
+
+:::: {.columns}
+::: {.column width="45%"}
+::: {style="display: flex; justify-content: center;"}
+![](images/05-state-updates.png){height="620px"}
+:::
+:::
+
+::: {.column width="55%"}
+Each node appends to the messages list:
+
+1. **Start**: just the user's message
+2. **After agent**: adds AI response with tool call
+3. **After tools**: adds tool result
+4. **After agent (final)**: adds AI's final response
+
+The state grows as the loop runs.
+:::
+::::
+
+<!-- IMAGE: ![](images/05-state-updates.png){width=80%}
+
+     DESCRIPTION: Diagram showing how MessagesState evolves through the tool loop.
+
+     PROMPT FOR NANO BANANA PRO: Create a vertical flowchart showing how state updates
+     through a LangGraph tool loop. Show 4 boxes stacked vertically with arrows between them:
+
+     Box 1 (top): "Initial state" → {"messages": [HumanMessage]}
+     Box 2: "After agent node" → {"messages": [HumanMessage, AIMessage(tool_calls)]}
+     Box 3: "After tools node" → {"messages": [HumanMessage, AIMessage, ToolMessage]}
+     Box 4 (bottom): "After agent (final)" → {"messages": [HumanMessage, AIMessage, ToolMessage, AIMessage]}
+
+     Use color coding: HumanMessage in blue, AIMessage in green, ToolMessage in orange.
+     Show arrows between boxes indicating the flow. Each box should show the messages list
+     growing. Clean, technical style with soft colors. -->
+
+---
+
 ## Key LangGraph components
 
 | Component | Purpose |
 |-----------|---------|
-| `MessagesState` | Prebuilt state with `messages` list |
-| `ToolNode(tools)` | Automatically executes tool calls |
+| `StateGraph(schema)` | Creates a graph with the given state schema |
+| `MessagesState` | Prebuilt schema; appends messages (not replaces) |
+| `ToolNode(tools)` | Executes tool calls automatically |
 | `tools_condition` | Routes to "tools" or END based on response |
-| `bind_tools()` | Gives model access to tools |
 
 These handle the loop logic so you don't have to.
 
@@ -297,8 +334,6 @@ def get_weather(city: str) -> str:
 @tool
 def calculate(expression: str) -> str:
     """Evaluate a math expression."""
-    # WARNING: eval() is unsafe! Use AST-based safe_eval for production.
-    # See a3 assignment for a safe implementation using ast.parse().
     return str(eval(expression))
 
 @tool
@@ -355,6 +390,10 @@ def execute_python(code: str) -> str:
         return "Error: Code execution timed out"
 ```
 
+::: {.callout-warning}
+This is **not safe** for production—no sandboxing, full filesystem/network access. See safer version later.
+:::
+
 ---
 
 ## Code execution: full agent
@@ -369,7 +408,7 @@ tools = [execute_python]
 llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
 llm_with_tools = llm.bind_tools(tools)
 
-def agent(state: MessagesState):
+def agent(state: MessagesState):  # Node function: takes state, returns updates
     return {"messages": [llm_with_tools.invoke(state["messages"])]}
 
 graph = StateGraph(MessagesState)
@@ -466,7 +505,7 @@ def validate_code_result(result: str) -> bool:
 ## Safety considerations
 
 ::: {style="text-align: center;"}
-![](images/05-safety-layers.png){width=65%}
+![](images/05-safety-layers.png){width=66%}
 :::
 
 <!-- IMAGE: ![](images/05-safety-layers.png){width=65%}
