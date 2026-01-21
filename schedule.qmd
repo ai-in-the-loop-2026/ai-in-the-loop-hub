@@ -63,5 +63,28 @@ This course is under active development, and the schedule will be filled in as w
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
-| Tuesday | - | - | A2 — API and Prompt Patterns (*before class*)  |
+| Tuesday | Tool calling | [Tool Calling for LLMs](slides/05-tool-calling.qmd) | A2 — API and Prompt Patterns (*before class*)  |
+| Thursday | The costs of training (discussion) | - | Read 2 articles + watch video (*before class*) |
+
+**Resources for discussion**
+
+[*Explained: Generative AI's environmental impact*](https://news.mit.edu/2025/explained-generative-ai-environmental-impact-0117) - article from MIT News
+
+[*How Much Water Do AI Data Centers Really Use?*](https://undark.org/2025/12/16/ai-data-centers-water/) - article from Undark
+
+[*The growing environmental impact of AI data centers' energy demands*](https://www.pbs.org/video/ai-the-grid-1748201430/) - PBS NewsHour video
+
+**Learn more**
+
+[*We did the math on AI's energy footprint. Here's the story you haven't heard.*](https://www.technologyreview.com/2025/05/20/1116327/ai-energy-usage-climate-footprint-big-tech/) - MIT Technology Review
+
+[*The carbon and water footprints of data centers and what this could mean for artificial intelligence*](https://www.sciencedirect.com/science/article/pii/S2666389925002788) - research article from ScienceDirect
+
+[*How much water does AI consume? The public deserves to know*](https://oecd.ai/en/wonk/how-much-water-does-ai-consume) - policy article from OECD.AI
+
+## Week 4: February 2-February 8
+
+| Meeting | Topic | Slides | Due |
+|---|---|---|---|
+| Tuesday | - | - | A3 — Tools (*before class*)  |
 | Thursday | - | - | - |

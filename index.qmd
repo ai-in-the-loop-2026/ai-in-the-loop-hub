@@ -11,6 +11,8 @@ If you’re ever unsure where to find something, start here.
 This hub contains **instructions, links, slides, and policies**—not your submissions.
 :::
 
+<!--
+
 ## What you should do first (Week 1)
 
 1. Read the [Syllabus](syllabus.qmd) before our first class.
@@ -18,6 +20,8 @@ This hub contains **instructions, links, slides, and policies**—not your submi
 3. Follow the [Initial Setup (Windows)](resources/initial_setup_windows.md) or [Initial Setup (macOS)](resources/initial_setup_macos.md).
 4. Accept/complete **A0 — Git and GitHub Fundamentals** using the link/instructions on the [Assignments](assignments.qmd) page.
 5. Accept/complete **A1 — Setup Verification** using the link/instructions on the [Assignments](assignments.qmd) page.
+
+-->
 
 ## Quick links
 

@@ -44,6 +44,12 @@ This page is the **single canonical place** for:
 - **Invite link:** <https://classroom.github.com/a/HGMHcztQ>
 - **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
 
+### A3 - Tools
+
+- **Due:** Tuesday (Week 4) before class
+- **Purpose:** Extend LLM capabilities by adding tools.
+- **Invite link:** <https://classroom.github.com/a/Www1h3QR>
+- **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
 
 ---
 

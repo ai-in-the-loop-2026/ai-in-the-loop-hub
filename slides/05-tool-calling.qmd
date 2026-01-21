@@ -105,6 +105,18 @@ Rewards are binary (correct/incorrect)—computed automatically from objective c
 
 ---
 
+## From training to implementation
+
+Models are trained to *request* tools—but **your code** must:
+
+1. Define what tools are available
+2. Execute them when requested
+3. Return results to the model
+
+Let's see how to implement this with LangChain and LangGraph.
+
+---
+
 ## Defining tools with `@tool`
 
 The `@tool` decorator (LangChain) creates model-agnostic tool definitions:
@@ -206,8 +218,7 @@ This lets graphs **branch** and **loop** based on what the LLM returns.
 ```python
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.tools import tool
-from langgraph.graph import StateGraph, START, END
-from langgraph.graph.message import MessagesState  # Prebuilt state
+from langgraph.graph import StateGraph, MessagesState, START, END
 from langgraph.prebuilt import ToolNode, tools_condition
 
 @tool
@@ -314,7 +325,7 @@ for msg in result["messages"]:
 Output:
 ```
 human: What's the weather in Tokyo?
-ai:
+ai:                                    # (tool call, no text)
 tool: Sunny, 72°F in Tokyo
 ai: The weather in Tokyo is sunny and 72°F.
 ```
@@ -334,7 +345,7 @@ def get_weather(city: str) -> str:
 @tool
 def calculate(expression: str) -> str:
     """Evaluate a math expression."""
-    return str(eval(expression))
+    return str(eval(expression))  # WARNING: eval() is unsafe in production
 
 @tool
 def search_web(query: str) -> str:
@@ -363,77 +374,7 @@ The LangGraph loop handles this automatically.
 
 ---
 
-## Evaluating tool outputs
-
-Before trusting tool results, consider:
-
-::: {.callout-warning}
-## Questions to ask
-
-- Did the tool execute successfully?
-- Is the result format what we expected?
-- Does the result make sense for the query?
-- Could the result be malicious or harmful?
-:::
-
----
-
-## Validating tool results
-
-```python
-def validate_code_result(result: str) -> bool:
-    """Check if code execution result is safe."""
-
-    # Check for error indicators
-    if result.startswith("Error:"):
-        return False
-
-    # Check for suspicious patterns
-    suspicious = ["password", "secret", "token", "rm -rf"]
-    if any(s in result.lower() for s in suspicious):
-        return False
-
-    return True
-```
-
----
-
-## Safety considerations
-
-::: {style="text-align: center;"}
-![](images/05-safety-layers.png){width=66%}
-:::
-
-<!-- IMAGE: ![](images/05-safety-layers.png){width=65%}
-
-     DESCRIPTION: Layered security diagram for tool execution.
-
-     PROMPT FOR NANO BANANA PRO: Create a layered security diagram for tool execution.
-     Show concentric rectangles or an onion-like structure with layers from outside to inside:
-     "Input Validation" (outermost), "Sandboxing", "Resource Limits", "Output Filtering",
-     "Tool Execution" (innermost/core). Use different colors for each layer. Add small
-     icons or symbols representing security. Clean, professional style. -->
-
-Defense in depth: multiple safety layers protect against misuse.
-
----
-
-## Hallucination risks with tools
-
-Models can hallucinate about tools:
-
-- **Inventing results** — claiming a search returned info it didn't
-- **Wrong tool choice** — using calculator when search was needed
-- **Misinterpreting results** — drawing wrong conclusions from data
-- **Fabricated citations** — making up URLs or sources
-
-::: {.callout-tip}
-Always verify tool results against the actual output, not just the model's interpretation.
-:::
-
----
-
-## Safe code execution
+## Safe tool calling (before execution)
 
 Running arbitrary code is dangerous. Protect with:
 
@@ -447,31 +388,64 @@ Running arbitrary code is dangerous. Protect with:
 
 ---
 
-## Code sandbox example
+## Validating tool inputs
+
+Before executing code, validate what the model is asking to run:
+
+- **AST parsing** — analyze code structure, not just strings
+- **RestrictedPython** — library that compiles to a safe subset
+- **Containerization** — run in isolated environment with no host access
+- **Allowlists** — only permit specific pre-approved operations
+
+---
+
+## Evaluating tool results (after execution)
+
+Before trusting tool results, consider:
+
+::: {.callout-warning}
+## Questions to ask
+
+- Did the tool execute successfully?
+- Is the result format what we expected?
+- Does the result make sense for the query?
+- Could the result contain sensitive data?
+:::
+
+---
+
+## Validating tool outputs
 
 ```python
-import subprocess
-import resource
+def validate_tool_output(result: str) -> bool:
+    """Check if output contains sensitive data."""
 
-def safe_execute(code: str, timeout: int = 5) -> str:
-    """Execute code with safety restrictions."""
+    # Check for error indicators
+    if result.startswith("Error:"):
+        return False
 
-    wrapper = f'''
-import resource
-resource.setrlimit(resource.RLIMIT_AS, (50_000_000, 50_000_000))  # 50MB
-resource.setrlimit(resource.RLIMIT_CPU, (5, 5))  # 5 seconds CPU
-{code}
-'''
+    # Check for leaked secrets
+    sensitive = ["password", "secret", "token", "api_key"]
+    if any(s in result.lower() for s in sensitive):
+        return False
 
-    result = subprocess.run(
-        ["python", "-c", wrapper],
-        capture_output=True,
-        text=True,
-        timeout=timeout,
-        env={"PATH": ""}  # Minimal environment
-    )
-    return result.stdout if result.returncode == 0 else result.stderr
+    return True
 ```
+
+---
+
+## Hallucination risks with tools
+
+Models can hallucinate about tools:
+
+- **Inventing results** — claiming a search returned info it didn't
+- **Wrong tool choice** — using calculator when search was needed
+- **Misinterpreting results** — drawing wrong conclusions from data
+- **Fabricated citations** — making up URLs or sources
+
+::: {.callout-tip}
+Compare the model's claims against the actual `ToolMessage` content—don't trust its summary.
+:::
 
 ---
 
@@ -486,7 +460,11 @@ A malicious website could include text like:
 If the model processes this as part of a search result, it might follow the injected instructions.
 :::
 
-**Mitigation:** Treat tool outputs as untrusted data.
+**Mitigations:** Mark outputs clearly (e.g., `[DATA]...[/DATA]`), instruct the model to ignore instructions in tool outputs, require human approval for sensitive actions.
+
+::: {.callout-note}
+This is an active research area—no perfect solution exists yet.
+:::
 
 ---
 
@@ -494,10 +472,9 @@ If the model processes this as part of a search result, it might follow the inje
 
 1. **Use `@tool` decorator** — model-agnostic, clean definitions
 2. **Use `ToolNode`** — handles execution loop automatically
-3. **Validate all inputs** — never trust model-generated arguments blindly
-4. **Sandbox execution** — especially for code, file, and network tools
-5. **Handle errors gracefully** — tools fail; plan for it
-6. **Log everything** — tool calls are important for debugging
+3. **Validate inputs** — sandbox execution, check what the model asks to run
+4. **Validate outputs** — check for sensitive data and hallucinations
+5. **Log everything** — tool calls are important for debugging
 
 ---
 
@@ -507,13 +484,13 @@ If the model processes this as part of a search result, it might follow the inje
 - Models learn tool use through **reinforcement learning** (RLHF, RLVR)
 - Use **LangChain/LangGraph** for model-agnostic tool calling
 - `@tool` + `bind_tools()` + `ToolNode` = clean, portable code
-- **Safety is critical**: sandbox code, validate outputs, watch for injection
+- **Safety is critical**: validate inputs, sandbox execution, check outputs, watch for injection
 
 ---
 
 ## Resources
 
-- [LangGraph Tool Calling](https://langchain-ai.github.io/langgraph/how-tos/tool-calling/)
-- [LangChain Tools Concepts](https://python.langchain.com/docs/concepts/tools/)
+- [LangGraph Documentation](https://docs.langchain.com/oss/python/langgraph/overview)
+- [LangChain Tools](https://docs.langchain.com/oss/python/langchain/tools)
 - [RLHF Tutorial (CMU)](https://blog.ml.cmu.edu/2025/06/01/rlhf-101-a-technical-tutorial-on-reinforcement-learning-from-human-feedback/)
 - [State of LLM Reasoning (Raschka)](https://magazine.sebastianraschka.com/p/the-state-of-llm-reasoning-model-training)
