@@ -281,30 +281,15 @@
 </ul>
 <p>Rewards are binary (correct/incorrect)—computed automatically from objective checks.</p>
 </section>
-<section id="the-tool-calling-loop" class="slide level2">
-<h2>The tool calling loop</h2>
-<div style="text-align: center;">
-<p><img data-src="images/05-tool-loop.png" style="width:75.0%"></p>
-</div>
-<!-- IMAGE: ![](images/05-tool-loop.png){width=75%}
-
-     DESCRIPTION: Sequence diagram showing the tool calling loop between user, LLM, and tools.
-
-     PROMPT FOR NANO BANANA PRO: Create a sequence diagram showing the tool calling loop.
-     Three vertical lanes: "User", "LLM", "Tool". Show the flow:
-     1. User sends prompt to LLM
-     2. LLM returns function_call (not text)
-     3. Application executes tool
-     4. Tool result sent back to LLM
-     5. LLM generates final response to User
-     Use arrows between lanes, number the steps. Clean, technical style. -->
+<section id="from-training-to-implementation" class="slide level2">
+<h2>From training to implementation</h2>
+<p>Models are trained to <em>request</em> tools—but <strong>your code</strong> must:</p>
 <ol type="1">
-<li>User sends prompt</li>
-<li>Model returns a <strong>tool call</strong> (not text)</li>
-<li>Your code executes the tool</li>
-<li>Result sent back to model</li>
-<li>Model generates final response</li>
+<li>Define what tools are available</li>
+<li>Execute them when requested</li>
+<li>Return results to the model</li>
 </ol>
+<p>Let’s see how to implement this with LangChain and LangGraph.</p>
 </section>
 <section id="defining-tools-with-tool" class="slide level2">
 <h2>Defining tools with <code>@tool</code></h2>
@@ -338,6 +323,7 @@
 <span id="cb2-11"><a></a></span>
 <span id="cb2-12"><a></a>response <span class="op">=</span> llm_with_tools.invoke(<span class="st">"What's the weather in Paris?"</span>)</span>
 <span id="cb2-13"><a></a><span class="bu">print</span>(response.tool_calls)  <span class="co"># Unified format across providers</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This doesn’t execute the tool—it just shows what the model requested.</p>
 </section>
 <section id="tool-calls-in-the-response" class="slide level2">
 <h2>Tool calls in the response</h2>
@@ -354,7 +340,7 @@
 <section id="langgraph-with-tools-the-pattern" class="slide level2">
 <h2>LangGraph with tools: the pattern</h2>
 <div style="text-align: center;">
-<p><img data-src="images/05-langgraph-tools.png" style="width:70.0%"></p>
+<p><img data-src="images/05-langgraph-tools.png" style="width:75.0%"></p>
 </div>
 <!-- IMAGE: ![](images/05-langgraph-tools.png){width=70%}
 
@@ -367,6 +353,15 @@
      Use rounded boxes for nodes, diamond for condition. Show the loop from tools back to agent.
      Label the edges. Clean style with soft colors. Title: "LangGraph Tool Loop". -->
 <p>The agent calls the LLM; if tools are needed, execute them and loop back.</p>
+</section>
+<section id="langgraph-conditional-edges" class="slide level2">
+<h2>LangGraph: conditional edges</h2>
+<p>Graphs can route to different nodes based on conditions:</p>
+<ul>
+<li><code>add_edge(A, B)</code> — always go from A to B</li>
+<li><code>add_conditional_edges(A, func)</code> — call <code>func</code> to decide where to go next</li>
+</ul>
+<p>This lets graphs <strong>branch</strong> and <strong>loop</strong> based on what the LLM returns.</p>
 </section>
 <section id="langgraph-tools-complete-example" class="slide level2">
 <h2>LangGraph tools: complete example</h2>
@@ -384,7 +379,7 @@
 <span id="cb4-12"><a></a>llm <span class="op">=</span> ChatGoogleGenerativeAI(model<span class="op">=</span><span class="st">"gemini-3-flash-preview"</span>)</span>
 <span id="cb4-13"><a></a>llm_with_tools <span class="op">=</span> llm.bind_tools(tools)</span>
 <span id="cb4-14"><a></a></span>
-<span id="cb4-15"><a></a><span class="kw">def</span> agent(state: MessagesState):</span>
+<span id="cb4-15"><a></a><span class="kw">def</span> agent(state: MessagesState):  <span class="co"># Node function: takes state, returns updates</span></span>
 <span id="cb4-16"><a></a>    <span class="cf">return</span> {<span class="st">"messages"</span>: [llm_with_tools.invoke(state[<span class="st">"messages"</span>])]}</span>
 <span id="cb4-17"><a></a></span>
 <span id="cb4-18"><a></a>graph <span class="op">=</span> StateGraph(MessagesState)</span>
@@ -394,6 +389,49 @@
 <span id="cb4-22"><a></a>graph.add_conditional_edges(<span class="st">"agent"</span>, tools_condition)</span>
 <span id="cb4-23"><a></a>graph.add_edge(<span class="st">"tools"</span>, <span class="st">"agent"</span>)</span>
 <span id="cb4-24"><a></a>app <span class="op">=</span> graph.<span class="bu">compile</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="how-node-functions-work" class="slide level2">
+<h2>How node functions work</h2>
+<p>Node functions in LangGraph:</p>
+<ol type="1">
+<li><strong>Receive</strong> the current state</li>
+<li><strong>Return</strong> a dict of updates (not the full state)</li>
+<li>LangGraph <strong>merges</strong> updates into existing state</li>
+</ol>
+<p>For <code>MessagesState</code>, new messages are <em>appended</em> (not replaced).</p>
+</section>
+<section id="state-updates-through-the-loop" class="slide level2">
+<h2>State updates through the loop</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div style="display: flex; justify-content: center;">
+<p><img data-src="images/05-state-updates.png" height="620"></p>
+</div>
+</div><div class="column" style="width:55%;">
+<p>Each node appends to the messages list:</p>
+<ol type="1">
+<li><strong>Start</strong>: just the user’s message</li>
+<li><strong>After agent</strong>: adds AI response with tool call</li>
+<li><strong>After tools</strong>: adds tool result</li>
+<li><strong>After agent (final)</strong>: adds AI’s final response</li>
+</ol>
+<p>The state grows as the loop runs.</p>
+</div></div>
+<!-- IMAGE: ![](images/05-state-updates.png){width=80%}
+
+     DESCRIPTION: Diagram showing how MessagesState evolves through the tool loop.
+
+     PROMPT FOR NANO BANANA PRO: Create a vertical flowchart showing how state updates
+     through a LangGraph tool loop. Show 4 boxes stacked vertically with arrows between them:
+
+     Box 1 (top): "Initial state" → {"messages": [HumanMessage]}
+     Box 2: "After agent node" → {"messages": [HumanMessage, AIMessage(tool_calls)]}
+     Box 3: "After tools node" → {"messages": [HumanMessage, AIMessage, ToolMessage]}
+     Box 4 (bottom): "After agent (final)" → {"messages": [HumanMessage, AIMessage, ToolMessage, AIMessage]}
+
+     Use color coding: HumanMessage in blue, AIMessage in green, ToolMessage in orange.
+     Show arrows between boxes indicating the flow. Each box should show the messages list
+     growing. Clean, technical style with soft colors. -->
 </section>
 <section id="key-langgraph-components" class="slide level2">
 <h2>Key LangGraph components</h2>
@@ -406,20 +444,20 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>MessagesState</code></td>
-<td>Prebuilt state with <code>messages</code> list</td>
+<td><code>StateGraph(schema)</code></td>
+<td>Creates a graph with the given state schema</td>
 </tr>
 <tr class="even">
-<td><code>ToolNode(tools)</code></td>
-<td>Automatically executes tool calls</td>
+<td><code>MessagesState</code></td>
+<td>Prebuilt schema; appends messages (not replaces)</td>
 </tr>
 <tr class="odd">
-<td><code>tools_condition</code></td>
-<td>Routes to “tools” or END based on response</td>
+<td><code>ToolNode(tools)</code></td>
+<td>Executes tool calls automatically</td>
 </tr>
 <tr class="even">
-<td><code>bind_tools()</code></td>
-<td>Gives model access to tools</td>
+<td><code>tools_condition</code></td>
+<td>Routes to “tools” or END based on response</td>
 </tr>
 </tbody>
 </table>
@@ -438,7 +476,7 @@
 <span id="cb5-9"><a></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>msg<span class="sc">.</span><span class="bu">type</span><span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>msg<span class="sc">.</span>content<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Output:</p>
 <pre><code>human: What's the weather in Tokyo?
-ai:
+ai:                                    # (tool call, no text)
 tool: Sunny, 72°F in Tokyo
 ai: The weather in Tokyo is sunny and 72°F.</code></pre>
 </section>
@@ -453,7 +491,7 @@ ai: The weather in Tokyo is sunny and 72°F.</code></pre>
 <span id="cb7-6"><a></a><span class="at">@tool</span></span>
 <span id="cb7-7"><a></a><span class="kw">def</span> calculate(expression: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
 <span id="cb7-8"><a></a>    <span class="co">"""Evaluate a math expression."""</span></span>
-<span id="cb7-9"><a></a>    <span class="cf">return</span> <span class="bu">str</span>(<span class="bu">eval</span>(expression))  <span class="co"># Note: eval is unsafe! Demo only.</span></span>
+<span id="cb7-9"><a></a>    <span class="cf">return</span> <span class="bu">str</span>(<span class="bu">eval</span>(expression))  <span class="co"># </span><span class="al">WARNING</span><span class="co">: eval() is unsafe in production</span></span>
 <span id="cb7-10"><a></a></span>
 <span id="cb7-11"><a></a><span class="at">@tool</span></span>
 <span id="cb7-12"><a></a><span class="kw">def</span> search_web(query: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
@@ -475,166 +513,8 @@ ai: The weather in Tokyo is sunny and 72°F.</code></pre>
 </ol>
 <p>The LangGraph loop handles this automatically.</p>
 </section>
-<section id="detailed-example-code-execution" class="slide level2">
-<h2>Detailed example: code execution</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="im">import</span> subprocess</span>
-<span id="cb8-2"><a></a><span class="im">import</span> sys</span>
-<span id="cb8-3"><a></a></span>
-<span id="cb8-4"><a></a><span class="at">@tool</span></span>
-<span id="cb8-5"><a></a><span class="kw">def</span> execute_python(code: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb8-6"><a></a>    <span class="co">"""Execute Python code and return the output.</span></span>
-<span id="cb8-7"><a></a></span>
-<span id="cb8-8"><a></a><span class="co">    Args:</span></span>
-<span id="cb8-9"><a></a><span class="co">        code: Python code to execute</span></span>
-<span id="cb8-10"><a></a><span class="co">    """</span></span>
-<span id="cb8-11"><a></a>    <span class="cf">try</span>:</span>
-<span id="cb8-12"><a></a>        result <span class="op">=</span> subprocess.run(</span>
-<span id="cb8-13"><a></a>            [sys.executable, <span class="st">"-c"</span>, code],</span>
-<span id="cb8-14"><a></a>            capture_output<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb8-15"><a></a>            text<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb8-16"><a></a>            timeout<span class="op">=</span><span class="dv">10</span></span>
-<span id="cb8-17"><a></a>        )</span>
-<span id="cb8-18"><a></a>        <span class="cf">if</span> result.returncode <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb8-19"><a></a>            <span class="cf">return</span> result.stdout <span class="kw">or</span> <span class="st">"(no output)"</span></span>
-<span id="cb8-20"><a></a>        <span class="cf">return</span> <span class="ss">f"Error: </span><span class="sc">{</span>result<span class="sc">.</span>stderr<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb8-21"><a></a>    <span class="cf">except</span> subprocess.TimeoutExpired:</span>
-<span id="cb8-22"><a></a>        <span class="cf">return</span> <span class="st">"Error: Code execution timed out"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="code-execution-full-agent" class="slide level2">
-<h2>Code execution: full agent</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="im">from</span> langchain_google_genai <span class="im">import</span> ChatGoogleGenerativeAI</span>
-<span id="cb9-2"><a></a><span class="im">from</span> langgraph.graph <span class="im">import</span> StateGraph, MessagesState, START, END</span>
-<span id="cb9-3"><a></a><span class="im">from</span> langgraph.prebuilt <span class="im">import</span> ToolNode, tools_condition</span>
-<span id="cb9-4"><a></a></span>
-<span id="cb9-5"><a></a>tools <span class="op">=</span> [execute_python]</span>
-<span id="cb9-6"><a></a>llm <span class="op">=</span> ChatGoogleGenerativeAI(model<span class="op">=</span><span class="st">"gemini-3-flash-preview"</span>)</span>
-<span id="cb9-7"><a></a>llm_with_tools <span class="op">=</span> llm.bind_tools(tools)</span>
-<span id="cb9-8"><a></a></span>
-<span id="cb9-9"><a></a><span class="kw">def</span> agent(state: MessagesState):</span>
-<span id="cb9-10"><a></a>    <span class="cf">return</span> {<span class="st">"messages"</span>: [llm_with_tools.invoke(state[<span class="st">"messages"</span>])]}</span>
-<span id="cb9-11"><a></a></span>
-<span id="cb9-12"><a></a>graph <span class="op">=</span> StateGraph(MessagesState)</span>
-<span id="cb9-13"><a></a>graph.add_node(<span class="st">"agent"</span>, agent)</span>
-<span id="cb9-14"><a></a>graph.add_node(<span class="st">"tools"</span>, ToolNode(tools))</span>
-<span id="cb9-15"><a></a>graph.add_edge(START, <span class="st">"agent"</span>)</span>
-<span id="cb9-16"><a></a>graph.add_conditional_edges(<span class="st">"agent"</span>, tools_condition)</span>
-<span id="cb9-17"><a></a>graph.add_edge(<span class="st">"tools"</span>, <span class="st">"agent"</span>)</span>
-<span id="cb9-18"><a></a>app <span class="op">=</span> graph.<span class="bu">compile</span>()</span>
-<span id="cb9-19"><a></a></span>
-<span id="cb9-20"><a></a><span class="co"># "Calculate the first 10 Fibonacci numbers"</span></span>
-<span id="cb9-21"><a></a><span class="co"># Model writes and executes Python code automatically</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="detailed-example-web-search" class="slide level2">
-<h2>Detailed example: web search</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="im">import</span> requests</span>
-<span id="cb10-2"><a></a></span>
-<span id="cb10-3"><a></a><span class="at">@tool</span></span>
-<span id="cb10-4"><a></a><span class="kw">def</span> search_web(query: <span class="bu">str</span>, num_results: <span class="bu">int</span> <span class="op">=</span> <span class="dv">3</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb10-5"><a></a>    <span class="co">"""Search the web for current information.</span></span>
-<span id="cb10-6"><a></a></span>
-<span id="cb10-7"><a></a><span class="co">    Args:</span></span>
-<span id="cb10-8"><a></a><span class="co">        query: The search query</span></span>
-<span id="cb10-9"><a></a><span class="co">        num_results: Number of results to return (default 3)</span></span>
-<span id="cb10-10"><a></a><span class="co">    """</span></span>
-<span id="cb10-11"><a></a>    <span class="co"># Using a search API (Tavily, SerpAPI, etc.)</span></span>
-<span id="cb10-12"><a></a>    response <span class="op">=</span> requests.get(</span>
-<span id="cb10-13"><a></a>        <span class="st">"https://api.tavily.com/search"</span>,</span>
-<span id="cb10-14"><a></a>        params<span class="op">=</span>{<span class="st">"query"</span>: query, <span class="st">"max_results"</span>: num_results},</span>
-<span id="cb10-15"><a></a>        headers<span class="op">=</span>{<span class="st">"Authorization"</span>: <span class="ss">f"Bearer </span><span class="sc">{</span>TAVILY_API_KEY<span class="sc">}</span><span class="ss">"</span>}</span>
-<span id="cb10-16"><a></a>    )</span>
-<span id="cb10-17"><a></a>    <span class="cf">if</span> response.ok:</span>
-<span id="cb10-18"><a></a>        results <span class="op">=</span> response.json().get(<span class="st">"results"</span>, [])</span>
-<span id="cb10-19"><a></a>        <span class="cf">return</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(<span class="ss">f"- </span><span class="sc">{</span>r[<span class="st">'title'</span>]<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>r[<span class="st">'url'</span>]<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> r <span class="kw">in</span> results)</span>
-<span id="cb10-20"><a></a>    <span class="cf">return</span> <span class="st">"Search failed"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="built-in-search-gemini" class="slide level2">
-<h2>Built-in search (Gemini)</h2>
-<p>Gemini offers built-in Google Search—executed server-side, no graph loop needed:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="co"># Gemini-specific: built-in Google Search</span></span>
-<span id="cb11-2"><a></a>llm_with_search <span class="op">=</span> llm.bind_tools([{<span class="st">"google_search"</span>: {}}])</span>
-<span id="cb11-3"><a></a></span>
-<span id="cb11-4"><a></a>response <span class="op">=</span> llm_with_search.invoke(<span class="st">"What happened in tech news today?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>For model-agnostic code, prefer custom <code>@tool</code> with Tavily or Google’s Custom Search API.</p>
-</section>
-<section id="evaluating-tool-outputs" class="slide level2">
-<h2>Evaluating tool outputs</h2>
-<p>Before trusting tool results, consider:</p>
-<div class="callout callout-warning callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Questions to ask</strong></p>
-</div>
-<div class="callout-content">
-<ul>
-<li>Did the tool execute successfully?</li>
-<li>Is the result format what we expected?</li>
-<li>Does the result make sense for the query?</li>
-<li>Could the result be malicious or harmful?</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<section id="validating-tool-results" class="slide level2">
-<h2>Validating tool results</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="kw">def</span> validate_code_result(result: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
-<span id="cb12-2"><a></a>    <span class="co">"""Check if code execution result is safe."""</span></span>
-<span id="cb12-3"><a></a></span>
-<span id="cb12-4"><a></a>    <span class="co"># Check for error indicators</span></span>
-<span id="cb12-5"><a></a>    <span class="cf">if</span> result.startswith(<span class="st">"Error:"</span>):</span>
-<span id="cb12-6"><a></a>        <span class="cf">return</span> <span class="va">False</span></span>
-<span id="cb12-7"><a></a></span>
-<span id="cb12-8"><a></a>    <span class="co"># Check for suspicious patterns</span></span>
-<span id="cb12-9"><a></a>    suspicious <span class="op">=</span> [<span class="st">"password"</span>, <span class="st">"secret"</span>, <span class="st">"token"</span>, <span class="st">"rm -rf"</span>]</span>
-<span id="cb12-10"><a></a>    <span class="cf">if</span> <span class="bu">any</span>(s <span class="kw">in</span> result.lower() <span class="cf">for</span> s <span class="kw">in</span> suspicious):</span>
-<span id="cb12-11"><a></a>        <span class="cf">return</span> <span class="va">False</span></span>
-<span id="cb12-12"><a></a></span>
-<span id="cb12-13"><a></a>    <span class="cf">return</span> <span class="va">True</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="safety-considerations" class="slide level2">
-<h2>Safety considerations</h2>
-<div style="text-align: center;">
-<p><img data-src="images/05-safety-layers.png" style="width:65.0%"></p>
-</div>
-<!-- IMAGE: ![](images/05-safety-layers.png){width=65%}
-
-     DESCRIPTION: Layered security diagram for tool execution.
-
-     PROMPT FOR NANO BANANA PRO: Create a layered security diagram for tool execution.
-     Show concentric rectangles or an onion-like structure with layers from outside to inside:
-     "Input Validation" (outermost), "Sandboxing", "Resource Limits", "Output Filtering",
-     "Tool Execution" (innermost/core). Use different colors for each layer. Add small
-     icons or symbols representing security. Clean, professional style. -->
-<p>Defense in depth: multiple safety layers protect against misuse.</p>
-</section>
-<section id="hallucination-risks-with-tools" class="slide level2">
-<h2>Hallucination risks with tools</h2>
-<p>Models can hallucinate about tools:</p>
-<ul>
-<li><strong>Inventing results</strong> — claiming a search returned info it didn’t</li>
-<li><strong>Wrong tool choice</strong> — using calculator when search was needed</li>
-<li><strong>Misinterpreting results</strong> — drawing wrong conclusions from data</li>
-<li><strong>Fabricated citations</strong> — making up URLs or sources</li>
-</ul>
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Tip</strong></p>
-</div>
-<div class="callout-content">
-<p>Always verify tool results against the actual output, not just the model’s interpretation.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="safe-code-execution" class="slide level2">
-<h2>Safe code execution</h2>
+<section id="safe-tool-calling-before-execution" class="slide level2">
+<h2>Safe tool calling (before execution)</h2>
 <p>Running arbitrary code is dangerous. Protect with:</p>
 <table class="caption-top">
 <thead>
@@ -667,29 +547,76 @@ ai: The weather in Tokyo is sunny and 72°F.</code></pre>
 </tbody>
 </table>
 </section>
-<section id="code-sandbox-example" class="slide level2">
-<h2>Code sandbox example</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a><span class="im">import</span> subprocess</span>
-<span id="cb13-2"><a></a><span class="im">import</span> resource</span>
-<span id="cb13-3"><a></a></span>
-<span id="cb13-4"><a></a><span class="kw">def</span> safe_execute(code: <span class="bu">str</span>, timeout: <span class="bu">int</span> <span class="op">=</span> <span class="dv">5</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb13-5"><a></a>    <span class="co">"""Execute code with safety restrictions."""</span></span>
-<span id="cb13-6"><a></a></span>
-<span id="cb13-7"><a></a>    wrapper <span class="op">=</span> <span class="ss">f'''</span></span>
-<span id="cb13-8"><a></a><span class="ss">import resource</span></span>
-<span id="cb13-9"><a></a><span class="ss">resource.setrlimit(resource.RLIMIT_AS, (50_000_000, 50_000_000))  # 50MB</span></span>
-<span id="cb13-10"><a></a><span class="ss">resource.setrlimit(resource.RLIMIT_CPU, (5, 5))  # 5 seconds CPU</span></span>
-<span id="cb13-11"><a></a><span class="sc">{</span>code<span class="sc">}</span></span>
-<span id="cb13-12"><a></a><span class="ss">'''</span></span>
-<span id="cb13-13"><a></a></span>
-<span id="cb13-14"><a></a>    result <span class="op">=</span> subprocess.run(</span>
-<span id="cb13-15"><a></a>        [<span class="st">"python"</span>, <span class="st">"-c"</span>, wrapper],</span>
-<span id="cb13-16"><a></a>        capture_output<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb13-17"><a></a>        text<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb13-18"><a></a>        timeout<span class="op">=</span>timeout,</span>
-<span id="cb13-19"><a></a>        env<span class="op">=</span>{<span class="st">"PATH"</span>: <span class="st">""</span>}  <span class="co"># Minimal environment</span></span>
-<span id="cb13-20"><a></a>    )</span>
-<span id="cb13-21"><a></a>    <span class="cf">return</span> result.stdout <span class="cf">if</span> result.returncode <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> result.stderr</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="validating-tool-inputs" class="slide level2">
+<h2>Validating tool inputs</h2>
+<p>Before executing code, validate what the model is asking to run:</p>
+<ul>
+<li><strong>AST parsing</strong> — analyze code structure, not just strings</li>
+<li><strong>RestrictedPython</strong> — library that compiles to a safe subset</li>
+<li><strong>Containerization</strong> — run in isolated environment with no host access</li>
+<li><strong>Allowlists</strong> — only permit specific pre-approved operations</li>
+</ul>
+</section>
+<section id="evaluating-tool-results-after-execution" class="slide level2">
+<h2>Evaluating tool results (after execution)</h2>
+<p>Before trusting tool results, consider:</p>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Questions to ask</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Did the tool execute successfully?</li>
+<li>Is the result format what we expected?</li>
+<li>Does the result make sense for the query?</li>
+<li>Could the result contain sensitive data?</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="validating-tool-outputs" class="slide level2">
+<h2>Validating tool outputs</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="kw">def</span> validate_tool_output(result: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb8-2"><a></a>    <span class="co">"""Check if output contains sensitive data."""</span></span>
+<span id="cb8-3"><a></a></span>
+<span id="cb8-4"><a></a>    <span class="co"># Check for error indicators</span></span>
+<span id="cb8-5"><a></a>    <span class="cf">if</span> result.startswith(<span class="st">"Error:"</span>):</span>
+<span id="cb8-6"><a></a>        <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb8-7"><a></a></span>
+<span id="cb8-8"><a></a>    <span class="co"># Check for leaked secrets</span></span>
+<span id="cb8-9"><a></a>    sensitive <span class="op">=</span> [<span class="st">"password"</span>, <span class="st">"secret"</span>, <span class="st">"token"</span>, <span class="st">"api_key"</span>]</span>
+<span id="cb8-10"><a></a>    <span class="cf">if</span> <span class="bu">any</span>(s <span class="kw">in</span> result.lower() <span class="cf">for</span> s <span class="kw">in</span> sensitive):</span>
+<span id="cb8-11"><a></a>        <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb8-12"><a></a></span>
+<span id="cb8-13"><a></a>    <span class="cf">return</span> <span class="va">True</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="hallucination-risks-with-tools" class="slide level2">
+<h2>Hallucination risks with tools</h2>
+<p>Models can hallucinate about tools:</p>
+<ul>
+<li><strong>Inventing results</strong> — claiming a search returned info it didn’t</li>
+<li><strong>Wrong tool choice</strong> — using calculator when search was needed</li>
+<li><strong>Misinterpreting results</strong> — drawing wrong conclusions from data</li>
+<li><strong>Fabricated citations</strong> — making up URLs or sources</li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Compare the model’s claims against the actual <code>ToolMessage</code> content—don’t trust its summary.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="prompt-injection-via-tools" class="slide level2">
 <h2>Prompt injection via tools</h2>
@@ -707,16 +634,28 @@ ai: The weather in Tokyo is sunny and 72°F.</code></pre>
 </div>
 </div>
 </div>
-<p><strong>Mitigation:</strong> Treat tool outputs as untrusted data.</p>
+<p><strong>Mitigations:</strong> Mark outputs clearly (e.g., <code>[DATA]...[/DATA]</code>), instruct the model to ignore instructions in tool outputs, require human approval for sensitive actions.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>This is an active research area—no perfect solution exists yet.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="best-practices-summary" class="slide level2">
 <h2>Best practices summary</h2>
 <ol type="1">
 <li><strong>Use <code>@tool</code> decorator</strong> — model-agnostic, clean definitions</li>
 <li><strong>Use <code>ToolNode</code></strong> — handles execution loop automatically</li>
-<li><strong>Validate all inputs</strong> — never trust model-generated arguments blindly</li>
-<li><strong>Sandbox execution</strong> — especially for code, file, and network tools</li>
-<li><strong>Handle errors gracefully</strong> — tools fail; plan for it</li>
+<li><strong>Validate inputs</strong> — sandbox execution, check what the model asks to run</li>
+<li><strong>Validate outputs</strong> — check for sensitive data and hallucinations</li>
 <li><strong>Log everything</strong> — tool calls are important for debugging</li>
 </ol>
 </section>
@@ -727,14 +666,14 @@ ai: The weather in Tokyo is sunny and 72°F.</code></pre>
 <li>Models learn tool use through <strong>reinforcement learning</strong> (RLHF, RLVR)</li>
 <li>Use <strong>LangChain/LangGraph</strong> for model-agnostic tool calling</li>
 <li><code>@tool</code> + <code>bind_tools()</code> + <code>ToolNode</code> = clean, portable code</li>
-<li><strong>Safety is critical</strong>: sandbox code, validate outputs, watch for injection</li>
+<li><strong>Safety is critical</strong>: validate inputs, sandbox execution, check outputs, watch for injection</li>
 </ul>
 </section>
 <section id="resources" class="slide level2">
 <h2>Resources</h2>
 <ul>
-<li><a href="https://langchain-ai.github.io/langgraph/how-tos/tool-calling/">LangGraph Tool Calling</a></li>
-<li><a href="https://python.langchain.com/docs/concepts/tools/">LangChain Tools Concepts</a></li>
+<li><a href="https://docs.langchain.com/oss/python/langgraph/overview">LangGraph Documentation</a></li>
+<li><a href="https://docs.langchain.com/oss/python/langchain/tools">LangChain Tools</a></li>
 <li><a href="https://blog.ml.cmu.edu/2025/06/01/rlhf-101-a-technical-tutorial-on-reinforcement-learning-from-human-feedback/">RLHF Tutorial (CMU)</a></li>
 <li><a href="https://magazine.sebastianraschka.com/p/the-state-of-llm-reasoning-model-training">State of LLM Reasoning (Raschka)</a></li>
 </ul>
