@@ -499,6 +499,6 @@ When outputs aren't what you expect:
 ## Resources
 
 - [Prompt Engineering Guide](https://www.promptingguide.ai/)
-- [LangChain Chat Models](https://python.langchain.com/docs/concepts/chat_models/)
-- [LangChain Structured Output](https://python.langchain.com/docs/concepts/structured_outputs/)
-- [LangGraph Documentation](https://langchain-ai.github.io/langgraph/)
+- [LangChain Chat Models](https://docs.langchain.com/oss/python/langchain/models)
+- [LangChain Structured Output](https://docs.langchain.com/oss/python/langchain/structured-output)
+- [LangGraph Documentation](https://docs.langchain.com/oss/python/langgraph/overview)

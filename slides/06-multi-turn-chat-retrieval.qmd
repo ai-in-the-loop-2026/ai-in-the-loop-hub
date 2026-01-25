@@ -1,0 +1,539 @@
+---
+title: "Multi-turn Chat and Document Retrieval"
+description: "Building conversational agents with memory and document search capabilities."
+date: 2026-02-03
+categories: [Chat, Retrieval, RAG]
+tags: [multi-turn, conversation, memory, documents, chunking, bm25, retrieval, langchain, langgraph]
+---
+
+## Today's goals
+
+- Understand how multi-turn chat works with `MessagesState`
+- Build a simple chatbot that maintains conversation history
+- Learn to load and chunk documents using LangChain
+- Implement keyword search with `BM25Retriever`
+- Combine chat + search into a document Q&A agent
+
+---
+
+## Single-turn vs multi-turn
+
+::: {style="text-align: center;"}
+![](images/06-single-vs-multi-turn.png){width=100%}
+:::
+
+<!-- IMAGE: ![](images/06-single-vs-multi-turn.png){width=75%}
+
+     DESCRIPTION: Side-by-side comparison of single-turn and multi-turn conversation patterns.
+
+     PROMPT FOR NANO BANANA PRO: Create a diagram with two panels side by side.
+     LEFT PANEL labeled "Single-turn": Three boxes in a row with rightward arrows:
+     [User] → [LLM] → [Response]. Below, text: "No memory between requests".
+     RIGHT PANEL labeled "Multi-turn": Show two rows stacked vertically, labeled "Turn 1"
+     and "Turn 2". Each row has: [Message] → [LLM] → [Response]. On the right side, show
+     a "History" box. After Turn 1, the History box contains "Msg 1, Resp 1". An arrow goes
+     from History into Turn 2's LLM. After Turn 2, the History box contains "Msg 1, Resp 1,
+     Msg 2, Resp 2". Use soft blue and green colors. Clean boxes, minimal style. -->
+
+
+
+---
+
+## How chat history works
+
+When you use ChatGPT, Claude, or Gemini, the interface:
+
+1. **Stores** all previous messages (yours and the model's)
+2. **Sends** the entire history with each new request
+3. **Appends** the new response to the history
+
+The model doesn't "remember"—it re-reads the full conversation every time.
+
+---
+
+## `MessagesState` revisited
+
+In deck 05, we used `MessagesState` for tool calling. Let's look closer:
+
+```python
+from typing import Annotated
+from typing_extensions import TypedDict
+from langgraph.graph.message import AnyMessage, add_messages
+
+# MessagesState (from langgraph.graph) is defined as:
+class MessagesState(TypedDict):
+    messages: Annotated[list[AnyMessage], add_messages]
+```
+
+::: {.callout-note}
+`Annotated` is standard Python for attaching metadata to type hints. Here, `add_messages` is the metadata — LangGraph uses it as a reducer that appends messages instead of replacing them. `AnyMessage` covers `HumanMessage`, `AIMessage`, `SystemMessage`, `ToolMessage`, etc.
+:::
+
+---
+
+## The append behavior
+
+When a node returns `{"messages": [new_msg]}`:
+
+```python
+# State before
+{"messages": [msg1, msg2]}
+
+# Node returns
+{"messages": [msg3]}
+
+# State after (messages APPENDED, not replaced)
+{"messages": [msg1, msg2, msg3]}
+```
+
+This is what enables multi-turn conversation—history accumulates automatically.
+
+You saw this pattern in deck 05: messages accumulated through the tool loop (human → AI → tool → AI).
+
+---
+
+## Simple chatbot: complete example
+
+```python
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langgraph.graph import StateGraph, MessagesState, START, END
+
+llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
+
+def chatbot(state: MessagesState):
+    response = llm.invoke(state["messages"])
+    return {"messages": [response]}
+
+graph = StateGraph(MessagesState)
+graph.add_node("chatbot", chatbot)
+graph.add_edge(START, "chatbot")
+graph.add_edge("chatbot", END)
+app = graph.compile()
+```
+
+No tools, no loops—just a model that responds to messages.
+
+---
+
+## Running the chatbot
+
+```python
+from langchain_core.messages import HumanMessage
+
+# First turn
+result = app.invoke({"messages": [HumanMessage(content="Hi, I'm Alex.")]})
+print(result["messages"][-1].content)
+# "Hello Alex! Nice to meet you. How can I help you today?"
+
+# Second turn — pass the full history
+result = app.invoke({"messages": result["messages"] + [
+    HumanMessage(content="What's my name?")
+]})
+print(result["messages"][-1].content)
+# "Your name is Alex!"
+```
+
+The model "remembers" because we passed the full conversation history.
+
+---
+
+## Adding a system prompt
+
+```python
+from langchain_core.messages import SystemMessage
+
+SYSTEM_PROMPT = "You are a helpful assistant. Be concise and friendly."
+
+def chatbot(state: MessagesState):
+    # Prepend system message to the conversation
+    messages = [SystemMessage(content=SYSTEM_PROMPT)] + state["messages"]
+    response = llm.invoke(messages)
+    return {"messages": [response]}
+```
+
+The system message sets the model's behavior but isn't stored in state — if we stored it, `add_messages` would accumulate duplicates each turn.
+
+---
+
+## Why this matters
+
+Multi-turn chat enables:
+
+- **Context awareness** — refer to earlier parts of the conversation
+- **Complex tasks** — break problems into multiple exchanges
+
+**Limitation:** The context window is finite. Very long conversations must be summarized or truncated.
+
+---
+
+## Part 2: Document Retrieval
+
+---
+
+## The retrieval problem
+
+LLMs learn patterns, not exact copies. They can't reliably quote documents — even public ones from training data.
+
+And they have no access to private documents or anything after their training cutoff.
+
+**Solution:** Give the model access to documents at query time.
+
+---
+
+## The retrieval pipeline
+
+::: {style="text-align: center;"}
+![](images/06-retrieval-pipeline.png){width=90%}
+:::
+
+<!-- IMAGE: ![](images/06-retrieval-pipeline.png){width=80%}
+
+     DESCRIPTION: Horizontal pipeline showing the retrieval flow from documents to search results.
+
+     PROMPT FOR NANO BANANA PRO: Create a horizontal pipeline diagram showing document retrieval
+     flow. Four stages connected by arrows: "Load" (folder icon) → "Chunk" (scissors icon) →
+     "Retriever" (filter icon) → "Search" (magnifying glass returning results).
+     Clean technical style with soft colors. -->
+
+A **retriever** takes a query and returns relevant chunks from your documents.
+
+Today we'll use **keyword search**. Semantic search comes later.
+
+---
+
+## Document loaders
+
+LangChain provides loaders for many formats:
+
+```python
+from langchain_community.document_loaders import TextLoader, PyPDFLoader
+
+# Load a single text file (one Document for the whole file)
+loader = TextLoader("readme.txt")
+docs = loader.load()
+
+# Load a PDF (one Document per page)
+loader = PyPDFLoader("report.pdf")
+docs = loader.load()
+```
+
+Each loader returns a list of `Document` objects with `page_content` and `metadata`.
+
+Other loaders include CSV, JSON, HTML, Word docs, and [many more](https://docs.langchain.com/oss/python/integrations/document_loaders). Some are specialized for extracting tables, formulas, or structured data.
+
+---
+
+## Loading directories
+
+```python
+from langchain_community.document_loaders import DirectoryLoader, TextLoader
+
+# Load all .txt files from a directory
+loader = DirectoryLoader(
+    "./docs",
+    glob="**/*.txt",
+    loader_cls=TextLoader
+)
+documents = loader.load()
+
+print(f"Loaded {len(documents)} documents")
+```
+
+The `glob` pattern controls which files to include. Here, `**/*.txt` matches all `.txt` files in the directory and all subdirectories.
+
+---
+
+## Why chunking?
+
+Documents are often too long to:
+
+1. **Fit in context** — models have token limits
+2. **Be relevant** — a 100-page doc isn't all relevant to one question
+
+**Chunking** splits documents into smaller pieces so we can retrieve only what's relevant.
+
+---
+
+## Text splitters
+
+```python
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000,      # Target size in characters
+    chunk_overlap=100     # Overlap between chunks
+)
+
+chunks = splitter.split_documents(documents)
+print(f"Split into {len(chunks)} chunks")
+```
+
+`RecursiveCharacterTextSplitter` tries separators in order: `"\n\n"` → `"\n"` → `" "` → `""`. If a chunk is still too big, it recursively re-splits using the next separator. (Tries paragraph breaks first, then lines, then words, then characters)
+
+---
+
+## Preparing documents for chunking
+
+Loaders return documents, but you may need to restructure before chunking:
+
+- **Combine**: Join PDF pages into one text so chunks can cross page boundaries
+- **Split**: Separate chapters or sections so chunks don't cross logical boundaries
+
+The right approach depends on your document structure and retrieval needs.
+
+---
+
+## What's in a chunk?
+
+```python
+chunk = chunks[0]
+
+print(chunk.page_content)   # The text content
+print(chunk.metadata)       # Source file, location, etc.
+```
+
+```
+# Output
+"This document describes the project architecture..."
+
+{'source': './docs/architecture.txt', 'start_index': 0}
+```
+
+Metadata helps track where each chunk came from.
+
+---
+
+## Keyword search with BM25
+
+**BM25** (Best Matching 25) is a classic keyword search algorithm:
+
+- Matches chunks containing query terms
+- Ranks by term frequency, normalized by chunk length (so longer chunks don't have an unfair advantage)
+- No neural network — fast and interpretable
+
+```python
+from langchain_community.retrievers import BM25Retriever
+
+retriever = BM25Retriever.from_documents(chunks, k=3)  # Return top 3 results
+```
+
+---
+
+## The Retriever interface
+
+All LangChain retrievers share the same interface:
+
+```python
+# Returns List[Document]
+results = retriever.invoke("search query here")
+
+for doc in results:
+    print(doc.page_content[:100])
+    print(doc.metadata)
+    print("---")
+```
+
+This uniformity means you can swap BM25 for semantic search later with one line change.
+
+---
+
+## Putting it together
+
+```python
+from langchain_community.document_loaders import DirectoryLoader, TextLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.retrievers import BM25Retriever
+
+# 1. Load documents
+loader = DirectoryLoader("./docs", glob="**/*.txt", loader_cls=TextLoader)
+documents = loader.load()
+
+# 2. Split into chunks
+splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+chunks = splitter.split_documents(documents)
+
+# 3. Create retriever
+retriever = BM25Retriever.from_documents(chunks, k=3)
+```
+
+Now `retriever.invoke(query)` returns the 3 most relevant chunks.
+
+---
+
+## Part 3: Document Q&A Agent
+
+---
+
+## Combining chat + search
+
+::: {style="text-align: center;"}
+![](images/06-doc-qa-agent.png){width=75%}
+:::
+
+<!-- IMAGE: ![](images/06-doc-qa-agent.png){width=70%}
+
+     DESCRIPTION: LangGraph flow diagram for a document Q&A agent.
+
+     PROMPT FOR NANO BANANA PRO: Create a LangGraph-style flow diagram for a document Q&A agent.
+     Show: START → "agent" node → conditional diamond "needs search?" → if yes: "tools" node
+     (with search_docs label) → back to "agent" → if no: → END. Similar style to tool-calling
+     diagrams but with document/search iconography. Clean style with soft colors. -->
+
+The pattern: give the model a **search tool** and let it decide when to use it.
+
+---
+
+## Search as a tool
+
+```python
+from langchain_core.tools import tool
+
+@tool
+def search_docs(query: str) -> str:
+    """Search documents for information relevant to the query."""
+    results = retriever.invoke(query)
+    if not results:
+        return "No relevant documents found."
+    return "\n\n---\n\n".join(
+        f"Source: {doc.metadata.get('source', 'unknown')}\nContent: {doc.page_content}"
+        for doc in results
+    )
+```
+
+The tool returns formatted search results that the model can use to answer questions.
+
+---
+
+## Complete example: document Q&A agent
+
+```python
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.messages import SystemMessage
+from langchain_core.tools import tool
+from langgraph.graph import StateGraph, MessagesState, START, END
+from langgraph.prebuilt import ToolNode, tools_condition
+
+llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
+
+tools = [search_docs]
+llm_with_tools = llm.bind_tools(tools)
+
+SYSTEM_PROMPT = """You are a helpful assistant that answers questions using the provided documents.
+Use the search_docs tool when you need information from the documents to answer the user's question."""
+```
+
+---
+
+## Complete example (continued)
+
+```python
+def agent(state: MessagesState):
+    messages = [SystemMessage(content=SYSTEM_PROMPT)] + state["messages"]
+    return {"messages": [llm_with_tools.invoke(messages)]}
+
+graph = StateGraph(MessagesState)
+graph.add_node("agent", agent)
+graph.add_node("tools", ToolNode(tools))
+graph.add_edge(START, "agent")
+graph.add_conditional_edges("agent", tools_condition)
+graph.add_edge("tools", "agent")
+app = graph.compile()
+```
+
+This is the same pattern from deck 05—but now the tool searches documents.
+
+---
+
+## Running the agent
+
+```python
+from langchain_core.messages import HumanMessage
+
+result = app.invoke({
+    "messages": [HumanMessage(content="How is the database structured?")]
+})
+
+print(result["messages"][-1].content)
+```
+
+Typically, the agent will:
+
+1. Call `search_docs` with a relevant query
+2. Read the results
+3. Synthesize an answer
+
+---
+
+## What the model decides
+
+The model chooses when to search:
+
+| Query | Likely action |
+|-------|---------------|
+| "How do I run the tests?" | Calls `search_docs` |
+| "What database does the project use?" | Calls `search_docs` |
+| "What's 2 + 2?" | Answers directly |
+| "Thanks!" | Responds directly |
+
+The system prompt can guide this behavior.
+
+---
+
+## Multi-turn document Q&A
+
+Because we're using `MessagesState`, conversations work naturally:
+
+```python
+# First question
+result = app.invoke({"messages": [
+    HumanMessage(content="What testing framework does the project use?")
+]})
+
+# Follow-up (pass full history)
+result = app.invoke({"messages": result["messages"] + [
+    HumanMessage(content="How do I run the tests?")
+]})
+```
+
+The system prompt is prepended inside the `agent` function — callers just pass messages. The model can reference previous answers and search results.
+
+---
+
+## Extending to semantic search
+
+BM25 matches **keywords**. Semantic search matches **meaning**:
+
+| Query | BM25 finds | Semantic search finds |
+|-------|-----------|----------------------|
+| "car" | Documents with "car" | Documents about automobiles, vehicles |
+| "happy" | Documents with "happy" | Documents about joy, satisfaction |
+
+**Coming soon:** Vector embeddings and hybrid retrieval (combining both approaches).
+
+---
+
+## Best practices summary
+
+1. **Keep conversation history** — pass full message list for multi-turn
+2. **Use system prompts** — guide model behavior without storing in state
+3. **Chunk appropriately** — balance relevance vs. context (500-1500 chars typical)
+4. **Let the model decide** — don't force search on every query
+
+---
+
+## Key takeaways
+
+- Multi-turn chat works by **accumulating messages** in `MessagesState`
+- The model re-reads the full conversation each turn—it doesn't "remember"
+- Document retrieval: **load → chunk → retriever → search**
+- `BM25Retriever` provides fast keyword search with a standard interface
+- A document Q&A agent is just a chatbot with a **search tool**
+
+---
+
+## Resources
+
+- [LangGraph Overview](https://docs.langchain.com/oss/python/langgraph/overview)
+- [LangChain Text Splitters](https://docs.langchain.com/oss/python/integrations/splitters)
+- [BM25Retriever](https://docs.langchain.com/oss/python/integrations/retrievers/bm25)
+- [LangChain Document Loaders](https://docs.langchain.com/oss/python/integrations/document_loaders)

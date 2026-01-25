@@ -86,5 +86,5 @@ This course is under active development, and the schedule will be filled in as w
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
-| Tuesday | - | - | A3 — Tools (*before class*)  |
+| Tuesday | Multi-turn chat and document retrieval | [Multi-turn Chat and Document Retrieval](slides/06-multi-turn-chat-retrieval.qmd) | A3 — Tools (*before class*)  |
 | Thursday | - | - | - |
