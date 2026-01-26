@@ -380,22 +380,12 @@ Running arbitrary code is dangerous. Protect with:
 
 | Layer | Protection |
 |-------|-----------|
+| Input validation | AST parsing to analyze code structure before running |
 | Sandboxing | Docker containers, VMs, restricted environments |
 | Timeouts | Kill long-running processes |
 | Resource limits | Cap memory, CPU, disk usage |
 | Allowlists | Only permit specific modules/operations |
 | Network isolation | Prevent external connections |
-
----
-
-## Validating tool inputs
-
-Before executing code, validate what the model is asking to run:
-
-- **AST parsing** — analyze code structure, not just strings
-- **RestrictedPython** — library that compiles to a safe subset
-- **Containerization** — run in isolated environment with no host access
-- **Allowlists** — only permit specific pre-approved operations
 
 ---
 
@@ -411,26 +401,6 @@ Before trusting tool results, consider:
 - Does the result make sense for the query?
 - Could the result contain sensitive data?
 :::
-
----
-
-## Validating tool outputs
-
-```python
-def validate_tool_output(result: str) -> bool:
-    """Check if output contains sensitive data."""
-
-    # Check for error indicators
-    if result.startswith("Error:"):
-        return False
-
-    # Check for leaked secrets
-    sensitive = ["password", "secret", "token", "api_key"]
-    if any(s in result.lower() for s in sensitive):
-        return False
-
-    return True
-```
 
 ---
 
@@ -472,7 +442,7 @@ This is an active research area—no perfect solution exists yet.
 
 1. **Use `@tool` decorator** — model-agnostic, clean definitions
 2. **Use `ToolNode`** — handles execution loop automatically
-3. **Validate inputs** — sandbox execution, check what the model asks to run
+3. **Secure execution** — sandbox, check what the model asks to run
 4. **Validate outputs** — check for sensitive data and hallucinations
 5. **Log everything** — tool calls are important for debugging
 
