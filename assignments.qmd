@@ -48,7 +48,7 @@ This page is the **single canonical place** for:
 
 - **Due:** Tuesday (Week 4) before class
 - **Purpose:** Extend LLM capabilities by adding tools.
-- **Invite link:** <https://classroom.github.com/a/Www1h3QR>
+- **Invite link:** <https://classroom.github.com/a/0vZ7_LAx>
 - **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
 
 ### A4 - RAG (KW) + Multi-turn Chat
