@@ -88,3 +88,10 @@ This course is under active development, and the schedule will be filled in as w
 |---|---|---|---|
 | Tuesday | Multi-turn chat and document retrieval | [Multi-turn Chat and Document Retrieval](slides/06-multi-turn-chat-retrieval.qmd) | A3 — Tools (*before class*)  |
 | Thursday | - | - | - |
+
+## Week 5: February 9-February 15
+
+| Meeting | Topic | Slides | Due |
+|---|---|---|---|
+| Tuesday | - | - | A4 — RAG (KW) + Multi-turn Chat (*before class*)  |
+| Thursday | - | - | - |
