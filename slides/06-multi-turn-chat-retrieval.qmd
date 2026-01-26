@@ -98,7 +98,7 @@ You saw this pattern in deck 05: messages accumulated through the tool loop (hum
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.graph import StateGraph, MessagesState, START, END
 
-llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 def chatbot(state: MessagesState):
     response = llm.invoke(state["messages"])
@@ -413,7 +413,7 @@ from langchain_core.tools import tool
 from langgraph.graph import StateGraph, MessagesState, START, END
 from langgraph.prebuilt import ToolNode, tools_condition
 
-llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 tools = [search_docs]
 llm_with_tools = llm.bind_tools(tools)
