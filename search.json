@@ -1698,14 +1698,7 @@
     "href": "slides/05-tool-calling.html#safe-tool-calling-before-execution",
     "title": "Tool Calling for LLMs",
     "section": "Safe tool calling (before execution)",
-    "text": "Safe tool calling (before execution)\nRunning arbitrary code is dangerous. Protect with:\n\n\n\nLayer\nProtection\n\n\n\n\nSandboxing\nDocker containers, VMs, restricted environments\n\n\nTimeouts\nKill long-running processes\n\n\nResource limits\nCap memory, CPU, disk usage\n\n\nAllowlists\nOnly permit specific modules/operations\n\n\nNetwork isolation\nPrevent external connections"
-  },
-  {
-    "objectID": "slides/05-tool-calling.html#validating-tool-inputs",
-    "href": "slides/05-tool-calling.html#validating-tool-inputs",
-    "title": "Tool Calling for LLMs",
-    "section": "Validating tool inputs",
-    "text": "Validating tool inputs\nBefore executing code, validate what the model is asking to run:\n\nAST parsing — analyze code structure, not just strings\nRestrictedPython — library that compiles to a safe subset\nContainerization — run in isolated environment with no host access\nAllowlists — only permit specific pre-approved operations"
+    "text": "Safe tool calling (before execution)\nRunning arbitrary code is dangerous. Protect with:\n\n\n\n\n\n\n\nLayer\nProtection\n\n\n\n\nInput validation\nAST parsing to analyze code structure before running\n\n\nSandboxing\nDocker containers, VMs, restricted environments\n\n\nTimeouts\nKill long-running processes\n\n\nResource limits\nCap memory, CPU, disk usage\n\n\nAllowlists\nOnly permit specific modules/operations\n\n\nNetwork isolation\nPrevent external connections"
   },
   {
     "objectID": "slides/05-tool-calling.html#evaluating-tool-results-after-execution",
@@ -1713,13 +1706,6 @@
     "title": "Tool Calling for LLMs",
     "section": "Evaluating tool results (after execution)",
     "text": "Evaluating tool results (after execution)\nBefore trusting tool results, consider:\n\n\n\n\n\n\nQuestions to ask\n\n\n\nDid the tool execute successfully?\nIs the result format what we expected?\nDoes the result make sense for the query?\nCould the result contain sensitive data?"
-  },
-  {
-    "objectID": "slides/05-tool-calling.html#validating-tool-outputs",
-    "href": "slides/05-tool-calling.html#validating-tool-outputs",
-    "title": "Tool Calling for LLMs",
-    "section": "Validating tool outputs",
-    "text": "Validating tool outputs\ndef validate_tool_output(result: str) -&gt; bool:\n    \"\"\"Check if output contains sensitive data.\"\"\"\n\n    # Check for error indicators\n    if result.startswith(\"Error:\"):\n        return False\n\n    # Check for leaked secrets\n    sensitive = [\"password\", \"secret\", \"token\", \"api_key\"]\n    if any(s in result.lower() for s in sensitive):\n        return False\n\n    return True"
   },
   {
     "objectID": "slides/05-tool-calling.html#hallucination-risks-with-tools",
@@ -1740,7 +1726,7 @@
     "href": "slides/05-tool-calling.html#best-practices-summary",
     "title": "Tool Calling for LLMs",
     "section": "Best practices summary",
-    "text": "Best practices summary\n\nUse @tool decorator — model-agnostic, clean definitions\nUse ToolNode — handles execution loop automatically\nValidate inputs — sandbox execution, check what the model asks to run\nValidate outputs — check for sensitive data and hallucinations\nLog everything — tool calls are important for debugging"
+    "text": "Best practices summary\n\nUse @tool decorator — model-agnostic, clean definitions\nUse ToolNode — handles execution loop automatically\nSecure execution — sandbox, check what the model asks to run\nValidate outputs — check for sensitive data and hallucinations\nLog everything — tool calls are important for debugging"
   },
   {
     "objectID": "slides/05-tool-calling.html#key-takeaways",

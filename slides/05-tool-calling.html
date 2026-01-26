@@ -517,6 +517,10 @@ ai: The weather in Tokyo is sunny and 72°F.</code></pre>
 <h2>Safe tool calling (before execution)</h2>
 <p>Running arbitrary code is dangerous. Protect with:</p>
 <table class="caption-top">
+<colgroup>
+<col style="width: 38%">
+<col style="width: 61%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Layer</th>
@@ -525,37 +529,31 @@ ai: The weather in Tokyo is sunny and 72°F.</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
+<td>Input validation</td>
+<td>AST parsing to analyze code structure before running</td>
+</tr>
+<tr class="even">
 <td>Sandboxing</td>
 <td>Docker containers, VMs, restricted environments</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Timeouts</td>
 <td>Kill long-running processes</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Resource limits</td>
 <td>Cap memory, CPU, disk usage</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Allowlists</td>
 <td>Only permit specific modules/operations</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Network isolation</td>
 <td>Prevent external connections</td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="validating-tool-inputs" class="slide level2">
-<h2>Validating tool inputs</h2>
-<p>Before executing code, validate what the model is asking to run:</p>
-<ul>
-<li><strong>AST parsing</strong> — analyze code structure, not just strings</li>
-<li><strong>RestrictedPython</strong> — library that compiles to a safe subset</li>
-<li><strong>Containerization</strong> — run in isolated environment with no host access</li>
-<li><strong>Allowlists</strong> — only permit specific pre-approved operations</li>
-</ul>
 </section>
 <section id="evaluating-tool-results-after-execution" class="slide level2">
 <h2>Evaluating tool results (after execution)</h2>
@@ -578,22 +576,6 @@ ai: The weather in Tokyo is sunny and 72°F.</code></pre>
 </div>
 </div>
 </div>
-</section>
-<section id="validating-tool-outputs" class="slide level2">
-<h2>Validating tool outputs</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="kw">def</span> validate_tool_output(result: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
-<span id="cb8-2"><a></a>    <span class="co">"""Check if output contains sensitive data."""</span></span>
-<span id="cb8-3"><a></a></span>
-<span id="cb8-4"><a></a>    <span class="co"># Check for error indicators</span></span>
-<span id="cb8-5"><a></a>    <span class="cf">if</span> result.startswith(<span class="st">"Error:"</span>):</span>
-<span id="cb8-6"><a></a>        <span class="cf">return</span> <span class="va">False</span></span>
-<span id="cb8-7"><a></a></span>
-<span id="cb8-8"><a></a>    <span class="co"># Check for leaked secrets</span></span>
-<span id="cb8-9"><a></a>    sensitive <span class="op">=</span> [<span class="st">"password"</span>, <span class="st">"secret"</span>, <span class="st">"token"</span>, <span class="st">"api_key"</span>]</span>
-<span id="cb8-10"><a></a>    <span class="cf">if</span> <span class="bu">any</span>(s <span class="kw">in</span> result.lower() <span class="cf">for</span> s <span class="kw">in</span> sensitive):</span>
-<span id="cb8-11"><a></a>        <span class="cf">return</span> <span class="va">False</span></span>
-<span id="cb8-12"><a></a></span>
-<span id="cb8-13"><a></a>    <span class="cf">return</span> <span class="va">True</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="hallucination-risks-with-tools" class="slide level2">
 <h2>Hallucination risks with tools</h2>
@@ -654,7 +636,7 @@ ai: The weather in Tokyo is sunny and 72°F.</code></pre>
 <ol type="1">
 <li><strong>Use <code>@tool</code> decorator</strong> — model-agnostic, clean definitions</li>
 <li><strong>Use <code>ToolNode</code></strong> — handles execution loop automatically</li>
-<li><strong>Validate inputs</strong> — sandbox execution, check what the model asks to run</li>
+<li><strong>Secure execution</strong> — sandbox, check what the model asks to run</li>
 <li><strong>Validate outputs</strong> — check for sensitive data and hallucinations</li>
 <li><strong>Log everything</strong> — tool calls are important for debugging</li>
 </ol>
