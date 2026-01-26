@@ -281,7 +281,7 @@
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">from</span> langchain_google_genai <span class="im">import</span> ChatGoogleGenerativeAI</span>
 <span id="cb3-2"><a></a><span class="im">from</span> langgraph.graph <span class="im">import</span> StateGraph, MessagesState, START, END</span>
 <span id="cb3-3"><a></a></span>
-<span id="cb3-4"><a></a>llm <span class="op">=</span> ChatGoogleGenerativeAI(model<span class="op">=</span><span class="st">"gemini-3-flash-preview"</span>)</span>
+<span id="cb3-4"><a></a>llm <span class="op">=</span> ChatGoogleGenerativeAI(model<span class="op">=</span><span class="st">"gemini-2.5-flash"</span>)</span>
 <span id="cb3-5"><a></a></span>
 <span id="cb3-6"><a></a><span class="kw">def</span> chatbot(state: MessagesState):</span>
 <span id="cb3-7"><a></a>    response <span class="op">=</span> llm.invoke(state[<span class="st">"messages"</span>])</span>
@@ -515,7 +515,7 @@
 <span id="cb15-4"><a></a><span class="im">from</span> langgraph.graph <span class="im">import</span> StateGraph, MessagesState, START, END</span>
 <span id="cb15-5"><a></a><span class="im">from</span> langgraph.prebuilt <span class="im">import</span> ToolNode, tools_condition</span>
 <span id="cb15-6"><a></a></span>
-<span id="cb15-7"><a></a>llm <span class="op">=</span> ChatGoogleGenerativeAI(model<span class="op">=</span><span class="st">"gemini-3-flash-preview"</span>)</span>
+<span id="cb15-7"><a></a>llm <span class="op">=</span> ChatGoogleGenerativeAI(model<span class="op">=</span><span class="st">"gemini-2.5-flash"</span>)</span>
 <span id="cb15-8"><a></a></span>
 <span id="cb15-9"><a></a>tools <span class="op">=</span> [search_docs]</span>
 <span id="cb15-10"><a></a>llm_with_tools <span class="op">=</span> llm.bind_tools(tools)</span>
