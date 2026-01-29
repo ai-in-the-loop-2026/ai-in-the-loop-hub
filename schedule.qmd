@@ -87,7 +87,21 @@ This course is under active development, and the schedule will be filled in as w
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
 | Tuesday | Multi-turn chat and document retrieval | [Multi-turn Chat and Document Retrieval](slides/06-multi-turn-chat-retrieval.qmd) | A3 — Tools (*before class*)  |
-| Thursday | - | - | - |
+| Thursday | Homogeneity, bias, and creativity (discussion) | - | Read 2 articles + listen to interview (*before class*) |
+
+**Resources for discussion**
+
+[*A.I. Is Homogenizing Our Thoughts*](https://www.newyorker.com/culture/infinite-scroll/ai-is-homogenizing-our-thoughts) - article by Kyle Chayka in *The New Yorker*
+
+[*Generative AI bias poses risk to democratic values, research suggests*](https://phys.org/news/2025-02-generative-ai-bias-poses-democratic.html) - article from *Phys.org* on University of East Anglia research
+
+[*Are we thinking about AI the wrong way?*](https://www.wbur.org/onpoint/2025/07/25/ethan-mollick-ai) - audio interview with Ethan Mollick on WBUR's *On Point* (transcript available). You may skip the segment from 24:30 - 34:30 if you want, it's not closely related to the topic of the discussion.
+
+**Learn more**
+
+[*Generative AI enhances individual creativity but reduces the collective diversity of novel content*](https://www.science.org/doi/10.1126/sciadv.adn5290) - research article by Doshi & Hauser in *Science Advances*
+
+[*Homogenizing effect of large language models (LLMs) on creative diversity*](https://www.sciencedirect.com/science/article/pii/S294988212500091X) - research article in *Computers in Human Behavior* analyzing 2,200 college essays
 
 ## Week 5: February 9-February 15
 
