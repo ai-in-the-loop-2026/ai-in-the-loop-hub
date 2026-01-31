@@ -1,0 +1,912 @@
+---
+title: "Custom States and Multi-Node Workflows"
+description: "Building complex LangGraph workflows with custom TypedDict states, conditional routing, and reducer patterns."
+date: 2026-02-27
+categories: [LangGraph, Workflows]
+tags: [langgraph, state, typeddict, reducers, conditional-edges, typer, cli]
+---
+
+## Today's goals
+
+- Design custom `TypedDict` states for non-conversational workflows
+- Build multi-node graphs with specialized roles
+- Route with conditional edges based on state values
+- Use reducers to control how state updates are merged
+- Wrap workflows with simple command-line interfaces
+
+---
+
+## Recall: MessagesState
+
+In decks 05-07, we used `MessagesState` for conversational apps:
+
+```python
+from langgraph.graph import StateGraph, MessagesState
+
+def agent(state: MessagesState):
+    return {"messages": [llm_with_tools.invoke(state["messages"])]}
+
+graph = StateGraph(MessagesState)
+```
+
+`MessagesState` is a `TypedDict` with one field: `messages` (a list that accumulates).
+
+---
+
+## When MessagesState works great
+
+- Chat applications
+- Tool-calling agents
+- Retrieval Q&A
+- Any workflow centered on conversation history
+
+The pattern: user message → AI response → (tool call → tool result →)* AI response
+
+---
+
+## What if your app isn't conversational?
+
+Consider a **document processing pipeline**:
+
+1. Extract metadata from a research paper
+2. Verify citations against a database
+3. Analyze content for key themes
+4. Generate a summary
+
+No chat history needed—just data flowing through processing stages.
+
+---
+
+## Custom states for structured workflows
+
+::: {style="text-align: center;"}
+![](images/08-state-comparison.png){width=80%}
+:::
+
+<!-- IMAGE: ![](images/08-state-comparison.png){width=80%}
+
+     DESCRIPTION: Side-by-side comparison of MessagesState vs Custom TypedDict.
+
+     PROMPT FOR NANO BANANA PRO: Create a side-by-side comparison diagram with two columns.
+     Left column: "MessagesState" with bullet points "Conversation history", "Tool calls and
+     results", "Chat-style applications" and a chat bubble icon. Right column: "Custom TypedDict"
+     with bullet points "Domain-specific fields", "Structured data processing", "Pipeline workflows"
+     and a flowchart icon. Add checkmarks next to each bullet. Use clean boxes with rounded corners
+     and soft colors. Title: "When to use each state type". -->
+
+Choose the state structure that matches your data flow.
+
+---
+
+## Part 1: Document Processing Pipeline
+
+---
+
+## Example 1: Document processor
+
+**Goal**: Process research papers through multiple analysis stages.
+
+```python
+from typing_extensions import TypedDict
+
+class DocumentState(TypedDict):
+    document: str           # Input: the raw document text
+    metadata: dict | None   # Extracted title, authors, date
+    citations: list[str]    # Verified citation references
+    analysis: str | None    # Content analysis
+    summary: str | None     # Final summary
+```
+
+Each field serves a specific purpose in the pipeline.
+
+---
+
+## The pipeline structure
+
+::: {style="text-align: center;"}
+![](images/08-doc-pipeline.png){width=75%}
+:::
+
+<!-- IMAGE: ![](images/08-doc-pipeline.png){width=75%}
+
+     DESCRIPTION: LangGraph-style horizontal flow diagram for document processing.
+
+     PROMPT FOR NANO BANANA PRO: Create a LangGraph-style horizontal flow diagram. Show:
+     START (small circle) → "extract_metadata" (rounded box) → "verify_citations" (rounded box
+     with small wrench/tool icon) → "analyze" (rounded box) → "summarize" (rounded box) →
+     END (small circle). Above the chain, show a "DocumentState" box with fields: document,
+     metadata, citations, analysis, summary. Draw a dotted line from state to nodes. Label
+     the verify_citations edge with a small tool icon. Clean style with soft colors. -->
+
+Four specialized nodes, each updating specific state fields.
+
+---
+
+## Node 1: Extract metadata
+
+```python
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.messages import HumanMessage
+
+llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
+
+def extract_metadata(state: DocumentState) -> dict:
+    """Extract title, authors, and date from the document."""
+    prompt = f"""Extract metadata from this document.
+Return as JSON with keys: title, authors (list), date.
+
+Document:
+{state['document'][:2000]}"""  # Use beginning of doc
+
+    response = llm.invoke([HumanMessage(content=prompt)])
+    # In practice, use with_structured_output() for reliable parsing
+    import json
+    metadata = json.loads(response.content)
+    return {"metadata": metadata}
+```
+
+Returns only the field it updates—LangGraph merges it into state.
+
+---
+
+## Node 2: Verify citations with tools
+
+Tools work with custom states too—not just `MessagesState`:
+
+```python
+from langchain_core.tools import tool
+
+@tool
+def lookup_citation(doi: str) -> str:
+    """Look up a citation by DOI to verify it exists."""
+    # In a real app: call CrossRef API
+    return f"Found: {doi} - Verified as valid reference"
+
+def verify_citations(state: DocumentState) -> dict:
+    """Extract and verify DOIs from the document."""
+    llm_with_tools = llm.bind_tools([lookup_citation])
+
+    prompt = f"""Find DOIs in this document and call lookup_citation for each.
+
+Document:
+{state['document']}"""
+
+    response = llm_with_tools.invoke([HumanMessage(content=prompt)])
+    # For simplicity, assume model extracts DOIs in its response
+    # In practice, you'd handle the tool call loop as in deck 05
+    return {"citations": ["doi:10.1234/example"]}  # Simplified
+```
+
+---
+
+## Nodes 3 and 4: Analyze and summarize
+
+```python
+def analyze_content(state: DocumentState) -> dict:
+    """Analyze document themes using extracted metadata."""
+    prompt = f"""Analyze the key themes and contributions of this paper.
+
+Title: {state['metadata']['title']}
+Document: {state['document'][:3000]}"""
+
+    response = llm.invoke([HumanMessage(content=prompt)])
+    return {"analysis": response.content}
+
+def summarize(state: DocumentState) -> dict:
+    """Create a summary using all gathered information."""
+    prompt = f"""Write a comprehensive summary.
+
+Metadata: {state['metadata']}
+Verified citations: {state['citations']}
+Analysis: {state['analysis']}"""
+
+    response = llm.invoke([HumanMessage(content=prompt)])
+    return {"summary": response.content}
+```
+
+---
+
+## Building the graph
+
+```python
+from langgraph.graph import StateGraph, START, END
+
+def build_document_pipeline():
+    graph = StateGraph(DocumentState)
+
+    # Add nodes
+    graph.add_node("extract_metadata", extract_metadata)
+    graph.add_node("verify_citations", verify_citations)
+    graph.add_node("analyze", analyze_content)
+    graph.add_node("summarize", summarize)
+
+    # Connect in sequence
+    graph.add_edge(START, "extract_metadata")
+    graph.add_edge("extract_metadata", "verify_citations")
+    graph.add_edge("verify_citations", "analyze")
+    graph.add_edge("analyze", "summarize")
+    graph.add_edge("summarize", END)
+
+    return graph.compile()
+```
+
+---
+
+## Running the pipeline
+
+```python
+app = build_document_pipeline()
+
+result = app.invoke({
+    "document": """Title: Attention Is All You Need
+
+    Authors: Vaswani et al.
+
+    We propose a new architecture called the Transformer...""",
+    "metadata": None,
+    "citations": [],
+    "analysis": None,
+    "summary": None
+})
+
+print(result["summary"])
+```
+
+No messages anywhere—just structured data flowing through.
+
+---
+
+## Custom state patterns
+
+Key principles:
+
+1. **Include all fields** your workflow needs
+2. **Use typed fields** (`str`, `dict`, `list`, `None` for optional)
+3. **Return partial updates** from nodes (only changed fields)
+4. **Initialize properly** when invoking
+
+```python
+# Node returns only what it changes
+def my_node(state: MyState) -> dict:
+    return {"one_field": new_value}  # Other fields untouched
+```
+
+---
+
+## Part 2: Conditional Routing
+
+---
+
+## Beyond sequential: branching workflows
+
+Sometimes the next step depends on **what happened** in previous steps.
+
+**Example**: Content moderation
+
+- Classify content as safe, questionable, or harmful
+- Route to different handlers based on classification
+
+---
+
+## Example 2: Content moderation
+
+```python
+class ModerationState(TypedDict):
+    content: str              # Input content to moderate
+    classification: str | None # "safe", "questionable", or "harmful"
+    result: str | None        # Final decision/action taken
+
+# Using same llm from Example 1
+def classify_content(state: ModerationState) -> dict:
+    """Classify content into safety categories."""
+    prompt = f"""Classify this content as exactly one of:
+- safe: appropriate for all audiences
+- questionable: needs human review
+- harmful: violates content policies
+
+Content: {state['content']}
+
+Respond with only the classification word."""
+
+    response = llm.invoke([HumanMessage(content=prompt)])
+    return {"classification": response.content.strip().lower()}
+```
+
+---
+
+## The routing function
+
+```python
+from typing import Literal
+
+def route_content(state: ModerationState) -> Literal["publish", "human_review", "reject"]:
+    """Route based on classification result."""
+    classification = state["classification"]
+
+    if classification == "safe":
+        return "publish"
+    elif classification == "questionable":
+        return "human_review"
+    else:  # harmful
+        return "reject"
+```
+
+The `Literal` return type helps LangGraph visualize possible paths.
+
+---
+
+## The moderation workflow
+
+::: {style="text-align: center;"}
+![](images/08-moderation-flow.png){width=80%}
+:::
+
+<!-- IMAGE: ![](images/08-moderation-flow.png){width=80%}
+
+     DESCRIPTION: LangGraph-style branching flow diagram for content moderation.
+
+     PROMPT FOR NANO BANANA PRO: Create a LangGraph-style branching flow diagram. Show:
+     START → "classify" node → diamond shape "route_content" → three branches:
+     (1) "safe" label → "publish" node → END,
+     (2) "questionable" label → "human_review" node → END,
+     (3) "harmful" label → "reject" node → END.
+     Use conditional edge style (diamond for routing function). Show the three paths with
+     different soft colors. Clean, technical diagram style. Title: "Conditional Routing Based on State". -->
+
+Different paths for different classifications.
+
+---
+
+## Handler nodes
+
+```python
+def publish(state: ModerationState) -> dict:
+    """Approve and publish the content."""
+    return {"result": "Content approved and published."}
+
+def human_review(state: ModerationState) -> dict:
+    """Flag for human review."""
+    return {"result": "Content flagged for human review."}
+
+def reject(state: ModerationState) -> dict:
+    """Reject harmful content."""
+    return {"result": "Content rejected due to policy violation."}
+```
+
+Each handler returns the appropriate result.
+
+---
+
+## Building the moderation graph
+
+```python
+def build_moderation_workflow():
+    graph = StateGraph(ModerationState)
+
+    graph.add_node("classify", classify_content)
+    graph.add_node("publish", publish)
+    graph.add_node("human_review", human_review)
+    graph.add_node("reject", reject)
+
+    graph.add_edge(START, "classify")
+
+    # Conditional routing after classification
+    graph.add_conditional_edges("classify", route_content)
+
+    # All handlers lead to END
+    graph.add_edge("publish", END)
+    graph.add_edge("human_review", END)
+    graph.add_edge("reject", END)
+
+    return graph.compile()
+```
+
+---
+
+## Conditional edges: the pattern
+
+```python
+graph.add_conditional_edges(
+    "source_node",    # Node that triggers the routing
+    routing_function  # Function that returns next node name(s)
+)
+```
+
+**Tip**: Use `Literal` return types on routing functions so LangGraph can visualize the possible paths.
+
+**Compare to `tools_condition`** from deck 05—it's just a prebuilt routing function that checks for tool calls. Today: write your own.
+
+::: {.callout-note}
+## Looking ahead: Command objects
+LangGraph also offers `Command`, which lets a node return both state updates *and* the next node to visit—the graph structure emerges at runtime rather than being declared upfront. We use `add_conditional_edges` here to keep the graph structure explicit.
+:::
+
+---
+
+## Running the moderation workflow
+
+```python
+app = build_moderation_workflow()
+
+# Test with different content
+result = app.invoke({
+    "content": "Here's a helpful tutorial on Python programming.",
+    "classification": None,
+    "result": None
+})
+print(result["result"])  # "Content approved and published."
+
+result = app.invoke({
+    "content": "Some ambiguous content...",
+    "classification": None,
+    "result": None
+})
+print(result["result"])  # Could be any of the three outcomes
+```
+
+---
+
+## Part 3: Reducers
+
+---
+
+## The problem: multiple nodes updating the same field
+
+What if multiple nodes need to add to the same field?
+
+**Example**: Multiple reviewers each provide feedback
+
+```python
+def clarity_reviewer(state: ReviewState) -> dict:
+    return {"feedback": ["Clarity: Introduction is clear."]}
+
+def technical_reviewer(state: ReviewState) -> dict:
+    return {"feedback": ["Technical: Methodology is sound."]}
+```
+
+Without special handling, the second reviewer **overwrites** the first!
+
+---
+
+## Example 3: Multi-reviewer workflow
+
+::: {style="text-align: center;"}
+![](images/08-multi-reviewer.png){width=75%}
+:::
+
+<!-- IMAGE: ![](images/08-multi-reviewer.png){width=75%}
+
+     DESCRIPTION: LangGraph-style flow diagram showing multiple reviewers feeding into synthesis.
+
+     PROMPT FOR NANO BANANA PRO: Create a LangGraph-style flow diagram showing parallel or
+     sequential reviewers. Show: START → three reviewer nodes in sequence: "clarity_reviewer",
+     "technical_reviewer", "style_reviewer" → all feed into "synthesize" node → END. Show a
+     "ReviewState" box with "feedback: list[str]" highlighted, with arrows from each reviewer
+     showing they append to the same list. Use accumulation symbol (+ or stacking) near the
+     feedback field. Clean style with soft colors. -->
+
+We want all feedback to accumulate, not overwrite.
+
+---
+
+## Reducers control state merging
+
+A **reducer** defines how updates are combined with existing state.
+
+```python
+from typing import Annotated
+import operator
+
+class ReviewState(TypedDict):
+    document: str
+    feedback: Annotated[list[str], operator.add]  # Accumulates!
+    final_summary: str | None
+```
+
+The `Annotated[list[str], operator.add]` syntax tells LangGraph:
+- When a node returns `{"feedback": [...]}`, **append** to the list
+- Don't replace the existing list
+
+---
+
+## How reducers work
+
+::: {style="text-align: center;"}
+![](images/08-reducer-concept.png){width=70%}
+:::
+
+<!-- IMAGE: ![](images/08-reducer-concept.png){width=70%}
+
+     DESCRIPTION: Before/after comparison showing reducer behavior.
+
+     PROMPT FOR NANO BANANA PRO: Create a before/after comparison diagram showing reducer behavior.
+     Two rows: Top row "Without Reducer (Replacement)": show three boxes "Node A returns [1]",
+     "Node B returns [2]", "Final state: [2]" with X mark. Bottom row "With Reducer (Accumulation)":
+     show three boxes "Node A returns [1]", "Node B returns [2]", "Final state: [1, 2]" with
+     checkmark. Use Annotated[list, operator.add] notation. Show the merging visually with +
+     symbol. Clean, educational diagram style with soft colors. -->
+
+Without a reducer: each update replaces.
+With `operator.add`: updates accumulate.
+
+---
+
+## The multi-reviewer state
+
+```python
+from typing import Annotated
+from typing_extensions import TypedDict
+import operator
+
+class ReviewState(TypedDict):
+    document: str
+    feedback: Annotated[list[str], operator.add]  # Key: accumulates
+    final_summary: str | None
+```
+
+Now every reviewer's feedback will be collected.
+
+---
+
+## Reviewer nodes
+
+```python
+# Using same llm setup as before
+def clarity_reviewer(state: ReviewState) -> dict:
+    """Review for clarity and readability."""
+    prompt = f"""Review this document for clarity.
+Provide 1-2 sentences of feedback.
+
+Document: {state['document'][:1500]}"""
+
+    response = llm.invoke([HumanMessage(content=prompt)])
+    return {"feedback": [f"Clarity: {response.content}"]}
+
+def technical_reviewer(state: ReviewState) -> dict:
+    """Review for technical accuracy."""
+    prompt = f"""Review this document for technical accuracy.
+Provide 1-2 sentences of feedback.
+
+Document: {state['document'][:1500]}"""
+
+    response = llm.invoke([HumanMessage(content=prompt)])
+    return {"feedback": [f"Technical: {response.content}"]}
+```
+
+---
+
+## Style reviewer and synthesis
+
+```python
+def style_reviewer(state: ReviewState) -> dict:
+    """Review for writing style."""
+    prompt = f"""Review this document for writing style.
+Provide 1-2 sentences of feedback.
+
+Document: {state['document'][:1500]}"""
+
+    response = llm.invoke([HumanMessage(content=prompt)])
+    return {"feedback": [f"Style: {response.content}"]}
+
+def synthesize(state: ReviewState) -> dict:
+    """Combine all reviewer feedback into a summary."""
+    all_feedback = "\n".join(state["feedback"])
+    prompt = f"""Synthesize this feedback into actionable recommendations:
+
+{all_feedback}"""
+
+    response = llm.invoke([HumanMessage(content=prompt)])
+    return {"final_summary": response.content}
+```
+
+---
+
+## Building the review workflow
+
+```python
+def build_review_workflow():
+    graph = StateGraph(ReviewState)
+
+    graph.add_node("clarity", clarity_reviewer)
+    graph.add_node("technical", technical_reviewer)
+    graph.add_node("style", style_reviewer)
+    graph.add_node("synthesize", synthesize)
+
+    graph.add_edge(START, "clarity")
+    graph.add_edge("clarity", "technical")
+    graph.add_edge("technical", "style")
+    graph.add_edge("style", "synthesize")
+    graph.add_edge("synthesize", END)
+
+    return graph.compile()
+```
+
+---
+
+## Running the review workflow
+
+```python
+app = build_review_workflow()
+
+result = app.invoke({
+    "document": """This paper presents a novel approach to...""",
+    "feedback": [],  # Start with empty list
+    "final_summary": None
+})
+
+print("All feedback collected:")
+for item in result["feedback"]:
+    print(f"  - {item}")
+
+print(f"\nSynthesis:\n{result['final_summary']}")
+```
+
+All three reviewers' feedback is collected automatically!
+
+---
+
+## You've already been using a reducer
+
+`MessagesState` uses `add_messages` as its reducer:
+
+```python
+from langgraph.graph.message import add_messages
+
+# Simplified definition of MessagesState
+class MessagesState(TypedDict):
+    messages: Annotated[list, add_messages]
+```
+
+That's why messages accumulate instead of being replaced.
+
+---
+
+## Common reducer patterns
+
+| Pattern | Use case |
+|---------|----------|
+| `Annotated[list, operator.add]` | Collecting items from multiple nodes |
+| `Annotated[list, add_messages]` | Chat message history |
+| Custom function | Keeping max, merging dicts, etc. |
+
+---
+
+## Custom reducer example
+
+Keep the highest confidence score:
+
+```python
+def keep_max(existing: float | None, new: float) -> float:
+    """Keep the higher of two values."""
+    if existing is None:
+        return new
+    return max(existing, new)
+
+class AnalysisState(TypedDict):
+    document: str
+    confidence: Annotated[float | None, keep_max]
+```
+
+Now multiple analyzers can update `confidence` and the highest wins.
+
+---
+
+## Part 4: Command-Line Interfaces
+
+---
+
+## Why a CLI?
+
+So far we've run code in notebooks. CLIs let you:
+
+- **Run from the terminal** — no notebook needed
+- **Automate** — call from scripts, cron jobs, other programs
+- **Share** — others can use your tool without reading your code
+
+```bash
+python analyze.py paper.txt --output summary.txt
+```
+
+---
+
+## Anatomy of a CLI command
+
+```bash
+python analyze.py paper.txt --output summary.txt
+       ──────────  ─────────  ────────────────────
+       script      argument   option with value
+```
+
+- **Arguments**: required inputs, positional (order matters)
+- **Options**: optional settings, named with `--` or `-`
+- **Flags**: options that are on/off (no value needed)
+
+---
+
+## Typer: CLIs from type hints
+
+Typer turns Python functions into CLI commands:
+
+```python
+import typer
+
+def analyze(input_file: str):
+    """Analyze a document."""
+    print(f"Processing: {input_file}")
+
+if __name__ == "__main__":
+    typer.run(analyze)
+```
+
+```bash
+$ python analyze.py paper.txt
+Processing: paper.txt
+```
+
+Function parameters become CLI arguments. Docstring becomes help text.
+
+---
+
+## Arguments vs options in Typer
+
+```python
+import typer
+
+def analyze(
+    input_file: str,                    # Required argument
+    output: str = None                  # Optional argument (has default)
+):
+    ...
+```
+
+- **No default** → required argument
+- **Has default** → optional argument
+
+But what about `--output` style options?
+
+---
+
+## Adding options with `typer.Option`
+
+```python
+import typer
+
+def analyze(
+    input_file: str,
+    output: str = typer.Option(None, "--output", "-o", help="Output file")
+):
+    """Analyze a research paper and generate a summary."""
+    print(f"Input: {input_file}")
+    print(f"Output: {output}")
+
+if __name__ == "__main__":
+    typer.run(analyze)
+```
+
+`typer.Option` converts a parameter into a `--name` style option.
+
+---
+
+## How it looks to the user
+
+```bash
+$ python analyze.py paper.txt -o summary.txt
+Input: paper.txt
+Output: summary.txt
+
+$ python analyze.py --help
+Usage: analyze.py [OPTIONS] INPUT_FILE
+
+  Analyze a research paper and generate a summary.
+
+Arguments:
+  INPUT_FILE  [required]
+
+Options:
+  -o, --output TEXT  Output file
+  --help             Show this message and exit.
+```
+
+---
+
+## Wrapping a LangGraph workflow
+
+```python
+import typer
+
+def analyze(
+    input_file: str,
+    output: str = typer.Option(None, "--output", "-o", help="Output file")
+):
+    """Analyze a document and generate a summary."""
+    with open(input_file) as f:
+        document = f.read()
+
+    # Run the LangGraph workflow from Example 1
+    pipeline = build_document_pipeline()
+    result = pipeline.invoke({
+        "document": document,
+        "metadata": None, "citations": [],
+        "analysis": None, "summary": None
+    })
+
+    if output:
+        with open(output, "w") as f:
+            f.write(result["summary"])
+        print(f"Summary written to {output}")
+    else:
+        print(result["summary"])
+
+if __name__ == "__main__":
+    typer.run(analyze)
+```
+
+---
+
+## Using the CLI
+
+```bash
+# Print summary to console
+python analyze.py paper.txt
+
+# Save summary to file
+python analyze.py paper.txt -o summary.txt
+
+# Get help
+python analyze.py --help
+```
+
+The workflow is now usable outside of notebooks and scripts.
+
+---
+
+## Boolean flags
+
+Use `bool` with a `False` default to create on/off flags:
+
+```python
+def analyze(
+    input_file: str,
+    output: str = typer.Option(None, "--output", "-o"),
+    verbose: bool = typer.Option(False, "--verbose", "-v",
+                                  help="Show intermediate steps")
+):
+    if verbose:
+        print(f"Reading {input_file}...")
+    ...
+```
+
+```bash
+python analyze.py paper.txt --verbose   # verbose is True
+python analyze.py paper.txt             # verbose is False
+```
+
+---
+
+## Key takeaways
+
+- **Custom `TypedDict` states** for non-conversational workflows
+- **Nodes return partial updates**—LangGraph merges them
+- **Conditional edges** route based on state values
+- **Reducers** control how updates merge (accumulate vs replace)
+- **Typer** wraps workflows as command-line tools
+
+---
+
+## When to use what
+
+| Scenario | Approach |
+|----------|----------|
+| Chat or Q&A | `MessagesState` |
+| Structured pipeline | Custom `TypedDict` |
+| Sequential steps | `add_edge()` |
+| Branching logic | `add_conditional_edges()` |
+| Accumulating data | `Annotated[list, operator.add]` |
+
+---
+
+## Resources
+
+- [LangGraph Graph API](https://docs.langchain.com/oss/python/langgraph/graph-api) — StateGraph, edges, and conditional routing
+- [LangGraph Reference: Graphs](https://reference.langchain.com/python/langgraph/graphs/) — State and reducer functions
+- [Typer Documentation](https://typer.tiangolo.com/)
