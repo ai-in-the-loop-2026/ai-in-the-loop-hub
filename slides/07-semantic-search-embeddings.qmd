@@ -1,0 +1,592 @@
+---
+title: "Semantic Search and Embeddings"
+description: "Building semantic search with embeddings and combining keyword and semantic retrieval for hybrid RAG systems."
+date: 2026-02-24
+categories: [Retrieval, RAG, Embeddings]
+tags: [semantic-search, embeddings, faiss, hybrid-retrieval, bm25, langchain, langgraph]
+---
+
+## Today's goals
+
+- Understand what embeddings are and how they enable semantic search
+- Build a semantic retriever with `GoogleGenerativeAIEmbeddings` and FAISS
+- Compare keyword (BM25) vs semantic search strengths
+- Combine both approaches with `EnsembleRetriever`
+- Upgrade our document Q&A agent to use hybrid retrieval
+
+---
+
+## Recall: BM25 keyword search
+
+From deck 06, we built a retriever using BM25:
+
+```python
+from langchain_community.retrievers import BM25Retriever
+
+retriever = BM25Retriever.from_documents(chunks, k=3)
+results = retriever.invoke("database schema")
+```
+
+BM25 matches documents containing the **exact query terms**.
+
+---
+
+## The synonym problem
+
+BM25 struggles when users use different words than the documents:
+
+| User asks about... | Document says... | BM25 finds it? |
+|-------------------|------------------|----------------|
+| "car" | "automobile" | ❌ No |
+| "happy" | "joyful" | ❌ No |
+| "purchase" | "buy" | ❌ No |
+| "error handling" | "exception management" | ❌ No |
+
+Keywords must match exactly. This is a fundamental limitation.
+
+---
+
+## What are embeddings?
+
+An **embedding** is a list of numbers (a vector) that represents the meaning of text.
+
+```python
+text = "The cat sat on the mat"
+embedding = [0.021, -0.015, 0.089, ..., 0.034]  # 3072 numbers
+```
+
+- Similar meanings → similar vectors
+- Different meanings → different vectors
+
+The embedding model learns these representations from massive text datasets.
+
+---
+
+## Similarity in vector space
+
+::: {style="text-align: center;"}
+![](images/07-embedding-space.png){width=75%}
+:::
+
+<!-- IMAGE: ![](images/07-embedding-space.png){width=75%}
+
+     DESCRIPTION: 2D projection of embedding space showing clusters of related concepts.
+
+     PROMPT FOR NANO BANANA PRO: Create a 2D scatter plot visualization of embedding space.
+     Show three clusters of points:
+     - BLUE cluster (top-left): labeled points for "car", "automobile", "vehicle", "truck"
+     - GREEN cluster (bottom-right): labeled points for "cat", "kitten", "feline", "pet"
+     - ORANGE cluster (center): labeled points for "happy", "joy", "content", "pleased"
+     Draw dotted circles around each cluster. Add title "Semantic Similarity in Vector Space".
+     Show a double-headed arrow between "car" and "automobile" labeled "close".
+     Show a double-headed arrow between "car" and "cat" labeled "far".
+     Clean, minimal style with soft colors. -->
+
+Words with similar meanings cluster together in embedding space.
+
+---
+
+## Embeddings vs token embeddings
+
+In deck 02, we saw that LLMs use **token embeddings** internally:
+
+| Token embeddings (deck 02) | Text embeddings (today) |
+|---------------------------|------------------------|
+| One vector per token | One vector for entire text |
+| Internal to the model | Standalone output |
+| Learned during training | Purpose: similarity search |
+
+Today's embeddings compress an entire sentence or paragraph into one vector.
+
+---
+
+## The semantic search process
+
+::: {style="text-align: center;"}
+![](images/07-semantic-search-flow.png){width=90%}
+:::
+
+<!-- IMAGE: ![](images/07-semantic-search-flow.png){width=90%}
+
+     DESCRIPTION: Flow diagram showing semantic search process from query to results.
+
+     PROMPT FOR NANO BANANA PRO: Create a horizontal flow diagram for semantic search.
+     TWO PARALLEL TRACKS that converge:
+
+     TOP TRACK (labeled "Index Time"):
+     Documents → "Embed" → Vectors → "Store in FAISS"
+
+     BOTTOM TRACK (labeled "Query Time"):
+     Query → "Embed" → Query Vector → "Find Nearest" → Results
+
+     Show an arrow from "Store in FAISS" connecting to "Find Nearest".
+     The "Find Nearest" box should show a magnifying glass icon.
+     Use clean boxes, soft colors. Blue for indexing, green for querying. -->
+
+**Index time:** Embed all document chunks and store vectors.
+**Query time:** Embed query and find nearest stored vectors.
+
+---
+
+## Measuring similarity: cosine
+
+How do we find "nearest" vectors? **Cosine similarity**:
+
+$$\text{similarity} = \frac{\vec{a} \cdot \vec{b}}{|\vec{a}| \times |\vec{b}|}$$
+
+- Returns a value between -1 and 1
+- 1 = identical direction (same meaning)
+- 0 = perpendicular (unrelated)
+- -1 = opposite direction
+
+In practice, we find the vectors with highest cosine similarity to our query.
+
+---
+
+## BM25 vs Semantic: summary
+
+| Aspect | BM25 (Keyword) | Semantic (Embedding) |
+|--------|---------------|---------------------|
+| Matches | Exact terms | Meaning/concepts |
+| "car" finds "automobile"? | ❌ No | ✅ Yes |
+| Handles typos? | ❌ No | ✅ Often |
+| Exact phrase match? | ✅ Strong | ⚠️ Weaker |
+| Speed | Very fast | Fast (with index) |
+| Requires | Just text | Embedding model |
+
+Neither is universally better—they have complementary strengths.
+
+---
+
+## Part 2: Building Semantic Search
+
+---
+
+## Google's embedding model
+
+```python
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+
+embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
+```
+
+- **3072 dimensions** per vector
+- Supports **100+ languages**
+- Uses the same `GOOGLE_API_KEY` as `ChatGoogleGenerativeAI`
+
+---
+
+## FAISS: vector storage
+
+**FAISS** (Facebook AI Similarity Search) stores and searches vectors efficiently:
+
+```python
+from langchain_community.vectorstores import FAISS
+
+# Create vector store from documents
+vectorstore = FAISS.from_documents(chunks, embeddings)
+```
+
+FAISS automatically:
+
+1. Calls `embeddings.embed_documents()` on all chunks
+2. Builds an index for fast similarity search
+
+::: {.callout-note}
+## Installation
+
+```bash
+pip install faiss-cpu rank_bm25
+```
+
+`faiss-cpu` for vector storage (or `faiss-gpu` for GPU). `rank_bm25` is for BM25 (from deck 06).
+:::
+
+---
+
+## Creating a semantic retriever
+
+```python
+# Same interface as BM25Retriever!
+retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
+
+results = retriever.invoke("database schema")
+```
+
+The `as_retriever()` method returns a retriever with the standard `.invoke()` interface.
+
+**Key insight:** You can swap BM25 for semantic search with minimal code changes.
+
+---
+
+## Complete semantic search setup
+
+```python
+from langchain_community.document_loaders import DirectoryLoader, TextLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_community.vectorstores import FAISS
+
+# 1. Load documents (same as deck 06)
+loader = DirectoryLoader("./docs", glob="**/*.txt", loader_cls=TextLoader)
+documents = loader.load()
+
+# 2. Split into chunks (same as deck 06)
+splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+chunks = splitter.split_documents(documents)
+
+# 3. Create embeddings and vector store (NEW)
+embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
+vectorstore = FAISS.from_documents(chunks, embeddings)
+semantic_retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
+```
+
+---
+
+## Comparing results
+
+```python
+from langchain_community.retrievers import BM25Retriever
+
+bm25_retriever = BM25Retriever.from_documents(chunks, k=3)
+
+query = "How do I fix errors in the application?"
+
+print("BM25 results:")
+for doc in bm25_retriever.invoke(query):
+    print(f"  - {doc.page_content[:80]}...")
+
+print("\nSemantic results:")
+for doc in semantic_retriever.invoke(query):
+    print(f"  - {doc.page_content[:80]}...")
+```
+
+Try queries with synonyms to see the difference.
+
+---
+
+## When semantic search wins
+
+**Query:** "automobile maintenance"
+**Document:** "Regular car servicing extends vehicle life."
+
+- BM25: ❌ No match (different words)
+- Semantic: ✅ Finds it ("automobile" ≈ "car", "maintenance" ≈ "servicing")
+
+Semantic search excels when:
+
+- Users use synonyms or paraphrases
+- Documents use domain-specific terminology
+- Queries are conversational
+
+---
+
+## When BM25 wins
+
+**Query:** "error code E_AUTH_FAILED"
+**Document:** "E_AUTH_FAILED indicates authentication failure."
+
+- BM25: ✅ Exact match on error code
+- Semantic: ⚠️ May match generic authentication docs
+
+BM25 excels when:
+
+- Searching for exact terms, codes, or names
+- Looking for specific technical identifiers
+- Precision on exact phrases matters
+
+---
+
+## Part 3: Hybrid Retrieval
+
+---
+
+## Why not both?
+
+::: {style="text-align: center;"}
+![](images/07-hybrid-retrieval.png){width=85%}
+:::
+
+<!-- IMAGE: ![](images/07-hybrid-retrieval.png){width=85%}
+
+     DESCRIPTION: Flow diagram showing hybrid retrieval with BM25 and semantic paths merging.
+
+     PROMPT FOR NANO BANANA PRO: Create a flow diagram for hybrid retrieval.
+     Start with "Query" on the left, which splits into two parallel paths:
+     - TOP path: "BM25 Retriever" → "Keyword Results" (blue color)
+     - BOTTOM path: "Semantic Retriever" → "Vector Results" (green color)
+     Both paths converge into a "Rank Fusion" box (orange), which outputs to "Final Results".
+     Show weights: "0.4" on BM25 path, "0.6" on semantic path.
+     Clean boxes, arrows, soft colors. Title: "Hybrid Retrieval Pipeline". -->
+
+**Hybrid retrieval** runs both retrievers and merges the results.
+
+---
+
+## EnsembleRetriever
+
+```python
+from langchain.retrievers import EnsembleRetriever
+from langchain_community.retrievers import BM25Retriever
+
+# Create both retrievers
+bm25_retriever = BM25Retriever.from_documents(chunks, k=3)
+semantic_retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
+
+# Combine with weights
+hybrid_retriever = EnsembleRetriever(
+    retrievers=[bm25_retriever, semantic_retriever],
+    weights=[0.4, 0.6]  # 40% BM25, 60% semantic
+)
+
+results = hybrid_retriever.invoke("database schema")
+```
+
+The weights control relative importance of each retriever's results.
+
+---
+
+## How rank fusion works
+
+`EnsembleRetriever` uses **Reciprocal Rank Fusion (RRF)**:
+
+$$\text{RRF}(d) = \sum_{r \in \text{retrievers}} \frac{w_r}{\text{rank}_r(d) + k}$$
+
+- Each retriever ranks documents
+- Higher rank (lower number) → higher score
+- Weighted sum combines rankings
+- Documents found by both retrievers score highest
+
+The constant $k$ (default=60) prevents top-ranked items from dominating.
+
+---
+
+## Complete hybrid setup
+
+```python
+from langchain_community.document_loaders import DirectoryLoader, TextLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain_community.retrievers import BM25Retriever
+from langchain.retrievers import EnsembleRetriever
+
+# Load and chunk (same as before)
+loader = DirectoryLoader("./docs", glob="**/*.txt", loader_cls=TextLoader)
+documents = loader.load()
+splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+chunks = splitter.split_documents(documents)
+
+# Create both retrievers
+bm25_retriever = BM25Retriever.from_documents(chunks, k=3)
+embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
+vectorstore = FAISS.from_documents(chunks, embeddings)
+semantic_retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
+
+# Combine into hybrid
+hybrid_retriever = EnsembleRetriever(
+    retrievers=[bm25_retriever, semantic_retriever],
+    weights=[0.4, 0.6]
+)
+```
+
+---
+
+## Tuning weights
+
+| Use case | BM25 weight | Semantic weight |
+|----------|-------------|-----------------|
+| Technical docs with exact terms | 0.6 | 0.4 |
+| General Q&A | 0.4 | 0.6 |
+| Code search | 0.7 | 0.3 |
+| Conversational queries | 0.3 | 0.7 |
+
+Start with 0.4/0.6 and adjust based on your documents and query patterns.
+
+---
+
+## Why hybrid works better
+
+Hybrid retrieval is more robust:
+
+- **Catches synonyms** (semantic) AND **exact matches** (BM25)
+- Documents found by **both** retrievers rank highest
+- Reduces failure modes of each individual approach
+- Research shows hybrid consistently outperforms either alone
+
+---
+
+## Part 4: Hybrid RAG Agent
+
+---
+
+## Upgrading the deck 06 agent
+
+In deck 06, we built a document Q&A agent with BM25:
+
+```python
+@tool
+def search_docs(query: str) -> str:
+    """Search documents for information relevant to the query."""
+    results = retriever.invoke(query)  # Was BM25
+    ...
+```
+
+To upgrade to hybrid search, we change **one line**:
+
+```python
+retriever = hybrid_retriever  # Now uses hybrid!
+```
+
+The tool definition and LangGraph structure stay exactly the same.
+
+---
+
+## Hybrid search tool
+
+```python
+from langchain_core.tools import tool
+
+@tool
+def search_docs(query: str) -> str:
+    """Search documents for information relevant to the query.
+    Uses hybrid retrieval combining keyword and semantic search."""
+    results = hybrid_retriever.invoke(query)
+    if not results:
+        return "No relevant documents found."
+    return "\n\n---\n\n".join(
+        f"Source: {doc.metadata.get('source', 'unknown')}\n"
+        f"Content: {doc.page_content}"
+        for doc in results
+    )
+```
+
+Same pattern as deck 06—just uses `hybrid_retriever`.
+
+---
+
+## Complete hybrid RAG agent
+
+```python
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.messages import SystemMessage
+from langchain_core.tools import tool
+from langgraph.graph import StateGraph, MessagesState, START, END
+from langgraph.prebuilt import ToolNode, tools_condition
+
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+
+tools = [search_docs]
+llm_with_tools = llm.bind_tools(tools)
+
+SYSTEM_PROMPT = """You are a helpful assistant that answers questions using the provided documents.
+Use the search_docs tool when you need information from the documents."""
+```
+
+---
+
+## Complete agent (continued)
+
+```python
+def agent(state: MessagesState):
+    messages = [SystemMessage(content=SYSTEM_PROMPT)] + state["messages"]
+    return {"messages": [llm_with_tools.invoke(messages)]}
+
+graph = StateGraph(MessagesState)
+graph.add_node("agent", agent)
+graph.add_node("tools", ToolNode(tools))
+graph.add_edge(START, "agent")
+graph.add_conditional_edges("agent", tools_condition)
+graph.add_edge("tools", "agent")
+app = graph.compile()
+```
+
+This is **identical** to the deck 06 agent structure.
+
+---
+
+## Testing the agent
+
+```python
+from langchain_core.messages import HumanMessage
+
+# Semantic query (synonyms)
+result = app.invoke({
+    "messages": [HumanMessage(content="How do I fix bugs in the application?")]
+})
+print(result["messages"][-1].content)
+
+# Exact term query
+result = app.invoke({
+    "messages": [HumanMessage(content="What does error E_AUTH_FAILED mean?")]
+})
+print(result["messages"][-1].content)
+```
+
+Hybrid retrieval handles both query types effectively.
+
+---
+
+## Architecture overview
+
+::: {style="text-align: center;"}
+![](images/07-hybrid-rag-agent.png){width=80%}
+:::
+
+<!-- IMAGE: ![](images/07-hybrid-rag-agent.png){width=80%}
+
+     DESCRIPTION: Complete LangGraph flow diagram for hybrid RAG agent.
+
+     PROMPT FOR NANO BANANA PRO: Create a LangGraph-style flow diagram for a hybrid RAG agent.
+     Show: START → "agent" node → conditional diamond "needs search?" →
+     if yes: "tools" node (containing "hybrid_search" with BM25 + FAISS icons) →
+     back to "agent" → if no: → END.
+     Inside the "tools" node, show a small diagram: Query → BM25 and Vector paths →
+     Merge → Results. Similar style to deck 05/06 but with hybrid search detail.
+     Clean style with soft colors. -->
+
+Same LangGraph pattern—just with a more powerful retriever inside the tool.
+
+---
+
+## Part 5: Summary
+
+---
+
+## Best practices
+
+1. **Start with hybrid** — it's more robust than either approach alone
+2. **Tune weights** based on your document type and query patterns
+3. **Chunk thoughtfully** — embeddings work best on coherent text units
+4. **Same interface** — all retrievers use `.invoke()`, easy to swap
+
+---
+
+## When to use what
+
+| Scenario | Recommendation |
+|----------|---------------|
+| General document Q&A | Hybrid (0.4/0.6) |
+| Technical docs with codes/IDs | Hybrid (0.6/0.4) or BM25 |
+| Conversational search | Hybrid (0.3/0.7) or semantic |
+| Very large corpus | Start with BM25, add semantic |
+| Multi-lingual content | Semantic or hybrid |
+
+---
+
+## Key takeaways
+
+- **Embeddings** represent text meaning as vectors
+- **Semantic search** finds conceptually similar documents, not just keyword matches
+- **FAISS** efficiently stores and searches embedding vectors
+- **Hybrid retrieval** combines BM25 and semantic for the best of both
+- The **agent structure is unchanged** — only the retriever is upgraded
+
+---
+
+## Resources
+
+- [GoogleGenerativeAIEmbeddings](https://docs.langchain.com/oss/python/integrations/text_embedding/google_generative_ai)
+- [FAISS Vector Store](https://docs.langchain.com/oss/python/integrations/vectorstores/faiss)
+- [EnsembleRetriever](https://langchain-opentutorial.gitbook.io/langchain-opentutorial/10-retriever/03-ensembleretriever)
+- [BM25Retriever](https://docs.langchain.com/oss/python/integrations/retrievers/bm25)

@@ -58,6 +58,14 @@ This page is the **single canonical place** for:
 - **Invite link:** <https://classroom.github.com/a/u-McvYrh>
 - **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
 
+### A5 - Build Your Own Expert
+
+- **Due:** Wednesday (Week 6) 11:59pm
+- **Purpose:** Similar to A4, but you pick your own domain, documentation, and application — and write your own tool.
+- **Invite link:** <https://classroom.github.com/a/1I3Fm8tQ>
+- **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
+- **Note:** This assignment is the basis for Code Review 1. Submit slides on Moodle.
+
 ---
 
 ## Writing Reflections (GitHub Classroom)

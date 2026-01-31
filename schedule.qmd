@@ -107,5 +107,23 @@ This course is under active development, and the schedule will be filled in as w
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
-| Tuesday | - | - | A4 — RAG (KW) + Multi-turn Chat (*before class*)  |
-| Thursday | - | - | - |
+| Tuesday | Work day | - | A4 — RAG (KW) + Multi-turn Chat (*before class*)  |
+| Thursday | Work day | - | - |
+
+**Note:** Schedule your Code Review 1 appointment this week.
+
+## Week 6: February 16-22 (Winter Recess)
+
+| Meeting | Topic | Slides | Due |
+|---|---|---|---|
+| Tuesday | No class (Winter Recess) | - | A5 — Build Your Own Expert (*Wednesday 11:59pm*) |
+| Thursday | No class (Code Review appointments) | - | - |
+
+**Note:** Code Review 1 appointments available Thursday and Friday of Week 6, and Monday of Week 7.
+
+## Week 7: February 23 - March 1
+
+| Meeting | Topic | Slides | Due |
+|---|---|---|---|
+| Tuesday | Semantic search and embeddings | [Semantic Search and Embeddings](slides/07-semantic-search-embeddings.qmd) | - |
+| Thursday | TBD | TBD | - |
