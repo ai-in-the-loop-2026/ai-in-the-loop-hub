@@ -131,13 +131,16 @@ Four nodes: fetch (tool), extract, look up impact (tool), summarize.
 ```python
 import requests
 import fitz  # PyMuPDF
-from langchain_core.tools import tool
+from langchain.tools import tool
 
 @tool
 def fetch_arxiv_paper(arxiv_id: str) -> str:
     """Fetch an arXiv paper by its ID (e.g., '1706.03762') and extract text."""
     pdf_url = f"https://arxiv.org/pdf/{arxiv_id}.pdf"
     response = requests.get(pdf_url)
+
+    if response.status_code != 200:
+        return f"Error: HTTP {response.status_code}"
 
     # Load PDF and extract text
     doc = fitz.open(stream=response.content, filetype="pdf")
@@ -155,7 +158,7 @@ Uses PyMuPDF (`pip install pymupdf`) to extract text. Note: equations/complex la
 
 ```python
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.messages import HumanMessage, ToolMessage
+from langchain.messages import HumanMessage, ToolMessage
 import json
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.1)
@@ -180,7 +183,7 @@ def fetch_content(state: PaperState) -> dict:
         except Exception as e:
             result = f"Error: {e}"
 
-        if result and "error" not in result.lower():
+        if result and not result.startswith("Error:"):
             return {"arxiv_id": arxiv_id, "content": result}
 
         # Tool failed—let LLM see error and retry
