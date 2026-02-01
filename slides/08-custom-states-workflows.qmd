@@ -141,7 +141,7 @@ def fetch_arxiv_paper(arxiv_id: str) -> str:
 
     # Load PDF and extract text
     doc = fitz.open(stream=response.content, filetype="pdf")
-    text = "\n".join(page.get_text() for page in doc)
+    text = "\n".join(page.get_text(sort=True) for page in doc)
     doc.close()
 
     return text
@@ -158,7 +158,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage, ToolMessage
 import json
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.1)
 
 def fetch_content(state: PaperState) -> dict:
     """Let LLM parse URL and fetch paper content."""
@@ -167,57 +167,68 @@ def fetch_content(state: PaperState) -> dict:
         content=f"Extract the arXiv ID from this URL and fetch the paper: {state['arxiv_url']}"
     )]
 
-    while True:
+    for attempt in range(3):  # Max 3 attempts
         response = llm_with_tools.invoke(messages)
         if not response.tool_calls:
             raise ValueError("LLM did not call the fetch tool")
 
         tool_call = response.tool_calls[0]
         arxiv_id = tool_call["args"]["arxiv_id"]
-        result = fetch_arxiv_paper.invoke({"arxiv_id": arxiv_id})
 
-        if "error" not in result.lower():
+        try:
+            result = fetch_arxiv_paper.invoke({"arxiv_id": arxiv_id})
+        except Exception as e:
+            result = f"Error: {e}"
+
+        if result and "error" not in result.lower():
             return {"arxiv_id": arxiv_id, "content": result}
 
         # Tool failed—let LLM see error and retry
         messages.append(response)
-        messages.append(ToolMessage(content=result, tool_call_id=tool_call["id"]))
+        messages.append(ToolMessage(content=result or "No text extracted", tool_call_id=tool_call["id"]))
+
+    raise ValueError(f"Failed to fetch paper after 3 attempts: {state['arxiv_url']}")
 ```
 
 ---
 
 ## Why this pattern?
 
-**Why LLM-driven?** The URL format varies (`arxiv.org/abs/...`, `arxiv.org/pdf/...`, bare ID). The LLM parses flexibly; the loop lets it retry on errors.
+**Why LLM-driven?** URL formats vary. The LLM parses flexibly and retries on errors.
 
 **Why a manual loop instead of `ToolNode`/`tools_condition`?**
 
-- This is a **data processing pipeline** with custom state—not a conversational agent
-- Only **one node** needs tool retry; the rest are simple
-- Messages stay **local to this node**, not in pipeline state
-- Keeps the **graph structure simple** (no subgraphs or extra conditional edges)
-
-Use deck 05's pattern for full agentic workflows. Use this pattern when one node in a larger pipeline needs flexible tool use.
+- **Data pipeline with custom state**—not a conversational agent
+- Only **one node** needs retries; the rest are simple
+- Messages stay **local**, not in pipeline state
+- Graph structure stays **simple**
 
 ---
 
 ## Node 2: Extract metadata
 
 ```python
+from pydantic import BaseModel
+
+class PaperMetadata(BaseModel):
+    title: str
+    authors: list[str]
+    key_contributions: list[str] = []
+
 def extract_metadata(state: PaperState) -> dict:
     """Use LLM to extract structured metadata from paper content."""
+    structured_llm = llm.with_structured_output(PaperMetadata)
+
     prompt = f"""Extract metadata from this research paper.
-Return JSON with: title, authors (list), key_contributions (list of 2-3 bullets).
 
 Paper content:
-{state['content'][:8000]}"""
+{state['content']}"""
 
-    response = llm.invoke([HumanMessage(content=prompt)])
-    metadata = json.loads(response.content)
-    return {"metadata": metadata}
+    metadata = structured_llm.invoke(prompt)
+    return {"metadata": metadata.model_dump()}
 ```
 
-No tool needed here—just LLM analysis of the extracted text.
+`with_structured_output()` guarantees valid output matching the schema.
 
 ---
 
@@ -226,21 +237,21 @@ No tool needed here—just LLM analysis of the extracted text.
 A second tool for external API lookup:
 
 ```python
-from langchain_core.tools import tool
-
 @tool
 def get_paper_impact(arxiv_id: str) -> str:
-    """Look up citation count and publication venue via Semantic Scholar."""
-    # Semantic Scholar API (free, no auth required)
-    url = f"https://api.semanticscholar.org/v1/paper/arXiv:{arxiv_id}"
-    response = requests.get(url)
+    """Look up paper metadata and citations via Semantic Scholar."""
+    url = f"https://api.semanticscholar.org/graph/v1/paper/arXiv:{arxiv_id}"
+    params = {"fields": "title,authors,citationCount,venue,externalIds"}
+    response = requests.get(url, params=params)
 
-    if response.status_code == 200:
+    if response.status_code == 200:  # HTTP 200 = success
         data = response.json()
         return json.dumps({
-            "citations": data.get("numCitedBy", 0),
-            "venue": data.get("venue", "Unknown"),
-            "doi": data.get("doi")
+            "title": data.get("title"),
+            "authors": [a["name"] for a in data.get("authors", [])],
+            "citations": data.get("citationCount", 0),
+            "venue": data.get("venue"),
+            "doi": data.get("externalIds", {}).get("DOI")
         })
     return json.dumps({"error": "Paper not found"})
 ```
@@ -251,14 +262,52 @@ def get_paper_impact(arxiv_id: str) -> str:
 
 ```python
 def get_impact(state: PaperState) -> dict:
-    """Look up publication info using Semantic Scholar."""
-    # Direct call—arxiv_id is already clean in state, no LLM parsing needed
+    """Look up publication info, overwrite metadata if available."""
     result = get_paper_impact.invoke({"arxiv_id": state["arxiv_id"]})
-    impact = json.loads(result)
-    return {"impact": impact}
+    data = json.loads(result)
+
+    if "error" in data:
+        return {"impact": {}}  # Keep Node 2's metadata
+
+    # Overwrite title/authors with API data (more reliable), keep contributions
+    updated = state["metadata"].copy()
+    if data.get("title"):
+        updated["title"] = data["title"]
+    if data.get("authors"):
+        updated["authors"] = data["authors"]
+
+    return {
+        "metadata": updated,
+        "impact": {"citations": data["citations"], "venue": data["venue"], "doi": data["doi"]}
+    }
 ```
 
-**New pattern**: A node that always runs a tool directly—no LLM deciding whether or how to call it. Works when input is already structured and the call is unconditional.
+---
+
+## How state updates work
+
+By default, returning a field **replaces** its value in state:
+
+- Node 2 returns `{"metadata": {...}}` → sets `metadata`
+- Node 3 returns `{"metadata": {...}}` → **replaces** `metadata`
+
+That's why we do `state["metadata"].copy()` then modify—if we just returned new metadata, we'd lose the `key_contributions` from Node 2.
+
+**Key insight**: Only include a field in your return dict if you want to change it. If Node 3 returns `{"impact": {}}` without `"metadata"`, the existing metadata is preserved.
+
+---
+
+## A note on efficiency
+
+This sequential approach works, but is **inefficient** for papers indexed by Semantic Scholar—we run the LLM extraction even when API data is available.
+
+A **more efficient pattern** would use conditional edges:
+
+1. Try Semantic Scholar first
+2. If found → skip LLM, use API metadata directly
+3. If not found → fall back to LLM extraction (e.g., for new papers)
+
+This requires a more complex graph structure (covered in Example 2). Here we prioritize simplicity: always extract with LLM, then overwrite with API data when available.
 
 ---
 

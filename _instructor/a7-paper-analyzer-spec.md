@@ -85,6 +85,7 @@ Students should handle these gracefully:
 - API downtime or timeouts
 - Missing fields in responses
 - Semantic Scholar may not have data for very new or obscure papers
+- Published DOI may be missing even for indexed papers (not all papers have DOIs in the database)
 
 **Content access:**
 - Unpaywall finds nothing (paywalled everywhere)
