@@ -60,7 +60,7 @@ No chat history needed—just data flowing through processing stages.
 ## Custom states for structured workflows
 
 ::: {style="text-align: center;"}
-![](images/08-state-comparison.png){width=80%}
+![](images/08-state-comparison.png){width=70%}
 :::
 
 <!-- IMAGE: ![](images/08-state-comparison.png){width=80%}
@@ -71,8 +71,8 @@ No chat history needed—just data flowing through processing stages.
      Left column: "MessagesState" with bullet points "Conversation history", "Tool calls and
      results", "Chat-style applications" and a chat bubble icon. Right column: "Custom TypedDict"
      with bullet points "Domain-specific fields", "Structured data processing", "Pipeline workflows"
-     and a flowchart icon. Add checkmarks next to each bullet. Use clean boxes with rounded corners
-     and soft colors. Title: "When to use each state type". -->
+     and a flowchart icon. Use clean boxes with rounded corners and soft colors.
+     Title: "When to use each state type". -->
 
 Choose the state structure that matches your data flow.
 
@@ -105,7 +105,7 @@ Each field serves a specific purpose in the pipeline.
 ## The pipeline structure
 
 ::: {style="text-align: center;"}
-![](images/08-paper-pipeline.png){width=75%}
+![](images/08-paper-pipeline.png){width=70%}
 :::
 
 <!-- IMAGE: ![](images/08-paper-pipeline.png){width=75%}
@@ -113,72 +113,117 @@ Each field serves a specific purpose in the pipeline.
      DESCRIPTION: LangGraph-style horizontal flow diagram for arXiv paper analysis.
 
      PROMPT FOR NANO BANANA PRO: Create a LangGraph-style horizontal flow diagram. Show:
-     START (small circle) → "fetch_content" (rounded box) → "extract_metadata" (rounded box) →
-     "get_impact" (rounded box with small wrench/tool icon) → "summarize" (rounded box) →
-     END (small circle). Above the chain, show a "PaperState" box with fields: arxiv_url,
-     arxiv_id, content, metadata, impact, summary. Draw a dotted line from state to nodes.
-     Add a small tool icon near the get_impact node. Clean style with soft colors. -->
+     START (small circle) → "fetch_content" (rounded box with small wrench/tool icon) →
+     "extract_metadata" (rounded box) → "get_impact" (rounded box with small wrench/tool icon) →
+     "summarize" (rounded box) → END (small circle). Above the chain, show a "PaperState" box
+     with fields: arxiv_url, arxiv_id, content, metadata, impact, summary. Draw dotted lines
+     without arrowheads from state to each of the following nodes (one line per node):
+     "fetch_content", "extract_metadata", "get_impact", "summarize". Add small tool icons near
+     the fetch_content and get_impact nodes. Clean style with soft colors. Ensure labels match
+     the specified text exactly. -->
 
-Four nodes: fetch, extract, look up impact (tool), summarize.
+Four nodes: fetch (tool), extract, look up impact (tool), summarize.
 
 ---
 
-## Node 1: Fetch content from arXiv
+## Node 1: Fetch paper (tool)
 
 ```python
-import re
 import requests
+import fitz  # PyMuPDF
+from langchain_core.tools import tool
 
-def fetch_content(state: PaperState) -> dict:
-    """Fetch paper text from arXiv."""
-    # Extract arXiv ID from URL (e.g., "1706.03762" from various formats)
-    url = state["arxiv_url"]
-    match = re.search(r"(\d{4}\.\d{4,5})", url)
-    if not match:
-        raise ValueError(f"Could not extract arXiv ID from: {url}")
+@tool
+def fetch_arxiv_paper(arxiv_id: str) -> str:
+    """Fetch an arXiv paper by its ID (e.g., '1706.03762') and extract text."""
+    pdf_url = f"https://arxiv.org/pdf/{arxiv_id}.pdf"
+    response = requests.get(pdf_url)
 
-    arxiv_id = match.group(1)
+    # Load PDF and extract text
+    doc = fitz.open(stream=response.content, filetype="pdf")
+    text = "\n".join(page.get_text() for page in doc)
+    doc.close()
 
-    # Fetch the abstract page (full text would need PDF parsing)
-    api_url = f"http://export.arxiv.org/api/query?id_list={arxiv_id}"
-    response = requests.get(api_url)
-
-    # In practice: parse XML, extract abstract/metadata
-    # For simplicity, we'll pass the raw response
-    return {"arxiv_id": arxiv_id, "content": response.text}
+    return text
 ```
 
-Returns only the fields it updates—LangGraph merges them into state.
+Uses PyMuPDF (`pip install pymupdf`) to extract text. Note: equations/complex layouts may not extract cleanly.
+
+---
+
+## Node 1: Using the fetch tool
+
+```python
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.messages import HumanMessage, ToolMessage
+import json
+
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+
+def fetch_content(state: PaperState) -> dict:
+    """Let LLM parse URL and fetch paper content."""
+    llm_with_tools = llm.bind_tools([fetch_arxiv_paper])
+    messages = [HumanMessage(
+        content=f"Extract the arXiv ID from this URL and fetch the paper: {state['arxiv_url']}"
+    )]
+
+    while True:
+        response = llm_with_tools.invoke(messages)
+        if not response.tool_calls:
+            raise ValueError("LLM did not call the fetch tool")
+
+        tool_call = response.tool_calls[0]
+        arxiv_id = tool_call["args"]["arxiv_id"]
+        result = fetch_arxiv_paper.invoke({"arxiv_id": arxiv_id})
+
+        if "error" not in result.lower():
+            return {"arxiv_id": arxiv_id, "content": result}
+
+        # Tool failed—let LLM see error and retry
+        messages.append(response)
+        messages.append(ToolMessage(content=result, tool_call_id=tool_call["id"]))
+```
+
+---
+
+## Why this pattern?
+
+**Why LLM-driven?** The URL format varies (`arxiv.org/abs/...`, `arxiv.org/pdf/...`, bare ID). The LLM parses flexibly; the loop lets it retry on errors.
+
+**Why a manual loop instead of `ToolNode`/`tools_condition`?**
+
+- This is a **data processing pipeline** with custom state—not a conversational agent
+- Only **one node** needs tool retry; the rest are simple
+- Messages stay **local to this node**, not in pipeline state
+- Keeps the **graph structure simple** (no subgraphs or extra conditional edges)
+
+Use deck 05's pattern for full agentic workflows. Use this pattern when one node in a larger pipeline needs flexible tool use.
 
 ---
 
 ## Node 2: Extract metadata
 
 ```python
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.messages import HumanMessage
-import json
-
-llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
-
 def extract_metadata(state: PaperState) -> dict:
     """Use LLM to extract structured metadata from paper content."""
     prompt = f"""Extract metadata from this research paper.
 Return JSON with: title, authors (list), key_contributions (list of 2-3 bullets).
 
 Paper content:
-{state['content'][:4000]}"""
+{state['content'][:8000]}"""
 
     response = llm.invoke([HumanMessage(content=prompt)])
     metadata = json.loads(response.content)
     return {"metadata": metadata}
 ```
 
+No tool needed here—just LLM analysis of the extracted text.
+
 ---
 
 ## Node 3: Get paper impact (tool)
 
-Tools work with custom states too—not just `MessagesState`:
+A second tool for external API lookup:
 
 ```python
 from langchain_core.tools import tool
@@ -207,18 +252,13 @@ def get_paper_impact(arxiv_id: str) -> str:
 ```python
 def get_impact(state: PaperState) -> dict:
     """Look up publication info using Semantic Scholar."""
-    llm_with_tools = llm.bind_tools([get_paper_impact])
-
-    prompt = f"Look up the impact metrics for arXiv paper {state['arxiv_id']}"
-    response = llm_with_tools.invoke([HumanMessage(content=prompt)])
-
-    # Handle tool call (simplified—see deck 05 for full pattern)
-    if response.tool_calls:
-        tool_result = get_paper_impact.invoke(response.tool_calls[0]["args"])
-        impact = json.loads(tool_result)
-        return {"impact": impact}
-    return {"impact": {}}
+    # Direct call—arxiv_id is already clean in state, no LLM parsing needed
+    result = get_paper_impact.invoke({"arxiv_id": state["arxiv_id"]})
+    impact = json.loads(result)
+    return {"impact": impact}
 ```
+
+**New pattern**: A node that always runs a tool directly—no LLM deciding whether or how to call it. Works when input is already structured and the call is unconditional.
 
 ---
 

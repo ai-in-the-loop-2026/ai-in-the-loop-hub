@@ -93,4 +93,3 @@ Students should handle these gracefully:
 
 **PDF extraction:**
 - Complex layouts (multi-column, tables, equations)
-- Very long papers exceeding context window
