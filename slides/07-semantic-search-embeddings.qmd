@@ -469,6 +469,6 @@ The tool definition and LangGraph structure stay exactly the same.
 
 - [GoogleGenerativeAIEmbeddings](https://docs.langchain.com/oss/python/integrations/text_embedding/google_generative_ai)
 - [FAISS Vector Store](https://docs.langchain.com/oss/python/integrations/vectorstores/faiss)
-- [EnsembleRetriever](https://langchain-opentutorial.gitbook.io/langchain-opentutorial/10-retriever/03-ensembleretriever)
+- [EnsembleRetriever (langchain-classic)](https://reference.langchain.com/python/langchain_classic/retrievers/)
 - [BM25Retriever](https://docs.langchain.com/oss/python/integrations/retrievers/bm25)
 - [How Embedding Models Are Built (EmbeddingGemma)](https://developers.googleblog.com/en/gemma-explained-embeddinggemma-architecture-and-recipe/)
