@@ -313,26 +313,43 @@ def summarize(state: PaperState) -> dict:
     doi = state.get("impact", {}).get("doi")
     doi_link = f"https://doi.org/{doi}" if doi else None
 
-    prompt = f"""Write a markdown summary of this research paper using this structure:
+    prompt = f"""Summarize this research paper using the output format below.
 
+<paper_content>
+{state['content']}
+</paper_content>
+
+<metadata>
+{state['metadata']}
+</metadata>
+
+<impact>
+Citations: {state.get('impact', {}).get('citations', 'Unknown')}
+Venue: {state.get('impact', {}).get('venue', 'Unknown')}
+</impact>
+
+<links>
+arXiv: {arxiv_link}
+DOI: {doi_link}
+</links>
+
+<output_format>
 # [Paper Title]
 
 **Authors:** [comma-separated list]
+
+## Summary
+[2-3 paragraph summary of the paper's main findings and methodology]
 
 ## Key Contributions
 [bulleted list]
 
 ## Impact
-**Citations:** [count] | **Venue:** [venue or "Unknown"]
+**Citations:** [count] | **Venue:** [venue]
 
 ## Links
 [markdown links to arXiv and DOI if available]
-
-Data:
-Metadata: {state['metadata']}
-Impact: {state['impact']}
-arXiv: {arxiv_link}
-DOI: {doi_link}"""
+</output_format>"""
 
     response = llm.invoke([HumanMessage(content=prompt)])
     return {"summary": response.content}
