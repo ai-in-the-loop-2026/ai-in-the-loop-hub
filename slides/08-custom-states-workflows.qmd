@@ -40,18 +40,18 @@ graph = StateGraph(MessagesState)
 - Retrieval Q&A
 - Any workflow centered on conversation history
 
-The pattern: user message → AI response → (tool call → tool result →)* AI response
+Pattern: user message → [tool calls if needed] → AI response
 
 ---
 
 ## What if your app isn't conversational?
 
-Consider a **document processing pipeline**:
+Consider an **arXiv paper analyzer**:
 
-1. Extract metadata from a research paper
-2. Verify citations against a database
-3. Analyze content for key themes
-4. Generate a summary
+1. Fetch paper content from arXiv
+2. Extract metadata (title, authors, contributions)
+3. Look up publication info (tool: Semantic Scholar API)
+4. Generate summary with impact metrics and links
 
 No chat history needed—just data flowing through processing stages.
 
@@ -78,23 +78,24 @@ Choose the state structure that matches your data flow.
 
 ---
 
-## Part 1: Document Processing Pipeline
+## Part 1: arXiv Paper Analyzer
 
 ---
 
-## Example 1: Document processor
+## Example 1: Paper analyzer
 
-**Goal**: Process research papers through multiple analysis stages.
+**Goal**: Given an arXiv link, fetch the paper, look up its publication info, and generate a summary with impact metrics.
 
 ```python
 from typing_extensions import TypedDict
 
-class DocumentState(TypedDict):
-    document: str           # Input: the raw document text
-    metadata: dict | None   # Extracted title, authors, date
-    citations: list[str]    # Verified citation references
-    analysis: str | None    # Content analysis
-    summary: str | None     # Final summary
+class PaperState(TypedDict):
+    arxiv_url: str              # Input: arXiv link
+    arxiv_id: str | None        # Extracted ID (e.g., "1706.03762")
+    content: str | None         # Paper text
+    metadata: dict | None       # title, authors, contributions
+    impact: dict | None         # citations, venue, published DOI
+    summary: str | None         # Final output
 ```
 
 Each field serves a specific purpose in the pipeline.
@@ -104,52 +105,78 @@ Each field serves a specific purpose in the pipeline.
 ## The pipeline structure
 
 ::: {style="text-align: center;"}
-![](images/08-doc-pipeline.png){width=75%}
+![](images/08-paper-pipeline.png){width=75%}
 :::
 
-<!-- IMAGE: ![](images/08-doc-pipeline.png){width=75%}
+<!-- IMAGE: ![](images/08-paper-pipeline.png){width=75%}
 
-     DESCRIPTION: LangGraph-style horizontal flow diagram for document processing.
+     DESCRIPTION: LangGraph-style horizontal flow diagram for arXiv paper analysis.
 
      PROMPT FOR NANO BANANA PRO: Create a LangGraph-style horizontal flow diagram. Show:
-     START (small circle) → "extract_metadata" (rounded box) → "verify_citations" (rounded box
-     with small wrench/tool icon) → "analyze" (rounded box) → "summarize" (rounded box) →
-     END (small circle). Above the chain, show a "DocumentState" box with fields: document,
-     metadata, citations, analysis, summary. Draw a dotted line from state to nodes. Label
-     the verify_citations edge with a small tool icon. Clean style with soft colors. -->
+     START (small circle) → "fetch_content" (rounded box) → "extract_metadata" (rounded box) →
+     "get_impact" (rounded box with small wrench/tool icon) → "summarize" (rounded box) →
+     END (small circle). Above the chain, show a "PaperState" box with fields: arxiv_url,
+     arxiv_id, content, metadata, impact, summary. Draw a dotted line from state to nodes.
+     Add a small tool icon near the get_impact node. Clean style with soft colors. -->
 
-Four specialized nodes, each updating specific state fields.
+Four nodes: fetch, extract, look up impact (tool), summarize.
 
 ---
 
-## Node 1: Extract metadata
+## Node 1: Fetch content from arXiv
+
+```python
+import re
+import requests
+
+def fetch_content(state: PaperState) -> dict:
+    """Fetch paper text from arXiv."""
+    # Extract arXiv ID from URL (e.g., "1706.03762" from various formats)
+    url = state["arxiv_url"]
+    match = re.search(r"(\d{4}\.\d{4,5})", url)
+    if not match:
+        raise ValueError(f"Could not extract arXiv ID from: {url}")
+
+    arxiv_id = match.group(1)
+
+    # Fetch the abstract page (full text would need PDF parsing)
+    api_url = f"http://export.arxiv.org/api/query?id_list={arxiv_id}"
+    response = requests.get(api_url)
+
+    # In practice: parse XML, extract abstract/metadata
+    # For simplicity, we'll pass the raw response
+    return {"arxiv_id": arxiv_id, "content": response.text}
+```
+
+Returns only the fields it updates—LangGraph merges them into state.
+
+---
+
+## Node 2: Extract metadata
 
 ```python
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage
+import json
 
 llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
 
-def extract_metadata(state: DocumentState) -> dict:
-    """Extract title, authors, and date from the document."""
-    prompt = f"""Extract metadata from this document.
-Return as JSON with keys: title, authors (list), date.
+def extract_metadata(state: PaperState) -> dict:
+    """Use LLM to extract structured metadata from paper content."""
+    prompt = f"""Extract metadata from this research paper.
+Return JSON with: title, authors (list), key_contributions (list of 2-3 bullets).
 
-Document:
-{state['document'][:2000]}"""  # Use beginning of doc
+Paper content:
+{state['content'][:4000]}"""
 
     response = llm.invoke([HumanMessage(content=prompt)])
-    # In practice, use with_structured_output() for reliable parsing
-    import json
     metadata = json.loads(response.content)
     return {"metadata": metadata}
 ```
 
-Returns only the field it updates—LangGraph merges it into state.
-
 ---
 
-## Node 2: Verify citations with tools
+## Node 3: Get paper impact (tool)
 
 Tools work with custom states too—not just `MessagesState`:
 
@@ -157,48 +184,58 @@ Tools work with custom states too—not just `MessagesState`:
 from langchain_core.tools import tool
 
 @tool
-def lookup_citation(doi: str) -> str:
-    """Look up a citation by DOI to verify it exists."""
-    # In a real app: call CrossRef API
-    return f"Found: {doi} - Verified as valid reference"
+def get_paper_impact(arxiv_id: str) -> str:
+    """Look up citation count and publication venue via Semantic Scholar."""
+    # Semantic Scholar API (free, no auth required)
+    url = f"https://api.semanticscholar.org/v1/paper/arXiv:{arxiv_id}"
+    response = requests.get(url)
 
-def verify_citations(state: DocumentState) -> dict:
-    """Extract and verify DOIs from the document."""
-    llm_with_tools = llm.bind_tools([lookup_citation])
-
-    prompt = f"""Find DOIs in this document and call lookup_citation for each.
-
-Document:
-{state['document']}"""
-
-    response = llm_with_tools.invoke([HumanMessage(content=prompt)])
-    # For simplicity, assume model extracts DOIs in its response
-    # In practice, you'd handle the tool call loop as in deck 05
-    return {"citations": ["doi:10.1234/example"]}  # Simplified
+    if response.status_code == 200:
+        data = response.json()
+        return json.dumps({
+            "citations": data.get("numCitedBy", 0),
+            "venue": data.get("venue", "Unknown"),
+            "doi": data.get("doi")
+        })
+    return json.dumps({"error": "Paper not found"})
 ```
 
 ---
 
-## Nodes 3 and 4: Analyze and summarize
+## Node 3: Using the tool
 
 ```python
-def analyze_content(state: DocumentState) -> dict:
-    """Analyze document themes using extracted metadata."""
-    prompt = f"""Analyze the key themes and contributions of this paper.
+def get_impact(state: PaperState) -> dict:
+    """Look up publication info using Semantic Scholar."""
+    llm_with_tools = llm.bind_tools([get_paper_impact])
 
-Title: {state['metadata']['title']}
-Document: {state['document'][:3000]}"""
+    prompt = f"Look up the impact metrics for arXiv paper {state['arxiv_id']}"
+    response = llm_with_tools.invoke([HumanMessage(content=prompt)])
 
-    response = llm.invoke([HumanMessage(content=prompt)])
-    return {"analysis": response.content}
+    # Handle tool call (simplified—see deck 05 for full pattern)
+    if response.tool_calls:
+        tool_result = get_paper_impact.invoke(response.tool_calls[0]["args"])
+        impact = json.loads(tool_result)
+        return {"impact": impact}
+    return {"impact": {}}
+```
 
-def summarize(state: DocumentState) -> dict:
+---
+
+## Node 4: Summarize
+
+```python
+def summarize(state: PaperState) -> dict:
     """Create a summary using all gathered information."""
-    prompt = f"""Write a comprehensive summary.
+    prompt = f"""Write a research paper summary including:
+- Title and authors
+- Key contributions
+- Impact metrics (citations, venue)
+- Links to paper
 
 Metadata: {state['metadata']}
-Verified citations: {state['citations']}
-Analysis: {state['analysis']}"""
+Impact: {state['impact']}
+arXiv ID: {state['arxiv_id']}"""
 
     response = llm.invoke([HumanMessage(content=prompt)])
     return {"summary": response.content}
@@ -211,20 +248,20 @@ Analysis: {state['analysis']}"""
 ```python
 from langgraph.graph import StateGraph, START, END
 
-def build_document_pipeline():
-    graph = StateGraph(DocumentState)
+def build_paper_analyzer():
+    graph = StateGraph(PaperState)
 
     # Add nodes
+    graph.add_node("fetch_content", fetch_content)
     graph.add_node("extract_metadata", extract_metadata)
-    graph.add_node("verify_citations", verify_citations)
-    graph.add_node("analyze", analyze_content)
+    graph.add_node("get_impact", get_impact)
     graph.add_node("summarize", summarize)
 
     # Connect in sequence
-    graph.add_edge(START, "extract_metadata")
-    graph.add_edge("extract_metadata", "verify_citations")
-    graph.add_edge("verify_citations", "analyze")
-    graph.add_edge("analyze", "summarize")
+    graph.add_edge(START, "fetch_content")
+    graph.add_edge("fetch_content", "extract_metadata")
+    graph.add_edge("extract_metadata", "get_impact")
+    graph.add_edge("get_impact", "summarize")
     graph.add_edge("summarize", END)
 
     return graph.compile()
@@ -235,17 +272,14 @@ def build_document_pipeline():
 ## Running the pipeline
 
 ```python
-app = build_document_pipeline()
+app = build_paper_analyzer()
 
 result = app.invoke({
-    "document": """Title: Attention Is All You Need
-
-    Authors: Vaswani et al.
-
-    We propose a new architecture called the Transformer...""",
+    "arxiv_url": "https://arxiv.org/abs/1706.03762",
+    "arxiv_id": None,
+    "content": None,
     "metadata": None,
-    "citations": [],
-    "analysis": None,
+    "impact": None,
     "summary": None
 })
 
@@ -772,11 +806,11 @@ But what about `--output` style options?
 import typer
 
 def analyze(
-    input_file: str,
+    arxiv_url: str,
     output: str = typer.Option(None, "--output", "-o", help="Output file")
 ):
-    """Analyze a research paper and generate a summary."""
-    print(f"Input: {input_file}")
+    """Analyze an arXiv paper and generate a summary."""
+    print(f"URL: {arxiv_url}")
     print(f"Output: {output}")
 
 if __name__ == "__main__":
@@ -790,17 +824,16 @@ if __name__ == "__main__":
 ## How it looks to the user
 
 ```bash
-$ python analyze.py paper.txt -o summary.txt
-Input: paper.txt
-Output: summary.txt
+$ python analyze.py "https://arxiv.org/abs/1706.03762" -o summary.txt
+Summary written to summary.txt
 
 $ python analyze.py --help
-Usage: analyze.py [OPTIONS] INPUT_FILE
+Usage: analyze.py [OPTIONS] ARXIV_URL
 
-  Analyze a research paper and generate a summary.
+  Analyze an arXiv paper and generate a summary.
 
 Arguments:
-  INPUT_FILE  [required]
+  ARXIV_URL  [required]
 
 Options:
   -o, --output TEXT  Output file
@@ -815,19 +848,16 @@ Options:
 import typer
 
 def analyze(
-    input_file: str,
+    arxiv_url: str,
     output: str = typer.Option(None, "--output", "-o", help="Output file")
 ):
-    """Analyze a document and generate a summary."""
-    with open(input_file) as f:
-        document = f.read()
-
+    """Analyze an arXiv paper and generate a summary."""
     # Run the LangGraph workflow from Example 1
-    pipeline = build_document_pipeline()
+    pipeline = build_paper_analyzer()
     result = pipeline.invoke({
-        "document": document,
-        "metadata": None, "citations": [],
-        "analysis": None, "summary": None
+        "arxiv_url": arxiv_url,
+        "arxiv_id": None, "content": None,
+        "metadata": None, "impact": None, "summary": None
     })
 
     if output:
@@ -847,10 +877,10 @@ if __name__ == "__main__":
 
 ```bash
 # Print summary to console
-python analyze.py paper.txt
+python analyze.py "https://arxiv.org/abs/1706.03762"
 
 # Save summary to file
-python analyze.py paper.txt -o summary.txt
+python analyze.py "https://arxiv.org/abs/1706.03762" -o summary.txt
 
 # Get help
 python analyze.py --help
@@ -866,19 +896,19 @@ Use `bool` with a `False` default to create on/off flags:
 
 ```python
 def analyze(
-    input_file: str,
+    arxiv_url: str,
     output: str = typer.Option(None, "--output", "-o"),
     verbose: bool = typer.Option(False, "--verbose", "-v",
                                   help="Show intermediate steps")
 ):
     if verbose:
-        print(f"Reading {input_file}...")
+        print(f"Fetching {arxiv_url}...")
     ...
 ```
 
 ```bash
-python analyze.py paper.txt --verbose   # verbose is True
-python analyze.py paper.txt             # verbose is False
+python analyze.py "https://arxiv.org/abs/1706.03762" --verbose  # verbose is True
+python analyze.py "https://arxiv.org/abs/1706.03762"            # verbose is False
 ```
 
 ---
