@@ -367,7 +367,7 @@ semantic_retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
 ## EnsembleRetriever
 
 ```python
-from langchain.retrievers import EnsembleRetriever
+from langchain_classic.retrievers import EnsembleRetriever
 from langchain_community.retrievers import BM25Retriever
 
 # Create both retrievers
