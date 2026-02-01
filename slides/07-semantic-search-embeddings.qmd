@@ -385,6 +385,10 @@ results = hybrid_retriever.invoke("refund policy")
 
 The weights control relative importance of each retriever's results.
 
+::: {.callout-note}
+`langchain_classic` is a legacy package (maintained until Dec 2026) that contains `EnsembleRetriever` with built-in Reciprocal Rank Fusion. The modern alternative is to use `RunnableParallel` from `langchain_core` and implement RRF yourself.
+:::
+
 ---
 
 ## How rank fusion works
