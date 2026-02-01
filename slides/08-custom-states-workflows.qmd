@@ -439,25 +439,31 @@ Sometimes the next step depends on **what happened** in previous steps.
 ## Example 2: Content moderation
 
 ```python
+from typing import Literal
+from pydantic import BaseModel
+
 class ModerationState(TypedDict):
     content: str              # Input content to moderate
     classification: str | None # "safe", "questionable", or "harmful"
     result: str | None        # Final decision/action taken
 
+class ContentClassification(BaseModel):
+    classification: Literal["safe", "questionable", "harmful"]
+
 # Using same llm from Example 1
 def classify_content(state: ModerationState) -> dict:
     """Classify content into safety categories."""
-    prompt = f"""Classify this content as exactly one of:
+    structured_llm = llm.with_structured_output(ContentClassification)
+
+    prompt = f"""Classify this content:
 - safe: appropriate for all audiences
 - questionable: needs human review
 - harmful: violates content policies
 
-Content: {state['content']}
+Content: {state['content']}"""
 
-Respond with only the classification word."""
-
-    response = llm.invoke([HumanMessage(content=prompt)])
-    return {"classification": response.content.strip().lower()}
+    result = structured_llm.invoke(prompt)
+    return {"classification": result.classification}
 ```
 
 ---
@@ -465,8 +471,6 @@ Respond with only the classification word."""
 ## The routing function
 
 ```python
-from typing import Literal
-
 def route_content(state: ModerationState) -> Literal["publish", "human_review", "reject"]:
     """Route based on classification result."""
     classification = state["classification"]
@@ -548,6 +552,23 @@ def build_moderation_workflow():
 
     return graph.compile()
 ```
+
+---
+
+## Visualizing the graph
+
+```python
+app = build_moderation_workflow()
+
+# Print as Mermaid diagram (text format)
+print(app.get_graph().draw_mermaid())
+
+# Or render as image in a notebook
+from IPython.display import Image
+Image(app.get_graph().draw_mermaid_png())
+```
+
+LangGraph uses the `Literal` return type from `route_content` to discover all possible paths—that's how it knows to show edges to `publish`, `human_review`, and `reject`.
 
 ---
 
