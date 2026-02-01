@@ -266,11 +266,11 @@ def get_impact(state: PaperState) -> dict:
     result = get_paper_impact.invoke({"arxiv_id": state["arxiv_id"]})
     data = json.loads(result)
 
-    if "error" in data:
+    if "error" in data:  # Check for error key, not string in values
         return {"impact": {}}  # Keep Node 2's metadata
 
     # Overwrite title/authors with API data (more reliable), keep contributions
-    updated = state["metadata"].copy()
+    updated = (state.get("metadata") or {}).copy()
     if data.get("title"):
         updated["title"] = data["title"]
     if data.get("authors"):
@@ -278,7 +278,11 @@ def get_impact(state: PaperState) -> dict:
 
     return {
         "metadata": updated,
-        "impact": {"citations": data["citations"], "venue": data["venue"], "doi": data["doi"]}
+        "impact": {
+            "citations": data.get("citations", 0),
+            "venue": data.get("venue"),
+            "doi": data.get("doi")
+        }
     }
 ```
 
@@ -291,23 +295,9 @@ By default, returning a field **replaces** its value in state:
 - Node 2 returns `{"metadata": {...}}` → sets `metadata`
 - Node 3 returns `{"metadata": {...}}` → **replaces** `metadata`
 
-That's why we do `state["metadata"].copy()` then modify—if we just returned new metadata, we'd lose the `key_contributions` from Node 2.
+That's why we do `state.get("metadata").copy()` then modify—if we just returned new metadata, we'd lose the `key_contributions` from Node 2.
 
 **Key insight**: Only include a field in your return dict if you want to change it. If Node 3 returns `{"impact": {}}` without `"metadata"`, the existing metadata is preserved.
-
----
-
-## A note on efficiency
-
-This sequential approach works, but is **inefficient** for papers indexed by Semantic Scholar—we run the LLM extraction even when API data is available.
-
-A **more efficient pattern** would use conditional edges:
-
-1. Try Semantic Scholar first
-2. If found → skip LLM, use API metadata directly
-3. If not found → fall back to LLM extraction (e.g., for new papers)
-
-This requires a more complex graph structure (covered in Example 2). Here we prioritize simplicity: always extract with LLM, then overwrite with API data when available.
 
 ---
 
@@ -316,15 +306,30 @@ This requires a more complex graph structure (covered in Example 2). Here we pri
 ```python
 def summarize(state: PaperState) -> dict:
     """Create a summary using all gathered information."""
-    prompt = f"""Write a research paper summary including:
-- Title and authors
-- Key contributions
-- Impact metrics (citations, venue)
-- Links to paper
+    arxiv_link = f"https://arxiv.org/abs/{state['arxiv_id']}"
+    doi = state.get("impact", {}).get("doi")
+    doi_link = f"https://doi.org/{doi}" if doi else None
 
+    prompt = f"""Write a markdown summary of this research paper using this structure:
+
+# [Paper Title]
+
+**Authors:** [comma-separated list]
+
+## Key Contributions
+[bulleted list]
+
+## Impact
+**Citations:** [count] | **Venue:** [venue or "Unknown"]
+
+## Links
+[markdown links to arXiv and DOI if available]
+
+Data:
 Metadata: {state['metadata']}
 Impact: {state['impact']}
-arXiv ID: {state['arxiv_id']}"""
+arXiv: {arxiv_link}
+DOI: {doi_link}"""
 
     response = llm.invoke([HumanMessage(content=prompt)])
     return {"summary": response.content}
