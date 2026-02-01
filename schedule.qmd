@@ -127,3 +127,10 @@ This course is under active development, and the schedule will be filled in as w
 |---|---|---|---|
 | Tuesday | Semantic search and embeddings | [Semantic Search and Embeddings](slides/07-semantic-search-embeddings.qmd) | - |
 | Thursday | Custom states and multi-node workflows | [Custom States and Multi-Node Workflows](slides/08-custom-states-workflows.qmd) | - |
+
+## Week 8: March 2-8
+
+| Meeting | Topic | Slides | Due |
+|---|---|---|---|
+| Tuesday | TBD | TBD | A6 — RAG - Hybrid (*before class*) |
+| Thursday | TBD | TBD | - |

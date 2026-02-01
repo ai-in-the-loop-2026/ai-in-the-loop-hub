@@ -66,6 +66,13 @@ This page is the **single canonical place** for:
 - **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
 - **Note:** This assignment is the basis for Code Review 1. Submit slides on Moodle.
 
+### A6 - RAG - Hybrid
+
+- **Due:** Tuesday (Week 8) before class
+- **Purpose:** Extend A4 to include hybrid RAG that combines keyword and semantic search.
+- **Invite link:** <https://classroom.github.com/a/1eXlUn-3>
+- **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
+
 ---
 
 ## Writing Reflections (GitHub Classroom)
