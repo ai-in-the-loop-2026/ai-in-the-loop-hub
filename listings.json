@@ -2,6 +2,8 @@
   {
     "listing": "/slides-listing.html",
     "items": [
+      "/slides/08-custom-states-workflows.html",
+      "/slides/07-semantic-search-embeddings.html",
       "/slides/06-multi-turn-chat-retrieval.html",
       "/slides/05-tool-calling.html",
       "/slides/04-prompt-patterns.html",

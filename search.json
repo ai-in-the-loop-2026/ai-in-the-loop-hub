@@ -1,5 +1,383 @@
 [
   {
+    "objectID": "slides/08-custom-states-workflows.html#todays-goals",
+    "href": "slides/08-custom-states-workflows.html#todays-goals",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Today’s goals",
+    "text": "Today’s goals\n\nDesign custom TypedDict states for non-conversational workflows\nBuild multi-node graphs with specialized roles\nRoute with conditional edges based on state values\nUse reducers to control how state updates are merged\nWrap workflows with simple command-line interfaces"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#recall-messagesstate",
+    "href": "slides/08-custom-states-workflows.html#recall-messagesstate",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Recall: MessagesState",
+    "text": "Recall: MessagesState\nIn decks 05-07, we used MessagesState for conversational apps:\nfrom langgraph.graph import StateGraph, MessagesState\n\ndef agent(state: MessagesState):\n    return {\"messages\": [llm_with_tools.invoke(state[\"messages\"])]}\n\ngraph = StateGraph(MessagesState)\nMessagesState is a TypedDict with one field: messages (a list that accumulates)."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#when-messagesstate-works-great",
+    "href": "slides/08-custom-states-workflows.html#when-messagesstate-works-great",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "When MessagesState works great",
+    "text": "When MessagesState works great\n\nChat applications\nTool-calling agents\nRetrieval Q&A\nAny workflow centered on conversation history\n\nPattern: user message → [tool calls if needed] → AI response"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#what-if-your-app-isnt-conversational",
+    "href": "slides/08-custom-states-workflows.html#what-if-your-app-isnt-conversational",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "What if your app isn’t conversational?",
+    "text": "What if your app isn’t conversational?\nConsider an arXiv paper analyzer:\n\nFetch paper content from arXiv\nExtract metadata (title, authors, contributions)\nLook up publication info (tool: Semantic Scholar API)\nGenerate summary with impact metrics and links\n\nNo chat history needed—just data flowing through processing stages."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#custom-states-for-structured-workflows",
+    "href": "slides/08-custom-states-workflows.html#custom-states-for-structured-workflows",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Custom states for structured workflows",
+    "text": "Custom states for structured workflows\n\n\n\n\nChoose the state structure that matches your data flow."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#part-1-arxiv-paper-analyzer",
+    "href": "slides/08-custom-states-workflows.html#part-1-arxiv-paper-analyzer",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Part 1: arXiv Paper Analyzer",
+    "text": "Part 1: arXiv Paper Analyzer"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#example-1-paper-analyzer",
+    "href": "slides/08-custom-states-workflows.html#example-1-paper-analyzer",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Example 1: Paper analyzer",
+    "text": "Example 1: Paper analyzer\nGoal: Given an arXiv link, fetch the paper, look up its publication info, and generate a summary with impact metrics.\nfrom typing_extensions import TypedDict\n\nclass PaperState(TypedDict):\n    arxiv_url: str              # Input: arXiv link\n    arxiv_id: str | None        # Extracted ID (e.g., \"1706.03762\")\n    content: str | None         # Paper text\n    metadata: dict | None       # title, authors, contributions\n    impact: dict | None         # citations, venue, published DOI\n    summary: str | None         # Final output\nEach field serves a specific purpose in the pipeline."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#the-pipeline-structure",
+    "href": "slides/08-custom-states-workflows.html#the-pipeline-structure",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "The pipeline structure",
+    "text": "The pipeline structure\n\n\n\n\nFour nodes: fetch (tool), extract, look up impact (tool), summarize."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#node-1-fetch-paper-tool",
+    "href": "slides/08-custom-states-workflows.html#node-1-fetch-paper-tool",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Node 1: Fetch paper (tool)",
+    "text": "Node 1: Fetch paper (tool)\nimport requests\nimport fitz  # PyMuPDF\nfrom langchain.tools import tool\n\n@tool\ndef fetch_arxiv_paper(arxiv_id: str) -&gt; str:\n    \"\"\"Fetch an arXiv paper by its ID (e.g., '1706.03762') and extract text.\"\"\"\n    pdf_url = f\"https://arxiv.org/pdf/{arxiv_id}.pdf\"\n    response = requests.get(pdf_url)\n\n    if response.status_code != 200:\n        return f\"Error: HTTP {response.status_code}\"\n\n    # Load PDF and extract text\n    doc = fitz.open(stream=response.content, filetype=\"pdf\")\n    text = \"\\n\".join(page.get_text(sort=True) for page in doc)\n    doc.close()\n\n    return text\nUses PyMuPDF (pip install pymupdf) to extract text. Note: equations/complex layouts may not extract cleanly."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#node-1-using-the-fetch-tool",
+    "href": "slides/08-custom-states-workflows.html#node-1-using-the-fetch-tool",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Node 1: Using the fetch tool",
+    "text": "Node 1: Using the fetch tool\nfrom langchain_google_genai import ChatGoogleGenerativeAI\nfrom langchain.messages import HumanMessage, ToolMessage\nimport json\n\nllm = ChatGoogleGenerativeAI(model=\"gemini-2.5-flash\", temperature=0.1)\n\ndef fetch_content(state: PaperState) -&gt; dict:\n    \"\"\"Let LLM parse URL and fetch paper content.\"\"\"\n    llm_with_tools = llm.bind_tools([fetch_arxiv_paper])\n    messages = [HumanMessage(\n        content=f\"Extract the arXiv ID from this URL and fetch the paper: {state['arxiv_url']}\"\n    )]\n\n    for attempt in range(3):  # Max 3 attempts\n        response = llm_with_tools.invoke(messages)\n        if not response.tool_calls:\n            raise ValueError(\"LLM did not call the fetch tool\")\n\n        tool_call = response.tool_calls[0]\n        arxiv_id = tool_call[\"args\"][\"arxiv_id\"]\n\n        try:\n            result = fetch_arxiv_paper.invoke({\"arxiv_id\": arxiv_id})\n        except Exception as e:\n            result = f\"Error: {e}\"\n\n        if result and not result.startswith(\"Error:\"):\n            return {\"arxiv_id\": arxiv_id, \"content\": result}\n\n        # Tool failed—let LLM see error and retry\n        messages.append(response)\n        messages.append(ToolMessage(content=result or \"No text extracted\", tool_call_id=tool_call[\"id\"]))\n\n    raise ValueError(f\"Failed to fetch paper after 3 attempts: {state['arxiv_url']}\")"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#why-this-pattern",
+    "href": "slides/08-custom-states-workflows.html#why-this-pattern",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Why this pattern?",
+    "text": "Why this pattern?\nWhy LLM-driven? URL formats vary. The LLM parses flexibly and retries on errors.\nWhy a manual loop instead of ToolNode/tools_condition?\n\nData pipeline with custom state—not a conversational agent\nOnly one node needs retries; the rest are simple\nMessages stay local, not in pipeline state\nGraph structure stays simple"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#node-2-extract-metadata",
+    "href": "slides/08-custom-states-workflows.html#node-2-extract-metadata",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Node 2: Extract metadata",
+    "text": "Node 2: Extract metadata\nfrom pydantic import BaseModel\n\nclass PaperMetadata(BaseModel):\n    title: str\n    authors: list[str]\n    key_contributions: list[str] = []\n\ndef extract_metadata(state: PaperState) -&gt; dict:\n    \"\"\"Use LLM to extract structured metadata from paper content.\"\"\"\n    structured_llm = llm.with_structured_output(PaperMetadata)\n\n    prompt = f\"\"\"Extract metadata from this research paper.\n\nPaper content:\n{state['content']}\"\"\"\n\n    metadata = structured_llm.invoke(prompt)\n    return {\"metadata\": metadata.model_dump()}\nwith_structured_output() guarantees valid output matching the schema."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#node-3-get-paper-impact-tool",
+    "href": "slides/08-custom-states-workflows.html#node-3-get-paper-impact-tool",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Node 3: Get paper impact (tool)",
+    "text": "Node 3: Get paper impact (tool)\nA second tool for external API lookup:\n@tool\ndef get_paper_impact(arxiv_id: str) -&gt; str:\n    \"\"\"Look up paper metadata and citations via Semantic Scholar.\"\"\"\n    url = f\"https://api.semanticscholar.org/graph/v1/paper/arXiv:{arxiv_id}\"\n    params = {\"fields\": \"title,authors,citationCount,venue,externalIds\"}\n    response = requests.get(url, params=params)\n\n    if response.status_code == 200:  # HTTP 200 = success\n        data = response.json()\n        return json.dumps({\n            \"title\": data.get(\"title\"),\n            \"authors\": [a[\"name\"] for a in data.get(\"authors\", [])],\n            \"citations\": data.get(\"citationCount\", 0),\n            \"venue\": data.get(\"venue\"),\n            \"doi\": data.get(\"externalIds\", {}).get(\"DOI\")\n        })\n    return json.dumps({\"error\": \"Paper not found\"})"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#node-3-using-the-tool",
+    "href": "slides/08-custom-states-workflows.html#node-3-using-the-tool",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Node 3: Using the tool",
+    "text": "Node 3: Using the tool\ndef get_impact(state: PaperState) -&gt; dict:\n    \"\"\"Look up publication info, overwrite metadata if available.\"\"\"\n    result = get_paper_impact.invoke({\"arxiv_id\": state[\"arxiv_id\"]})\n    data = json.loads(result)\n\n    if \"error\" in data:  # Check for error key, not string in values\n        return {\"impact\": {}}  # Keep Node 2's metadata\n\n    # Overwrite title/authors with API data (more reliable), keep contributions\n    updated = (state.get(\"metadata\") or {}).copy()\n    if data.get(\"title\"):\n        updated[\"title\"] = data[\"title\"]\n    if data.get(\"authors\"):\n        updated[\"authors\"] = data[\"authors\"]\n\n    return {\n        \"metadata\": updated,\n        \"impact\": {\n            \"citations\": data.get(\"citations\", 0),\n            \"venue\": data.get(\"venue\"),\n            \"doi\": data.get(\"doi\")\n        }\n    }"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#how-state-updates-work",
+    "href": "slides/08-custom-states-workflows.html#how-state-updates-work",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "How state updates work",
+    "text": "How state updates work\nBy default, returning a field replaces its value in state:\n\nNode 2 returns {\"metadata\": {...}} → sets metadata\nNode 3 returns {\"metadata\": {...}} → replaces metadata\n\nThat’s why we do state.get(\"metadata\").copy() then modify—if we just returned new metadata, we’d lose the key_contributions from Node 2.\nKey insight: Only include a field in your return dict if you want to change it. If Node 3 returns {\"impact\": {}} without \"metadata\", the existing metadata is preserved."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#node-4-summarize",
+    "href": "slides/08-custom-states-workflows.html#node-4-summarize",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Node 4: Summarize",
+    "text": "Node 4: Summarize\ndef summarize(state: PaperState) -&gt; dict:\n    \"\"\"Create a summary using all gathered information.\"\"\"\n    arxiv_link = f\"https://arxiv.org/abs/{state['arxiv_id']}\"\n    doi = state.get(\"impact\", {}).get(\"doi\")\n    doi_link = f\"https://doi.org/{doi}\" if doi else None\n\n    prompt = f\"\"\"Summarize this research paper using the output format below.\n\n&lt;paper_content&gt;\n{state['content']}\n&lt;/paper_content&gt;\n\n&lt;metadata&gt;\n{state['metadata']}\n&lt;/metadata&gt;\n\n&lt;impact&gt;\nCitations: {state.get('impact', {}).get('citations', 'Unknown')}\nVenue: {state.get('impact', {}).get('venue', 'Unknown')}\n&lt;/impact&gt;\n\n&lt;links&gt;\narXiv: {arxiv_link}\nDOI: {doi_link}\n&lt;/links&gt;\n\n&lt;output_format&gt;\n# [Paper Title]\n\n**Authors:** [comma-separated list]\n\n## Summary\n[2-3 paragraph summary of the paper's main findings and methodology]\n\n## Key Contributions\n[bulleted list]\n\n## Impact\n**Citations:** [count] | **Venue:** [venue]\n\n## Links\n[markdown links to arXiv and DOI if available]\n&lt;/output_format&gt;\"\"\"\n\n    response = llm.invoke([HumanMessage(content=prompt)])\n    return {\"summary\": response.content}"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#building-the-graph",
+    "href": "slides/08-custom-states-workflows.html#building-the-graph",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Building the graph",
+    "text": "Building the graph\nfrom langgraph.graph import StateGraph, START, END\n\ndef build_paper_analyzer():\n    graph = StateGraph(PaperState)\n\n    # Add nodes\n    graph.add_node(\"fetch_content\", fetch_content)\n    graph.add_node(\"extract_metadata\", extract_metadata)\n    graph.add_node(\"get_impact\", get_impact)\n    graph.add_node(\"summarize\", summarize)\n\n    # Connect in sequence\n    graph.add_edge(START, \"fetch_content\")\n    graph.add_edge(\"fetch_content\", \"extract_metadata\")\n    graph.add_edge(\"extract_metadata\", \"get_impact\")\n    graph.add_edge(\"get_impact\", \"summarize\")\n    graph.add_edge(\"summarize\", END)\n\n    return graph.compile()"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#running-the-pipeline",
+    "href": "slides/08-custom-states-workflows.html#running-the-pipeline",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Running the pipeline",
+    "text": "Running the pipeline\napp = build_paper_analyzer()\n\nresult = app.invoke({\n    \"arxiv_url\": \"https://arxiv.org/abs/1706.03762\",\n    \"arxiv_id\": None,\n    \"content\": None,\n    \"metadata\": None,\n    \"impact\": None,\n    \"summary\": None\n})\n\nprint(result[\"summary\"])\nNo messages anywhere—just structured data flowing through."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#custom-state-patterns",
+    "href": "slides/08-custom-states-workflows.html#custom-state-patterns",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Custom state patterns",
+    "text": "Custom state patterns\nKey principles:\n\nInclude all fields your workflow needs\nUse typed fields (str, dict, list, None for optional)\nReturn partial updates from nodes (only changed fields)\nInitialize properly when invoking\n\n# Node returns only what it changes\ndef my_node(state: MyState) -&gt; dict:\n    return {\"one_field\": new_value}  # Other fields untouched"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#part-2-conditional-routing",
+    "href": "slides/08-custom-states-workflows.html#part-2-conditional-routing",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Part 2: Conditional Routing",
+    "text": "Part 2: Conditional Routing"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#beyond-sequential-branching-workflows",
+    "href": "slides/08-custom-states-workflows.html#beyond-sequential-branching-workflows",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Beyond sequential: branching workflows",
+    "text": "Beyond sequential: branching workflows\nSometimes the next step depends on what happened in previous steps.\nExample: Content moderation\n\nClassify content as safe, questionable, or harmful\nRoute to different handlers based on classification"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#example-2-content-moderation",
+    "href": "slides/08-custom-states-workflows.html#example-2-content-moderation",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Example 2: Content moderation",
+    "text": "Example 2: Content moderation\nfrom typing import Literal\nfrom pydantic import BaseModel\n\nclass ModerationState(TypedDict):\n    content: str              # Input content to moderate\n    classification: str | None # \"safe\", \"questionable\", or \"harmful\"\n    result: str | None        # Final decision/action taken\n\nclass ContentClassification(BaseModel):\n    classification: Literal[\"safe\", \"questionable\", \"harmful\"]\n\n# Using same llm from Example 1\ndef classify_content(state: ModerationState) -&gt; dict:\n    \"\"\"Classify content into safety categories.\"\"\"\n    structured_llm = llm.with_structured_output(ContentClassification)\n\n    prompt = f\"\"\"Classify this content:\n- safe: appropriate for all audiences\n- questionable: needs human review\n- harmful: violates content policies\n\nContent: {state['content']}\"\"\"\n\n    result = structured_llm.invoke(prompt)\n    return {\"classification\": result.classification}"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#the-routing-function",
+    "href": "slides/08-custom-states-workflows.html#the-routing-function",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "The routing function",
+    "text": "The routing function\ndef route_content(state: ModerationState) -&gt; Literal[\"publish\", \"human_review\", \"reject\"]:\n    \"\"\"Route based on classification result.\"\"\"\n    classification = state[\"classification\"]\n\n    if classification == \"safe\":\n        return \"publish\"\n    elif classification == \"questionable\":\n        return \"human_review\"\n    else:  # harmful\n        return \"reject\"\nThe Literal return type documents the possible destinations clearly."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#the-moderation-workflow",
+    "href": "slides/08-custom-states-workflows.html#the-moderation-workflow",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "The moderation workflow",
+    "text": "The moderation workflow\n\n\n\n\nDifferent paths for different classifications."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#handler-nodes",
+    "href": "slides/08-custom-states-workflows.html#handler-nodes",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Handler nodes",
+    "text": "Handler nodes\ndef publish(state: ModerationState) -&gt; dict:\n    \"\"\"Approve and publish the content.\"\"\"\n    return {\"result\": \"Content approved and published.\"}\n\ndef human_review(state: ModerationState) -&gt; dict:\n    \"\"\"Flag for human review.\"\"\"\n    return {\"result\": \"Content flagged for human review.\"}\n\ndef reject(state: ModerationState) -&gt; dict:\n    \"\"\"Reject harmful content.\"\"\"\n    return {\"result\": \"Content rejected due to policy violation.\"}\nEach handler returns the appropriate result."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#building-the-moderation-graph",
+    "href": "slides/08-custom-states-workflows.html#building-the-moderation-graph",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Building the moderation graph",
+    "text": "Building the moderation graph\ndef build_moderation_workflow():\n    graph = StateGraph(ModerationState)\n\n    graph.add_node(\"classify\", classify_content)\n    graph.add_node(\"publish\", publish)\n    graph.add_node(\"human_review\", human_review)\n    graph.add_node(\"reject\", reject)\n\n    graph.add_edge(START, \"classify\")\n\n    # Conditional routing after classification\n    graph.add_conditional_edges(\"classify\", route_content)\n\n    # All handlers lead to END\n    graph.add_edge(\"publish\", END)\n    graph.add_edge(\"human_review\", END)\n    graph.add_edge(\"reject\", END)\n\n    return graph.compile()"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#visualizing-the-graph",
+    "href": "slides/08-custom-states-workflows.html#visualizing-the-graph",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Visualizing the graph",
+    "text": "Visualizing the graph\napp = build_moderation_workflow()\n\n# Save graph visualization as PNG\npng_data = app.get_graph().draw_mermaid_png()\nwith open(\"graph.png\", \"wb\") as f:  # wb = write binary\n    f.write(png_data)\nLangGraph uses the Literal return type from route_content to discover all possible paths—that’s how it knows to show edges to publish, human_review, and reject."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#visualization-output",
+    "href": "slides/08-custom-states-workflows.html#visualization-output",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Visualization output",
+    "text": "Visualization output\n\n\n\nDotted lines indicate conditional edges—the path taken depends on the routing function’s return value."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#running-the-moderation-workflow",
+    "href": "slides/08-custom-states-workflows.html#running-the-moderation-workflow",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Running the moderation workflow",
+    "text": "Running the moderation workflow\napp = build_moderation_workflow()\n\nresult = app.invoke({\n    \"content\": \"Here's a helpful tutorial on Python programming.\",\n    \"classification\": None,\n    \"result\": None\n})\nprint(result[\"result\"])  # \"Content approved and published.\""
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#part-3-reducers",
+    "href": "slides/08-custom-states-workflows.html#part-3-reducers",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Part 3: Reducers",
+    "text": "Part 3: Reducers"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#the-problem-multiple-nodes-updating-the-same-field",
+    "href": "slides/08-custom-states-workflows.html#the-problem-multiple-nodes-updating-the-same-field",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "The problem: multiple nodes updating the same field",
+    "text": "The problem: multiple nodes updating the same field\nWhat if multiple nodes need to add to the same field?\nExample: Multiple reviewers each provide feedback\ndef clarity_reviewer(state: ReviewState) -&gt; dict:\n    return {\"feedback\": [\"Clarity: Introduction is clear.\"]}\n\ndef technical_reviewer(state: ReviewState) -&gt; dict:\n    return {\"feedback\": [\"Technical: Methodology is sound.\"]}\nWithout special handling, the second reviewer overwrites the first!"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#example-3-multi-reviewer-workflow",
+    "href": "slides/08-custom-states-workflows.html#example-3-multi-reviewer-workflow",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Example 3: Multi-reviewer workflow",
+    "text": "Example 3: Multi-reviewer workflow\n\n\n\n\nWe want all feedback to accumulate, not overwrite."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#reducers-control-state-merging",
+    "href": "slides/08-custom-states-workflows.html#reducers-control-state-merging",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Reducers control state merging",
+    "text": "Reducers control state merging\nA reducer defines how updates are combined with existing state.\nfrom typing import Annotated\nimport operator\n\nclass ReviewState(TypedDict):\n    document: str\n    feedback: Annotated[list[str], operator.add]\n    final_summary: str | None\nHere operator.add is the reducer—a function that takes (old, new) and returns the merged result."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#what-this-tells-langgraph",
+    "href": "slides/08-custom-states-workflows.html#what-this-tells-langgraph",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "What this tells LangGraph",
+    "text": "What this tells LangGraph\nAnnotated[list[str], operator.add] means:\n\nThe field type is list[str]\nWhen a node returns {\"feedback\": [...]}, call operator.add(existing, new)\nResult: lists are concatenated, not replaced\n\nWithout a reducer: each update replaces the field. With operator.add: updates accumulate."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#clarity-and-technical-reviewers",
+    "href": "slides/08-custom-states-workflows.html#clarity-and-technical-reviewers",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Clarity and technical reviewers",
+    "text": "Clarity and technical reviewers\n# Using same llm setup as before\ndef clarity_reviewer(state: ReviewState) -&gt; dict:\n    \"\"\"Review for clarity and readability.\"\"\"\n    prompt = f\"\"\"Review this document for clarity.\nProvide 1-2 sentences of feedback.\n\nDocument: {state['document']}\"\"\"\n\n    response = llm.invoke([HumanMessage(content=prompt)])\n    return {\"feedback\": [f\"Clarity: {response.content}\"]}\n\ndef technical_reviewer(state: ReviewState) -&gt; dict:\n    \"\"\"Review for technical accuracy.\"\"\"\n    prompt = f\"\"\"Review this document for technical accuracy.\nProvide 1-2 sentences of feedback.\n\nDocument: {state['document']}\"\"\"\n\n    response = llm.invoke([HumanMessage(content=prompt)])\n    return {\"feedback\": [f\"Technical: {response.content}\"]}"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#style-reviewer-and-synthesis",
+    "href": "slides/08-custom-states-workflows.html#style-reviewer-and-synthesis",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Style reviewer and synthesis",
+    "text": "Style reviewer and synthesis\ndef style_reviewer(state: ReviewState) -&gt; dict:\n    \"\"\"Review for writing style.\"\"\"\n    prompt = f\"\"\"Review this document for writing style.\nProvide 1-2 sentences of feedback.\n\nDocument: {state['document']}\"\"\"\n\n    response = llm.invoke([HumanMessage(content=prompt)])\n    return {\"feedback\": [f\"Style: {response.content}\"]}\n\ndef synthesize(state: ReviewState) -&gt; dict:\n    \"\"\"Combine all reviewer feedback into a summary.\"\"\"\n    all_feedback = \"\\n\".join(state[\"feedback\"])\n    prompt = f\"\"\"Synthesize this feedback into actionable recommendations:\n\n{all_feedback}\"\"\"\n\n    response = llm.invoke([HumanMessage(content=prompt)])\n    return {\"final_summary\": response.content}"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#building-the-review-workflow",
+    "href": "slides/08-custom-states-workflows.html#building-the-review-workflow",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Building the review workflow",
+    "text": "Building the review workflow\ndef build_review_workflow():\n    graph = StateGraph(ReviewState)\n\n    graph.add_node(\"clarity\", clarity_reviewer)\n    graph.add_node(\"technical\", technical_reviewer)\n    graph.add_node(\"style\", style_reviewer)\n    graph.add_node(\"synthesize\", synthesize)\n\n    graph.add_edge(START, \"clarity\")\n    graph.add_edge(\"clarity\", \"technical\")\n    graph.add_edge(\"technical\", \"style\")\n    graph.add_edge(\"style\", \"synthesize\")\n    graph.add_edge(\"synthesize\", END)\n\n    return graph.compile()"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#running-the-review-workflow",
+    "href": "slides/08-custom-states-workflows.html#running-the-review-workflow",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Running the review workflow",
+    "text": "Running the review workflow\napp = build_review_workflow()\n\nresult = app.invoke({\n    \"document\": \"\"\"This paper presents a novel approach to...\"\"\",\n    \"feedback\": [],  # Start with empty list\n    \"final_summary\": None\n})\n\nprint(\"All feedback collected:\")\nfor item in result[\"feedback\"]:\n    print(f\"  - {item}\")\n\nprint(f\"\\nSynthesis:\\n{result['final_summary']}\")\nAll three reviewers’ feedback is collected automatically!"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#youve-already-been-using-a-reducer",
+    "href": "slides/08-custom-states-workflows.html#youve-already-been-using-a-reducer",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "You’ve already been using a reducer",
+    "text": "You’ve already been using a reducer\nMessagesState uses add_messages as its reducer:\nfrom langgraph.graph.message import add_messages\n\n# Simplified definition of MessagesState\nclass MessagesState(TypedDict):\n    messages: Annotated[list, add_messages]\nThat’s why messages accumulate instead of being replaced."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#common-reducer-patterns",
+    "href": "slides/08-custom-states-workflows.html#common-reducer-patterns",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Common reducer patterns",
+    "text": "Common reducer patterns\n\n\n\n\n\n\n\nPattern\nUse case\n\n\n\n\nAnnotated[list, operator.add]\nCollecting items from multiple nodes\n\n\nAnnotated[list, add_messages]\nChat message history\n\n\nCustom function\nKeeping max, merging dicts, etc."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#custom-reducer-example",
+    "href": "slides/08-custom-states-workflows.html#custom-reducer-example",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Custom reducer example",
+    "text": "Custom reducer example\nKeep the highest confidence score (e.g., spam detection):\ndef keep_max(existing: float | None, new: float) -&gt; float:\n    \"\"\"Keep the higher of two values.\"\"\"\n    if existing is None:\n        return new\n    return max(existing, new)\n\nclass AnalysisState(TypedDict):\n    document: str\n    confidence: Annotated[float | None, keep_max]\nNow multiple analyzers can update confidence and the highest wins."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#part-4-command-line-interfaces",
+    "href": "slides/08-custom-states-workflows.html#part-4-command-line-interfaces",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Part 4: Command-Line Interfaces",
+    "text": "Part 4: Command-Line Interfaces"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#why-a-cli",
+    "href": "slides/08-custom-states-workflows.html#why-a-cli",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Why a CLI?",
+    "text": "Why a CLI?\nYou’ve been using CLIs like python -m ai_in_loop.cli chat. Now let’s see how to build one:\n\nClear interface — users see available options with --help\nInput validation — catches errors before running the workflow\nEasy to automate — call from scripts, cron jobs, other programs"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#anatomy-of-a-cli-command",
+    "href": "slides/08-custom-states-workflows.html#anatomy-of-a-cli-command",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Anatomy of a CLI command",
+    "text": "Anatomy of a CLI command\npython analyze.py paper.txt --output summary.txt\n       ─────────  ────────   ──────────────────\n        script    argument    option with value\n\nArguments: required inputs, positional (order matters)\nOptions: optional settings, named with -- or -\nFlags: options that are on/off (no value needed)"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#typer-clis-from-type-hints",
+    "href": "slides/08-custom-states-workflows.html#typer-clis-from-type-hints",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Typer: CLIs from type hints",
+    "text": "Typer: CLIs from type hints\nTyper turns Python functions into CLI commands:\nimport typer\n\ndef analyze(input_file: str):\n    \"\"\"Analyze a document.\"\"\"\n    print(f\"Processing: {input_file}\")\n\nif __name__ == \"__main__\":\n    typer.run(analyze)\n$ python analyze.py paper.txt\nProcessing: paper.txt\nFunction parameters become CLI arguments. Docstring becomes help text."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#arguments-vs-options-in-typer",
+    "href": "slides/08-custom-states-workflows.html#arguments-vs-options-in-typer",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Arguments vs options in Typer",
+    "text": "Arguments vs options in Typer\nimport typer\n\ndef analyze(\n    input_file: str,                        # Required argument\n    output: str | None = None               # Optional argument (has default)\n):\n    ...\npython analyze.py paper.txt              # output is None\npython analyze.py paper.txt summary.txt  # output is \"summary.txt\"\n\nNo default → required argument\nHas default → optional argument\n\nBut what about --output style options?"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#adding-options-with-typer.option",
+    "href": "slides/08-custom-states-workflows.html#adding-options-with-typer.option",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Adding options with typer.Option",
+    "text": "Adding options with typer.Option\nimport typer\n\ndef analyze(\n    arxiv_url: str,\n    output: str | None = typer.Option(None, \"--output\", \"-o\", help=\"Output file\")\n):\n    \"\"\"Analyze an arXiv paper and generate a summary.\"\"\"\n    print(f\"URL: {arxiv_url}\")\n    print(f\"Output: {output}\")\n\nif __name__ == \"__main__\":\n    typer.run(analyze)\npython analyze.py https://arxiv.org/abs/1706.03762                 # output is None\npython analyze.py https://arxiv.org/abs/1706.03762 -o summary.txt  # output is \"summary.txt\"\ntyper.Option converts a parameter into a --name style option."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#how-it-looks-to-the-user",
+    "href": "slides/08-custom-states-workflows.html#how-it-looks-to-the-user",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "How it looks to the user",
+    "text": "How it looks to the user\n$ python analyze.py \"https://arxiv.org/abs/1706.03762\" -o summary.txt\nSummary written to summary.txt\n\n$ python analyze.py --help\nUsage: analyze.py [OPTIONS] ARXIV_URL\n\n  Analyze an arXiv paper and generate a summary.\n\nArguments:\n  ARXIV_URL  [required]\n\nOptions:\n  -o, --output TEXT  Output file\n  --help             Show this message and exit."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#wrapping-a-langgraph-workflow",
+    "href": "slides/08-custom-states-workflows.html#wrapping-a-langgraph-workflow",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Wrapping a LangGraph workflow",
+    "text": "Wrapping a LangGraph workflow\nimport typer\n\ndef analyze(\n    arxiv_url: str,\n    output: str | None = typer.Option(None, \"--output\", \"-o\", help=\"Output file\")\n):\n    \"\"\"Analyze an arXiv paper and generate a summary.\"\"\"\n    # Run the LangGraph workflow from Example 1\n    pipeline = build_paper_analyzer()\n    result = pipeline.invoke({\n        \"arxiv_url\": arxiv_url,\n        \"arxiv_id\": None, \"content\": None,\n        \"metadata\": None, \"impact\": None, \"summary\": None\n    })\n\n    if output:\n        with open(output, \"w\") as f:\n            f.write(result[\"summary\"])\n        print(f\"Summary written to {output}\")\n    else:\n        print(result[\"summary\"])\n\nif __name__ == \"__main__\":\n    typer.run(analyze)"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#using-the-cli",
+    "href": "slides/08-custom-states-workflows.html#using-the-cli",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Using the CLI",
+    "text": "Using the CLI\n# Print summary to console\npython analyze.py \"https://arxiv.org/abs/1706.03762\"\n\n# Save summary to file\npython analyze.py \"https://arxiv.org/abs/1706.03762\" -o summary.txt\n\n# Get help\npython analyze.py --help\nTyper handles argument parsing, validation, and generates --help automatically."
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#boolean-flags",
+    "href": "slides/08-custom-states-workflows.html#boolean-flags",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Boolean flags",
+    "text": "Boolean flags\nUse bool with a False default to create on/off flags:\ndef analyze(\n    arxiv_url: str,\n    output: str | None = typer.Option(None, \"--output\", \"-o\"),\n    verbose: bool = typer.Option(False, \"--verbose\", \"-v\",\n                                  help=\"Show intermediate steps\")\n):\n    if verbose:\n        print(f\"Fetching {arxiv_url}...\")\n    ...\npython analyze.py \"https://arxiv.org/abs/1706.03762\" --verbose  # verbose is True\npython analyze.py \"https://arxiv.org/abs/1706.03762\"            # verbose is False"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#key-takeaways",
+    "href": "slides/08-custom-states-workflows.html#key-takeaways",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Key takeaways",
+    "text": "Key takeaways\n\nCustom TypedDict states for non-conversational workflows\nNodes return partial updates—LangGraph merges them\nConditional edges route based on state values\nReducers control how updates merge (accumulate vs replace)\nTyper wraps workflows as command-line tools"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#when-to-use-what",
+    "href": "slides/08-custom-states-workflows.html#when-to-use-what",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "When to use what",
+    "text": "When to use what\n\n\n\nScenario\nApproach\n\n\n\n\nChat or Q&A\nMessagesState\n\n\nStructured pipeline\nCustom TypedDict\n\n\nSequential steps\nadd_edge()\n\n\nBranching logic\nadd_conditional_edges()\n\n\nAccumulating data\nAnnotated[list, operator.add]"
+  },
+  {
+    "objectID": "slides/08-custom-states-workflows.html#resources",
+    "href": "slides/08-custom-states-workflows.html#resources",
+    "title": "Custom States and Multi-Node Workflows",
+    "section": "Resources",
+    "text": "Resources\n\nLangGraph Graph API — StateGraph, edges, and conditional routing\nLangGraph Reference: Graphs — State and reducer functions\nTyper Documentation"
+  },
+  {
     "objectID": "slides/06-multi-turn-chat-retrieval.html#todays-goals",
     "href": "slides/06-multi-turn-chat-retrieval.html#todays-goals",
     "title": "Multi-turn Chat and Document Retrieval",
@@ -900,7 +1278,7 @@
     "href": "assignments.html#individual-build-assignments-github-classroom",
     "title": "Assignments",
     "section": "Individual Build Assignments (GitHub Classroom)",
-    "text": "Individual Build Assignments (GitHub Classroom)\n\nA0 — Git and GitHub Fundamentals\n\nDue: Thursday (Week 1) before class\nPurpose: Git and GitHub overview, verify you can accept a Classroom assignment, and push a commit.\nInvite link: https://classroom.github.com/a/hE8dbBM3\nSpec: Follow the GitHub Classroom Workflow instructions (skip steps 3-4), and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA1 — Setup Verification\n\nDue: Tuesday (Week 2) before class\nPurpose: More practice with Git/GitHub workflow, set up Python/venv.\nInvite link: https://classroom.github.com/a/lH2a7o-K\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA2 - API and Prompt Patterns\n\nDue: Tuesday (Week 3) before class\nPurpose: Using Gemini through API calls, exploring LLM limitations and prompt patterns.\nInvite link: https://classroom.github.com/a/HGMHcztQ\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA3 - Tools\n\nDue: Tuesday (Week 4) before class\nPurpose: Extend LLM capabilities by adding tools.\nInvite link: https://classroom.github.com/a/0vZ7_LAx\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA4 - RAG (KW) + Multi-turn Chat\n\nDue: Tuesday (Week 5) before class\nPurpose: Build a document Q&A agent with keyword search and multi-turn conversation.\nInvite link: https://classroom.github.com/a/u-McvYrh\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding."
+    "text": "Individual Build Assignments (GitHub Classroom)\n\nA0 — Git and GitHub Fundamentals\n\nDue: Thursday (Week 1) before class\nPurpose: Git and GitHub overview, verify you can accept a Classroom assignment, and push a commit.\nInvite link: https://classroom.github.com/a/hE8dbBM3\nSpec: Follow the GitHub Classroom Workflow instructions (skip steps 3-4), and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA1 — Setup Verification\n\nDue: Tuesday (Week 2) before class\nPurpose: More practice with Git/GitHub workflow, set up Python/venv.\nInvite link: https://classroom.github.com/a/lH2a7o-K\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA2 - API and Prompt Patterns\n\nDue: Tuesday (Week 3) before class\nPurpose: Using Gemini through API calls, exploring LLM limitations and prompt patterns.\nInvite link: https://classroom.github.com/a/HGMHcztQ\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA3 - Tools\n\nDue: Tuesday (Week 4) before class\nPurpose: Extend LLM capabilities by adding tools.\nInvite link: https://classroom.github.com/a/0vZ7_LAx\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA4 - RAG (KW) + Multi-turn Chat\n\nDue: Tuesday (Week 5) before class\nPurpose: Build a document Q&A agent with keyword search and multi-turn conversation.\nInvite link: https://classroom.github.com/a/u-McvYrh\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA5 - Build Your Own Expert\n\nDue: Wednesday (Week 6) 11:59pm\nPurpose: Similar to A4, but you pick your own domain, documentation, and application — and write your own tool.\nInvite link: https://classroom.github.com/a/1I3Fm8tQ\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\nNote: This assignment is the basis for Code Review 1. Submit slides on Moodle.\n\n\n\nA6 - RAG - Hybrid\n\nDue: Tuesday (Week 8) before class\nPurpose: Extend A4 to include hybrid RAG that combines keyword and semantic search.\nInvite link: https://classroom.github.com/a/1eXlUn-3\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding."
   },
   {
     "objectID": "assignments.html#writing-reflections-github-classroom",
@@ -970,7 +1348,7 @@
     "href": "schedule.html",
     "title": "Schedule",
     "section": "",
-    "text": "This page is the authoritative course schedule and the main entry point for weekly materials.\n\nSlide decks are linked here (rendered HTML).\nAssignment invite links live on the Assignments page.\n\n\n\n\n\n\n\nNote\n\n\n\nThis course is under active development, and the schedule will be filled in as we go.\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nCourse overview + workflow setup\nCourse Overview and Workflow Setup\nRead syllabus + Create GitHub account (before class)\n\n\nThursday\nLarge language models\nIntroduction to LLMs\nA0 — Git and GitHub Fundamentals (before class)\n\n\n\nLearn more\n\nOpenAI tokenizer - Demonstrates how text is tokenized by a language model.\nWhat are transformer models and how do they work? - YouTube video from Serrano.Academy.\nDeep Dive into LLMs like ChatGPT - YouTube video by Andrej Karpathy.\nAttention is all you need - paper by Vaswani et al. (2017).\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nPython, Code Assist, API\nPython, APIs, and Code Assist\nA1 — Setup Verification (before class)\n\n\nThursday\nPrompting, AI and critical thinking\nPrompt Patterns and Best Practices\nRead 3 discussion articles (before class)\n\n\n\nResources for discussion\nThe age of de-skilling - article by Kwaime Anthony Appiah published in web edition of the Atlantic\nThe people outsourcing their thinking to AI - article by Lila Shroff published in web edition of the Atlantic\nThe cognitive paradox of AI in education: Between enhancement and erosion - opinion article by Jose et al. from Frontiers in Psychology\nLearn more\nHow AI could save (not destroy) education - Ted Talk by Sal Kahn (founder and CEO of Khan Academy)\nGenerative AI without guardrails can harm learning: Evidence from high school mathematics - by Bastani and Sungu (2025) from PNAS\nThe widening gap: The benefits and harms of generative AI for novice programmers - a research article by Prather et al. from ICER ’24: Proceedings of the 2024 ACM Conference on International Computing Education Research.\nThe impact of generative AI on critical thinking: Self-reported reductions in cognitive effort and confidence effects from a survey of knowledge workers - a research article by Lee et al. from CHI ’25: Proceedings of the 2025 CHI Conference on Human Factors in Computing Systems\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTool calling\nTool Calling for LLMs\nA2 — API and Prompt Patterns (before class)\n\n\nThursday\nThe costs of training (discussion)\n-\nRead 2 articles + watch video (before class)\n\n\n\nResources for discussion\nExplained: Generative AI’s environmental impact - article from MIT News\nHow Much Water Do AI Data Centers Really Use? - article from Undark\nThe growing environmental impact of AI data centers’ energy demands - PBS NewsHour video\nLearn more\nWe did the math on AI’s energy footprint. Here’s the story you haven’t heard. - MIT Technology Review\nThe carbon and water footprints of data centers and what this could mean for artificial intelligence - research article from ScienceDirect\nHow much water does AI consume? The public deserves to know - policy article from OECD.AI\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nMulti-turn chat and document retrieval\nMulti-turn Chat and Document Retrieval\nA3 — Tools (before class)\n\n\nThursday\nHomogeneity, bias, and creativity (discussion)\n-\nRead 2 articles + listen to interview (before class)\n\n\n\nResources for discussion\nA.I. Is Homogenizing Our Thoughts - article by Kyle Chayka in The New Yorker\nGenerative AI bias poses risk to democratic values, research suggests - article from Phys.org on University of East Anglia research\nAre we thinking about AI the wrong way? - audio interview with Ethan Mollick on WBUR’s On Point (transcript available). You may skip the segment from 24:30 - 34:30 if you want, it’s not closely related to the topic of the discussion.\nLearn more\nGenerative AI enhances individual creativity but reduces the collective diversity of novel content - research article by Doshi & Hauser in Science Advances\nHomogenizing effect of large language models (LLMs) on creative diversity - research article in Computers in Human Behavior analyzing 2,200 college essays\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\n-\n-\nA4 — RAG (KW) + Multi-turn Chat (before class)\n\n\nThursday\n-\n-\n-"
+    "text": "This page is the authoritative course schedule and the main entry point for weekly materials.\n\nSlide decks are linked here (rendered HTML).\nAssignment invite links live on the Assignments page.\n\n\n\n\n\n\n\nNote\n\n\n\nThis course is under active development, and the schedule will be filled in as we go.\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nCourse overview + workflow setup\nCourse Overview and Workflow Setup\nRead syllabus + Create GitHub account (before class)\n\n\nThursday\nLarge language models\nIntroduction to LLMs\nA0 — Git and GitHub Fundamentals (before class)\n\n\n\nLearn more\n\nOpenAI tokenizer - Demonstrates how text is tokenized by a language model.\nWhat are transformer models and how do they work? - YouTube video from Serrano.Academy.\nDeep Dive into LLMs like ChatGPT - YouTube video by Andrej Karpathy.\nAttention is all you need - paper by Vaswani et al. (2017).\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nPython, Code Assist, API\nPython, APIs, and Code Assist\nA1 — Setup Verification (before class)\n\n\nThursday\nPrompting, AI and critical thinking\nPrompt Patterns and Best Practices\nRead 3 discussion articles (before class)\n\n\n\nResources for discussion\nThe age of de-skilling - article by Kwaime Anthony Appiah published in web edition of the Atlantic\nThe people outsourcing their thinking to AI - article by Lila Shroff published in web edition of the Atlantic\nThe cognitive paradox of AI in education: Between enhancement and erosion - opinion article by Jose et al. from Frontiers in Psychology\nLearn more\nHow AI could save (not destroy) education - Ted Talk by Sal Kahn (founder and CEO of Khan Academy)\nGenerative AI without guardrails can harm learning: Evidence from high school mathematics - by Bastani and Sungu (2025) from PNAS\nThe widening gap: The benefits and harms of generative AI for novice programmers - a research article by Prather et al. from ICER ’24: Proceedings of the 2024 ACM Conference on International Computing Education Research.\nThe impact of generative AI on critical thinking: Self-reported reductions in cognitive effort and confidence effects from a survey of knowledge workers - a research article by Lee et al. from CHI ’25: Proceedings of the 2025 CHI Conference on Human Factors in Computing Systems\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTool calling\nTool Calling for LLMs\nA2 — API and Prompt Patterns (before class)\n\n\nThursday\nThe costs of training (discussion)\n-\nRead 2 articles + watch video (before class)\n\n\n\nResources for discussion\nExplained: Generative AI’s environmental impact - article from MIT News\nHow Much Water Do AI Data Centers Really Use? - article from Undark\nThe growing environmental impact of AI data centers’ energy demands - PBS NewsHour video\nLearn more\nWe did the math on AI’s energy footprint. Here’s the story you haven’t heard. - MIT Technology Review\nThe carbon and water footprints of data centers and what this could mean for artificial intelligence - research article from ScienceDirect\nHow much water does AI consume? The public deserves to know - policy article from OECD.AI\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nMulti-turn chat and document retrieval\nMulti-turn Chat and Document Retrieval\nA3 — Tools (before class)\n\n\nThursday\nHomogeneity, bias, and creativity (discussion)\n-\nRead 2 articles + listen to interview (before class)\n\n\n\nResources for discussion\nA.I. Is Homogenizing Our Thoughts - article by Kyle Chayka in The New Yorker\nGenerative AI bias poses risk to democratic values, research suggests - article from Phys.org on University of East Anglia research\nAre we thinking about AI the wrong way? - audio interview with Ethan Mollick on WBUR’s On Point (transcript available). You may skip the segment from 24:30 - 34:30 if you want, it’s not closely related to the topic of the discussion.\nLearn more\nGenerative AI enhances individual creativity but reduces the collective diversity of novel content - research article by Doshi & Hauser in Science Advances\nHomogenizing effect of large language models (LLMs) on creative diversity - research article in Computers in Human Behavior analyzing 2,200 college essays\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nWork day\n-\nA4 — RAG (KW) + Multi-turn Chat (before class)\n\n\nThursday\nWork day\n-\n-\n\n\n\nNote: Schedule your Code Review 1 appointment this week.\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nNo class (Winter Recess)\n-\nA5 — Build Your Own Expert (Wednesday 11:59pm)\n\n\nThursday\nNo class (Code Review appointments)\n-\n-\n\n\n\nNote: Code Review 1 appointments available Thursday and Friday of Week 6, and Monday of Week 7.\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nSemantic search and embeddings\nSemantic Search and Embeddings\n-\n\n\nThursday\nCustom states and multi-node workflows\nCustom States and Multi-Node Workflows\n-\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\nA6 — RAG - Hybrid (before class)\n\n\nThursday\nTBD\nTBD\n-"
   },
   {
     "objectID": "schedule.html#week-1-january-12-18",
@@ -1005,7 +1383,28 @@
     "href": "schedule.html#week-5-february-9-february-15",
     "title": "Schedule",
     "section": "",
-    "text": "Meeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\n-\n-\nA4 — RAG (KW) + Multi-turn Chat (before class)\n\n\nThursday\n-\n-\n-"
+    "text": "Meeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nWork day\n-\nA4 — RAG (KW) + Multi-turn Chat (before class)\n\n\nThursday\nWork day\n-\n-\n\n\n\nNote: Schedule your Code Review 1 appointment this week."
+  },
+  {
+    "objectID": "schedule.html#week-6-february-16-22-winter-recess",
+    "href": "schedule.html#week-6-february-16-22-winter-recess",
+    "title": "Schedule",
+    "section": "",
+    "text": "Meeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nNo class (Winter Recess)\n-\nA5 — Build Your Own Expert (Wednesday 11:59pm)\n\n\nThursday\nNo class (Code Review appointments)\n-\n-\n\n\n\nNote: Code Review 1 appointments available Thursday and Friday of Week 6, and Monday of Week 7."
+  },
+  {
+    "objectID": "schedule.html#week-7-february-23---march-1",
+    "href": "schedule.html#week-7-february-23---march-1",
+    "title": "Schedule",
+    "section": "",
+    "text": "Meeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nSemantic search and embeddings\nSemantic Search and Embeddings\n-\n\n\nThursday\nCustom states and multi-node workflows\nCustom States and Multi-Node Workflows\n-"
+  },
+  {
+    "objectID": "schedule.html#week-8-march-2-8",
+    "href": "schedule.html#week-8-march-2-8",
+    "title": "Schedule",
+    "section": "",
+    "text": "Meeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\nA6 — RAG - Hybrid (before class)\n\n\nThursday\nTBD\nTBD\n-"
   },
   {
     "objectID": "syllabus.html",
@@ -1741,5 +2140,243 @@
     "title": "Tool Calling for LLMs",
     "section": "Resources",
     "text": "Resources\n\nLangGraph Documentation\nLangChain Tools\nRLHF Tutorial (CMU)\nState of LLM Reasoning (Raschka)"
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#todays-goals",
+    "href": "slides/07-semantic-search-embeddings.html#todays-goals",
+    "title": "Semantic Search and Embeddings",
+    "section": "Today’s goals",
+    "text": "Today’s goals\n\nUnderstand what embeddings are and how they enable semantic search\nBuild a semantic retriever with GoogleGenerativeAIEmbeddings and FAISS\nCompare keyword (BM25) vs semantic search strengths\nCombine both approaches with EnsembleRetriever\nUpgrade our document Q&A agent to use hybrid retrieval"
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#recall-bm25-keyword-search",
+    "href": "slides/07-semantic-search-embeddings.html#recall-bm25-keyword-search",
+    "title": "Semantic Search and Embeddings",
+    "section": "Recall: BM25 keyword search",
+    "text": "Recall: BM25 keyword search\nFrom deck 06, we built a retriever using BM25:\nfrom langchain_community.retrievers import BM25Retriever\n\nretriever = BM25Retriever.from_documents(chunks, k=3)\nresults = retriever.invoke(\"refund policy\")\nBM25 matches documents containing the exact query terms."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#the-synonym-problem",
+    "href": "slides/07-semantic-search-embeddings.html#the-synonym-problem",
+    "title": "Semantic Search and Embeddings",
+    "section": "The synonym problem",
+    "text": "The synonym problem\nBM25 struggles when users use different words than the documents:\n\n\n\nUser asks about…\nDocument says…\nBM25 finds it?\n\n\n\n\n“car”\n“automobile”\n❌ No\n\n\n“happy”\n“joyful”\n❌ No\n\n\n“purchase”\n“buy”\n❌ No\n\n\n“error handling”\n“exception management”\n❌ No\n\n\n\nKeywords must match exactly–a fundamental limitation."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#what-are-embeddings",
+    "href": "slides/07-semantic-search-embeddings.html#what-are-embeddings",
+    "title": "Semantic Search and Embeddings",
+    "section": "What are embeddings?",
+    "text": "What are embeddings?\nAn embedding is a list of numbers (a vector) that represents the meaning of text.\ntext = \"The cat sat on the mat\"\nembedding = [0.021, -0.015, 0.089, ..., 0.034]  # 3072 numbers\n\nSimilar meanings → similar vectors\nDifferent meanings → different vectors\n\nThe embedding model learns these representations from massive text datasets."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#similarity-in-vector-space",
+    "href": "slides/07-semantic-search-embeddings.html#similarity-in-vector-space",
+    "title": "Semantic Search and Embeddings",
+    "section": "Similarity in vector space",
+    "text": "Similarity in vector space\n\n\n\n\nWords with similar meanings cluster together in embedding space."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#embeddings-vs-token-embeddings",
+    "href": "slides/07-semantic-search-embeddings.html#embeddings-vs-token-embeddings",
+    "title": "Semantic Search and Embeddings",
+    "section": "Embeddings vs token embeddings",
+    "text": "Embeddings vs token embeddings\nIn deck 02, we saw that LLMs use token embeddings internally:\n\n\n\nToken embeddings (deck 02)\nText embeddings (today)\n\n\n\n\nOne vector per token\nOne vector for entire text\n\n\nInternal to the model\nStandalone output\n\n\nEnables next-token prediction\nEnables similarity search\n\n\n\nToday’s embeddings compress an entire sentence or paragraph into one vector."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#how-frontier-embedding-models-are-trained",
+    "href": "slides/07-semantic-search-embeddings.html#how-frontier-embedding-models-are-trained",
+    "title": "Semantic Search and Embeddings",
+    "section": "How frontier embedding models are trained",
+    "text": "How frontier embedding models are trained\nModern embedding models (Gemini, OpenAI, etc.) follow a two-stage approach:\n1. Start from LLM — Adapt and initialize from pre-trained LLM weights\n2. Fine-tune with contrastive learning — Train on text pairs to optimize for similarity"
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#step-1-why-start-from-an-llm",
+    "href": "slides/07-semantic-search-embeddings.html#step-1-why-start-from-an-llm",
+    "title": "Semantic Search and Embeddings",
+    "section": "Step 1: Why start from an LLM?",
+    "text": "Step 1: Why start from an LLM?\nDuring pre-training, LLMs learn rich representations of language:\n\nWord meanings and relationships\nSyntax and grammar patterns\nWorld knowledge and facts\nMultilingual connections (100+ languages for Gemini)\n\nStarting from these learned representations means the embedding model doesn’t have to learn language from scratch."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#step-1-adapting-the-architecture",
+    "href": "slides/07-semantic-search-embeddings.html#step-1-adapting-the-architecture",
+    "title": "Semantic Search and Embeddings",
+    "section": "Step 1: Adapting the architecture",
+    "text": "Step 1: Adapting the architecture\nTo create an embedding model from an LLM:\n\nAdapt attention — switch from unidirectional to bidirectional (change the attention mask, not the weights)\nInitialize weights — start from the pre-trained LLM parameters\nAdd pooling — combine token representations into a single vector (e.g., average them)\nAdd projection — linear layer to target embedding dimension (e.g., 3072 for Gemini)"
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#why-bidirectional",
+    "href": "slides/07-semantic-search-embeddings.html#why-bidirectional",
+    "title": "Semantic Search and Embeddings",
+    "section": "Why bidirectional?",
+    "text": "Why bidirectional?\nExample: “The bank was steep”\nWhen computing the representation for “bank”:\nUnidirectional: “bank” only attends to [“The”, “bank”] — can’t see “was steep”\nBidirectional: “bank” attends to all tokens — sees “steep” → river bank\nWith “The bank was closed”, bidirectional sees “closed” → financial bank.\nFor embeddings, full context from both directions helps capture meaning."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#step-2-contrastive-learning",
+    "href": "slides/07-semantic-search-embeddings.html#step-2-contrastive-learning",
+    "title": "Semantic Search and Embeddings",
+    "section": "Step 2: Contrastive learning",
+    "text": "Step 2: Contrastive learning\nThe model learns from pairs of texts:\n\nPositive pairs: texts that should be close (query ↔︎ relevant document)\nNegative pairs: texts that should be far apart (query ↔︎ unrelated document)\n\nThe model learns by contrasting similar and dissimilar examples."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#step-2-the-training-objective",
+    "href": "slides/07-semantic-search-embeddings.html#step-2-the-training-objective",
+    "title": "Semantic Search and Embeddings",
+    "section": "Step 2: The training objective",
+    "text": "Step 2: The training objective\nAdjust model weights to:\n\nPull positive pairs closer in vector space\nPush negative pairs farther apart\n\nAfter training on millions of pairs, the model learns general patterns of semantic similarity — not just the specific examples it saw."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#step-2-training-data",
+    "href": "slides/07-semantic-search-embeddings.html#step-2-training-data",
+    "title": "Semantic Search and Embeddings",
+    "section": "Step 2: Training data",
+    "text": "Step 2: Training data\nWhere do the training pairs come from?\n\n\n\n\n\n\n\nSource\nExample pair\n\n\n\n\nWeb corpus\nPage title ↔︎ page content\n\n\nSynthetic (LLM-generated)\nLLM writes a question for a given passage\n\n\nSearch logs\nQuery ↔︎ clicked result\n\n\nParaphrases\n“Great movie” ↔︎ “Excellent film”\n\n\n\nGemini Embedding uses billions of web pairs plus synthetic data generated by prompting Gemini to create queries for passages."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#the-semantic-search-process",
+    "href": "slides/07-semantic-search-embeddings.html#the-semantic-search-process",
+    "title": "Semantic Search and Embeddings",
+    "section": "The semantic search process",
+    "text": "The semantic search process\n\n\n\n\nIndex time: Embed all document chunks and store vectors. Query time: Embed query and find nearest stored vectors."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#measuring-similarity-cosine",
+    "href": "slides/07-semantic-search-embeddings.html#measuring-similarity-cosine",
+    "title": "Semantic Search and Embeddings",
+    "section": "Measuring similarity: cosine",
+    "text": "Measuring similarity: cosine\nHow do we find “nearest” vectors? Cosine similarity:\n\\[\\text{similarity} = \\frac{\\vec{a} \\cdot \\vec{b}}{|\\vec{a}| \\times |\\vec{b}|}\\]\n\nReturns a value between -1 and 1\n1 = identical direction (same meaning)\n0 = perpendicular (unrelated)\n-1 = opposite direction\n\nFind the vectors with highest cosine similarity to our query."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#bm25-vs-semantic-tradeoffs",
+    "href": "slides/07-semantic-search-embeddings.html#bm25-vs-semantic-tradeoffs",
+    "title": "Semantic Search and Embeddings",
+    "section": "BM25 vs Semantic: tradeoffs",
+    "text": "BM25 vs Semantic: tradeoffs\n\n\n\nAspect\nBM25 (Keyword)\nSemantic (Embedding)\n\n\n\n\nMatches\nExact terms\nMeaning/concepts\n\n\n“car” finds “automobile”?\n❌ No\n✅ Yes\n\n\nHandles typos?\n❌ No\n✅ Often\n\n\nExact phrase match?\n✅ Strong\n⚠️ Weaker\n\n\nSpeed\nVery fast\nFast (with index)\n\n\nRequires\nJust text\nEmbedding model"
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#part-2-building-semantic-search",
+    "href": "slides/07-semantic-search-embeddings.html#part-2-building-semantic-search",
+    "title": "Semantic Search and Embeddings",
+    "section": "Part 2: Building Semantic Search",
+    "text": "Part 2: Building Semantic Search"
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#googles-embedding-model",
+    "href": "slides/07-semantic-search-embeddings.html#googles-embedding-model",
+    "title": "Semantic Search and Embeddings",
+    "section": "Google’s embedding model",
+    "text": "Google’s embedding model\nfrom langchain_google_genai import GoogleGenerativeAIEmbeddings\n\nembeddings = GoogleGenerativeAIEmbeddings(model=\"models/gemini-embedding-001\")\n\n3072 dimensions per vector\nSupports 100+ languages\nUses the same GOOGLE_API_KEY as ChatGoogleGenerativeAI"
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#faiss-vector-storage",
+    "href": "slides/07-semantic-search-embeddings.html#faiss-vector-storage",
+    "title": "Semantic Search and Embeddings",
+    "section": "FAISS: vector storage",
+    "text": "FAISS: vector storage\nFAISS (Facebook AI Similarity Search) stores and searches vectors efficiently:\nfrom langchain_community.vectorstores import FAISS\n\n# Create vector store from documents\nvectorstore = FAISS.from_documents(chunks, embeddings)\nFAISS automatically:\n\nCalls embeddings.embed_documents() on all chunks\nBuilds an index for fast similarity search\n\n\n\n\n\n\n\nNote\n\n\nFAISS is available as faiss-cpu or faiss-gpu depending on your hardware."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#creating-a-semantic-retriever",
+    "href": "slides/07-semantic-search-embeddings.html#creating-a-semantic-retriever",
+    "title": "Semantic Search and Embeddings",
+    "section": "Creating a semantic retriever",
+    "text": "Creating a semantic retriever\n# Same interface as BM25Retriever!\nretriever = vectorstore.as_retriever(search_kwargs={\"k\": 3})\n\nresults = retriever.invoke(\"refund policy\")\nThe as_retriever() method returns a retriever with the standard .invoke() interface.\nKey insight: You can swap BM25 for semantic search with minimal code changes."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#complete-semantic-search-setup",
+    "href": "slides/07-semantic-search-embeddings.html#complete-semantic-search-setup",
+    "title": "Semantic Search and Embeddings",
+    "section": "Complete semantic search setup",
+    "text": "Complete semantic search setup\nfrom langchain_community.document_loaders import DirectoryLoader, TextLoader\nfrom langchain_text_splitters import RecursiveCharacterTextSplitter\nfrom langchain_google_genai import GoogleGenerativeAIEmbeddings\nfrom langchain_community.vectorstores import FAISS\n\n# 1. Load documents (same as deck 06)\nloader = DirectoryLoader(\"./docs\", glob=\"**/*.txt\", loader_cls=TextLoader)\ndocuments = loader.load()\n\n# 2. Split into chunks (same as deck 06)\nsplitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)\nchunks = splitter.split_documents(documents)\n\n# 3. Create embeddings and vector store (NEW)\nembeddings = GoogleGenerativeAIEmbeddings(model=\"models/gemini-embedding-001\")\nvectorstore = FAISS.from_documents(chunks, embeddings)\nsemantic_retriever = vectorstore.as_retriever(search_kwargs={\"k\": 3})"
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#when-each-approach-wins",
+    "href": "slides/07-semantic-search-embeddings.html#when-each-approach-wins",
+    "title": "Semantic Search and Embeddings",
+    "section": "When each approach wins",
+    "text": "When each approach wins\nSemantic wins:\n\nQuery: “automobile maintenance”\nFinds: “Regular car servicing extends vehicle life.”\nWhy: “automobile” ≈ “car”, “maintenance” ≈ “servicing”\n\nBM25 wins:\n\nQuery: “error code E_AUTH_FAILED”\nFinds: “E_AUTH_FAILED indicates authentication failure.”\nWhy: exact match on the error code"
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#part-3-hybrid-retrieval",
+    "href": "slides/07-semantic-search-embeddings.html#part-3-hybrid-retrieval",
+    "title": "Semantic Search and Embeddings",
+    "section": "Part 3: Hybrid Retrieval",
+    "text": "Part 3: Hybrid Retrieval"
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#best-of-both-hybrid-retrieval",
+    "href": "slides/07-semantic-search-embeddings.html#best-of-both-hybrid-retrieval",
+    "title": "Semantic Search and Embeddings",
+    "section": "Best of both: hybrid retrieval",
+    "text": "Best of both: hybrid retrieval\n\n\n\n\nHybrid retrieval runs both retrievers and merges the results."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#ensembleretriever",
+    "href": "slides/07-semantic-search-embeddings.html#ensembleretriever",
+    "title": "Semantic Search and Embeddings",
+    "section": "EnsembleRetriever",
+    "text": "EnsembleRetriever\nfrom langchain_classic.retrievers import EnsembleRetriever\nfrom langchain_community.retrievers import BM25Retriever\n\n# Create both retrievers\nbm25_retriever = BM25Retriever.from_documents(chunks, k=3)\nsemantic_retriever = vectorstore.as_retriever(search_kwargs={\"k\": 3})\n\n# Combine with weights\nhybrid_retriever = EnsembleRetriever(\n    retrievers=[bm25_retriever, semantic_retriever],\n    weights=[0.4, 0.6]  # 40% BM25, 60% semantic\n)\n\nresults = hybrid_retriever.invoke(\"refund policy\")\nThe weights control relative importance of each retriever’s results."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#a-note-on-langchain_classic",
+    "href": "slides/07-semantic-search-embeddings.html#a-note-on-langchain_classic",
+    "title": "Semantic Search and Embeddings",
+    "section": "A note on langchain_classic",
+    "text": "A note on langchain_classic\nEnsembleRetriever lives in langchain_classic—a legacy package maintained until Dec 2026.\nIt provides built-in Reciprocal Rank Fusion (RRF), which we’ll see next.\nThe modern alternative is RunnableParallel from langchain_core with manual RRF—more flexible but more code."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#how-rank-fusion-works",
+    "href": "slides/07-semantic-search-embeddings.html#how-rank-fusion-works",
+    "title": "Semantic Search and Embeddings",
+    "section": "How rank fusion works",
+    "text": "How rank fusion works\nEnsembleRetriever uses Reciprocal Rank Fusion (RRF):\n\\[\\text{RRF}(d) = \\sum_{r \\in \\text{retrievers}} \\frac{w_r}{\\text{rank}_r(d) + k}\\]\n\nEach retriever ranks documents\nHigher rank (lower number) → higher score\nWeighted sum combines rankings\nDocuments found by both retrievers score highest\n\nThe constant \\(k\\) (default=60) prevents top-ranked items from dominating."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#tuning-weights",
+    "href": "slides/07-semantic-search-embeddings.html#tuning-weights",
+    "title": "Semantic Search and Embeddings",
+    "section": "Tuning weights",
+    "text": "Tuning weights\n\n\n\nUse case\nBM25 weight\nSemantic weight\n\n\n\n\nTechnical docs with exact terms\n0.6\n0.4\n\n\nGeneral Q&A\n0.4\n0.6\n\n\nCode search\n0.7\n0.3\n\n\nConversational queries\n0.3\n0.7\n\n\n\n\n\n\n\n\n\nNote\n\n\nThese are example starting points, not proven values. Experiment and adjust based on your documents and query patterns."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#part-4-hybrid-rag-agent",
+    "href": "slides/07-semantic-search-embeddings.html#part-4-hybrid-rag-agent",
+    "title": "Semantic Search and Embeddings",
+    "section": "Part 4: Hybrid RAG Agent",
+    "text": "Part 4: Hybrid RAG Agent"
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#upgrading-the-deck-06-search-tool",
+    "href": "slides/07-semantic-search-embeddings.html#upgrading-the-deck-06-search-tool",
+    "title": "Semantic Search and Embeddings",
+    "section": "Upgrading the deck 06 search tool",
+    "text": "Upgrading the deck 06 search tool\nIn deck 06, we built a document Q&A agent with BM25:\n@tool\ndef search_docs(query: str) -&gt; str:\n    \"\"\"Search documents for information relevant to the query.\"\"\"\n    results = retriever.invoke(query)  # Was BM25\n    ...\nTo upgrade to hybrid search, we change one line:\nretriever = hybrid_retriever  # Now uses hybrid!\nThe tool definition and LangGraph structure stay exactly the same."
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#part-5-summary",
+    "href": "slides/07-semantic-search-embeddings.html#part-5-summary",
+    "title": "Semantic Search and Embeddings",
+    "section": "Part 5: Summary",
+    "text": "Part 5: Summary"
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#best-practices",
+    "href": "slides/07-semantic-search-embeddings.html#best-practices",
+    "title": "Semantic Search and Embeddings",
+    "section": "Best practices",
+    "text": "Best practices\n\nStart with hybrid — it’s more robust than either approach alone\nTune weights based on your document type and query patterns\nChunk thoughtfully — embeddings work best on coherent text units"
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#key-takeaways",
+    "href": "slides/07-semantic-search-embeddings.html#key-takeaways",
+    "title": "Semantic Search and Embeddings",
+    "section": "Key takeaways",
+    "text": "Key takeaways\n\nEmbeddings represent text meaning as vectors\nSemantic search finds conceptually similar documents, not just keyword matches\nFAISS efficiently stores and searches embedding vectors\nHybrid retrieval combines BM25 and semantic for the best of both\nThe agent structure is unchanged — only the retriever is upgraded"
+  },
+  {
+    "objectID": "slides/07-semantic-search-embeddings.html#resources",
+    "href": "slides/07-semantic-search-embeddings.html#resources",
+    "title": "Semantic Search and Embeddings",
+    "section": "Resources",
+    "text": "Resources\n\nGoogleGenerativeAIEmbeddings\nFAISS Vector Store\nEnsembleRetriever (langchain-classic)\nBM25Retriever\nHow Embedding Models Are Built (EmbeddingGemma)"
   }
 ]

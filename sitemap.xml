@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/slides/08-custom-states-workflows.html</loc>
+    <lastmod>2026-02-02T02:40:00.157Z</lastmod>
+  </url>
+  <url>
     <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/slides/06-multi-turn-chat-retrieval.html</loc>
     <lastmod>2026-01-26T17:28:09.350Z</lastmod>
   </url>
@@ -42,7 +46,7 @@
   </url>
   <url>
     <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/assignments.html</loc>
-    <lastmod>2026-01-29T14:01:01.440Z</lastmod>
+    <lastmod>2026-02-01T02:04:14.041Z</lastmod>
   </url>
   <url>
     <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/index.html</loc>
@@ -50,7 +54,7 @@
   </url>
   <url>
     <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/schedule.html</loc>
-    <lastmod>2026-01-29T13:25:35.532Z</lastmod>
+    <lastmod>2026-02-01T02:05:18.986Z</lastmod>
   </url>
   <url>
     <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/syllabus.html</loc>
@@ -91,5 +95,9 @@
   <url>
     <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/slides/05-tool-calling.html</loc>
     <lastmod>2026-01-26T22:12:38.878Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ai-in-the-loop-2026.github.io/ai-in-the-loop-hub/slides/07-semantic-search-embeddings.html</loc>
+    <lastmod>2026-02-01T00:12:57.477Z</lastmod>
   </url>
 </urlset>
