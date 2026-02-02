@@ -483,7 +483,7 @@ def route_content(state: ModerationState) -> Literal["publish", "human_review", 
         return "reject"
 ```
 
-The `Literal` return type helps LangGraph visualize possible paths.
+The `Literal` return type documents the possible destinations clearly.
 
 ---
 
@@ -560,35 +560,23 @@ def build_moderation_workflow():
 ```python
 app = build_moderation_workflow()
 
-# Print as Mermaid diagram (text format)
-print(app.get_graph().draw_mermaid())
-
-# Or render as image in a notebook
-from IPython.display import Image
-Image(app.get_graph().draw_mermaid_png())
+# Save graph visualization as PNG
+png_data = app.get_graph().draw_mermaid_png()
+with open("graph.png", "wb") as f:  # wb = write binary
+    f.write(png_data)
 ```
 
 LangGraph uses the `Literal` return type from `route_content` to discover all possible paths—that's how it knows to show edges to `publish`, `human_review`, and `reject`.
 
 ---
 
-## Conditional edges: the pattern
+## Visualization output
 
-```python
-graph.add_conditional_edges(
-    "source_node",    # Node that triggers the routing
-    routing_function  # Function that returns next node name(s)
-)
-```
-
-**Tip**: Use `Literal` return types on routing functions so LangGraph can visualize the possible paths.
-
-**Compare to `tools_condition`** from deck 05—it's just a prebuilt routing function that checks for tool calls. Today: write your own.
-
-::: {.callout-note}
-## Looking ahead: Command objects
-LangGraph also offers `Command`, which lets a node return both state updates *and* the next node to visit—the graph structure emerges at runtime rather than being declared upfront. We use `add_conditional_edges` here to keep the graph structure explicit.
+::: {style="text-align: center;"}
+![](images/08-moderation-visualization.png){width=45%}
 :::
+
+Dotted lines indicate conditional edges—the path taken depends on the routing function's return value.
 
 ---
 
@@ -597,20 +585,12 @@ LangGraph also offers `Command`, which lets a node return both state updates *an
 ```python
 app = build_moderation_workflow()
 
-# Test with different content
 result = app.invoke({
     "content": "Here's a helpful tutorial on Python programming.",
     "classification": None,
     "result": None
 })
 print(result["result"])  # "Content approved and published."
-
-result = app.invoke({
-    "content": "Some ambiguous content...",
-    "classification": None,
-    "result": None
-})
-print(result["result"])  # Could be any of the three outcomes
 ```
 
 ---
@@ -647,12 +627,8 @@ Without special handling, the second reviewer **overwrites** the first!
 
      DESCRIPTION: LangGraph-style flow diagram showing multiple reviewers feeding into synthesis.
 
-     PROMPT FOR NANO BANANA PRO: Create a LangGraph-style flow diagram showing parallel or
-     sequential reviewers. Show: START → three reviewer nodes in sequence: "clarity_reviewer",
-     "technical_reviewer", "style_reviewer" → all feed into "synthesize" node → END. Show a
-     "ReviewState" box with "feedback: list[str]" highlighted, with arrows from each reviewer
-     showing they append to the same list. Use accumulation symbol (+ or stacking) near the
-     feedback field. Clean style with soft colors. -->
+     PROMPT FOR NANO BANANA PRO: Create a LangGraph-style flow diagram: START → "clarity_reviewer" → "technical_reviewer" →"style_reviewer" → "synthesize" → END. Show a
+     "ReviewState" box with "feedback: list[str]". Dashed lines from each of "clarity_reviewer", "technical_reviewer", "style_reviewer" to "ReviewState" box. Clean style with soft colors. -->
 
 We want all feedback to accumulate, not overwrite.
 
@@ -668,56 +644,28 @@ import operator
 
 class ReviewState(TypedDict):
     document: str
-    feedback: Annotated[list[str], operator.add]  # Accumulates!
+    feedback: Annotated[list[str], operator.add]
     final_summary: str | None
 ```
 
-The `Annotated[list[str], operator.add]` syntax tells LangGraph:
-- When a node returns `{"feedback": [...]}`, **append** to the list
-- Don't replace the existing list
+Here `operator.add` is the **reducer**—a function that takes `(old, new)` and returns the merged result.
 
 ---
 
-## How reducers work
+## What this tells LangGraph
 
-::: {style="text-align: center;"}
-![](images/08-reducer-concept.png){width=70%}
-:::
+`Annotated[list[str], operator.add]` means:
 
-<!-- IMAGE: ![](images/08-reducer-concept.png){width=70%}
+- The field type is `list[str]`
+- When a node returns `{"feedback": [...]}`, call `operator.add(existing, new)`
+- Result: lists are concatenated, not replaced
 
-     DESCRIPTION: Before/after comparison showing reducer behavior.
-
-     PROMPT FOR NANO BANANA PRO: Create a before/after comparison diagram showing reducer behavior.
-     Two rows: Top row "Without Reducer (Replacement)": show three boxes "Node A returns [1]",
-     "Node B returns [2]", "Final state: [2]" with X mark. Bottom row "With Reducer (Accumulation)":
-     show three boxes "Node A returns [1]", "Node B returns [2]", "Final state: [1, 2]" with
-     checkmark. Use Annotated[list, operator.add] notation. Show the merging visually with +
-     symbol. Clean, educational diagram style with soft colors. -->
-
-Without a reducer: each update replaces.
-With `operator.add`: updates accumulate.
+**Without a reducer**: each update replaces the field.
+**With `operator.add`**: updates accumulate.
 
 ---
 
-## The multi-reviewer state
-
-```python
-from typing import Annotated
-from typing_extensions import TypedDict
-import operator
-
-class ReviewState(TypedDict):
-    document: str
-    feedback: Annotated[list[str], operator.add]  # Key: accumulates
-    final_summary: str | None
-```
-
-Now every reviewer's feedback will be collected.
-
----
-
-## Reviewer nodes
+## Clarity and technical reviewers
 
 ```python
 # Using same llm setup as before
@@ -726,7 +674,7 @@ def clarity_reviewer(state: ReviewState) -> dict:
     prompt = f"""Review this document for clarity.
 Provide 1-2 sentences of feedback.
 
-Document: {state['document'][:1500]}"""
+Document: {state['document']}"""
 
     response = llm.invoke([HumanMessage(content=prompt)])
     return {"feedback": [f"Clarity: {response.content}"]}
@@ -736,7 +684,7 @@ def technical_reviewer(state: ReviewState) -> dict:
     prompt = f"""Review this document for technical accuracy.
 Provide 1-2 sentences of feedback.
 
-Document: {state['document'][:1500]}"""
+Document: {state['document']}"""
 
     response = llm.invoke([HumanMessage(content=prompt)])
     return {"feedback": [f"Technical: {response.content}"]}
@@ -752,7 +700,7 @@ def style_reviewer(state: ReviewState) -> dict:
     prompt = f"""Review this document for writing style.
 Provide 1-2 sentences of feedback.
 
-Document: {state['document'][:1500]}"""
+Document: {state['document']}"""
 
     response = llm.invoke([HumanMessage(content=prompt)])
     return {"feedback": [f"Style: {response.content}"]}
@@ -842,7 +790,7 @@ That's why messages accumulate instead of being replaced.
 
 ## Custom reducer example
 
-Keep the highest confidence score:
+Keep the highest confidence score (e.g., spam detection):
 
 ```python
 def keep_max(existing: float | None, new: float) -> float:
@@ -866,15 +814,11 @@ Now multiple analyzers can update `confidence` and the highest wins.
 
 ## Why a CLI?
 
-So far we've run code in notebooks. CLIs let you:
+You've been using CLIs like `python -m ai_in_loop.cli chat`. Now let's see how to build one:
 
-- **Run from the terminal** — no notebook needed
-- **Automate** — call from scripts, cron jobs, other programs
-- **Share** — others can use your tool without reading your code
-
-```bash
-python analyze.py paper.txt --output summary.txt
-```
+- **Clear interface** — users see available options with `--help`
+- **Input validation** — catches errors before running the workflow
+- **Easy to automate** — call from scripts, cron jobs, other programs
 
 ---
 
@@ -882,8 +826,8 @@ python analyze.py paper.txt --output summary.txt
 
 ```bash
 python analyze.py paper.txt --output summary.txt
-       ──────────  ─────────  ────────────────────
-       script      argument   option with value
+       ─────────  ────────   ──────────────────
+        script    argument    option with value
 ```
 
 - **Arguments**: required inputs, positional (order matters)
@@ -928,6 +872,11 @@ def analyze(
     ...
 ```
 
+```bash
+python analyze.py paper.txt              # output is None
+python analyze.py paper.txt summary.txt  # output is "summary.txt"
+```
+
 - **No default** → required argument
 - **Has default** → optional argument
 
@@ -950,6 +899,11 @@ def analyze(
 
 if __name__ == "__main__":
     typer.run(analyze)
+```
+
+```bash
+python analyze.py https://arxiv.org/abs/1706.03762                 # output is None
+python analyze.py https://arxiv.org/abs/1706.03762 -o summary.txt  # output is "summary.txt"
 ```
 
 `typer.Option` converts a parameter into a `--name` style option.
@@ -1021,7 +975,7 @@ python analyze.py "https://arxiv.org/abs/1706.03762" -o summary.txt
 python analyze.py --help
 ```
 
-The workflow is now usable outside of notebooks and scripts.
+Typer handles argument parsing, validation, and generates `--help` automatically.
 
 ---
 
