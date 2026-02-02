@@ -866,8 +866,8 @@ Function parameters become CLI arguments. Docstring becomes help text.
 import typer
 
 def analyze(
-    input_file: str,                    # Required argument
-    output: str = None                  # Optional argument (has default)
+    input_file: str,                        # Required argument
+    output: str | None = None               # Optional argument (has default)
 ):
     ...
 ```
@@ -891,7 +891,7 @@ import typer
 
 def analyze(
     arxiv_url: str,
-    output: str = typer.Option(None, "--output", "-o", help="Output file")
+    output: str | None = typer.Option(None, "--output", "-o", help="Output file")
 ):
     """Analyze an arXiv paper and generate a summary."""
     print(f"URL: {arxiv_url}")
@@ -938,7 +938,7 @@ import typer
 
 def analyze(
     arxiv_url: str,
-    output: str = typer.Option(None, "--output", "-o", help="Output file")
+    output: str | None = typer.Option(None, "--output", "-o", help="Output file")
 ):
     """Analyze an arXiv paper and generate a summary."""
     # Run the LangGraph workflow from Example 1
@@ -986,7 +986,7 @@ Use `bool` with a `False` default to create on/off flags:
 ```python
 def analyze(
     arxiv_url: str,
-    output: str = typer.Option(None, "--output", "-o"),
+    output: str | None = typer.Option(None, "--output", "-o"),
     verbose: bool = typer.Option(False, "--verbose", "-v",
                                   help="Show intermediate steps")
 ):
