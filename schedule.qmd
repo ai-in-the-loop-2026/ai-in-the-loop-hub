@@ -133,4 +133,4 @@ This course is under active development, and the schedule will be filled in as w
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
 | Tuesday | TBD | TBD | A6 — RAG - Hybrid (*before class*) |
-| Thursday | TBD | TBD | - |
+| Thursday | TBD | TBD | A7 — Workflows, CLI (*before class*) |

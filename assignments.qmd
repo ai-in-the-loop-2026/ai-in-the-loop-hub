@@ -73,6 +73,13 @@ This page is the **single canonical place** for:
 - **Invite link:** <https://classroom.github.com/a/1eXlUn-3>
 - **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
 
+### A7 - Workflows, CLI
+
+- **Due:** Thursday (Week 8) before class
+- **Purpose:** Build multi-node workflows and command-line interfaces.
+- **Invite link:** <https://classroom.github.com/a/hslUktTh>
+- **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
+
 ---
 
 ## Writing Reflections (GitHub Classroom)
