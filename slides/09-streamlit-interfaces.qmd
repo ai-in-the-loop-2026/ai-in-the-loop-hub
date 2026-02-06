@@ -4,6 +4,10 @@ description: "Building interactive web interfaces with Streamlit that wrap LangG
 date: 2026-03-03
 categories: [Streamlit, LangGraph]
 tags: [streamlit, langgraph, web-ui, session-state, streaming, chat]
+format:
+  revealjs:
+    width: 1920
+    height: 1080
 ---
 
 ## Today's goals
