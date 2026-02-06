@@ -11,7 +11,7 @@ tags: [streamlit, langgraph, web-ui, session-state, streaming, chat]
 - Understand the Streamlit execution model (rerun on every interaction)
 - Build a web interface that wraps a LangGraph workflow
 - Display LLM results with formatting and progress indicators
-- Use `stream()` to show per-node progress through a pipeline
+- Use LangGraph's `stream()` to show per-node progress through a pipeline
 - Manage conversation state with `st.session_state` for chat interfaces
 
 ---
