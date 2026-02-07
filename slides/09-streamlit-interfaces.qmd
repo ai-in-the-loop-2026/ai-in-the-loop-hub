@@ -86,21 +86,17 @@ Opens a local web server (usually `http://localhost:8501`).
 
 ## The rerun model
 
-::: {style="text-align: center;"}
-![](images/09-streamlit-rerun-model.png){width=65%}
+::: {style="text-align: center; font-size: 1.3em; line-height: 2.2; margin-top: 1em;"}
+**Script runs top to bottom** &ensp;→&ensp; **UI renders in browser**
+
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;↑ &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; ↓
+
+**triggers rerun** &emsp;&ensp;←&ensp; **User interacts (click, type)**
 :::
 
-<!-- IMAGE: ![](images/09-streamlit-rerun-model.png){width=65%}
-
-     DESCRIPTION: Circular execution loop showing the Streamlit rerun model.
-
-     PROMPT: Create a circular flow diagram showing the Streamlit execution model.
-     Show: "Script runs top to bottom" → "UI renders in browser" → "User interacts
-     (click, type)" → "Script reruns top to bottom" → back to "UI renders in browser".
-     In the center, add a note: "Variables reset on every rerun!" with an alert icon.
-     Use clean arrows connecting each step in a cycle. Soft colors, clean style. -->
-
-**Every interaction triggers a full rerun.** Variables reset unless stored in `st.session_state`.
+::: {.callout-warning}
+**Variables reset on every rerun** unless stored in `st.session_state`.
+:::
 
 ---
 
@@ -234,7 +230,15 @@ if st.button("Classify"):
                 "classification": None,
                 "result": None
             })
+        # ... display result (next slide)
+```
 
+---
+
+## Displaying the result
+
+```python
+        # Inside the button handler, after invoke() returns:
         classification = result["classification"]
         if classification == "safe":
             st.success(f"**{classification}** — {result['result']}")
@@ -243,6 +247,8 @@ if st.button("Classify"):
         else:
             st.error(f"**{classification}** — {result['result']}")
 ```
+
+Color-coded output: `st.success` (green), `st.warning` (yellow), `st.error` (red).
 
 ---
 
@@ -302,10 +308,10 @@ Separating workflow from UI means you can reuse the same workflow from a CLI, no
 URL input → show progress per pipeline step → formatted summary with expandable metadata.
 
 ::: {style="text-align: center;"}
-![](images/09-paper-analyzer-ui.png){width=70%}
+![](images/09-paper-analyzer-ui.png){height=550px}
 :::
 
-<!-- IMAGE: ![](images/09-paper-analyzer-ui.png){width=70%}
+<!-- IMAGE: ![](images/09-paper-analyzer-ui.png){height=550px}
 
      DESCRIPTION: Mockup of a paper analyzer Streamlit app with st.status progress.
 
@@ -337,7 +343,7 @@ Simplified from A7 — fewer nodes, one conditional branch. Same patterns: custo
 
 ---
 
-## Node 1: Parse URL and fetch metadata
+## Node 1: Parse URL and fetch metadata {.smaller}
 
 ```python
 import re, requests
@@ -348,12 +354,10 @@ def parse_and_fetch_metadata(state: PaperState) -> dict:
     if not match:
         return {"arxiv_id": None, "metadata": None,
                 "warnings": ["Could not parse arXiv ID from URL"]}
-
     arxiv_id = match.group(1)
     url = f"https://api.semanticscholar.org/graph/v1/paper/arXiv:{arxiv_id}"
     params = {"fields": "title,authors,year,abstract,citationCount,venue"}
     response = requests.get(url, params=params)
-
     if response.status_code == 200:
         data = response.json()
         metadata = {
@@ -412,7 +416,7 @@ If the PDF download fails, we still show whatever metadata we have.
 
 ---
 
-## Nodes 3a and 3b: Summarize or fallback
+## Nodes 3a and 3b: Summarize or fallback {.smaller}
 
 ```python
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -552,7 +556,7 @@ if metadata:
 
 ---
 
-## Full Example 2: Streamlit app
+## Full Example 2: Setup and streaming {.smaller}
 
 ```python
 import streamlit as st
@@ -576,7 +580,15 @@ if st.button("Analyze"):
                 st.write(f"Completed: **{node_name}**")
                 final_state.update(event[node_name])
             status.update(label="Analysis complete!", state="complete")
+        # ... display results (next slide)
+```
 
+---
+
+## Full Example 2: Displaying results
+
+```python
+        # Still inside the button handler, after streaming:
         st.markdown("### Summary")
         st.markdown(final_state.get("summary", "No summary available."))
 
@@ -589,6 +601,8 @@ if st.button("Analyze"):
             col1.metric("Citations", metadata.get("citations", "N/A"))
             col2.metric("Venue", metadata.get("venue") or "N/A")
 ```
+
+Combines all the display elements from the previous slides into one complete app.
 
 ---
 
@@ -654,22 +668,12 @@ if st.button("Increment"):
     st.session_state.counter += 1
 ```
 
-::: {style="text-align: center;"}
-![](images/09-session-state-flow.png){width=55%}
-:::
+| | Rerun 1 | Rerun 2 | Rerun 3 |
+|---|:---:|:---:|:---:|
+| Regular variable | `0` | `0` (reset!) | `0` (reset!) |
+| `st.session_state` | `0` | `1` (kept!) | `2` (kept!) |
 
-<!-- IMAGE: ![](images/09-session-state-flow.png){width=55%}
-
-     DESCRIPTION: Diagram showing how session state persists across reruns.
-
-     PROMPT: Create a diagram showing Streamlit session state persistence.
-     Show three vertical columns representing three consecutive reruns (labeled
-     "Rerun 1", "Rerun 2", "Rerun 3"). Between the columns, show a horizontal
-     bar labeled "st.session_state" that persists across all three. Show regular
-     variables resetting (crossed out) between reruns, while session state values
-     carry over. Clean style with soft colors. -->
-
-Regular variables reset. Session state persists.
+Regular variables reset on every rerun. Session state persists.
 
 ---
 
@@ -693,9 +697,9 @@ user_input = st.chat_input("Ask a question")
 
 ---
 
-## The chat pattern
+## The chat pattern (1/2)
 
-Standard Streamlit chat loop:
+Standard Streamlit chat loop — initialize and display:
 
 ```python
 import streamlit as st
@@ -710,7 +714,17 @@ if "messages" not in st.session_state:
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.write(msg["content"])
+```
 
+Every rerun replays the full history from `session_state`, so messages persist.
+
+---
+
+## The chat pattern (2/2)
+
+Handle new input — append to history and generate response:
+
+```python
 # 3. Handle new input
 if user_input := st.chat_input("Your message"):
     # Show user message immediately
@@ -774,7 +788,7 @@ Initialize expensive objects (LLM, compiled graph) **once** in `st.session_state
 
 ---
 
-## Example 3: The chat loop
+## Example 3: The chat loop {.smaller}
 
 ```python
 # Display message history
@@ -804,22 +818,11 @@ if user_input := st.chat_input("Ask about the document"):
 
 ## How session state connects to MessagesState
 
-::: {style="text-align: center;"}
-![](images/09-chat-state-connection.png){width=70%}
-:::
-
-<!-- IMAGE: ![](images/09-chat-state-connection.png){width=70%}
-
-     DESCRIPTION: Diagram showing the connection between Streamlit session state
-     and LangGraph MessagesState.
-
-     PROMPT: Create a two-column diagram. Left column labeled "Streamlit session_state"
-     with a box showing [{"role": "user", "content": "..."}, {"role": "assistant",
-     "content": "..."}]. Right column labeled "LangGraph MessagesState" with a box
-     showing [HumanMessage(...), AIMessage(...)]. Between them, show bidirectional
-     arrows labeled "to_langchain_messages()" (left to right) and "extract .content"
-     (right to left). Below, add labels: "Persistence (survives reruns)" under left,
-     "Execution (runs agent)" under right. Clean style with soft colors. -->
+| Streamlit `session_state` | | LangGraph `MessagesState` |
+|:---:|:---:|:---:|
+| `[{"role": "user", "content": "..."}]` | →  `to_langchain_messages()` | `[HumanMessage("...")]` |
+| Simple dicts | ← extract `.content` | LangChain message objects |
+| **Persists** across reruns | | Used for **execution** only |
 
 Streamlit session state handles **persistence**. LangGraph MessagesState handles **execution**. Convert between them each turn.
 
