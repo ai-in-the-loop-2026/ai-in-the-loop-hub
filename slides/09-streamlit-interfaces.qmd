@@ -420,7 +420,7 @@ If the PDF download fails, we still show whatever metadata we have.
 
 ```python
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.messages import HumanMessage
+from langchain_core.messages import HumanMessage
 
 llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview", temperature=0.2)
 
@@ -500,12 +500,12 @@ pipeline = build_paper_analyzer()
 result = pipeline.invoke({"arxiv_url": url, ...})
 
 # stream() — yields {node_name: state_updates} per node
-for event in pipeline.stream({"arxiv_url": url, ...}):
+for event in pipeline.stream({"arxiv_url": url, ...}, stream_mode="updates"):
     node_name = list(event.keys())[0]
     print(f"Completed: {node_name}")
 ```
 
-| | `invoke()` | `stream()` |
+| | `invoke()` | `stream(stream_mode="updates")` |
 |---|---|---|
 | Returns | Final state (dict) | Iterator of `{node: updates}` |
 | When | All at once | Per node |
@@ -520,7 +520,7 @@ Using `stream()` inside `st.status` to show each node completing:
 ```python
 with st.status("Analyzing paper...", expanded=True) as status:
     final_state = {}
-    for event in pipeline.stream(initial_state):
+    for event in pipeline.stream(initial_state, stream_mode="updates"):
         node_name = list(event.keys())[0]
         st.write(f"Completed: **{node_name}**")
         final_state.update(event[node_name])
@@ -575,7 +575,7 @@ if st.button("Analyze"):
 
         with st.status("Analyzing paper...", expanded=True) as status:
             final_state = {}
-            for event in pipeline.stream(initial_state):
+            for event in pipeline.stream(initial_state, stream_mode="updates"):
                 node_name = list(event.keys())[0]
                 st.write(f"Completed: **{node_name}**")
                 final_state.update(event[node_name])
@@ -746,7 +746,7 @@ if user_input := st.chat_input("Your message"):
 Convert between Streamlit dicts and LangChain message objects:
 
 ```python
-from langchain.messages import HumanMessage, AIMessage
+from langchain_core.messages import HumanMessage, AIMessage
 
 def to_langchain_messages(streamlit_messages: list[dict]) -> list:
     """Convert Streamlit message dicts to LangChain messages."""
@@ -768,7 +768,7 @@ Streamlit stores simple dicts (`{"role": "user", "content": "..."}`). LangChain 
 ```python
 import streamlit as st
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.messages import HumanMessage, AIMessage
+from langchain_core.messages import HumanMessage, AIMessage
 from langgraph.graph import StateGraph, MessagesState, START, END
 from langgraph.prebuilt import ToolNode, tools_condition
 
@@ -907,4 +907,4 @@ You can reuse the **same LangGraph workflow** from any of these. The interface i
 - [Streamlit Chat Elements](https://docs.streamlit.io/develop/api-reference/chat) — `st.chat_message`, `st.chat_input`
 - [Streamlit Session State](https://docs.streamlit.io/develop/api-reference/caching-and-state/st.session_state) — persistence across reruns
 - [LangGraph Streaming](https://langchain-ai.github.io/langgraph/how-tos/stream-values/) — `stream()` and streaming modes
-- [Build a Chatbot with Streamlit](https://docs.streamlit.io/develop/tutorials/llms/build-conversational-apps) — official Streamlit chatbot tutorial
+- [Build a Chatbot with Streamlit](https://docs.streamlit.io/develop/tutorials/chat-and-llm-apps/build-conversational-apps) — official Streamlit chatbot tutorial
