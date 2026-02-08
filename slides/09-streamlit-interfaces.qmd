@@ -451,6 +451,12 @@ New LangGraph feature:
 
 ---
 
+::: {style="margin-top: -1em; text-align: center;"}
+![](images/09-chat-ui.png){height=700px}
+:::
+
+---
+
 ## The challenge: conversation state
 
 A chat interface needs **persistent message history**. But regular variables reset on every interaction (e.g., each time the user sends a message). We need a way to persist chat history across reruns.
@@ -495,13 +501,11 @@ with st.chat_message("assistant"):
 user_input = st.chat_input("Ask a question")
 ```
 
-`st.chat_message` creates styled bubbles with role icons. `st.chat_input` provides a text field pinned to the bottom.
+`st.chat_message` creates styled bubbles with role icons. `st.chat_input` provides a text field pinned to the bottom. This example only shows static messages — we'll need `st.session_state` to build a real conversation.
 
 ---
 
-## The chat pattern (1/2)
-
-Standard Streamlit chat loop — initialize and display:
+## The chat pattern
 
 ```python
 import streamlit as st
@@ -512,29 +516,18 @@ st.title("Chat")
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# 2. Display all previous messages
+# 2. Replay full history (newest at bottom, view pins to latest)
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.write(msg["content"])
-```
 
-Every rerun replays the full history from `session_state`, so messages persist.
-
----
-
-## The chat pattern (2/2)
-
-Handle new input — append to history and generate response:
-
-```python
 # 3. Handle new input
-if user_input := st.chat_input("Your message"):
-    # Show user message immediately
+user_input = st.chat_input("Your message")
+if user_input:
     with st.chat_message("user"):
         st.write(user_input)
     st.session_state.messages.append({"role": "user", "content": user_input})
 
-    # Generate and show response
     response = "Echo: " + user_input  # Replace with LLM call
     with st.chat_message("assistant"):
         st.write(response)
@@ -545,7 +538,7 @@ if user_input := st.chat_input("Your message"):
 
 ## Connecting to a LangGraph agent
 
-Convert between Streamlit dicts and LangChain message objects:
+Helper to convert between Streamlit dicts and LangChain message objects:
 
 ```{.python filename="helpers.py"}
 from langchain_core.messages import HumanMessage, AIMessage
@@ -561,53 +554,34 @@ def to_langchain_messages(streamlit_messages: list[dict]) -> list:
     return lc_messages
 ```
 
-Streamlit stores simple dicts (`{"role": "user", "content": "..."}`). LangChain needs `HumanMessage`/`AIMessage` objects. This helper bridges the two.
-
 ---
 
-::: {style="margin-top: -1em; text-align: center;"}
-![](images/09-chat-ui.png){height=700px}
-:::
-
----
-
-## Example 3: Chat setup
+## Example 3: Document Q&A Chat
 
 ```{.python filename="app.py"}
 import streamlit as st
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.messages import HumanMessage, AIMessage
-from langgraph.graph import StateGraph, MessagesState, START, END
-from langgraph.prebuilt import ToolNode, tools_condition
+from helpers import to_langchain_messages
+from agent import build_agent  # LangGraph agent in separate module
 
 st.title("Document Q&A")
 
-# Store agent in session state so it's not rebuilt on every rerun
+# Build agent once (not on every rerun)
 if "agent" not in st.session_state:
-    llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview")
-    # ... set up tools, build graph ...
-    st.session_state.agent = graph.compile()
+    st.session_state.agent = build_agent()
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
-```
 
-Initialize expensive objects (LLM, compiled graph) **once** in `st.session_state`.
-
----
-
-## Example 3: The chat loop
-
-```{.python filename="app.py"}
 # Display message history
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
-        st.markdown(msg["content"])
+        st.write(msg["content"])
 
 # Handle new input
-if user_input := st.chat_input("Ask about the document"):
+user_input = st.chat_input("Ask about the document")
+if user_input:
     with st.chat_message("user"):
-        st.markdown(user_input)
+        st.write(user_input)
     st.session_state.messages.append({"role": "user", "content": user_input})
 
     # Convert history to LangChain messages and invoke agent
@@ -618,33 +592,18 @@ if user_input := st.chat_input("Ask about the document"):
     # Extract the final AI response
     ai_response = result["messages"][-1].content
     with st.chat_message("assistant"):
-        st.markdown(ai_response)
+        st.write(ai_response)
     st.session_state.messages.append({"role": "assistant", "content": ai_response})
 ```
 
 ---
 
-## How session state connects to MessagesState
+## Why simple dicts instead of LangChain messages?
 
-| Streamlit `session_state` | | LangGraph `MessagesState` |
-|:---:|:---:|:---:|
-| `[{"role": "user", "content": "..."}]` | →  `to_langchain_messages()` | `[HumanMessage("...")]` |
-| Simple dicts | ← extract `.content` | LangChain message objects |
-| **Persists** across reruns | | Used for **execution** only |
+- **Easier to debug** — `st.session_state.messages` shows clean data
+- **Tool messages are noisy** — users don't need to see intermediate tool results
 
-Streamlit session state handles **persistence**. LangGraph MessagesState handles **execution**. Convert between them each turn.
-
----
-
-## Why separate display state from execution state?
-
-Why not just store LangChain messages directly in session state?
-
-- **Simple dicts are easier to debug** — `st.session_state.messages` shows clean data
-- **Tool messages are noisy** — the agent may make multiple tool calls per turn; users don't need to see intermediate results
-- **Serialization** — simple dicts serialize cleanly; LangChain objects may not
-
-We keep the display state (what the user sees) separate from the execution state (what the agent processes).
+**Tradeoff:** tool call history is lost between turns. To retain it, store LangChain message objects and filter out `ToolMessage`s at display time.
 
 ---
 
@@ -661,51 +620,13 @@ if st.button("Clear conversation"):
 
 ---
 
-## CLI vs Streamlit
-
-Same workflow, different interface:
-
-| | CLI (Typer) | Web (Streamlit) |
-|---|---|---|
-| **Input** | Command-line arguments | Text inputs, buttons |
-| **Output** | `print()` | `st.write()`, `st.markdown()` |
-| **Progress** | `print("Step 1...")` | `st.spinner`, `st.status` |
-| **State** | None (runs once) | `st.session_state` |
-| **Run** | `python app.py args` | `streamlit run app.py` |
-| **Best for** | Automation, scripts | Interactive demos, exploration |
-
----
-
-## When to use what
-
-| Interface | Best for |
-|-----------|----------|
-| **Notebook** | Quick testing, exploration, prototyping |
-| **CLI (Typer)** | Automation, scripts, batch processing |
-| **Streamlit** | Interactive demos, user-facing tools, dashboards |
-| **FastAPI** | Production APIs, microservices (future topic) |
-
-You can reuse the **same LangGraph workflow** from any of these. The interface is just a wrapper.
-
----
-
 ## Key takeaways
 
 - Streamlit **reruns the script top to bottom** on every interaction
 - Wrap any LangGraph workflow: collect inputs → invoke with spinner → display results
 - Use `stream()` instead of `invoke()` for per-node progress
-- `st.session_state` persists data across reruns—essential for chat
+- `st.session_state` persists data across reruns — essential for chat
 - Keep workflow logic in separate modules from UI code
-
----
-
-## Best practices
-
-- **Separate concerns** — workflow module vs UI script
-- **Initialize session state early** — check `if "key" not in st.session_state` at the top
-- **Use spinners/status for LLM calls** — users need feedback during slow operations
-- **Handle empty inputs** — check before invoking the workflow
-- **Store display-friendly data** — keep simple dicts in session state, not framework objects
 
 ---
 
