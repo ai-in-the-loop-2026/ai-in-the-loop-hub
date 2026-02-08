@@ -12,7 +12,7 @@ format: revealjs
 - Use **Streamlit** to build web apps in pure Python
 - Understand the rerun execution model
 - Wrap a LangGraph workflow in a web interface
-- Show per-node progress with `stream()`
+- Show per-node progress with LangGraph's `stream()`
 - Manage chat history with `st.session_state`
 
 ---
@@ -89,6 +89,25 @@ st.info("FYI")                  # Blue box
 ```
 
 Each function writes to the page in order, top to bottom.
+
+---
+
+## `st.write()` — the Swiss army knife
+
+Auto-detects markdown, dataframes, charts, and more:
+
+```python
+st.write("**Bold** text")           # renders markdown
+st.write(my_dataframe)              # renders a table
+```
+
+&nbsp;
+
+`st.markdown()` always treats input as markdown. Unlike `st.write`, it also supports raw HTML:
+
+```python
+st.markdown("<span style='color:red'>Hi</span>", unsafe_allow_html=True)
+```
 
 ---
 
@@ -238,134 +257,26 @@ Separating workflow from UI means you can reuse the same workflow from a CLI, no
 
 ## Example 2: Paper Analyzer
 
-URL input → show progress per pipeline step → formatted summary with expandable metadata.
+![](images/09-paper-analyzer-graph.png){width=100%}
+
+arXiv URL input → show progress per pipeline step → formatted summary with expandable metadata.
 
 ---
 
-## A simplified paper analyzer
+## Workflow nodes (`paper_analyzer.py`)
 
-```{.python filename="paper_analyzer.py"}
-from typing_extensions import TypedDict
-
-class PaperState(TypedDict, total=False):
-    arxiv_url: str
-    arxiv_id: str | None
-    metadata: dict | None       # title, authors, year, abstract
-    full_text: str | None
-    summary: str | None
-    warnings: list[str]
-```
-
-Simplified from A7 — fewer nodes, one conditional branch. Same patterns: custom state, API calls, conditional routing, LLM summarization.
-
----
-
-## Node 1: Parse URL and fetch metadata
-
-```{.python filename="paper_analyzer.py"}
-import re, requests
-
-def parse_and_fetch_metadata(state: PaperState) -> dict:
-    """Extract arXiv ID and query Semantic Scholar for metadata."""
-    match = re.search(r"(\d{4}\.\d{4,5})", state["arxiv_url"])
-    if not match:
-        return {"arxiv_id": None, "metadata": None,
-                "warnings": ["Could not parse arXiv ID from URL"]}
-    arxiv_id = match.group(1)
-    url = f"https://api.semanticscholar.org/graph/v1/paper/arXiv:{arxiv_id}"
-    params = {"fields": "title,authors,year,abstract,citationCount,venue"}
-    response = requests.get(url, params=params)
-    if response.status_code == 200:
-        data = response.json()
-        metadata = {
-            "title": data.get("title", "Unknown"),
-            "authors": [a["name"] for a in data.get("authors", [])],
-            "year": data.get("year"),
-            "abstract": data.get("abstract"),
-            "citations": data.get("citationCount", 0),
-            "venue": data.get("venue"),
-        }
-        return {"arxiv_id": arxiv_id, "metadata": metadata, "warnings": []}
-    return {"arxiv_id": arxiv_id, "metadata": None,
-            "warnings": ["Metadata not found on Semantic Scholar"]}
-```
-
----
-
-## Node 2: Fetch PDF and extract text
-
-```{.python filename="paper_analyzer.py"}
-import fitz  # PyMuPDF
-
-def fetch_and_extract(state: PaperState) -> dict:
-    """Download PDF from arXiv and extract text."""
-    if not state.get("arxiv_id"):
-        return {"full_text": None}
-
-    pdf_url = f"https://arxiv.org/pdf/{state['arxiv_id']}.pdf"
-    response = requests.get(pdf_url)
-
-    if response.status_code != 200:
-        return {"full_text": None}
-
-    doc = fitz.open(stream=response.content, filetype="pdf")
-    text = "\n".join(page.get_text(sort=True) for page in doc)
-    doc.close()
-
-    return {"full_text": text[:50000]}  # Truncate for LLM context limits
-```
-
----
-
-## Routing: full summary or citation-only?
-
-```{.python filename="paper_analyzer.py"}
-from typing import Literal
-
-def route_by_text(state: PaperState) -> Literal["summarize", "citation_only"]:
-    """Route based on whether we have full text."""
-    if state.get("full_text"):
-        return "summarize"
-    return "citation_only"
-```
-
-If the PDF download fails, we still show whatever metadata we have.
-
----
-
-## Nodes 3a and 3b: Summarize or fallback
-
-```{.python filename="paper_analyzer.py"}
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.messages import HumanMessage
-
-llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview", temperature=0.2)
-
-def summarize(state: PaperState) -> dict:
-    """Generate a summary from the full paper text."""
-    prompt = f"""Summarize this research paper in 2-3 paragraphs.
-Focus on the main findings, methodology, and contributions.
-
-Paper text (truncated):
-{state['full_text'][:30000]}"""
-
-    response = llm.invoke([HumanMessage(content=prompt)])
-    return {"summary": response.content}
-
-def citation_only(state: PaperState) -> dict:
-    """Return a metadata-only result when full text is unavailable."""
-    meta = state.get("metadata") or {}
-    abstract = meta.get("abstract", "No abstract available.")
-    return {"summary": f"**Full text unavailable.** Based on metadata:\n\n{abstract}"}
-```
+| Node | What it does |
+|---|---|
+| `parse_and_fetch_metadata` | Extract arXiv ID, query Semantic Scholar API |
+| `fetch_and_extract` | Download PDF, extract text with PyMuPDF |
+| `summarize` | LLM summarization of full text |
+| `citation_only` | Fallback (no full text): return abstract from metadata |
 
 ---
 
 ## Building the graph
 
 ```{.python filename="paper_analyzer.py"}
-from langgraph.graph import StateGraph, START, END
-
 def build_paper_analyzer():
     graph = StateGraph(PaperState)
 
@@ -383,13 +294,24 @@ def build_paper_analyzer():
     return graph.compile()
 ```
 
-START → parse_and_fetch_metadata → fetch_and_extract → [route] → summarize / citation_only → END
+This is what we'll wrap with Streamlit — the interface calls `build_paper_analyzer()` and displays the results.
 
 ---
 
-## New Streamlit feature: `st.status`
+## Showing progress through the pipeline
 
-A multi-step progress container:
+Example 1 used `st.spinner` — one message while the whole workflow runs. For a multi-node pipeline, we want to show **which step** is currently executing.
+
+This requires a new tool from each library:
+
+- **Streamlit**: `st.status()` — a progress container that updates per step
+- **LangGraph**: `stream()` — yields results per node instead of waiting for the end
+
+---
+
+## New Streamlit tool: `st.status()`
+
+A multi-step progress container (like `st.spinner`, but shows each step):
 
 ```python
 import streamlit as st
@@ -406,27 +328,26 @@ Shows a collapsible container with a spinner that updates as steps complete. Mor
 
 ---
 
-## `stream()` vs `invoke()`
+## New LangGraph tool: `stream()`
 
-LangGraph's `stream()` yields updates **per node** as they complete:
+You already know `invoke()` — waits for everything, returns final state:
 
 ```python
-pipeline = build_paper_analyzer()
+result = pipeline.invoke({"arxiv_url": url, "warnings": []})
+```
 
-# invoke() — waits for everything, returns final state
-result = pipeline.invoke({"arxiv_url": url, ...})
+&nbsp;
 
-# stream() — yields {node_name: state_updates} per node
-for event in pipeline.stream({"arxiv_url": url, ...}, stream_mode="updates"):
+`stream()` — yields results **per node** as they complete:
+
+```python
+# "updates" yields {node_name: changes} — gives us the node name
+# default ("values") yields the full state after each node — simpler,
+# but no easy way to identify which node just ran
+for event in pipeline.stream({"arxiv_url": url, "warnings": []}, stream_mode="updates"):
     node_name = list(event.keys())[0]
     print(f"Completed: {node_name}")
 ```
-
-| | `invoke()` | `stream(stream_mode="updates")` |
-|---|---|---|
-| Returns | Final state (dict) | Iterator of `{node: updates}` |
-| When | All at once | Per node |
-| Use for | Simple "run and get result" | Progress indicators |
 
 ---
 
@@ -440,7 +361,7 @@ with st.status("Analyzing paper...", expanded=True) as status:
     for event in pipeline.stream(initial_state, stream_mode="updates"):
         node_name = list(event.keys())[0]
         st.write(f"Completed: **{node_name}**")
-        final_state.update(event[node_name])
+        final_state.update(event[node_name])  # merge this node's output into result
     status.update(label="Analysis complete!", state="complete")
 ```
 
@@ -453,9 +374,9 @@ Each node completion appears in real time inside the status container.
 ```python
 # Summary
 st.markdown("## Summary")
-st.markdown(final_state["summary"])
+st.markdown(final_state.get("summary", "No summary available."))
 
-# Metadata in an expander
+# Collapsible section
 metadata = final_state.get("metadata")
 if metadata:
     with st.expander("Paper Metadata", expanded=False):
@@ -463,17 +384,15 @@ if metadata:
         st.markdown(f"**Authors:** {', '.join(metadata.get('authors', []))}")
         st.markdown(f"**Year:** {metadata.get('year', 'Unknown')}")
 
-    # Metrics in columns
+    # Side-by-side stats
     col1, col2 = st.columns(2)
     col1.metric("Citations", metadata.get("citations", "N/A"))
     col2.metric("Venue", metadata.get("venue") or "N/A")
 ```
 
-`st.expander` — collapsible section. `st.columns` + `st.metric` — side-by-side stats.
-
 ---
 
-## Full Example 2: Setup and streaming
+## Full Example 2: Paper Analyzer app
 
 ```{.python filename="app.py"}
 import streamlit as st
@@ -497,15 +416,8 @@ if st.button("Analyze"):
                 st.write(f"Completed: **{node_name}**")
                 final_state.update(event[node_name])
             status.update(label="Analysis complete!", state="complete")
-        # ... display results (next slide)
-```
 
----
-
-## Full Example 2: Displaying results
-
-```python
-        # Still inside the button handler, after streaming:
+        # Display results
         st.markdown("### Summary")
         st.markdown(final_state.get("summary", "No summary available."))
 
@@ -518,8 +430,6 @@ if st.button("Analyze"):
             col1.metric("Citations", metadata.get("citations", "N/A"))
             col2.metric("Venue", metadata.get("venue") or "N/A")
 ```
-
-Combines all the display elements from the previous slides into one complete app.
 
 ---
 
@@ -537,44 +447,21 @@ New LangGraph feature:
 
 ---
 
-## Connection to A7
-
-::: {.callout-note}
-This simplified analyzer captures the same pattern as A7: parse input, fetch metadata from APIs, extract text, summarize. Your A7 workflow has more branches and fallbacks, but the Streamlit wrapping technique is identical.
-
-To wrap your A7 workflow in Streamlit, you'd use the same approach: `stream()` inside `st.status`, with results displayed via `st.markdown` and `st.expander`.
-:::
-
----
-
-## Managing Conversation State
+## Managing Conversation State for Multi-Turn Chat
 
 ---
 
 ## The challenge: conversation state
 
-Chat needs **persistent message history**. But with the rerun model, everything resets:
-
-```python
-# This doesn't work!
-messages = []  # Resets to empty on every rerun
-
-if user_input := st.chat_input("Ask a question"):
-    messages.append({"role": "user", "content": user_input})
-    # Next rerun: messages is empty again!
-```
-
-We need a way to persist data across reruns.
+A chat interface needs **persistent message history**. But regular variables reset on every interaction (e.g., each time the user sends a message). We need a way to persist chat history across reruns.
 
 ---
 
 ## `st.session_state`
 
-A dictionary that **survives reruns**:
+A dict-like object that **survives reruns**. Any key name works — nothing special about `counter`:
 
 ```python
-import streamlit as st
-
 # Initialize once (runs only on first load)
 if "counter" not in st.session_state:
     st.session_state.counter = 0
@@ -589,8 +476,6 @@ if st.button("Increment"):
 |---|:---:|:---:|:---:|
 | Regular variable | `0` | `0` (reset!) | `0` (reset!) |
 | `st.session_state` | `0` | `1` (kept!) | `2` (kept!) |
-
-Regular variables reset on every rerun. Session state persists.
 
 ---
 
@@ -677,6 +562,12 @@ def to_langchain_messages(streamlit_messages: list[dict]) -> list:
 ```
 
 Streamlit stores simple dicts (`{"role": "user", "content": "..."}`). LangChain needs `HumanMessage`/`AIMessage` objects. This helper bridges the two.
+
+---
+
+::: {style="margin-top: -1em; text-align: center;"}
+![](images/09-chat-ui.png){height=700px}
+:::
 
 ---
 

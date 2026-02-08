@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#444"/>
+    </marker>
+  </defs>
+
+  <!-- START -->
+  <circle cx="40" cy="160" r="18" fill="#333" stroke="#333" stroke-width="1.5"/>
+  <text x="40" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#fff" font-weight="bold">S</text>
+
+  <!-- Arrow START → parse -->
+  <line x1="58" y1="160" x2="95" y2="160" stroke="#444" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Node 1: parse_and_fetch_metadata -->
+  <rect x="97" y="125" width="160" height="70" rx="10" fill="#E8F0FE" stroke="#B0C4DE" stroke-width="1.5"/>
+  <text x="177" y="155" text-anchor="middle" font-family="monospace" font-size="11" fill="#333">parse_and_fetch</text>
+  <text x="177" y="172" text-anchor="middle" font-family="monospace" font-size="11" fill="#333">_metadata</text>
+
+  <!-- Arrow parse → fetch -->
+  <line x1="257" y1="160" x2="295" y2="160" stroke="#444" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Node 2: fetch_and_extract -->
+  <rect x="297" y="125" width="160" height="70" rx="10" fill="#E8F0FE" stroke="#B0C4DE" stroke-width="1.5"/>
+  <text x="377" y="155" text-anchor="middle" font-family="monospace" font-size="11" fill="#333">fetch_and</text>
+  <text x="377" y="172" text-anchor="middle" font-family="monospace" font-size="11" fill="#333">_extract</text>
+
+  <!-- Diamond: route_by_text -->
+  <polygon points="507,160 537,130 567,160 537,190" fill="#FFF3E0" stroke="#E0A050" stroke-width="1.5"/>
+  <text x="537" y="164" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#333">route</text>
+
+  <!-- Arrow fetch → diamond -->
+  <line x1="457" y1="160" x2="507" y2="160" stroke="#444" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Node 3a: summarize (top) -->
+  <rect x="610" y="55" width="130" height="50" rx="10" fill="#E8F4E8" stroke="#90C090" stroke-width="1.5"/>
+  <text x="675" y="85" text-anchor="middle" font-family="monospace" font-size="12" fill="#333">summarize</text>
+
+  <!-- Node 3b: citation_only (bottom) -->
+  <rect x="610" y="215" width="130" height="50" rx="10" fill="#FDE8E8" stroke="#D09090" stroke-width="1.5"/>
+  <text x="675" y="245" text-anchor="middle" font-family="monospace" font-size="12" fill="#333">citation_only</text>
+
+  <!-- Arrow diamond → summarize -->
+  <line x1="552" y1="138" x2="610" y2="85" stroke="#444" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="568" y="100" font-family="system-ui, sans-serif" font-size="10" fill="#666">has text</text>
+
+  <!-- Arrow diamond → citation_only -->
+  <line x1="552" y1="182" x2="610" y2="235" stroke="#444" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="562" y="228" font-family="system-ui, sans-serif" font-size="10" fill="#666">no text</text>
+
+  <!-- END -->
+  <circle cx="785" cy="160" r="18" fill="#333" stroke="#333" stroke-width="1.5"/>
+  <text x="785" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#fff" font-weight="bold">E</text>
+
+  <!-- Arrow summarize → END -->
+  <line x1="740" y1="80" x2="772" y2="148" stroke="#444" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Arrow citation_only → END -->
+  <line x1="740" y1="240" x2="772" y2="172" stroke="#444" stroke-width="2" marker-end="url(#arrow)"/>
+</svg>
