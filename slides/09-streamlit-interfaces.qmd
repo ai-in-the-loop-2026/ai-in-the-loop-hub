@@ -635,5 +635,5 @@ if st.button("Clear conversation"):
 - [Streamlit Documentation](https://docs.streamlit.io/) — official docs and API reference
 - [Streamlit Chat Elements](https://docs.streamlit.io/develop/api-reference/chat) — `st.chat_message`, `st.chat_input`
 - [Streamlit Session State](https://docs.streamlit.io/develop/api-reference/caching-and-state/st.session_state) — persistence across reruns
-- [LangGraph Streaming](https://langchain-ai.github.io/langgraph/how-tos/stream-values/) — `stream()` and streaming modes
+- [LangGraph Streaming](https://docs.langchain.com/oss/python/langgraph/streaming) — `stream()` and streaming modes
 - [Build a Chatbot with Streamlit](https://docs.streamlit.io/develop/tutorials/chat-and-llm-apps/build-conversational-apps) — official Streamlit chatbot tutorial
