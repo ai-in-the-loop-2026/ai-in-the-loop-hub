@@ -230,21 +230,9 @@ Separating workflow from UI means you can reuse the same workflow from a CLI, no
 
 ---
 
-##  {.center}
-
-::: {style="border: 2px solid #ccc; border-radius: 6px; display: inline-block; padding: 4px;"}
-![](images/09-paper-analyzer-ui.png)
+::: {style="margin-top: -1em; text-align: center;"}
+![](images/09-paper-analyzer-ui.png){height=700px}
 :::
-
-<!-- IMAGE: ![](images/09-paper-analyzer-ui.png)
-
-     DESCRIPTION: Mockup of a paper analyzer Streamlit app with st.status progress.
-
-     PROMPT: Create a mockup of a Streamlit web app titled "Paper Analyzer".
-     Show: a text input with an arXiv URL, a "Analyze" button, and a st.status
-     container showing completed steps: "✓ parse_and_fetch_metadata", "✓ fetch_and_extract",
-     "✓ summarize". Below that, show a markdown summary section and a collapsed
-     expander labeled "Metadata". Use the Streamlit visual style. -->
 
 ---
 
