@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 400">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#444"/>
+    </marker>
+  </defs>
+
+  <!-- Box 1: top-left -->
+  <rect x="40" y="40" width="260" height="70" rx="14" fill="#E8F0FE" stroke="#B0C4DE" stroke-width="1.5"/>
+  <text x="170" y="82" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#333">Script runs top to bottom</text>
+
+  <!-- Box 2: top-right -->
+  <rect x="420" y="40" width="260" height="70" rx="14" fill="#E8F0FE" stroke="#B0C4DE" stroke-width="1.5"/>
+  <text x="550" y="82" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#333">UI renders in browser</text>
+
+  <!-- Box 3: bottom-right -->
+  <rect x="420" y="280" width="260" height="70" rx="14" fill="#E8F0FE" stroke="#B0C4DE" stroke-width="1.5"/>
+  <text x="550" y="322" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#333">User interacts (click, type)</text>
+
+  <!-- Box 4: bottom-left -->
+  <rect x="40" y="280" width="260" height="70" rx="14" fill="#E8F0FE" stroke="#B0C4DE" stroke-width="1.5"/>
+  <text x="170" y="322" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#333">Triggers full rerun</text>
+
+  <!-- Arrow 1→2: top -->
+  <line x1="300" y1="75" x2="420" y2="75" stroke="#444" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Arrow 2→3: right side -->
+  <line x1="550" y1="110" x2="550" y2="280" stroke="#444" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Arrow 3→4: bottom -->
+  <line x1="420" y1="315" x2="300" y2="315" stroke="#444" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Arrow 4→1: left side -->
+  <line x1="170" y1="280" x2="170" y2="110" stroke="#444" stroke-width="2" marker-end="url(#arrow)"/>
+</svg>

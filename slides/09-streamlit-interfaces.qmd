@@ -4,39 +4,35 @@ description: "Building interactive web interfaces with Streamlit that wrap LangG
 date: 2026-03-03
 categories: [Streamlit, LangGraph]
 tags: [streamlit, langgraph, web-ui, session-state, streaming, chat]
-format:
-  revealjs:
-    width: 1920
-    height: 1080
+format: revealjs
 ---
 
 ## Today's goals
 
-- Understand the Streamlit execution model (rerun on every interaction)
-- Build a web interface that wraps a LangGraph workflow
-- Display LLM results with formatting and progress indicators
-- Use LangGraph's `stream()` to show per-node progress through a pipeline
-- Manage conversation state with `st.session_state` for chat interfaces
+- Use **Streamlit** to build web apps in pure Python
+- Understand the rerun execution model
+- Wrap a LangGraph workflow in a web interface
+- Show per-node progress with `stream()`
+- Manage chat history with `st.session_state`
 
 ---
 
-## Recall: wrapping workflows
-
-Same workflow, different front end:
+## Same workflow, different interface
 
 | Deck 08 (CLI) | Deck 09 (Web) |
 |---|---|
 | `pipeline.invoke({...})` called from Typer | `pipeline.invoke({...})` called from Streamlit |
 | Input via CLI arguments | Input via text boxes and buttons |
 | Output via `print()` | Output via `st.write()` |
-
-The workflow stays the same—only the interface layer changes.
+| `python app.py args` | `streamlit run app.py` → opens `localhost:8501` |
 
 ---
 
 ## What is Streamlit?
 
-Python library for building web apps—no HTML, CSS, or JavaScript needed.
+::: {style="border: 2px solid #ccc; border-radius: 6px; display: inline-block; padding: 4px; margin-bottom: 0.5em;"}
+![](images/09-hello-streamlit.png){width=65%}
+:::
 
 ```python
 import streamlit as st
@@ -46,53 +42,30 @@ name = st.text_input("Your name")
 st.write(f"Hello, {name}!")
 ```
 
-```bash
-streamlit run app.py
-```
-
-Script reruns **top to bottom** on every interaction. This is the key concept.
-
-::: {.callout-tip}
-Install with `pip install streamlit`
-:::
-
----
-
-## Part 1: Streamlit Fundamentals
-
----
-
-## Hello Streamlit
-
-```python
-import streamlit as st
-
-st.title("Paper Analyzer")
-st.write("Paste an arXiv URL below to get a summary.")
-
-url = st.text_input("arXiv URL")
-
-if st.button("Analyze"):
-    st.write(f"You entered: {url}")
-```
-
-```bash
-streamlit run app.py
-```
-
-Opens a local web server (usually `http://localhost:8501`).
+Script reruns **top to bottom** on every interaction (e.g., pressing Enter in the text input).
 
 ---
 
 ## The rerun model
 
-::: {style="text-align: center; font-size: 1.3em; line-height: 2.2; margin-top: 1em;"}
-**Script runs top to bottom** &ensp;→&ensp; **UI renders in browser**
-
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;↑ &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; ↓
-
-**triggers rerun** &emsp;&ensp;←&ensp; **User interacts (click, type)**
+::: {style="text-align: center;"}
+![](images/09-streamlit-rerun-model.png){width=71%}
 :::
+
+<!-- IMAGE: ![](images/09-streamlit-rerun-model.png){width=70%}
+
+     DESCRIPTION: Diagram of the Streamlit rerun execution cycle.
+
+     PROMPT: Create a clean, minimal diagram on a white background showing a
+     circular cycle with four steps connected by arrows going clockwise:
+     1 (top-left) "Script runs top to bottom" →
+     2 (top-right) "UI renders in browser" →
+     3 (bottom-right) "User interacts (click, type)" →
+     4 (bottom-left) "Triggers full rerun" →
+     back to step 1. Use rounded rectangles for each step, with subtle
+     blue fill (#E8F0FE) and dark gray text. Arrows should be solid dark
+     gray with arrowheads. Keep it simple and professional — no icons,
+     no gradients, no decorative elements. Landscape orientation. -->
 
 ::: {.callout-warning}
 **Variables reset on every rerun** unless stored in `st.session_state`.
@@ -151,39 +124,27 @@ if st.button("Run analysis"):
     st.success("Done!")
 ```
 
-`st.spinner` shows a loading indicator while the block runs. Essential for LLM calls that take seconds.
+`st.spinner` shows a loading indicator while the block runs. Without it, the page looks frozen during slow operations like LLM calls.
 
 ---
 
-## Part 2: Content Moderation Dashboard
+## Wrapping a Non-Conversational Workflow
 
 ---
 
-## Example 1 goal
+## Example 1: Content Moderation
 
-User pastes text → clicks "Classify" → sees a color-coded result.
-
-::: {style="text-align: center;"}
+::: {style="border: 2px solid #ccc; border-radius: 6px; display: inline-block; padding: 4px; margin-bottom: 0.5em;"}
 ![](images/09-moderation-ui.png){width=70%}
 :::
 
-<!-- IMAGE: ![](images/09-moderation-ui.png){width=70%}
-
-     DESCRIPTION: Mockup of a content moderation Streamlit app.
-
-     PROMPT: Create a mockup of a Streamlit web app titled "Content Moderation".
-     Show: a text area with sample text, a "Classify" button below it, and a green
-     success box saying "safe — Content approved and published." Use the Streamlit
-     visual style (clean white background, subtle borders). Show the app in a
-     browser window frame. -->
-
-Green for safe, yellow for questionable, red for harmful.
+User pastes text → "Classify" → sees color-coded result (green = safe, yellow = questionable, red = harmful).
 
 ---
 
-## The workflow (recap from deck 08)
+## The workflow
 
-```python
+```{.python filename="moderation.py"}
 class ModerationState(TypedDict):
     content: str
     classification: str | None   # "safe", "questionable", "harmful"
@@ -203,15 +164,11 @@ def build_moderation_workflow():
     return graph.compile()
 ```
 
-::: {.callout-tip}
-Keep workflow code in a separate `.py` module (e.g., `moderation.py`) and import it into your Streamlit app.
-:::
-
 ---
 
 ## The Streamlit wrapper
 
-```python
+```{.python filename="app.py"}
 import streamlit as st
 from moderation import build_moderation_workflow
 
@@ -230,15 +187,6 @@ if st.button("Classify"):
                 "classification": None,
                 "result": None
             })
-        # ... display result (next slide)
-```
-
----
-
-## Displaying the result
-
-```python
-        # Inside the button handler, after invoke() returns:
         classification = result["classification"]
         if classification == "safe":
             st.success(f"**{classification}** — {result['result']}")
@@ -248,45 +196,14 @@ if st.button("Classify"):
             st.error(f"**{classification}** — {result['result']}")
 ```
 
-Color-coded output: `st.success` (green), `st.warning` (yellow), `st.error` (red).
-
 ---
 
-## What just happened
+## Putting it together
 
-1. Script runs top to bottom → renders title, text area, button
-2. User types content and clicks "Classify"
-3. Script **reruns** → title, text area (with content), button returns `True`
-4. `st.spinner` shows while `pipeline.invoke()` runs
-5. Result displays as colored box
-6. On next interaction → script reruns again, result disappears
+::: {style="margin-top: 0.3em;"}
+:::
 
-The result is visible **only until the next rerun**. (We'll fix this with `st.session_state` later.)
-
----
-
-## The wrapper pattern
-
-For any non-conversational workflow:
-
-```
-1. Collect inputs      →  st.text_input / st.text_area / st.selectbox
-2. Trigger workflow    →  st.button("Run")
-3. Show progress       →  st.spinner("Processing...")
-4. Display results     →  st.markdown / st.success / st.error
-```
-
-This pattern works for any LangGraph workflow that takes input and returns output.
-
----
-
-## Running the app & project structure
-
-```bash
-streamlit run app.py
-```
-
-Recommended file organization:
+**Example file organization:**
 
 ```
 my_project/
@@ -295,23 +212,31 @@ my_project/
 └── requirements.txt    # streamlit, langgraph, langchain-google-genai
 ```
 
+**Running the app:**
+
+```bash
+streamlit run app.py
+```
+
+&nbsp;
+
+::: {.callout-tip}
 Separating workflow from UI means you can reuse the same workflow from a CLI, notebook, or API.
-
----
-
-## Part 3: Paper Analyzer with Progress
-
----
-
-## Example 2 goal
-
-URL input → show progress per pipeline step → formatted summary with expandable metadata.
-
-::: {style="text-align: center;"}
-![](images/09-paper-analyzer-ui.png){height=550px}
 :::
 
-<!-- IMAGE: ![](images/09-paper-analyzer-ui.png){height=550px}
+---
+
+## Adding Multi-Step Progress
+
+---
+
+##  {.center}
+
+::: {style="border: 2px solid #ccc; border-radius: 6px; display: inline-block; padding: 4px;"}
+![](images/09-paper-analyzer-ui.png)
+:::
+
+<!-- IMAGE: ![](images/09-paper-analyzer-ui.png)
 
      DESCRIPTION: Mockup of a paper analyzer Streamlit app with st.status progress.
 
@@ -321,13 +246,17 @@ URL input → show progress per pipeline step → formatted summary with expanda
      "✓ summarize". Below that, show a markdown summary section and a collapsed
      expander labeled "Metadata". Use the Streamlit visual style. -->
 
-Richer UI than Example 1: multi-step progress and structured output.
+---
+
+## Example 2: Paper Analyzer
+
+URL input → show progress per pipeline step → formatted summary with expandable metadata.
 
 ---
 
 ## A simplified paper analyzer
 
-```python
+```{.python filename="paper_analyzer.py"}
 from typing_extensions import TypedDict
 
 class PaperState(TypedDict, total=False):
@@ -343,9 +272,9 @@ Simplified from A7 — fewer nodes, one conditional branch. Same patterns: custo
 
 ---
 
-## Node 1: Parse URL and fetch metadata {.smaller}
+## Node 1: Parse URL and fetch metadata
 
-```python
+```{.python filename="paper_analyzer.py"}
 import re, requests
 
 def parse_and_fetch_metadata(state: PaperState) -> dict:
@@ -377,7 +306,7 @@ def parse_and_fetch_metadata(state: PaperState) -> dict:
 
 ## Node 2: Fetch PDF and extract text
 
-```python
+```{.python filename="paper_analyzer.py"}
 import fitz  # PyMuPDF
 
 def fetch_and_extract(state: PaperState) -> dict:
@@ -402,7 +331,7 @@ def fetch_and_extract(state: PaperState) -> dict:
 
 ## Routing: full summary or citation-only?
 
-```python
+```{.python filename="paper_analyzer.py"}
 from typing import Literal
 
 def route_by_text(state: PaperState) -> Literal["summarize", "citation_only"]:
@@ -416,9 +345,9 @@ If the PDF download fails, we still show whatever metadata we have.
 
 ---
 
-## Nodes 3a and 3b: Summarize or fallback {.smaller}
+## Nodes 3a and 3b: Summarize or fallback
 
-```python
+```{.python filename="paper_analyzer.py"}
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage
 
@@ -446,7 +375,7 @@ def citation_only(state: PaperState) -> dict:
 
 ## Building the graph
 
-```python
+```{.python filename="paper_analyzer.py"}
 from langgraph.graph import StateGraph, START, END
 
 def build_paper_analyzer():
@@ -556,9 +485,9 @@ if metadata:
 
 ---
 
-## Full Example 2: Setup and streaming {.smaller}
+## Full Example 2: Setup and streaming
 
-```python
+```{.python filename="app.py"}
 import streamlit as st
 from paper_analyzer import build_paper_analyzer
 
@@ -630,7 +559,7 @@ To wrap your A7 workflow in Streamlit, you'd use the same approach: `stream()` i
 
 ---
 
-## Part 4: Chat Interface
+## Managing Conversation State
 
 ---
 
@@ -745,7 +674,7 @@ if user_input := st.chat_input("Your message"):
 
 Convert between Streamlit dicts and LangChain message objects:
 
-```python
+```{.python filename="helpers.py"}
 from langchain_core.messages import HumanMessage, AIMessage
 
 def to_langchain_messages(streamlit_messages: list[dict]) -> list:
@@ -765,7 +694,7 @@ Streamlit stores simple dicts (`{"role": "user", "content": "..."}`). LangChain 
 
 ## Example 3: Chat setup
 
-```python
+```{.python filename="app.py"}
 import streamlit as st
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage, AIMessage
@@ -788,9 +717,9 @@ Initialize expensive objects (LLM, compiled graph) **once** in `st.session_state
 
 ---
 
-## Example 3: The chat loop {.smaller}
+## Example 3: The chat loop
 
-```python
+```{.python filename="app.py"}
 # Display message history
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
