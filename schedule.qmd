@@ -134,3 +134,10 @@ This course is under active development, and the schedule will be filled in as w
 |---|---|---|---|
 | Tuesday | Streamlit interfaces | [Streamlit Interfaces](slides/09-streamlit-interfaces.qmd) | A6 — RAG - Hybrid (*before class*) |
 | Thursday | TBD | TBD | A7 — Workflows, CLI (*before class*) |
+
+## Week 9: March 9-15
+
+| Meeting | Topic | Slides | Due |
+|---|---|---|---|
+| Tuesday | TBD | TBD | A8 — Streamlit (*before class*) |
+| Thursday | TBD | TBD | - |

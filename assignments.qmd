@@ -80,6 +80,13 @@ This page is the **single canonical place** for:
 - **Invite link:** <https://classroom.github.com/a/hslUktTh>
 - **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
 
+### A8 - Streamlit
+
+- **Due:** Tuesday (Week 9) before class
+- **Purpose:** Build a Streamlit web interface that wraps a LangGraph workflow.
+<!-- - **Invite link:** <https://classroom.github.com/a/bo5lxa1o> -->
+- **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
+
 ---
 
 ## Writing Reflections (GitHub Classroom)
