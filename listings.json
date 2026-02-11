@@ -1,15 +1,10 @@
 [
   {
-    "listing": "/slides-listing.html",
+    "listing": "/policies/index.html",
     "items": [
-      "/slides/08-custom-states-workflows.html",
-      "/slides/07-semantic-search-embeddings.html",
-      "/slides/06-multi-turn-chat-retrieval.html",
-      "/slides/05-tool-calling.html",
-      "/slides/04-prompt-patterns.html",
-      "/slides/03-python-apis-code-assist.html",
-      "/slides/02-intro-to-llms.html",
-      "/slides/01-course-overview-setup.html"
+      "/policies/ai-use.html",
+      "/policies/collaboration.html",
+      "/policies/late-work.html"
     ]
   },
   {
@@ -25,11 +20,17 @@
     ]
   },
   {
-    "listing": "/policies/index.html",
+    "listing": "/slides-listing.html",
     "items": [
-      "/policies/ai-use.html",
-      "/policies/collaboration.html",
-      "/policies/late-work.html"
+      "/slides/09-streamlit-interfaces.html",
+      "/slides/08-custom-states-workflows.html",
+      "/slides/07-semantic-search-embeddings.html",
+      "/slides/06-multi-turn-chat-retrieval.html",
+      "/slides/05-tool-calling.html",
+      "/slides/04-prompt-patterns.html",
+      "/slides/03-python-apis-code-assist.html",
+      "/slides/02-intro-to-llms.html",
+      "/slides/01-course-overview-setup.html"
     ]
   }
 ]
