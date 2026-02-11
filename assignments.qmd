@@ -109,6 +109,14 @@ This page is the **single canonical place** for:
 - **Invite link:** <https://classroom.github.com/a/fj9XRNV2>
 - **Resource Links:** [A.I. Is Homogenizing Our Thoughts](https://www.newyorker.com/culture/infinite-scroll/ai-is-homogenizing-our-thoughts), [Generative AI bias poses risk to democratic values, research suggests](https://phys.org/news/2025-02-generative-ai-bias-poses-democratic.html), [Are we thinking about AI the wrong way?](https://www.wbur.org/onpoint/2025/07/25/ethan-mollick-ai)
 
+### WR4 - The Future of Jobs and Work
+
+- **Due:** Thursday (Week 9) during class
+<!--
+- **Invite link:** <https://classroom.github.com/a/whfl2F2Y>
+-->
+- **Resource Links:** [Why A.I. Didn't Transform Our Lives in 2025](https://www.newyorker.com/culture/2025-in-review/why-ai-didnt-transform-our-lives-in-2025), [AI Changed Work Forever in 2025](https://time.com/7342494/ai-changed-work-forever/), [AI vs Gen Z: How AI has changed the career pathway for junior developers](https://stackoverflow.blog/2025/12/26/ai-vs-gen-z/), [Is AI Slopifying the Job Market?](https://www.npr.org/2025/12/03/nx-s1-5629273/ai-job-search-recruiters-entry-level)
+
 ---
 
 ## Final project (team repo)

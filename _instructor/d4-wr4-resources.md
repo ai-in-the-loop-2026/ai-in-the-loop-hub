@@ -5,21 +5,23 @@
 
 ---
 
-## Required (assign all 3)
+## Required (assign all 4)
 
-These give students three distinct perspectives — alarm, optimism, and personal reckoning — across reading and video formats.
-
-1. **Derek Thompson, "The Evidence That AI Is Destroying Jobs for Young People Just Got Stronger"** — *The Atlantic*, Aug 2025
-   Stanford study: employment in AI-exposed jobs fell 13% for ages 22–25 since ChatGPT launched. Data-driven and directly relevant to students entering the workforce.
-   <https://www.derekthompson.org/p/the-evidence-that-ai-is-destroying>
+1. **Cal Newport, "Why A.I. Didn't Transform Our Lives in 2025"** — *The New Yorker*, Dec 2025
+   The skeptic's case: despite bold predictions from Sam Altman and Marc Benioff, AI agents never really joined the workforce. Focus on what AI actually does, not what it might do.
+   <https://www.newyorker.com/culture/2025-in-review/why-ai-didnt-transform-our-lives-in-2025>
 
 2. **Erik Brynjolfsson, "AI Changed Work Forever in 2025"** — *TIME*, Jan 2026
    Counterpoint arguing AI fundamentally transformed work through agentic AI and tacit knowledge breakthroughs. Augmentation, not replacement.
    <https://time.com/7342494/ai-changed-work-forever/>
 
-3. **Megan McArdle, "I'll Probably Lose My Job to AI. Here's Why That's OK"** — TED Talk, Apr 2025 🎥
-   A journalist reckons honestly with her own obsolescence. Personal, accessible, and short.
-   <https://www.ted.com/talks/megan_j_mcardle_i_ll_probably_lose_my_job_to_ai_here_s_why_that_s_ok>
+3. **Phoebe Sajor, "AI vs Gen Z: How AI has changed the career pathway for junior developers"** — *Stack Overflow Blog*, Dec 2025
+   Entry-level tech hiring down 25% YoY; internship postings down 30% since 2023; 70% of hiring managers think AI can do intern-level work. Argues Gen Z can become "shepherds" of AI.
+   <https://stackoverflow.blog/2025/12/26/ai-vs-gen-z/>
+
+4. **Planet Money / The Indicator, "Is AI Slopifying the Job Market?"** — NPR, Dec 2025 🎧
+   Short episode on how AI is degrading the hiring process — fewer entry-level positions, robot recruiters, shifting skill requirements.
+   <https://www.npr.org/2025/12/03/nx-s1-5629273/ai-job-search-recruiters-entry-level>
 
 ---
 
@@ -27,29 +29,45 @@ These give students three distinct perspectives — alarm, optimism, and persona
 
 ### Articles
 
-- **Cal Newport, "Why A.I. Didn't Transform Our Lives in 2025"** — *The New Yorker*, Dec 2025
-  The skeptic's case: AI agents never really joined the workforce despite bold predictions.
-  <https://www.newyorker.com/culture/the-weekend-essay/why-ai-didnt-transform-our-lives-in-2025>
-
-- **"Can AI Do Your Job? See the Results from Hundreds of Tests"** — *The Washington Post*, Jan 2026
-  Interactive — test how AI performs on real work tasks (spoiler: it completed only 2.5% of projects solo).
-  <https://www.washingtonpost.com/technology/interactive/2026/ai-jobs-automation/>
+- **Derek Thompson, "The Evidence That AI Is Destroying Jobs for Young People Just Got Stronger"** — *Derek Thompson's Substack*, Aug 2025
+  Stanford study: employment in AI-exposed jobs fell 13% for ages 22–25 since ChatGPT launched. (Thompson is a staff writer at *The Atlantic*.)
+  <https://www.derekthompson.org/p/the-evidence-that-ai-is-destroying>
 
 ### Academic
 
-- **Brynjolfsson, Li, & Raymond, "Generative AI at Work"** — *Quarterly Journal of Economics*, Vol. 140(2), Feb 2025
+- **Brynjolfsson, Li, & Raymond, "Generative AI at Work"** — *Quarterly Journal of Economics*, Vol. 140(2), May 2025
   The landmark empirical study behind Brynjolfsson's TIME piece. AI assistant boosted customer support productivity 14% overall, 34% for novice workers.
   <https://academic.oup.com/qje/article/140/2/889/7990658>
 
-### Audio
+### Software Development
 
-- **Hard Fork, "The A.I. Jobpocalypse"** — Kevin Roose & Casey Newton, *NYT* podcast, May 2025 🎧
-  Goes deeper on the replacement-by-design angle — how products are being built specifically to eliminate jobs.
-  [Spotify](https://open.spotify.com/episode/4oxAeFSGOXBkzzvt2LWxsN) | [Apple Podcasts](https://podcasts.apple.com/us/podcast/the-a-i-jobpocalypse-building-at-anthropic-with/id1528594034?i=1000710551953)
+- **Beatrice Nolan, "Top engineers at Anthropic, OpenAI say AI now writes 100% of their code"** — *Fortune*, Jan 2026
+  Anthropic's head of Claude Code hasn't written code in two months. What happens when even AI researchers stop coding manually?
+  <https://fortune.com/2026/01/29/100-percent-of-code-at-anthropic-and-openai-is-now-ai-written-boris-cherny-roon/>
 
-- **Planet Money / The Indicator, "Is AI Slopifying the Job Market?"** — NPR, Dec 2025 🎧
-  Short episode on how AI is degrading the hiring process itself — robot recruiters, shifting skill requirements.
-  <https://www.npr.org/2025/12/03/nx-s1-5629273/ai-job-search-recruiters-entry-level>
+### Audio & Video
+
+- **Megan McArdle, "I'll Probably Lose My Job to AI. Here's Why That's OK"** — TED Talk, Apr 2025 🎥
+  A journalist reckons honestly with her own obsolescence. Personal, accessible, and short.
+  <https://www.ted.com/talks/megan_j_mcardle_i_ll_probably_lose_my_job_to_ai_here_s_why_that_s_ok>
+
+---
+
+## Software Development Focus
+
+Pieces specifically about AI's impact on programming and software engineering careers — especially relevant for CS students.
+
+- **Phoebe Sajor, "AI vs Gen Z: How AI has changed the career pathway for junior developers"** — *Stack Overflow Blog*, Dec 2025
+  Entry-level tech hiring down 25% YoY; internship postings down 30% since 2023; 70% of hiring managers think AI can do intern-level work. But argues Gen Z can become "shepherds" of AI.
+  <https://stackoverflow.blog/2025/12/26/ai-vs-gen-z/>
+
+- **Beatrice Nolan, "Top engineers at Anthropic, OpenAI say AI now writes 100% of their code"** — *Fortune*, Jan 2026
+  Anthropic's head of Claude Code hasn't written code in two months. Examines what it means when even AI researchers stop coding manually.
+  <https://fortune.com/2026/01/29/100-percent-of-code-at-anthropic-and-openai-is-now-ai-written-boris-cherny-roon/>
+
+- **"AI coding is now everywhere. But not everyone is convinced."** — *MIT Technology Review*, Dec 2025
+  Balanced take on the rise of AI coding tools and the gap between hype and reality.
+  <https://www.technologyreview.com/2025/12/15/1128352/rise-of-ai-coding-developers-2026/>
 
 ---
 
@@ -64,7 +82,7 @@ Everything below was collected during planning. Kept here for reference.
    <https://www.theatlantic.com/ideas/archive/2025/09/job-market-hell/679649/>
 
 2. **Cal Newport, "Why A.I. Didn't Transform Our Lives in 2025"** — *The New Yorker*, Dec 2025
-   <https://www.newyorker.com/culture/the-weekend-essay/why-ai-didnt-transform-our-lives-in-2025>
+   <https://www.newyorker.com/culture/2025-in-review/why-ai-didnt-transform-our-lives-in-2025>
 
 3. **Erik Brynjolfsson, "AI Changed Work Forever in 2025"** — *TIME*, Jan 2026
    <https://time.com/7342494/ai-changed-work-forever/>
@@ -78,7 +96,7 @@ Everything below was collected during planning. Kept here for reference.
 6. **Peter Aykens & Kaelyn Lowmaster, "9 Trends Shaping Work in 2026 and Beyond"** — *Harvard Business Review*, Feb 2026
    <https://hbr.org/2026/02/9-trends-shaping-work-in-2026-and-beyond>
 
-7. **Derek Thompson, "The Evidence That AI Is Destroying Jobs for Young People Just Got Stronger"** — *The Atlantic*, Aug 2025
+7. **Derek Thompson, "The Evidence That AI Is Destroying Jobs for Young People Just Got Stronger"** — *Derek Thompson's Substack*, Aug 2025
    <https://www.derekthompson.org/p/the-evidence-that-ai-is-destroying>
 
 8. **Lynda Gratton, "AI Is Changing How We Learn at Work"** — *Harvard Business Review*, Dec 2025
@@ -86,7 +104,7 @@ Everything below was collected during planning. Kept here for reference.
 
 ### Peer-Reviewed / Academic
 
-1. **Brynjolfsson, Li, & Raymond, "Generative AI at Work"** — *Quarterly Journal of Economics*, Vol. 140(2), Feb 2025
+1. **Brynjolfsson, Li, & Raymond, "Generative AI at Work"** — *Quarterly Journal of Economics*, Vol. 140(2), May 2025
    <https://academic.oup.com/qje/article/140/2/889/7990658>
 
 2. **Brynjolfsson, Chandar, & Chen, "Canaries in the Coal Mine?"** — Stanford Digital Economy Lab, Aug 2025

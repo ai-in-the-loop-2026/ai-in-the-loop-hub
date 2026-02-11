@@ -140,4 +140,24 @@ This course is under active development, and the schedule will be filled in as w
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
 | Tuesday | TBD | TBD | A8 — Streamlit (*before class*) |
-| Thursday | TBD | TBD | - |
+| Thursday | The future of jobs and work (discussion) | - | Read 3 articles + listen to podcast (*before class*) |
+
+**Resources for discussion**
+
+[*Why A.I. Didn't Transform Our Lives in 2025*](https://www.newyorker.com/culture/2025-in-review/why-ai-didnt-transform-our-lives-in-2025) - article by Cal Newport in *The New Yorker*
+
+[*AI Changed Work Forever in 2025*](https://time.com/7342494/ai-changed-work-forever/) - article by Erik Brynjolfsson in *TIME*
+
+[*AI vs Gen Z: How AI has changed the career pathway for junior developers*](https://stackoverflow.blog/2025/12/26/ai-vs-gen-z/) - article by Phoebe Sajor on the *Stack Overflow Blog*
+
+[*Is AI Slopifying the Job Market?*](https://www.npr.org/2025/12/03/nx-s1-5629273/ai-job-search-recruiters-entry-level) - podcast episode from *Planet Money / The Indicator* (NPR)
+
+**Learn more**
+
+[*The Evidence That AI Is Destroying Jobs for Young People Just Got Stronger*](https://www.derekthompson.org/p/the-evidence-that-ai-is-destroying) - article by Derek Thompson (*The Atlantic* staff writer)
+
+[*Generative AI at Work*](https://academic.oup.com/qje/article/140/2/889/7990658) - research article by Brynjolfsson, Li, & Raymond in *The Quarterly Journal of Economics*
+
+[*Top engineers at Anthropic, OpenAI say AI now writes 100% of their code*](https://fortune.com/2026/01/29/100-percent-of-code-at-anthropic-and-openai-is-now-ai-written-boris-cherny-roon/) - article by Beatrice Nolan in *Fortune*
+
+[*I'll Probably Lose My Job to AI. Here's Why That's OK*](https://www.ted.com/talks/megan_j_mcardle_i_ll_probably_lose_my_job_to_ai_here_s_why_that_s_ok) - TED Talk by Megan McArdle
