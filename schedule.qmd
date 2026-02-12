@@ -161,3 +161,65 @@ This course is under active development, and the schedule will be filled in as w
 [*Top engineers at Anthropic, OpenAI say AI now writes 100% of their code*](https://fortune.com/2026/01/29/100-percent-of-code-at-anthropic-and-openai-is-now-ai-written-boris-cherny-roon/) - article by Beatrice Nolan in *Fortune*
 
 [*I'll Probably Lose My Job to AI. Here's Why That's OK*](https://www.ted.com/talks/megan_j_mcardle_i_ll_probably_lose_my_job_to_ai_here_s_why_that_s_ok) - TED Talk by Megan McArdle
+
+## Week 10: March 16-22
+
+| Meeting | Topic | Slides | Due |
+|---|---|---|---|
+| Tuesday | TBD | TBD | Project proposal (*before class*) |
+| Thursday | Group-led discussion (GLD1) | - | Read/watch assigned resources (*before class*) |
+
+**Resources for discussion**
+
+TBD — resources will be added once the group submits them.
+
+## Week 11: March 23-29
+
+| Meeting | Topic | Slides | Due |
+|---|---|---|---|
+| Tuesday | TBD | TBD | - |
+| Thursday | TBD | TBD | - |
+
+## Spring Recess: March 30 - April 5
+
+No class.
+
+## Week 12: April 6-12
+
+| Meeting | Topic | Slides | Due |
+|---|---|---|---|
+| Tuesday | TBD | TBD | - |
+| Thursday | Group-led discussion (GLD2) | - | Read/watch assigned resources (*before class*) |
+
+**Resources for discussion**
+
+TBD — resources will be added once the group submits them.
+
+## Week 13: April 13-19
+
+| Meeting | Topic | Slides | Due |
+|---|---|---|---|
+| Tuesday | TBD | TBD | - |
+| Thursday | Group-led discussion (GLD3) | - | Read/watch assigned resources (*before class*) |
+
+**Resources for discussion**
+
+TBD — resources will be added once the group submits them.
+
+## Week 14: April 20-26
+
+| Meeting | Topic | Slides | Due |
+|---|---|---|---|
+| Tuesday | TBD | TBD | - |
+| Thursday | Group-led discussion (GLD4) | - | Read/watch assigned resources (*before class*) |
+
+**Resources for discussion**
+
+TBD — resources will be added once the group submits them.
+
+## Week 15: April 27 - May 1
+
+| Meeting | Topic | Slides | Due |
+|---|---|---|---|
+| Tuesday | Final presentations | - | - |
+| Thursday | Final presentations | - | Final project submission (TBD) |

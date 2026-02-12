@@ -16,7 +16,8 @@ This page is the **single canonical place** for:
 ## Assignment calendar (overview)
 
 - Weeks 1–10: individual "build" assignments (A0–AZ)
-- Weeks 11-14: final project work + checkpoints
+- Weeks 10–14: group-led discussions (GLD1–GLD4)
+- Weeks 10–15: final project work + checkpoints
 - Week 15: final presentations
 
 ---
@@ -119,6 +120,42 @@ This page is the **single canonical place** for:
 
 ---
 
+## Group-Led Discussions
+
+### GLD1
+
+- **Discussion date:** Thursday (Week 10) during class
+- **Topic:** TBD
+- **Spec:** See [Group-Led Discussion Spec](resources/group_led_discussions.md) for requirements and timeline.
+- **Resources:** TBD
+- **Written reflection invite link:** TBD
+
+### GLD2
+
+- **Discussion date:** Thursday (Week 12) during class
+- **Topic:** TBD
+- **Spec:** See [Group-Led Discussion Spec](resources/group_led_discussions.md) for requirements and timeline.
+- **Resources:** TBD
+- **Written reflection invite link:** TBD
+
+### GLD3
+
+- **Discussion date:** Thursday (Week 13) during class
+- **Topic:** TBD
+- **Spec:** See [Group-Led Discussion Spec](resources/group_led_discussions.md) for requirements and timeline.
+- **Resources:** TBD
+- **Written reflection invite link:** TBD
+
+### GLD4
+
+- **Discussion date:** Thursday (Week 14) during class
+- **Topic:** TBD
+- **Spec:** See [Group-Led Discussion Spec](resources/group_led_discussions.md) for requirements and timeline.
+- **Resources:** TBD
+- **Written reflection invite link:** TBD
+
+---
+
 ## Final project (team repo)
 
 ### Team repo creation
@@ -128,7 +165,7 @@ This page is the **single canonical place** for:
 
 ### Project checkpoints (typical)
 
-- **Proposal:** Week 9 (Tue?)
+- **Proposal:** Week 10 (Tue, before class)
 - **Plan:** Week 10 (Tue?)
 - ...
 - **Final submission:** Week 15 (Fri?)
