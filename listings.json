@@ -1,22 +1,23 @@
 [
   {
-    "listing": "/policies/index.html",
-    "items": [
-      "/policies/ai-use.html",
-      "/policies/collaboration.html",
-      "/policies/late-work.html"
-    ]
-  },
-  {
     "listing": "/resources/index.html",
     "items": [
       "/resources/faq.html",
+      "/resources/group_led_discussions.html",
       "/resources/github_classroom_workflow.html",
       "/resources/gemini_api_key.html",
       "/resources/initial_setup_windows.html",
       "/resources/initial_setup_macos.html",
       "/resources/gemini_cli.html",
       "/resources/gemini_code_assist.html"
+    ]
+  },
+  {
+    "listing": "/policies/index.html",
+    "items": [
+      "/policies/ai-use.html",
+      "/policies/collaboration.html",
+      "/policies/late-work.html"
     ]
   },
   {

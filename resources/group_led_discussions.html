@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-03-01">
+<meta name="description" content="Requirements and timeline for group-led discussions (GLD1–GLD4).">
 
-<title>Resources – Creating with AI in the Loop</title>
+<title>Group-Led Discussion Spec – Creating with AI in the Loop</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +32,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -69,66 +69,8 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-resources .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-description','listing-categories','listing-date',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-resources'] = new List('listing-resources', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <style>html{ scroll-behavior: smooth; }</style>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -176,7 +118,7 @@ window.Quarto = {
 <span class="menu-text">Policies</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../resources/index.html" aria-current="page"> 
+    <a class="nav-link" href="../resources/index.html"> 
 <span class="menu-text">Resources</span></a>
   </li>  
 </ul>
@@ -199,7 +141,7 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -207,29 +149,50 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#featured" id="toc-featured" class="nav-link active" data-scroll-target="#featured">Featured</a>
+  <li><a href="#group-led-discussions-gld1gld4" id="toc-group-led-discussions-gld1gld4" class="nav-link active" data-scroll-target="#group-led-discussions-gld1gld4">Group-Led Discussions (GLD1–GLD4)</a>
   <ul class="collapse">
-  <li><a href="#initial-setup-one-time" id="toc-initial-setup-one-time" class="nav-link" data-scroll-target="#initial-setup-one-time">Initial Setup (one-time)</a></li>
-  <li><a href="#github-classroom-workflow-every-build-assignment" id="toc-github-classroom-workflow-every-build-assignment" class="nav-link" data-scroll-target="#github-classroom-workflow-every-build-assignment">GitHub Classroom Workflow (every build assignment)</a></li>
-  <li><a href="#gemini" id="toc-gemini" class="nav-link" data-scroll-target="#gemini">Gemini</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#deliverables" id="toc-deliverables" class="nav-link" data-scroll-target="#deliverables">Deliverables</a>
+  <ul class="collapse">
+  <li><a href="#topic-and-resources" id="toc-topic-and-resources" class="nav-link" data-scroll-target="#topic-and-resources">1. Topic and Resources</a></li>
+  <li><a href="#writing-prompts" id="toc-writing-prompts" class="nav-link" data-scroll-target="#writing-prompts">2. Writing Prompts</a></li>
+  <li><a href="#discussion-questions" id="toc-discussion-questions" class="nav-link" data-scroll-target="#discussion-questions">3. Discussion Questions</a></li>
   </ul></li>
-  <li><a href="#all-resources" id="toc-all-resources" class="nav-link" data-scroll-target="#all-resources">All resources</a></li>
+  <li><a href="#submission" id="toc-submission" class="nav-link" data-scroll-target="#submission">Submission</a></li>
+  <li><a href="#timeline-summary" id="toc-timeline-summary" class="nav-link" data-scroll-target="#timeline-summary">Timeline Summary</a></li>
+  <li><a href="#what-happens-next" id="toc-what-happens-next" class="nav-link" data-scroll-target="#what-happens-next">What Happens Next</a></li>
+  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ai-in-the-loop-2026/ai-in-the-loop-hub/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Resources</h1>
+<h1 class="title">Group-Led Discussion Spec</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Course Logistics</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Requirements and timeline for group-led discussions (GLD1–GLD4).
+  </div>
 </div>
 
 
-
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 1, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -239,226 +202,113 @@ window.Quarto = {
 </header>
 
 
-<p>Use this page as the <strong>single place</strong> to find setup guides, FAQs, and “how-to” docs.</p>
-<section id="featured" class="level2">
-<h2 class="anchored" data-anchor-id="featured">Featured</h2>
-<section id="initial-setup-one-time" class="level3">
-<h3 class="anchored" data-anchor-id="initial-setup-one-time">Initial Setup (one-time)</h3>
+<section id="group-led-discussions-gld1gld4" class="level1">
+<h1>Group-Led Discussions (GLD1–GLD4)</h1>
+<p>Starting in Week 10, each final project group will lead one in-class discussion on an AI-related topic. This page describes the requirements, deliverables, and timeline.</p>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>Your group will choose a topic, curate resources, write reflection prompts, prepare discussion questions, and lead the class discussion. The instructor will create a written reflection assignment on GitHub Classroom and add your resources to the course website.</p>
+</section>
+<section id="deliverables" class="level2">
+<h2 class="anchored" data-anchor-id="deliverables">Deliverables</h2>
+<section id="topic-and-resources" class="level3">
+<h3 class="anchored" data-anchor-id="topic-and-resources">1. Topic and Resources</h3>
+<p><strong>Due: at least one week before your discussion (earlier is better)</strong></p>
+<p>Choose an AI-related topic that can sustain a good class discussion. Topics at the intersection of AI and society work well (e.g., AI and healthcare, AI and creative work, AI and faith, AI regulation), but you’re not limited to that — any AI-related topic that enables thoughtful discussion is fair game. Then curate <strong>3–4 resources</strong> that the rest of the class will consume before the discussion. Your resources must:</p>
 <ul>
-<li><a href="../resources/initial_setup_windows.html">Initial Setup (Windows)</a> — VS Code, Git, Python 3.13</li>
-<li><a href="../resources/initial_setup_macos.html">Initial Setup (macOS)</a> — Homebrew, VS Code, Git, Python 3.13</li>
+<li>Include at least <strong>two</strong> of the following categories: text (articles), audio, video</li>
+<li>When possible, choose resources that represent <strong>opposing or contrasting perspectives</strong> — discussions are richer when the readings disagree</li>
+<li>Text articles must be from <strong>high-quality sources</strong> (e.g., <em>The Atlantic</em>, <em>The New Yorker</em>, <em>Wired</em>, <em>MIT Technology Review</em>, <em>Harvard Business Review</em>, NPR, PBS, peer-reviewed journals)</li>
+<li>All resources must be <strong>accessible</strong> to students (accessing through the college library’s electronic collection is fine)</li>
+<li>Each resource needs a <strong>title, author/source, and a 1–2 sentence description</strong> explaining what it covers and why it’s relevant</li>
+<li><strong>Read, watch, or listen to every resource yourself</strong> before submitting them — you need to know the material well to lead a discussion on it</li>
+</ul>
+<p>You may also include a few optional <strong>“learn more” resources</strong> for students who want to go deeper. These are not required but are a nice addition.</p>
+<p>Model your resource descriptions on the ones provided for D1–D4 on the <a href="../schedule.html">Schedule</a> page.</p>
+</section>
+<section id="writing-prompts" class="level3">
+<h3 class="anchored" data-anchor-id="writing-prompts">2. Writing Prompts</h3>
+<p><strong>Due: at least one week before your discussion</strong></p>
+<p>Write <strong>two writing prompts</strong> that students will respond to as an in-class written reflection before the discussion begins. Strong prompts:</p>
+<ul>
+<li>Connect to the assigned resources and topic</li>
+<li>Invite students to reflect on their <strong>own lives, experiences, or future plans</strong></li>
+<li>Cannot be answered with a quick, surface-level response</li>
+<li>Stimulate genuine thinking and introspection (not just summary of the readings)</li>
+</ul>
+<p>Look at previous written reflections (WR1–WR4) for examples of effective prompts.</p>
+</section>
+<section id="discussion-questions" class="level3">
+<h3 class="anchored" data-anchor-id="discussion-questions">3. Discussion Questions</h3>
+<p><strong>Due: at least two days before your discussion</strong></p>
+<p>Prepare <strong>10–15 discussion questions</strong> to drive the in-class conversation. Good discussion questions:</p>
+<ul>
+<li>Cover a <strong>variety of angles</strong> on the topic (don’t cluster around one sub-theme)</li>
+<li>Include questions that students can <strong>relate to their own lives and experiences</strong></li>
+<li>Are interesting and thought-provoking, not surface-level comprehension checks</li>
+<li>Draw on the assigned resources but also push beyond them</li>
+<li>Mix concrete/specific questions with bigger-picture ones</li>
 </ul>
 </section>
-<section id="github-classroom-workflow-every-build-assignment" class="level3">
-<h3 class="anchored" data-anchor-id="github-classroom-workflow-every-build-assignment">GitHub Classroom Workflow (every build assignment)</h3>
+</section>
+<section id="submission" class="level2">
+<h2 class="anchored" data-anchor-id="submission">Submission</h2>
+<p>Submit all deliverables <strong>by email</strong> to the instructor. Submitting more than a week in advance is encouraged — the instructor may ask you to revise your topic, swap a resource, or strengthen a prompt before the discussion date.</p>
+</section>
+<section id="timeline-summary" class="level2">
+<h2 class="anchored" data-anchor-id="timeline-summary">Timeline Summary</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Deliverable</th>
+<th>Deadline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Topic + resources (with descriptions)</td>
+<td>At least 1 week before discussion</td>
+</tr>
+<tr class="even">
+<td>Two writing prompts</td>
+<td>At least 1 week before discussion</td>
+</tr>
+<tr class="odd">
+<td>10–15 discussion questions</td>
+<td>At least 2 days before discussion</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="what-happens-next" class="level2">
+<h2 class="anchored" data-anchor-id="what-happens-next">What Happens Next</h2>
+<p>After receiving your materials, the instructor will:</p>
+<ol type="1">
+<li>Review and provide feedback (possibly requesting changes)</li>
+<li>Create the written reflection assignment on GitHub Classroom</li>
+<li>Add your resources and descriptions to the course website</li>
+<li>Your group leads the in-class discussion on the scheduled date</li>
+</ol>
+</section>
+<section id="tips" class="level2">
+<h2 class="anchored" data-anchor-id="tips">Tips</h2>
 <ul>
-<li><a href="../resources/github_classroom_workflow.html">GitHub Classroom Workflow</a> — Accept, clone, venv, commit, push</li>
+<li><strong>Start early.</strong> The instructor may ask for revisions, so give yourself time.</li>
+<li><strong>Pick a topic your group genuinely cares about.</strong> Enthusiasm is contagious.</li>
+<li><strong>Test your resources.</strong> Make sure links work and that articles aren’t behind inaccessible paywalls.</li>
+<li><strong>Prepare more questions than you think you’ll need.</strong> Some questions land better than others, and you want options.</li>
+<li><strong>Plan for facilitation.</strong> Think about how you’ll structure the discussion — who opens, how you’ll handle quiet moments, etc.</li>
 </ul>
-</section>
-<section id="gemini" class="level3">
-<h3 class="anchored" data-anchor-id="gemini">Gemini</h3>
-<ul>
-<li><a href="../resources/gemini_api_key.html">Getting a Gemini API Key</a> — For assignments that call Gemini models</li>
-<li><a href="../resources/gemini_code_assist.html">Installing Gemini Code Assist</a> — AI coding assistant in VS Code</li>
-<li><a href="../resources/gemini_cli.html">Installing Gemini CLI</a> — AI assistant in your terminal</li>
-</ul>
-</section>
-</section>
-<section id="all-resources" class="level2">
-<h2 class="anchored" data-anchor-id="all-resources">All resources</h2>
-<p>The list below is generated automatically from the files in this folder.</p>
-
 
 
 </section>
+</section>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-resources">
-<div class="listing-actions-group">
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
-</div>
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Q291cnNlJTIwTG9naXN0aWNz" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1767132920854" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="15">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/faq.html" class="no-external">Course FAQ</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q291cnNlJTIwTG9naXN0aWNz'); return false;">Course Logistics</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/faq.html" class="no-external">
-<p>Responses to Frequently Asked Questions about the course.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/faq.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="Q291cnNlJTIwTG9naXN0aWNz" data-listing-date-sort="1772341200000" data-listing-file-modified-sort="1770909883071" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="642">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/group_led_discussions.html" class="no-external">Group-Led Discussion Spec</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q291cnNlJTIwTG9naXN0aWNz'); return false;">Course Logistics</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/group_led_discussions.html" class="no-external">
-<p>Requirements and timeline for group-led discussions (GLD1–GLD4).</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/group_led_discussions.html" class="no-external">
-<div class="listing-date">
-Mar 1, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="R2l0SHVi" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1767279343415" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="559">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/github_classroom_workflow.html" class="no-external">GitHub Classroom Workflow</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0SHVi'); return false;">GitHub</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/github_classroom_workflow.html" class="no-external">
-<p>Accept an assignment, clone the repo, set up a virtual environment, and submit your work.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/github_classroom_workflow.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="U2V0dXA=" data-listing-date-sort="1767243600000" data-listing-file-modified-sort="1767912338231" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="612">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/gemini_api_key.html" class="no-external">Getting a Gemini API Key</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/gemini_api_key.html" class="no-external">
-<p>How to obtain a Gemini API key from Google AI Studio for course assignments.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/gemini_api_key.html" class="no-external">
-<div class="listing-date">
-Jan 1, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="U2V0dXA=" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1768246261513" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="296">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/initial_setup_windows.html" class="no-external">Initial Setup (Windows)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/initial_setup_windows.html" class="no-external">
-<p>One-time installation of VS Code, Git, and Python 3.13 on Windows.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/initial_setup_windows.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="U2V0dXA=" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1768246254939" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="353">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/initial_setup_macos.html" class="no-external">Initial Setup (macOS)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/initial_setup_macos.html" class="no-external">
-<p>One-time installation of VS Code, Git, Python 3.13, and Homebrew on macOS.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/initial_setup_macos.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="U2V0dXA=" data-listing-date-sort="1767243600000" data-listing-file-modified-sort="1767912743598" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="226">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/gemini_cli.html" class="no-external">Installing Gemini CLI</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/gemini_cli.html" class="no-external">
-<p>Set up Google’s Gemini CLI for AI assistance in your terminal.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/gemini_cli.html" class="no-external">
-<div class="listing-date">
-Jan 1, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="U2V0dXA=" data-listing-date-sort="1767243600000" data-listing-file-modified-sort="1767913166399" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="288">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/gemini_code_assist.html" class="no-external">Installing Gemini Code Assist</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/gemini_code_assist.html" class="no-external">
-<p>Set up the Gemini Code Assist extension in VS Code for AI-powered coding assistance.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/gemini_code_assist.html" class="no-external">
-<div class="listing-date">
-Jan 1, 2026
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
