@@ -15,7 +15,7 @@ This page is the **single canonical place** for:
 
 ## Assignment calendar (overview)
 
-- Weeks 1–10: individual "build" assignments (A0–AZ)
+- Weeks 1–11: individual "build" assignments (A0–A9)
 - Weeks 10–14: group-led discussions (GLD1–GLD4)
 - Weeks 10–15: final project work + checkpoints
 - Week 15: final presentations
@@ -88,6 +88,14 @@ This page is the **single canonical place** for:
 <!-- - **Invite link:** <https://classroom.github.com/a/bo5lxa1o> -->
 - **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
 
+### A9 - Streamlit + Custom State + Complex Graph
+
+- **Due:** Tuesday (Week 11) before class
+- **Purpose:** Build a Streamlit application with a custom state and a moderately complex LangGraph workflow.
+<!-- - **Invite link:** TBD -->
+- **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
+- **Note:** This assignment is the basis for Code Review 2. Submit slides on Moodle.
+
 ---
 
 ## Writing Reflections (GitHub Classroom)
@@ -156,19 +164,20 @@ This page is the **single canonical place** for:
 
 ---
 
-## Final project (team repo)
+## Final Project (team repo)
 
-### Team repo creation
+**Spec:** See [Final Project Spec](resources/final_project.md) for full requirements.
 
-- **When:** (e.g., Week 8)
-- **How:** GitHub Classroom **group assignment** (one repo per team)
+### Checkpoints
 
-### Project checkpoints (typical)
-
-- **Proposal:** Week 10 (Tue, before class)
-- **Plan:** Week 10 (Tue?)
-- ...
-- **Final submission:** Week 15 (Fri?)
+| Deliverable | Due |
+|---|---|
+| Proposal | Week 10 (Tue, before class) |
+| Working prototype | Week 14 (Tue, before class) |
+| Final repository | Week 15 |
+| Presentation | Week 15 (Tue, April 30) |
+| Portfolio piece (public site) | Week 15 |
+| Group code review | Mon, May 4 (12:30–2:30pm) |
 
 ---
 

@@ -177,8 +177,10 @@ TBD — resources will be added once the group submits them.
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
-| Tuesday | TBD | TBD | - |
+| Tuesday | TBD | TBD | A9 — Streamlit + Custom State + Complex Graph (*before class*) |
 | Thursday | TBD | TBD | - |
+
+**Note:** Schedule your Code Review 2 appointment this week. CR2 appointments available March 23–26.
 
 ## Spring Recess: March 30 - April 5
 
@@ -210,7 +212,7 @@ TBD — resources will be added once the group submits them.
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
-| Tuesday | TBD | TBD | - |
+| Tuesday | TBD | TBD | Working prototype (*before class*) |
 | Thursday | Group-led discussion (GLD4) | - | Read/watch assigned resources (*before class*) |
 
 **Resources for discussion**
@@ -222,4 +224,6 @@ TBD — resources will be added once the group submits them.
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
 | Tuesday | Final presentations | - | - |
-| Thursday | Final presentations | - | Final project submission (TBD) |
+| Thursday | Final presentations | - | Final project + portfolio piece |
+
+**Final exam (group code review):** Monday, May 4, 12:30–2:30pm
