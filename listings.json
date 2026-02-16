@@ -4,7 +4,11 @@
     "items": [
       "/resources/faq.html",
       "/resources/group_led_discussions.html",
+      "/resources/final_project.html",
       "/resources/github_classroom_workflow.html",
+      "/resources/github_collaboration.html",
+      "/resources/github_issues.html",
+      "/resources/quarto_portfolio_site.html",
       "/resources/gemini_api_key.html",
       "/resources/initial_setup_windows.html",
       "/resources/initial_setup_macos.html",

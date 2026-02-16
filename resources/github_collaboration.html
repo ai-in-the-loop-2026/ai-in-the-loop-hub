@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-02-16">
+<meta name="description" content="How to use branches, pull requests, and merging to collaborate on a shared repo without stepping on each other’s work.">
 
-<title>Resources – Creating with AI in the Loop</title>
+<title>GitHub Collaboration Quickstart – Creating with AI in the Loop</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +67,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -69,66 +104,8 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-resources .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-description','listing-categories','listing-date',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-resources'] = new List('listing-resources', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <style>html{ scroll-behavior: smooth; }</style>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -176,7 +153,7 @@ window.Quarto = {
 <span class="menu-text">Policies</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../resources/index.html" aria-current="page"> 
+    <a class="nav-link" href="../resources/index.html"> 
 <span class="menu-text">Resources</span></a>
   </li>  
 </ul>
@@ -199,7 +176,7 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -207,31 +184,59 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#featured" id="toc-featured" class="nav-link active" data-scroll-target="#featured">Featured</a>
+  <li><a href="#github-collaboration-quickstart" id="toc-github-collaboration-quickstart" class="nav-link active" data-scroll-target="#github-collaboration-quickstart">GitHub Collaboration Quickstart</a>
   <ul class="collapse">
-  <li><a href="#initial-setup-one-time" id="toc-initial-setup-one-time" class="nav-link" data-scroll-target="#initial-setup-one-time">Initial Setup (one-time)</a></li>
-  <li><a href="#github-classroom-workflow-every-build-assignment" id="toc-github-classroom-workflow-every-build-assignment" class="nav-link" data-scroll-target="#github-classroom-workflow-every-build-assignment">GitHub Classroom Workflow (every build assignment)</a></li>
-  <li><a href="#github-collaboration-final-project" id="toc-github-collaboration-final-project" class="nav-link" data-scroll-target="#github-collaboration-final-project">GitHub Collaboration (final project)</a></li>
-  <li><a href="#portfolio-site-final-project" id="toc-portfolio-site-final-project" class="nav-link" data-scroll-target="#portfolio-site-final-project">Portfolio Site (final project)</a></li>
-  <li><a href="#gemini" id="toc-gemini" class="nav-link" data-scroll-target="#gemini">Gemini</a></li>
+  <li><a href="#what-is-a-branch" id="toc-what-is-a-branch" class="nav-link" data-scroll-target="#what-is-a-branch">What is a branch?</a></li>
+  <li><a href="#the-collaboration-workflow" id="toc-the-collaboration-workflow" class="nav-link" data-scroll-target="#the-collaboration-workflow">The collaboration workflow</a>
+  <ul class="collapse">
+  <li><a href="#pull-the-latest-changes" id="toc-pull-the-latest-changes" class="nav-link" data-scroll-target="#pull-the-latest-changes">1. Pull the latest changes</a></li>
+  <li><a href="#create-a-branch" id="toc-create-a-branch" class="nav-link" data-scroll-target="#create-a-branch">2. Create a branch</a></li>
+  <li><a href="#do-your-work-and-commit" id="toc-do-your-work-and-commit" class="nav-link" data-scroll-target="#do-your-work-and-commit">3. Do your work and commit</a></li>
+  <li><a href="#push-your-branch" id="toc-push-your-branch" class="nav-link" data-scroll-target="#push-your-branch">4. Push your branch</a></li>
+  <li><a href="#open-a-pull-request" id="toc-open-a-pull-request" class="nav-link" data-scroll-target="#open-a-pull-request">5. Open a pull request</a></li>
+  <li><a href="#review-and-merge" id="toc-review-and-merge" class="nav-link" data-scroll-target="#review-and-merge">6. Review and merge</a></li>
+  <li><a href="#pull-main-and-clean-up" id="toc-pull-main-and-clean-up" class="nav-link" data-scroll-target="#pull-main-and-clean-up">7. Pull <code>main</code> and clean up</a></li>
   </ul></li>
-  <li><a href="#all-resources" id="toc-all-resources" class="nav-link" data-scroll-target="#all-resources">All resources</a></li>
+  <li><a href="#handling-merge-conflicts" id="toc-handling-merge-conflicts" class="nav-link" data-scroll-target="#handling-merge-conflicts">Handling merge conflicts</a></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a>
+  <ul class="collapse">
+  <li><a href="#i-made-changes-on-main-by-accident" id="toc-i-made-changes-on-main-by-accident" class="nav-link" data-scroll-target="#i-made-changes-on-main-by-accident">“I made changes on <code>main</code> by accident”</a></li>
+  <li><a href="#i-committed-to-main-by-accident" id="toc-i-committed-to-main-by-accident" class="nav-link" data-scroll-target="#i-committed-to-main-by-accident">“I committed to <code>main</code> by accident”</a></li>
+  <li><a href="#i-created-a-branch-from-another-branch-instead-of-main" id="toc-i-created-a-branch-from-another-branch-instead-of-main" class="nav-link" data-scroll-target="#i-created-a-branch-from-another-branch-instead-of-main">“I created a branch from another branch instead of <code>main</code>”</a></li>
+  <li><a href="#i-pushed-but-my-teammate-doesnt-see-my-changes" id="toc-i-pushed-but-my-teammate-doesnt-see-my-changes" class="nav-link" data-scroll-target="#i-pushed-but-my-teammate-doesnt-see-my-changes">“I pushed but my teammate doesn’t see my changes”</a></li>
+  </ul></li>
+  <li><a href="#quick-reference" id="toc-quick-reference" class="nav-link" data-scroll-target="#quick-reference">Quick reference</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ai-in-the-loop-2026/ai-in-the-loop-hub/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Resources</h1>
+<h1 class="title">GitHub Collaboration Quickstart</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">GitHub</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    How to use branches, pull requests, and merging to collaborate on a shared repo without stepping on each other’s work.
+  </div>
 </div>
 
 
-
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 16, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -241,331 +246,209 @@ window.Quarto = {
 </header>
 
 
-<p>Use this page as the <strong>single place</strong> to find setup guides, FAQs, and “how-to” docs.</p>
-<section id="featured" class="level2">
-<h2 class="anchored" data-anchor-id="featured">Featured</h2>
-<section id="initial-setup-one-time" class="level3">
-<h3 class="anchored" data-anchor-id="initial-setup-one-time">Initial Setup (one-time)</h3>
+<section id="github-collaboration-quickstart" class="level1">
+<h1>GitHub Collaboration Quickstart</h1>
+<p>So far you’ve worked in your own repo: edit, commit, push to <code>main</code>. That works great solo, but when multiple people push directly to <code>main</code>, you’ll quickly overwrite each other’s work. This guide covers the workflow teams use to avoid that.</p>
+<p>The short version: <strong>work on a branch, open a pull request, then merge.</strong></p>
+<hr>
+<section id="what-is-a-branch" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-branch">What is a branch?</h2>
+<p>A branch is a parallel copy of the code where you can make changes without affecting <code>main</code>. When your changes are ready, you merge them back into <code>main</code>.</p>
+<pre><code>main:        A --- B --- C --------- D (merge)
+                          \         /
+your-branch:               E --- F</code></pre>
+<p>Your teammates keep working on <code>main</code> (or their own branches) while you work on yours. Nobody steps on anyone else’s work.</p>
+<hr>
+</section>
+<section id="the-collaboration-workflow" class="level2">
+<h2 class="anchored" data-anchor-id="the-collaboration-workflow">The collaboration workflow</h2>
+<p>The key rules:</p>
 <ul>
-<li><a href="../resources/initial_setup_windows.html">Initial Setup (Windows)</a> — VS Code, Git, Python 3.13</li>
-<li><a href="../resources/initial_setup_macos.html">Initial Setup (macOS)</a> — Homebrew, VS Code, Git, Python 3.13</li>
+<li><strong>Always create a branch before making changes.</strong> If you’re on <code>main</code>, your only job is to pull. Never edit files while on <code>main</code>.</li>
+<li><strong>Each person works on their own branch.</strong> Don’t share branches — if two people need to work on related features, use two separate branches.</li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Your final project repo has branch protection enabled — pushing directly to <code>main</code> is blocked. All changes must go through a pull request. If you try to push to <code>main</code>, Git will reject it. Create a branch first (see <a href="#troubleshooting">Troubleshooting</a> if you already started working on <code>main</code>).</p>
+</div>
+</div>
+<p>Here’s the loop you’ll repeat for each feature or fix:</p>
+<section id="pull-the-latest-changes" class="level3">
+<h3 class="anchored" data-anchor-id="pull-the-latest-changes">1. Pull the latest changes</h3>
+<p>Before starting new work, make sure you have your team’s latest code:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="github-classroom-workflow-every-build-assignment" class="level3">
-<h3 class="anchored" data-anchor-id="github-classroom-workflow-every-build-assignment">GitHub Classroom Workflow (every build assignment)</h3>
+<section id="create-a-branch" class="level3">
+<h3 class="anchored" data-anchor-id="create-a-branch">2. Create a branch</h3>
+<p>Make sure you’re on <code>main</code> first (check the bottom-left of VS Code), then pick a short, descriptive name for what you’re working on. Use hyphens instead of spaces:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> add-export-feature</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here <code>add-export-feature</code> is the branch name — replace it with whatever you’re working on (e.g., <code>fix-crash-on-empty-input</code>, <code>build-streamlit-ui</code>).</p>
+<p>This creates a new branch and switches you to it. You’re no longer on <code>main</code>.</p>
+<p>To check which branch you’re on at any time:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The active branch has a <code>*</code> next to it. You can also see your current branch in the <strong>bottom-left corner of VS Code</strong> at all times — get in the habit of glancing at it before you start editing.</p>
+</section>
+<section id="do-your-work-and-commit" class="level3">
+<h3 class="anchored" data-anchor-id="do-your-work-and-commit">3. Do your work and commit</h3>
+<p>Edit files, then commit as usual:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add PDF export button to Streamlit app"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You can make multiple commits on your branch — that’s normal.</p>
+</section>
+<section id="push-your-branch" class="level3">
+<h3 class="anchored" data-anchor-id="push-your-branch">4. Push your branch</h3>
+<p>The first time you push a new branch, use:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin add-export-feature</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>After that first push, <code>git push</code> is enough for additional commits on the same branch.</p>
+</section>
+<section id="open-a-pull-request" class="level3">
+<h3 class="anchored" data-anchor-id="open-a-pull-request">5. Open a pull request</h3>
+<p>A pull request (PR) is how you propose merging your branch into <code>main</code>. It gives your teammates a chance to see what you changed before it goes in.</p>
+<ol type="1">
+<li>Go to your repo on GitHub. You’ll often see a banner saying your branch was recently pushed — click <strong>Compare &amp; pull request</strong>.</li>
+<li>If you don’t see the banner: click the <strong>Pull requests</strong> tab → <strong>New pull request</strong> → set “compare” to your branch.</li>
+<li>Give the PR a title that summarizes the change.</li>
+<li>Add a brief description of what you did and why.</li>
+<li>Click <strong>Create pull request</strong>.</li>
+</ol>
+</section>
+<section id="review-and-merge" class="level3">
+<h3 class="anchored" data-anchor-id="review-and-merge">6. Review and merge</h3>
+<p><strong>Don’t merge your own PRs.</strong> Have a teammate look it over and merge it. They can see exactly what changed in the “Files changed” tab. This keeps everyone aware of what’s happening in the codebase — which matters, since you’ll all need to explain every part of the code at the group code review.</p>
+<p>When it looks good, the teammate merges:</p>
+<ol type="1">
+<li>Click <strong>Merge pull request</strong>.</li>
+<li>Click <strong>Confirm merge</strong>.</li>
+<li>Click <strong>Delete branch</strong> — the work is safely in <code>main</code> now, so you don’t need the branch anymore.</li>
+</ol>
+</section>
+<section id="pull-main-and-clean-up" class="level3">
+<h3 class="anchored" data-anchor-id="pull-main-and-clean-up">7. Pull <code>main</code> and clean up</h3>
+<p>Before starting your next piece of work, switch back to <code>main</code>, pull the latest changes, and delete your local copy of the merged branch:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout main</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch <span class="at">-d</span> branch-name</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The last command is optional — stale local branches are harmless — but it keeps things tidy.</p>
+<p>You don’t need to do this while you’re in the middle of working on a branch — your branch is unaffected by changes to <code>main</code>. Just make sure to pull <code>main</code> before creating your next branch.</p>
+<hr>
+</section>
+</section>
+<section id="handling-merge-conflicts" class="level2">
+<h2 class="anchored" data-anchor-id="handling-merge-conflicts">Handling merge conflicts</h2>
+<p>A merge conflict happens when two people edit the same lines in the same file. Git doesn’t know which version to keep, so it asks you to decide.</p>
+<p>You’ll usually encounter this on GitHub when merging a pull request. If there’s a conflict, GitHub will block the merge and show a <strong>Resolve conflicts</strong> button.</p>
+<p>Click it to open GitHub’s conflict editor. You’ll see markers like this:</p>
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; main
+def process_query(query):
+    return query.strip().lower()
+=======
+def process_query(query):
+    return query.strip()
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; add-export-feature</code></pre>
 <ul>
-<li><a href="../resources/github_classroom_workflow.html">GitHub Classroom Workflow</a> — Accept, clone, venv, commit, push</li>
+<li>The top section (<code>main</code>) is what’s currently in <code>main</code>.</li>
+<li>The bottom section is what’s on your branch.</li>
 </ul>
-</section>
-<section id="github-collaboration-final-project" class="level3">
-<h3 class="anchored" data-anchor-id="github-collaboration-final-project">GitHub Collaboration (final project)</h3>
+<p><strong>To resolve it:</strong></p>
+<ol type="1">
+<li>Edit the file in GitHub’s editor to keep the version you want (or combine both). Delete all the marker lines — that’s the <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; main</code>, <code>=======</code>, and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; branch-name</code> lines.</li>
+<li>Click <strong>Mark as resolved</strong>.</li>
+<li>Once all conflicts are resolved, click <strong>Commit merge</strong>.</li>
+</ol>
+<p><strong>Tips for avoiding conflicts:</strong></p>
 <ul>
-<li><a href="../resources/github_collaboration.html">GitHub Collaboration Quickstart</a> — Branches, pull requests, merging, and resolving conflicts</li>
-<li><a href="../resources/github_issues.html">GitHub Issues Quickstart</a> — Tracking features, bugs, and to-dos in your repo</li>
+<li><strong>Pull often.</strong> The longer you go without pulling, the more your branch drifts from <code>main</code>.</li>
+<li><strong>Work in different files when possible.</strong> If one person is building the Streamlit UI and another is writing the LangGraph workflow, conflicts are rare.</li>
+<li><strong>Keep branches short-lived.</strong> Merge a branch once its feature works — don’t let branches live for weeks.</li>
 </ul>
+<hr>
 </section>
-<section id="portfolio-site-final-project" class="level3">
-<h3 class="anchored" data-anchor-id="portfolio-site-final-project">Portfolio Site (final project)</h3>
-<ul>
-<li><a href="../resources/quarto_portfolio_site.html">Publishing a Portfolio Site with Quarto</a> — Create and publish a project portfolio to GitHub Pages</li>
-</ul>
+<section id="troubleshooting" class="level2">
+<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
+<section id="i-made-changes-on-main-by-accident" class="level3">
+<h3 class="anchored" data-anchor-id="i-made-changes-on-main-by-accident">“I made changes on <code>main</code> by accident”</h3>
+<p>If you edited files on <code>main</code> but haven’t committed yet, you can move your changes to a new branch:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> stash</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> my-new-branch</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> stash pop</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This saves your changes, creates a branch, and puts the changes back. Now commit as usual.</p>
 </section>
-<section id="gemini" class="level3">
-<h3 class="anchored" data-anchor-id="gemini">Gemini</h3>
-<ul>
-<li><a href="../resources/gemini_api_key.html">Getting a Gemini API Key</a> — For assignments that call Gemini models</li>
-<li><a href="../resources/gemini_code_assist.html">Installing Gemini Code Assist</a> — AI coding assistant in VS Code</li>
-<li><a href="../resources/gemini_cli.html">Installing Gemini CLI</a> — AI assistant in your terminal</li>
-</ul>
+<section id="i-committed-to-main-by-accident" class="level3">
+<h3 class="anchored" data-anchor-id="i-committed-to-main-by-accident">“I committed to <code>main</code> by accident”</h3>
+<p>If you already committed to <code>main</code>, don’t panic. You can move those commits to a branch. Replace <code>N</code> with the number of commits to move (e.g., <code>HEAD~1</code> for one commit, <code>HEAD~2</code> for two):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch my-new-branch</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> reset HEAD~N</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout my-new-branch</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This creates a branch with your commit, removes it from <code>main</code>, and switches you to the branch.</p>
+</section>
+<section id="i-created-a-branch-from-another-branch-instead-of-main" class="level3">
+<h3 class="anchored" data-anchor-id="i-created-a-branch-from-another-branch-instead-of-main">“I created a branch from another branch instead of <code>main</code>”</h3>
+<p>Always create new branches from <code>main</code>. If you accidentally branched from a feature branch, you can start over:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> stash</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout main</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> my-new-branch</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> stash pop</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="i-pushed-but-my-teammate-doesnt-see-my-changes" class="level3">
+<h3 class="anchored" data-anchor-id="i-pushed-but-my-teammate-doesnt-see-my-changes">“I pushed but my teammate doesn’t see my changes”</h3>
+<p>Commits are local until you push. If you committed but forgot to push:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If it’s a new branch you haven’t pushed before:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin branch-name</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
 </section>
 </section>
-<section id="all-resources" class="level2">
-<h2 class="anchored" data-anchor-id="all-resources">All resources</h2>
-<p>The list below is generated automatically from the files in this folder.</p>
-
+<section id="quick-reference" class="level2">
+<h2 class="anchored" data-anchor-id="quick-reference">Quick reference</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pull latest changes</td>
+<td><code>git pull</code></td>
+</tr>
+<tr class="even">
+<td>Create and switch to a branch</td>
+<td><code>git checkout -b branch-name</code></td>
+</tr>
+<tr class="odd">
+<td>Switch to an existing branch</td>
+<td><code>git checkout branch-name</code></td>
+</tr>
+<tr class="even">
+<td>See which branch you’re on</td>
+<td><code>git branch</code></td>
+</tr>
+<tr class="odd">
+<td>Push a new branch</td>
+<td><code>git push -u origin branch-name</code></td>
+</tr>
+<tr class="even">
+<td>Switch back to main</td>
+<td><code>git checkout main</code></td>
+</tr>
+</tbody>
+</table>
 
 
 </section>
+</section>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-resources">
-<div class="listing-actions-group">
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
-</div>
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Q291cnNlJTIwTG9naXN0aWNz" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1767132920854" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="15">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/faq.html" class="no-external">Course FAQ</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q291cnNlJTIwTG9naXN0aWNz'); return false;">Course Logistics</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/faq.html" class="no-external">
-<p>Responses to Frequently Asked Questions about the course.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/faq.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="Q291cnNlJTIwTG9naXN0aWNz" data-listing-date-sort="1772341200000" data-listing-file-modified-sort="1770909883071" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="642">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/group_led_discussions.html" class="no-external">Group-Led Discussion Spec</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q291cnNlJTIwTG9naXN0aWNz'); return false;">Course Logistics</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/group_led_discussions.html" class="no-external">
-<p>Requirements and timeline for group-led discussions (GLD1–GLD4).</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/group_led_discussions.html" class="no-external">
-<div class="listing-date">
-Mar 1, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="Q291cnNlJTIwTG9naXN0aWNzJTJDUHJvamVjdHM=" data-listing-date-sort="1773633600000" data-listing-file-modified-sort="1771259591082" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1107">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/final_project.html" class="no-external">Final Project Spec</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q291cnNlJTIwTG9naXN0aWNz'); return false;">Course Logistics</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHJvamVjdHM='); return false;">Projects</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/final_project.html" class="no-external">
-<p>Requirements, deliverables, and timeline for the final group project.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/final_project.html" class="no-external">
-<div class="listing-date">
-Mar 16, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="R2l0SHVi" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1767279343415" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="559">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/github_classroom_workflow.html" class="no-external">GitHub Classroom Workflow</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0SHVi'); return false;">GitHub</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/github_classroom_workflow.html" class="no-external">
-<p>Accept an assignment, clone the repo, set up a virtual environment, and submit your work.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/github_classroom_workflow.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="R2l0SHVi" data-listing-date-sort="1771218000000" data-listing-file-modified-sort="1771259330497" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1183">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/github_collaboration.html" class="no-external">GitHub Collaboration Quickstart</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0SHVi'); return false;">GitHub</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/github_collaboration.html" class="no-external">
-<p>How to use branches, pull requests, and merging to collaborate on a shared repo without stepping on each other’s work.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/github_collaboration.html" class="no-external">
-<div class="listing-date">
-Feb 16, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="R2l0SHVi" data-listing-date-sort="1771218000000" data-listing-file-modified-sort="1771253082080" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="385">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/github_issues.html" class="no-external">GitHub Issues Quickstart</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0SHVi'); return false;">GitHub</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/github_issues.html" class="no-external">
-<p>How to use GitHub Issues to track bugs, remaining features, and to-dos in your repo.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/github_issues.html" class="no-external">
-<div class="listing-date">
-Feb 16, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="UXVhcnRvJTJDR2l0SHVi" data-listing-date-sort="1771218000000" data-listing-file-modified-sort="1771260250526" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="962">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/quarto_portfolio_site.html" class="no-external">Publishing a Portfolio Site with Quarto</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UXVhcnRv'); return false;">Quarto</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0SHVi'); return false;">GitHub</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/quarto_portfolio_site.html" class="no-external">
-<p>How to create a simple project portfolio site using Quarto and publish it to GitHub Pages.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/quarto_portfolio_site.html" class="no-external">
-<div class="listing-date">
-Feb 16, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="U2V0dXA=" data-listing-date-sort="1767243600000" data-listing-file-modified-sort="1767912338231" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="612">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/gemini_api_key.html" class="no-external">Getting a Gemini API Key</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/gemini_api_key.html" class="no-external">
-<p>How to obtain a Gemini API key from Google AI Studio for course assignments.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/gemini_api_key.html" class="no-external">
-<div class="listing-date">
-Jan 1, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-categories="U2V0dXA=" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1768246261513" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="296">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/initial_setup_windows.html" class="no-external">Initial Setup (Windows)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/initial_setup_windows.html" class="no-external">
-<p>One-time installation of VS Code, Git, and Python 3.13 on Windows.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/initial_setup_windows.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="9" data-categories="U2V0dXA=" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1768246254939" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="353">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/initial_setup_macos.html" class="no-external">Initial Setup (macOS)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/initial_setup_macos.html" class="no-external">
-<p>One-time installation of VS Code, Git, Python 3.13, and Homebrew on macOS.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/initial_setup_macos.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="10" data-categories="U2V0dXA=" data-listing-date-sort="1767243600000" data-listing-file-modified-sort="1767912743598" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="226">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/gemini_cli.html" class="no-external">Installing Gemini CLI</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/gemini_cli.html" class="no-external">
-<p>Set up Google’s Gemini CLI for AI assistance in your terminal.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/gemini_cli.html" class="no-external">
-<div class="listing-date">
-Jan 1, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="11" data-categories="U2V0dXA=" data-listing-date-sort="1767243600000" data-listing-file-modified-sort="1767913166399" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="288">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/gemini_code_assist.html" class="no-external">Installing Gemini Code Assist</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/gemini_code_assist.html" class="no-external">
-<p>Set up the Gemini Code Assist extension in VS Code for AI-powered coding assistance.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/gemini_code_assist.html" class="no-external">
-<div class="listing-date">
-Jan 1, 2026
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

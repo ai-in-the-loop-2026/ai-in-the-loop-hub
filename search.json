@@ -875,298 +875,417 @@
     "text": "Next steps\n\nComplete Initial Setup (Windows or macOS guide)\nFollow GitHub Classroom Workflow Instructions (A0: skip steps 3-4):\n\nAccept A0 — Git and GitHub Fundamentals\nClone your A0 repo\nMake changes (see README.md), commit + push"
   },
   {
-    "objectID": "resources/initial_setup_windows.html",
-    "href": "resources/initial_setup_windows.html",
-    "title": "Initial Setup (Windows)",
+    "objectID": "resources/quarto_portfolio_site.html",
+    "href": "resources/quarto_portfolio_site.html",
+    "title": "Publishing a Portfolio Site with Quarto",
     "section": "",
-    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13). Download: https://www.python.org/downloads/\n\n\n\n\n\n\nWindows 10/11\nA GitHub account (the same one you’ll use to accept GitHub Classroom assignments)\n\n\n\n\n\n\n\nhttps://code.visualstudio.com/download\n\n\n\n\nRun the installer.\nAccept defaults unless you know you want something else.\nRecommended: enable “Add to PATH”.\n\n(Official Windows setup doc: https://code.visualstudio.com/docs/setup/windows)\n\n\n\nOpen VS Code from the Start menu.\n\n\n\n\n\n\n\nUse either official source:\n\nhttps://git-scm.com/download/win\nhttps://gitforwindows.org/\n\n\n\n\nAccept defaults unless you know you need different settings.\n\n\n\nOpen PowerShell and run:\ngit --version\n\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list\n\n\n\n\n\n\n\nhttps://www.python.org/downloads/\n\n\n\nWhen running the installer: 1. Check “Add python.exe to PATH” 2. Keep pip included (default) 3. Keep the Python launcher (py) enabled if offered (default)\n\n\n\nClose and reopen PowerShell, then run:\npython --version\npy --version\npip --version\n\n\n\n\n\nIn VS Code, go to Extensions:\n\nPython (Microsoft)\n\nOptional:\n\nGitHub Pull Requests (GitHub)\n\n\n\n\n\nFor each assignment, follow the GitHub Classroom Workflow Guide."
+    "text": "Quarto turns markdown files into a polished website — no HTML or CSS required. This guide walks you through creating a simple portfolio site for your final project and publishing it to GitHub Pages.\n\n\n\n\nDownload and run the installer for your platform from quarto.org/docs/download.\nIn VS Code, install the Quarto extension (quarto.quarto). This gives you a Preview button, syntax highlighting, and autocomplete for .qmd files.\n\n\n\n\n\nFollow the steps in Setting up your portfolio repo below to create a clean copy of your project code without development history. Then open the folder in VS Code.\n\n\n\n\nCreate a file called _quarto.yml in the root of your repo:\nproject:\n  type: website\n  render:\n    - \"*.qmd\"\n\nwebsite:\n  title: \"Your Project Name\"\n\nformat:\n  html:\n    theme: cosmo\nThe render: [\"*.qmd\"] line tells Quarto to only render .qmd files, so your project’s README.md and other .md files won’t get pulled into the site.\nChange the title to your project name. If you want a different look, you can swap cosmo for another theme like flatly, lumen, or minty (full list).\n\n\n\n\nCreate an index.qmd file in the root of your repo (next to _quarto.yml). This is your home page. Write it in markdown:\nHere’s a minimal starting point — adapt the structure and sections to fit your project:\n---\ntitle: \"Your Project Name\"\n---\n\n## What it does\n\nDescribe your project for a general audience. What problem does it solve? Who is it for?\n\n![The main interface](images/main-interface.png)\n\n## How it works\n\nSummarize the technical approach — tools, LangGraph workflow, etc. Keep it accessible.\n\n![Example of the workflow in action](images/workflow-example.png)\n\n## Team\n\n- Name 1\n- Name 2\n- Name 3\nPlace screenshots in an images/ folder and embed them where they’re relevant — alongside the text they illustrate, not in a separate pile.\nYou can add more pages — just create more .qmd files in the root of your repo. Link to them from index.qmd using standard markdown links:\nLearn more about our [technical architecture](architecture.qmd) or see the [demo walkthrough](demo.qmd).\n\n\n\n\nClick the Preview button in the top right of the VS Code editor when you have a .qmd file open. Your site opens in a panel and auto-refreshes as you edit.\nYou can also preview from the terminal:\nquarto preview\n\n\n\n\nWhen you’re happy with the site, open a terminal in VS Code and run:\nquarto publish gh-pages\nQuarto will render your site, push it to a gh-pages branch, and give you the URL. Your site will be live at https://USERNAME.github.io/REPO-NAME/.\n\n\n\n\n\nKeep it concise. This is a portfolio piece, not a technical report. A recruiter or admissions reviewer should be able to understand your project in a few minutes.\nInclude visuals. Screenshots or screen recordings make the project tangible.\nInclude your project code. Someone should be able to clone this repo and run your app. Don’t include your AI development log or full commit history — see Setting up your portfolio repo below.\nConsider a demo video. A short screen recording uploaded to YouTube (unlisted, so only people with the link can view it) can be more compelling than screenshots alone. Link to it from your site.\n\n\n\n\n\nYour public portfolio repo should contain your project code but not the development history or AI development log from your private working repo. Instead, include a brief summary in your README of how AI tools were used in developing the project. You’ll build the site together as a team, then each member copies it to their own GitHub so it shows up on everyone’s profile.\n\n\nOne team member does steps 1–5. The others join as collaborators.\n\nCopy your entire working repo folder to a new location with a clean name (e.g., your-project-name).\nOpen the copied folder in VS Code, then open a terminal and delete the .git/ folder and any files you don’t want public:\n\n\nmacOSWindows (PowerShell)\n\n\nrm -rf .git\nrm -f ai_dev_log.md .env\n\n\nRemove-Item -Recurse -Force .git\nRemove-Item -Force ai_dev_log.md, .env\n\n\n\n\nInitialize a fresh repo and make your first commit:\n\ngit init\ngit add .\ngit commit -m \"Initial commit\"\n\nCreate a new repo on GitHub:\n\nGo to github.com/new\nName it the same thing as your local folder\nSet it to Public\nDo not check “Add a README file” or any other options — the repo must be empty\nClick Create repository\n\nGitHub will show a page with setup instructions. Under “…or push an existing repository from the command line”, copy the commands and run them. They will look like:\n\ngit remote add origin https://github.com/USERNAME/your-project-name.git\ngit push -u origin main\n\nAdd your teammates and the instructor as collaborators: go to the repo on GitHub → Settings → Collaborators → Add people.\n\nNow your team can collaborate on the portfolio site — add the _quarto.yml, index.qmd, screenshots, etc. Use the same branch and pull request workflow as your working repo.\n\n\n\nOnce the portfolio site is finished, each other team member copies it to their own GitHub account so it appears on their profile (not as a fork).\n\nClone the shared repo to a new folder:\n\ngit clone https://github.com/TEAMMATE/your-project-name.git your-project-name-copy\ncd your-project-name-copy\n\nRemove the git history and reinitialize:\n\n\nmacOSWindows (PowerShell)\n\n\nrm -rf .git\ngit init\ngit add .\ngit commit -m \"Initial commit\"\n\n\nRemove-Item -Recurse -Force .git\ngit init\ngit add .\ngit commit -m \"Initial commit\"\n\n\n\n\nCreate your own repo on GitHub (same as step 4 above — github.com/new, same name, public, empty).\nPush to your repo:\n\ngit remote add origin https://github.com/YOUR-USERNAME/your-project-name.git\ngit push -u origin main\n\nPublish your own GitHub Pages site:\n\nquarto publish gh-pages\nEach team member ends up with their own copy of the portfolio site on their own GitHub profile."
   },
   {
-    "objectID": "resources/initial_setup_windows.html#creating-with-ai-in-the-loop-one-time-windows-setup",
-    "href": "resources/initial_setup_windows.html#creating-with-ai-in-the-loop-one-time-windows-setup",
-    "title": "Initial Setup (Windows)",
+    "objectID": "resources/quarto_portfolio_site.html#install-quarto",
+    "href": "resources/quarto_portfolio_site.html#install-quarto",
+    "title": "Publishing a Portfolio Site with Quarto",
     "section": "",
-    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13). Download: https://www.python.org/downloads/"
+    "text": "Download and run the installer for your platform from quarto.org/docs/download.\nIn VS Code, install the Quarto extension (quarto.quarto). This gives you a Preview button, syntax highlighting, and autocomplete for .qmd files."
   },
   {
-    "objectID": "resources/initial_setup_windows.html#what-you-need",
-    "href": "resources/initial_setup_windows.html#what-you-need",
-    "title": "Initial Setup (Windows)",
+    "objectID": "resources/quarto_portfolio_site.html#set-up-your-public-repo",
+    "href": "resources/quarto_portfolio_site.html#set-up-your-public-repo",
+    "title": "Publishing a Portfolio Site with Quarto",
     "section": "",
-    "text": "Windows 10/11\nA GitHub account (the same one you’ll use to accept GitHub Classroom assignments)"
+    "text": "Follow the steps in Setting up your portfolio repo below to create a clean copy of your project code without development history. Then open the folder in VS Code."
   },
   {
-    "objectID": "resources/initial_setup_windows.html#install-visual-studio-code-vs-code",
-    "href": "resources/initial_setup_windows.html#install-visual-studio-code-vs-code",
-    "title": "Initial Setup (Windows)",
+    "objectID": "resources/quarto_portfolio_site.html#add-a-quarto-config-file",
+    "href": "resources/quarto_portfolio_site.html#add-a-quarto-config-file",
+    "title": "Publishing a Portfolio Site with Quarto",
     "section": "",
-    "text": "https://code.visualstudio.com/download\n\n\n\n\nRun the installer.\nAccept defaults unless you know you want something else.\nRecommended: enable “Add to PATH”.\n\n(Official Windows setup doc: https://code.visualstudio.com/docs/setup/windows)\n\n\n\nOpen VS Code from the Start menu."
+    "text": "Create a file called _quarto.yml in the root of your repo:\nproject:\n  type: website\n  render:\n    - \"*.qmd\"\n\nwebsite:\n  title: \"Your Project Name\"\n\nformat:\n  html:\n    theme: cosmo\nThe render: [\"*.qmd\"] line tells Quarto to only render .qmd files, so your project’s README.md and other .md files won’t get pulled into the site.\nChange the title to your project name. If you want a different look, you can swap cosmo for another theme like flatly, lumen, or minty (full list)."
   },
   {
-    "objectID": "resources/initial_setup_windows.html#install-git-git-for-windows",
-    "href": "resources/initial_setup_windows.html#install-git-git-for-windows",
-    "title": "Initial Setup (Windows)",
+    "objectID": "resources/quarto_portfolio_site.html#write-your-content",
+    "href": "resources/quarto_portfolio_site.html#write-your-content",
+    "title": "Publishing a Portfolio Site with Quarto",
     "section": "",
-    "text": "Use either official source:\n\nhttps://git-scm.com/download/win\nhttps://gitforwindows.org/\n\n\n\n\nAccept defaults unless you know you need different settings.\n\n\n\nOpen PowerShell and run:\ngit --version\n\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list"
+    "text": "Create an index.qmd file in the root of your repo (next to _quarto.yml). This is your home page. Write it in markdown:\nHere’s a minimal starting point — adapt the structure and sections to fit your project:\n---\ntitle: \"Your Project Name\"\n---\n\n## What it does\n\nDescribe your project for a general audience. What problem does it solve? Who is it for?\n\n![The main interface](images/main-interface.png)\n\n## How it works\n\nSummarize the technical approach — tools, LangGraph workflow, etc. Keep it accessible.\n\n![Example of the workflow in action](images/workflow-example.png)\n\n## Team\n\n- Name 1\n- Name 2\n- Name 3\nPlace screenshots in an images/ folder and embed them where they’re relevant — alongside the text they illustrate, not in a separate pile.\nYou can add more pages — just create more .qmd files in the root of your repo. Link to them from index.qmd using standard markdown links:\nLearn more about our [technical architecture](architecture.qmd) or see the [demo walkthrough](demo.qmd)."
   },
   {
-    "objectID": "resources/initial_setup_windows.html#install-python-course-standard-3.13.x",
-    "href": "resources/initial_setup_windows.html#install-python-course-standard-3.13.x",
-    "title": "Initial Setup (Windows)",
+    "objectID": "resources/quarto_portfolio_site.html#preview-your-site",
+    "href": "resources/quarto_portfolio_site.html#preview-your-site",
+    "title": "Publishing a Portfolio Site with Quarto",
     "section": "",
-    "text": "https://www.python.org/downloads/\n\n\n\nWhen running the installer: 1. Check “Add python.exe to PATH” 2. Keep pip included (default) 3. Keep the Python launcher (py) enabled if offered (default)\n\n\n\nClose and reopen PowerShell, then run:\npython --version\npy --version\npip --version"
+    "text": "Click the Preview button in the top right of the VS Code editor when you have a .qmd file open. Your site opens in a panel and auto-refreshes as you edit.\nYou can also preview from the terminal:\nquarto preview"
   },
   {
-    "objectID": "resources/initial_setup_windows.html#install-vs-code-extensions",
-    "href": "resources/initial_setup_windows.html#install-vs-code-extensions",
-    "title": "Initial Setup (Windows)",
+    "objectID": "resources/quarto_portfolio_site.html#publish-to-github-pages",
+    "href": "resources/quarto_portfolio_site.html#publish-to-github-pages",
+    "title": "Publishing a Portfolio Site with Quarto",
     "section": "",
-    "text": "In VS Code, go to Extensions:\n\nPython (Microsoft)\n\nOptional:\n\nGitHub Pull Requests (GitHub)"
+    "text": "When you’re happy with the site, open a terminal in VS Code and run:\nquarto publish gh-pages\nQuarto will render your site, push it to a gh-pages branch, and give you the URL. Your site will be live at https://USERNAME.github.io/REPO-NAME/."
   },
   {
-    "objectID": "resources/initial_setup_windows.html#youre-done-with-one-time-setup",
-    "href": "resources/initial_setup_windows.html#youre-done-with-one-time-setup",
-    "title": "Initial Setup (Windows)",
+    "objectID": "resources/quarto_portfolio_site.html#tips",
+    "href": "resources/quarto_portfolio_site.html#tips",
+    "title": "Publishing a Portfolio Site with Quarto",
+    "section": "",
+    "text": "Keep it concise. This is a portfolio piece, not a technical report. A recruiter or admissions reviewer should be able to understand your project in a few minutes.\nInclude visuals. Screenshots or screen recordings make the project tangible.\nInclude your project code. Someone should be able to clone this repo and run your app. Don’t include your AI development log or full commit history — see Setting up your portfolio repo below.\nConsider a demo video. A short screen recording uploaded to YouTube (unlisted, so only people with the link can view it) can be more compelling than screenshots alone. Link to it from your site."
+  },
+  {
+    "objectID": "resources/quarto_portfolio_site.html#setting-up-your-portfolio-repo",
+    "href": "resources/quarto_portfolio_site.html#setting-up-your-portfolio-repo",
+    "title": "Publishing a Portfolio Site with Quarto",
+    "section": "",
+    "text": "Your public portfolio repo should contain your project code but not the development history or AI development log from your private working repo. Instead, include a brief summary in your README of how AI tools were used in developing the project. You’ll build the site together as a team, then each member copies it to their own GitHub so it shows up on everyone’s profile.\n\n\nOne team member does steps 1–5. The others join as collaborators.\n\nCopy your entire working repo folder to a new location with a clean name (e.g., your-project-name).\nOpen the copied folder in VS Code, then open a terminal and delete the .git/ folder and any files you don’t want public:\n\n\nmacOSWindows (PowerShell)\n\n\nrm -rf .git\nrm -f ai_dev_log.md .env\n\n\nRemove-Item -Recurse -Force .git\nRemove-Item -Force ai_dev_log.md, .env\n\n\n\n\nInitialize a fresh repo and make your first commit:\n\ngit init\ngit add .\ngit commit -m \"Initial commit\"\n\nCreate a new repo on GitHub:\n\nGo to github.com/new\nName it the same thing as your local folder\nSet it to Public\nDo not check “Add a README file” or any other options — the repo must be empty\nClick Create repository\n\nGitHub will show a page with setup instructions. Under “…or push an existing repository from the command line”, copy the commands and run them. They will look like:\n\ngit remote add origin https://github.com/USERNAME/your-project-name.git\ngit push -u origin main\n\nAdd your teammates and the instructor as collaborators: go to the repo on GitHub → Settings → Collaborators → Add people.\n\nNow your team can collaborate on the portfolio site — add the _quarto.yml, index.qmd, screenshots, etc. Use the same branch and pull request workflow as your working repo.\n\n\n\nOnce the portfolio site is finished, each other team member copies it to their own GitHub account so it appears on their profile (not as a fork).\n\nClone the shared repo to a new folder:\n\ngit clone https://github.com/TEAMMATE/your-project-name.git your-project-name-copy\ncd your-project-name-copy\n\nRemove the git history and reinitialize:\n\n\nmacOSWindows (PowerShell)\n\n\nrm -rf .git\ngit init\ngit add .\ngit commit -m \"Initial commit\"\n\n\nRemove-Item -Recurse -Force .git\ngit init\ngit add .\ngit commit -m \"Initial commit\"\n\n\n\n\nCreate your own repo on GitHub (same as step 4 above — github.com/new, same name, public, empty).\nPush to your repo:\n\ngit remote add origin https://github.com/YOUR-USERNAME/your-project-name.git\ngit push -u origin main\n\nPublish your own GitHub Pages site:\n\nquarto publish gh-pages\nEach team member ends up with their own copy of the portfolio site on their own GitHub profile."
+  },
+  {
+    "objectID": "resources/initial_setup_macos.html",
+    "href": "resources/initial_setup_macos.html",
+    "title": "Initial Setup (macOS)",
+    "section": "",
+    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13).\n\n\n\n\n\n\nmacOS (recent version)\nAdmin access for installs\nA GitHub account\n\n\n\n\n\nOpen Terminal and run:\nxcode-select --install\nVerify:\ngit --version\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list\n\n\n\n\n\nRun the official installer:\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\nIf the installer prints a line that starts with eval \"$(...)\", copy/paste it into Terminal (this adds Homebrew to your PATH).\nVerify:\nbrew --version\n\n\n\n\nGCM securely stores your GitHub credentials so you don’t have to re-authenticate on every push.\nInstall:\nbrew install git-credential-manager\nVerify:\ngit-credential-manager --version\nThe first time you git push, GCM will open a browser window to authenticate with GitHub. After that, your credentials are stored securely.\n\n\n\n\nInstall:\nbrew install python@3.13\nVerify:\npython3.13 --version\npython3.13 -m pip --version\n\nIf python3.13 is not found, run:\nbrew info python@3.13\nand follow the “caveats” it prints (Homebrew will tell you what to add to your PATH).\n\n\n\n\n\n\n\n\nDownload: https://code.visualstudio.com/download\nDrag Visual Studio Code.app to Applications\nOpen VS Code once\n\n\n\n\nbrew install --cask visual-studio-code\n\n\n\n\n\nIn VS Code, go to Extensions:\n\nPython (Microsoft)\n\nOptional:\n\nGitHub Pull Requests (GitHub)\n\n\n\nIn VS Code:\n\nCmd+Shift+P → Shell Command: Install ‘code’ command in PATH\n\nVerify in Terminal:\ncode --version\n\n\n\n\n\nFor each assignment, follow the GitHub Classroom Workflow Guide."
+  },
+  {
+    "objectID": "resources/initial_setup_macos.html#creating-with-ai-in-the-loop-one-time-macos-setup",
+    "href": "resources/initial_setup_macos.html#creating-with-ai-in-the-loop-one-time-macos-setup",
+    "title": "Initial Setup (macOS)",
+    "section": "",
+    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13)."
+  },
+  {
+    "objectID": "resources/initial_setup_macos.html#what-you-need",
+    "href": "resources/initial_setup_macos.html#what-you-need",
+    "title": "Initial Setup (macOS)",
+    "section": "",
+    "text": "macOS (recent version)\nAdmin access for installs\nA GitHub account"
+  },
+  {
+    "objectID": "resources/initial_setup_macos.html#install-apple-command-line-tools-includes-git",
+    "href": "resources/initial_setup_macos.html#install-apple-command-line-tools-includes-git",
+    "title": "Initial Setup (macOS)",
+    "section": "",
+    "text": "Open Terminal and run:\nxcode-select --install\nVerify:\ngit --version\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list"
+  },
+  {
+    "objectID": "resources/initial_setup_macos.html#install-homebrew",
+    "href": "resources/initial_setup_macos.html#install-homebrew",
+    "title": "Initial Setup (macOS)",
+    "section": "",
+    "text": "Run the official installer:\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\nIf the installer prints a line that starts with eval \"$(...)\", copy/paste it into Terminal (this adds Homebrew to your PATH).\nVerify:\nbrew --version"
+  },
+  {
+    "objectID": "resources/initial_setup_macos.html#install-git-credential-manager-gcm",
+    "href": "resources/initial_setup_macos.html#install-git-credential-manager-gcm",
+    "title": "Initial Setup (macOS)",
+    "section": "",
+    "text": "GCM securely stores your GitHub credentials so you don’t have to re-authenticate on every push.\nInstall:\nbrew install git-credential-manager\nVerify:\ngit-credential-manager --version\nThe first time you git push, GCM will open a browser window to authenticate with GitHub. After that, your credentials are stored securely."
+  },
+  {
+    "objectID": "resources/initial_setup_macos.html#install-python-3.13.x-via-homebrew",
+    "href": "resources/initial_setup_macos.html#install-python-3.13.x-via-homebrew",
+    "title": "Initial Setup (macOS)",
+    "section": "",
+    "text": "Install:\nbrew install python@3.13\nVerify:\npython3.13 --version\npython3.13 -m pip --version\n\nIf python3.13 is not found, run:\nbrew info python@3.13\nand follow the “caveats” it prints (Homebrew will tell you what to add to your PATH)."
+  },
+  {
+    "objectID": "resources/initial_setup_macos.html#install-vs-code",
+    "href": "resources/initial_setup_macos.html#install-vs-code",
+    "title": "Initial Setup (macOS)",
+    "section": "",
+    "text": "Download: https://code.visualstudio.com/download\nDrag Visual Studio Code.app to Applications\nOpen VS Code once\n\n\n\n\nbrew install --cask visual-studio-code"
+  },
+  {
+    "objectID": "resources/initial_setup_macos.html#install-vs-code-extensions",
+    "href": "resources/initial_setup_macos.html#install-vs-code-extensions",
+    "title": "Initial Setup (macOS)",
+    "section": "",
+    "text": "In VS Code, go to Extensions:\n\nPython (Microsoft)\n\nOptional:\n\nGitHub Pull Requests (GitHub)\n\n\n\nIn VS Code:\n\nCmd+Shift+P → Shell Command: Install ‘code’ command in PATH\n\nVerify in Terminal:\ncode --version"
+  },
+  {
+    "objectID": "resources/initial_setup_macos.html#youre-done-with-one-time-setup",
+    "href": "resources/initial_setup_macos.html#youre-done-with-one-time-setup",
+    "title": "Initial Setup (macOS)",
     "section": "",
     "text": "For each assignment, follow the GitHub Classroom Workflow Guide."
   },
   {
-    "objectID": "resources/initial_setup_windows.html#git-not-found-in-vs-code",
-    "href": "resources/initial_setup_windows.html#git-not-found-in-vs-code",
-    "title": "Initial Setup (Windows)",
-    "section": "Git not found in VS Code",
-    "text": "Git not found in VS Code\n\nInstall Git for Windows\nQuit and restart VS Code\nVerify:\ngit --version"
+    "objectID": "resources/initial_setup_macos.html#homebrew-brew-command-not-found",
+    "href": "resources/initial_setup_macos.html#homebrew-brew-command-not-found",
+    "title": "Initial Setup (macOS)",
+    "section": "Homebrew: brew: command not found",
+    "text": "Homebrew: brew: command not found\nRe-run the PATH line the installer printed (the eval ... line), then restart Terminal and try:\nbrew --version"
   },
   {
-    "objectID": "resources/initial_setup_windows.html#python-not-recognized-or-opens-microsoft-store",
-    "href": "resources/initial_setup_windows.html#python-not-recognized-or-opens-microsoft-store",
-    "title": "Initial Setup (Windows)",
-    "section": "python not recognized or opens Microsoft Store",
-    "text": "python not recognized or opens Microsoft Store\n\nInstall Python 3.13.x\nMake sure Add to PATH is checked\nRestart PowerShell and verify:\npython --version\npy --version"
+    "objectID": "resources/initial_setup_macos.html#python-3.13-not-found-python3.13-command-not-found",
+    "href": "resources/initial_setup_macos.html#python-3.13-not-found-python3.13-command-not-found",
+    "title": "Initial Setup (macOS)",
+    "section": "Python 3.13 not found (python3.13: command not found)",
+    "text": "Python 3.13 not found (python3.13: command not found)\nRun:\nbrew info python@3.13\nand follow the “caveats” (it tells you exactly what to add to your PATH). Then open a new Terminal and retry:\npython3.13 --version"
   },
   {
-    "objectID": "resources/initial_setup_windows.html#powershell-wont-run-scripts-execution-policy",
-    "href": "resources/initial_setup_windows.html#powershell-wont-run-scripts-execution-policy",
-    "title": "Initial Setup (Windows)",
-    "section": "PowerShell won’t run scripts (execution policy)",
-    "text": "PowerShell won’t run scripts (execution policy)\nUse Command Prompt terminal in VS Code instead, or (advanced) allow local scripts:\nSet-ExecutionPolicy -Scope CurrentUser RemoteSigned"
+    "objectID": "resources/initial_setup_macos.html#vs-code-code-command-not-found",
+    "href": "resources/initial_setup_macos.html#vs-code-code-command-not-found",
+    "title": "Initial Setup (macOS)",
+    "section": "VS Code: code: command not found",
+    "text": "VS Code: code: command not found\nIn VS Code:\n\nCmd+Shift+P → Shell Command: Install ‘code’ command in PATH Restart Terminal."
   },
   {
-    "objectID": "resources/initial_setup_windows.html#if-youre-stuck-include-these-in-your-help-request",
-    "href": "resources/initial_setup_windows.html#if-youre-stuck-include-these-in-your-help-request",
-    "title": "Initial Setup (Windows)",
+    "objectID": "resources/initial_setup_macos.html#if-youre-stuck-include-these-in-your-help-request",
+    "href": "resources/initial_setup_macos.html#if-youre-stuck-include-these-in-your-help-request",
+    "title": "Initial Setup (macOS)",
     "section": "If you’re stuck, include these in your help request",
-    "text": "If you’re stuck, include these in your help request\ngit --version\npython --version\npy --version"
+    "text": "If you’re stuck, include these in your help request\ngit --version\npython3.13 --version\nbrew --version"
   },
   {
-    "objectID": "resources/group_led_discussions.html",
-    "href": "resources/group_led_discussions.html",
-    "title": "Group-Led Discussion Spec",
+    "objectID": "resources/github_issues.html",
+    "href": "resources/github_issues.html",
+    "title": "GitHub Issues Quickstart",
     "section": "",
-    "text": "Starting in Week 10, each final project group will lead one in-class discussion on an AI-related topic. This page describes the requirements, deliverables, and timeline.\n\n\nYour group will choose a topic, curate resources, write reflection prompts, prepare discussion questions, and lead the class discussion. The instructor will create a written reflection assignment on GitHub Classroom and add your resources to the course website.\n\n\n\n\n\nDue: at least one week before your discussion (earlier is better)\nChoose an AI-related topic that can sustain a good class discussion. Topics at the intersection of AI and society work well (e.g., AI and healthcare, AI and creative work, AI and faith, AI regulation), but you’re not limited to that — any AI-related topic that enables thoughtful discussion is fair game. Then curate 3–4 resources that the rest of the class will consume before the discussion. Your resources must:\n\nInclude at least two of the following categories: text (articles), audio, video\nWhen possible, choose resources that represent opposing or contrasting perspectives — discussions are richer when the readings disagree\nText articles must be from high-quality sources (e.g., The Atlantic, The New Yorker, Wired, MIT Technology Review, Harvard Business Review, NPR, PBS, peer-reviewed journals)\nAll resources must be accessible to students (accessing through the college library’s electronic collection is fine)\nEach resource needs a title, author/source, and a 1–2 sentence description explaining what it covers and why it’s relevant\nRead, watch, or listen to every resource yourself before submitting them — you need to know the material well to lead a discussion on it\n\nYou may also include a few optional “learn more” resources for students who want to go deeper. These are not required but are a nice addition.\nModel your resource descriptions on the ones provided for D1–D4 on the Schedule page.\n\n\n\nDue: at least one week before your discussion\nWrite two writing prompts that students will respond to as an in-class written reflection before the discussion begins. Strong prompts:\n\nConnect to the assigned resources and topic\nInvite students to reflect on their own lives, experiences, or future plans\nCannot be answered with a quick, surface-level response\nStimulate genuine thinking and introspection (not just summary of the readings)\n\nLook at previous written reflections (WR1–WR4) for examples of effective prompts.\n\n\n\nDue: at least two days before your discussion\nPrepare 10–15 discussion questions to drive the in-class conversation. Good discussion questions:\n\nCover a variety of angles on the topic (don’t cluster around one sub-theme)\nInclude questions that students can relate to their own lives and experiences\nAre interesting and thought-provoking, not surface-level comprehension checks\nDraw on the assigned resources but also push beyond them\nMix concrete/specific questions with bigger-picture ones\n\n\n\n\n\nSubmit all deliverables by email to the instructor. Submitting more than a week in advance is encouraged — the instructor may ask you to revise your topic, swap a resource, or strengthen a prompt before the discussion date.\n\n\n\n\n\n\n\n\n\n\nDeliverable\nDeadline\n\n\n\n\nTopic + resources (with descriptions)\nAt least 1 week before discussion\n\n\nTwo writing prompts\nAt least 1 week before discussion\n\n\n10–15 discussion questions\nAt least 2 days before discussion\n\n\n\n\n\n\nAfter receiving your materials, the instructor will:\n\nReview and provide feedback (possibly requesting changes)\nCreate the written reflection assignment on GitHub Classroom\nAdd your resources and descriptions to the course website\nYour group leads the in-class discussion on the scheduled date\n\n\n\n\n\nStart early. The instructor may ask for revisions, so give yourself time.\nPick a topic your group genuinely cares about. Enthusiasm is contagious.\nTest your resources. Make sure links work and that articles aren’t behind inaccessible paywalls.\nPrepare more questions than you think you’ll need. Some questions land better than others, and you want options.\nPlan for facilitation. Think about how you’ll structure the discussion — who opens, how you’ll handle quiet moments, etc."
+    "text": "GitHub Issues are lightweight to-do items attached to your repository. Each issue has a title and a description — think of them as sticky notes for your project that your whole team (and the instructor) can see.\nYou’ll use issues in your final project to track remaining features and known bugs, especially around the prototype checkpoint.\n\n\n\n\nGo to your repo on GitHub.\nClick the Issues tab (near the top of the page, next to Code).\nClick New issue.\nGive it a short, descriptive title (e.g., “Add error handling for invalid API responses”).\nIn the description, add any helpful details — what the feature should do, steps to reproduce a bug, etc.\nClick Submit new issue.\n\nThat’s it. GitHub assigns it a number (e.g., #1, #2) that you can reference elsewhere.\n\n\n\n\nWhen the work is done, you have two options:\n\n\nOpen the issue on GitHub and click Close issue at the bottom.\n\n\n\nInclude a keyword and the issue number in your commit message:\ngit commit -m \"Add input validation — fixes #3\"\nWhen you push that commit, GitHub automatically closes issue #3. Any of these keywords work: fixes, closes, resolves (case-insensitive).\n\n\n\n\n\nKeep it simple. A good issue has:\n\nA clear title — someone should understand the task from the title alone\nEnough context — a sentence or two about what needs to happen or what’s broken\n\nExamples:\n\n\n\n\n\n\n\nTitle\nDescription\n\n\n\n\nAdd retry logic for API timeouts\nRight now a timeout crashes the app. Should retry up to 3 times before showing an error.\n\n\nFix crash when user enters empty query\nEntering an empty string in the Streamlit input causes a KeyError in process_query().\n\n\nBuild “export to PDF” feature\nUsers should be able to export the summary as a PDF from the Streamlit interface.\n\n\n\n\n\n\n\n\nOne issue per task. Don’t lump multiple features into a single issue.\nCreate issues as you go. When you notice a bug or think of a feature, open an issue right away so you don’t forget.\nReference issues in commits. Even if you don’t auto-close them, mentioning #5 in a commit message creates a link between the commit and the issue, making it easy to trace what changed and why."
   },
   {
-    "objectID": "resources/group_led_discussions.html#overview",
-    "href": "resources/group_led_discussions.html#overview",
-    "title": "Group-Led Discussion Spec",
+    "objectID": "resources/github_issues.html#creating-an-issue",
+    "href": "resources/github_issues.html#creating-an-issue",
+    "title": "GitHub Issues Quickstart",
     "section": "",
-    "text": "Your group will choose a topic, curate resources, write reflection prompts, prepare discussion questions, and lead the class discussion. The instructor will create a written reflection assignment on GitHub Classroom and add your resources to the course website."
+    "text": "Go to your repo on GitHub.\nClick the Issues tab (near the top of the page, next to Code).\nClick New issue.\nGive it a short, descriptive title (e.g., “Add error handling for invalid API responses”).\nIn the description, add any helpful details — what the feature should do, steps to reproduce a bug, etc.\nClick Submit new issue.\n\nThat’s it. GitHub assigns it a number (e.g., #1, #2) that you can reference elsewhere."
   },
   {
-    "objectID": "resources/group_led_discussions.html#deliverables",
-    "href": "resources/group_led_discussions.html#deliverables",
-    "title": "Group-Led Discussion Spec",
+    "objectID": "resources/github_issues.html#closing-an-issue",
+    "href": "resources/github_issues.html#closing-an-issue",
+    "title": "GitHub Issues Quickstart",
     "section": "",
-    "text": "Due: at least one week before your discussion (earlier is better)\nChoose an AI-related topic that can sustain a good class discussion. Topics at the intersection of AI and society work well (e.g., AI and healthcare, AI and creative work, AI and faith, AI regulation), but you’re not limited to that — any AI-related topic that enables thoughtful discussion is fair game. Then curate 3–4 resources that the rest of the class will consume before the discussion. Your resources must:\n\nInclude at least two of the following categories: text (articles), audio, video\nWhen possible, choose resources that represent opposing or contrasting perspectives — discussions are richer when the readings disagree\nText articles must be from high-quality sources (e.g., The Atlantic, The New Yorker, Wired, MIT Technology Review, Harvard Business Review, NPR, PBS, peer-reviewed journals)\nAll resources must be accessible to students (accessing through the college library’s electronic collection is fine)\nEach resource needs a title, author/source, and a 1–2 sentence description explaining what it covers and why it’s relevant\nRead, watch, or listen to every resource yourself before submitting them — you need to know the material well to lead a discussion on it\n\nYou may also include a few optional “learn more” resources for students who want to go deeper. These are not required but are a nice addition.\nModel your resource descriptions on the ones provided for D1–D4 on the Schedule page.\n\n\n\nDue: at least one week before your discussion\nWrite two writing prompts that students will respond to as an in-class written reflection before the discussion begins. Strong prompts:\n\nConnect to the assigned resources and topic\nInvite students to reflect on their own lives, experiences, or future plans\nCannot be answered with a quick, surface-level response\nStimulate genuine thinking and introspection (not just summary of the readings)\n\nLook at previous written reflections (WR1–WR4) for examples of effective prompts.\n\n\n\nDue: at least two days before your discussion\nPrepare 10–15 discussion questions to drive the in-class conversation. Good discussion questions:\n\nCover a variety of angles on the topic (don’t cluster around one sub-theme)\nInclude questions that students can relate to their own lives and experiences\nAre interesting and thought-provoking, not surface-level comprehension checks\nDraw on the assigned resources but also push beyond them\nMix concrete/specific questions with bigger-picture ones"
+    "text": "When the work is done, you have two options:\n\n\nOpen the issue on GitHub and click Close issue at the bottom.\n\n\n\nInclude a keyword and the issue number in your commit message:\ngit commit -m \"Add input validation — fixes #3\"\nWhen you push that commit, GitHub automatically closes issue #3. Any of these keywords work: fixes, closes, resolves (case-insensitive)."
   },
   {
-    "objectID": "resources/group_led_discussions.html#submission",
-    "href": "resources/group_led_discussions.html#submission",
-    "title": "Group-Led Discussion Spec",
+    "objectID": "resources/github_issues.html#what-makes-a-good-issue",
+    "href": "resources/github_issues.html#what-makes-a-good-issue",
+    "title": "GitHub Issues Quickstart",
     "section": "",
-    "text": "Submit all deliverables by email to the instructor. Submitting more than a week in advance is encouraged — the instructor may ask you to revise your topic, swap a resource, or strengthen a prompt before the discussion date."
+    "text": "Keep it simple. A good issue has:\n\nA clear title — someone should understand the task from the title alone\nEnough context — a sentence or two about what needs to happen or what’s broken\n\nExamples:\n\n\n\n\n\n\n\nTitle\nDescription\n\n\n\n\nAdd retry logic for API timeouts\nRight now a timeout crashes the app. Should retry up to 3 times before showing an error.\n\n\nFix crash when user enters empty query\nEntering an empty string in the Streamlit input causes a KeyError in process_query().\n\n\nBuild “export to PDF” feature\nUsers should be able to export the summary as a PDF from the Streamlit interface."
   },
   {
-    "objectID": "resources/group_led_discussions.html#timeline-summary",
-    "href": "resources/group_led_discussions.html#timeline-summary",
-    "title": "Group-Led Discussion Spec",
+    "objectID": "resources/github_issues.html#tips",
+    "href": "resources/github_issues.html#tips",
+    "title": "GitHub Issues Quickstart",
     "section": "",
-    "text": "Deliverable\nDeadline\n\n\n\n\nTopic + resources (with descriptions)\nAt least 1 week before discussion\n\n\nTwo writing prompts\nAt least 1 week before discussion\n\n\n10–15 discussion questions\nAt least 2 days before discussion"
+    "text": "One issue per task. Don’t lump multiple features into a single issue.\nCreate issues as you go. When you notice a bug or think of a feature, open an issue right away so you don’t forget.\nReference issues in commits. Even if you don’t auto-close them, mentioning #5 in a commit message creates a link between the commit and the issue, making it easy to trace what changed and why."
   },
   {
-    "objectID": "resources/group_led_discussions.html#what-happens-next",
-    "href": "resources/group_led_discussions.html#what-happens-next",
-    "title": "Group-Led Discussion Spec",
+    "objectID": "resources/github_classroom_workflow.html",
+    "href": "resources/github_classroom_workflow.html",
+    "title": "GitHub Classroom Workflow",
     "section": "",
-    "text": "After receiving your materials, the instructor will:\n\nReview and provide feedback (possibly requesting changes)\nCreate the written reflection assignment on GitHub Classroom\nAdd your resources and descriptions to the course website\nYour group leads the in-class discussion on the scheduled date"
+    "text": "This guide covers the steps you’ll follow for each GitHub Classroom assignment:\n\nAccept the assignment and clone the repo\nCreate a virtual environment and install dependencies\nDo the work\nCommit and push (submit)\n\n\nPrerequisite: Complete the one-time setup first: Initial Setup (Windows) | Initial Setup (macOS)\n\n\n\n\n\n\nClick the Classroom invite link (from the Assignments page).\nClick Accept assignment.\nGitHub creates a repo for you and takes you to it.\n\n\n\n\n\nCopy the repo HTTPS URL from GitHub (click Code → HTTPS).\n\nWindows (VS Code)Windows (Terminal)macOS (Terminal)\n\n\n\nIn VS Code: Ctrl+Shift+P → Git: Clone\nPaste the URL\nPick a folder\nOpen the repo when prompted\n\n\n\ncd C:\\Users\\YourName\\Documents\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\ncode .\n\n\ncd ~/Documents\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\ncode .\n\n\n\n\n\n\n\nOpen a terminal in VS Code: Terminal → New Terminal\n\nWindows (PowerShell)Windows (Command Prompt)macOS\n\n\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\Activate.ps1\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\nIf PowerShell blocks the activation script:\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\activate.bat\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\npython3.13 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\n\nIf the repo has a pyproject.toml or setup.py, also run:\npip install -e .\n\n\n\nWindowsmacOS\n\n\npython --version\nwhere python\nThe where python output should show a path inside .venv.\n\n\npython --version\nwhich python\nThe which python output should show a path inside .venv.\n\n\n\n\n\n\n\n\nIf the repo has tests:\npytest -q\nOr run a quick Python check:\npython -c \"print('Hello from Python!')\"\n\n\n\n\nComplete the assignment according to the instructions in the repo’s README.\n\n\n\n\nTypical “submission” is commit + push. Autograding (if enabled) runs after you push.\n\nVS Code UITerminal\n\n\n\nOpen the Source Control panel (left sidebar)\nStage changes (click + next to files)\nEnter a commit message\nClick Commit\nClick Sync Changes (pushes to GitHub)\n\n\n\ngit status\ngit add .\ngit commit -m \"Complete submission\"\ngit push\n\n\n\nAfter pushing, check your repo on GitHub. If autograding is enabled, you’ll see a ✅ or ❌ next to your commit."
   },
   {
-    "objectID": "resources/group_led_discussions.html#tips",
-    "href": "resources/group_led_discussions.html#tips",
-    "title": "Group-Led Discussion Spec",
+    "objectID": "resources/github_classroom_workflow.html#creating-with-ai-in-the-loop-assignment-workflow-repeat-for-each-assignment",
+    "href": "resources/github_classroom_workflow.html#creating-with-ai-in-the-loop-assignment-workflow-repeat-for-each-assignment",
+    "title": "GitHub Classroom Workflow",
     "section": "",
-    "text": "Start early. The instructor may ask for revisions, so give yourself time.\nPick a topic your group genuinely cares about. Enthusiasm is contagious.\nTest your resources. Make sure links work and that articles aren’t behind inaccessible paywalls.\nPrepare more questions than you think you’ll need. Some questions land better than others, and you want options.\nPlan for facilitation. Think about how you’ll structure the discussion — who opens, how you’ll handle quiet moments, etc."
+    "text": "This guide covers the steps you’ll follow for each GitHub Classroom assignment:\n\nAccept the assignment and clone the repo\nCreate a virtual environment and install dependencies\nDo the work\nCommit and push (submit)\n\n\nPrerequisite: Complete the one-time setup first: Initial Setup (Windows) | Initial Setup (macOS)"
   },
   {
-    "objectID": "resources/gemini_code_assist.html",
-    "href": "resources/gemini_code_assist.html",
-    "title": "Installing Gemini Code Assist",
+    "objectID": "resources/github_classroom_workflow.html#accept-the-github-classroom-assignment",
+    "href": "resources/github_classroom_workflow.html#accept-the-github-classroom-assignment",
+    "title": "GitHub Classroom Workflow",
     "section": "",
-    "text": "Gemini Code Assist is an AI coding assistant from Google that integrates directly into VS Code. It provides code completions, chat-based help, and code generation.\n\n\n\n\n\nVS Code installed\nA personal Google account (not your .edu account)\n\n\n\n\n\n\nOpen VS Code.\nGo to the Extensions view (Ctrl+Shift+X on Windows, Cmd+Shift+X on macOS).\nSearch for Gemini Code Assist. Look for the one by Google with a verified badge.\nClick Install. Restart VS Code if prompted.\nClick the Gemini icon in the left sidebar (a pinched diamond shape).\nClick Login to Google and sign in with your personal Google account (not your .edu account).\nIf prompted to open an external website, click Open.\nReview and accept the privacy notice that appears in the chat panel.\n\n\n\n\n\nAfter signing in, you should see the Gemini chat panel. Try typing a question like “How do I read a file in Python?” to confirm it’s working.\n\n\n\n\n\nGemini Code Assist can be used for free with a free tier Google Account\nIf you hit usage limits, you may need to wait until the next day for limits to reset\nThere is also a paid tier with higher limits if needed"
+    "text": "Click the Classroom invite link (from the Assignments page).\nClick Accept assignment.\nGitHub creates a repo for you and takes you to it."
   },
   {
-    "objectID": "resources/gemini_code_assist.html#creating-with-ai-in-the-loop-vs-code-extension-setup",
-    "href": "resources/gemini_code_assist.html#creating-with-ai-in-the-loop-vs-code-extension-setup",
-    "title": "Installing Gemini Code Assist",
+    "objectID": "resources/github_classroom_workflow.html#clone-the-repo",
+    "href": "resources/github_classroom_workflow.html#clone-the-repo",
+    "title": "GitHub Classroom Workflow",
     "section": "",
-    "text": "Gemini Code Assist is an AI coding assistant from Google that integrates directly into VS Code. It provides code completions, chat-based help, and code generation."
+    "text": "Copy the repo HTTPS URL from GitHub (click Code → HTTPS).\n\nWindows (VS Code)Windows (Terminal)macOS (Terminal)\n\n\n\nIn VS Code: Ctrl+Shift+P → Git: Clone\nPaste the URL\nPick a folder\nOpen the repo when prompted\n\n\n\ncd C:\\Users\\YourName\\Documents\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\ncode .\n\n\ncd ~/Documents\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\ncode ."
   },
   {
-    "objectID": "resources/gemini_code_assist.html#what-you-need",
-    "href": "resources/gemini_code_assist.html#what-you-need",
-    "title": "Installing Gemini Code Assist",
+    "objectID": "resources/github_classroom_workflow.html#create-a-virtual-environment-and-install-dependencies",
+    "href": "resources/github_classroom_workflow.html#create-a-virtual-environment-and-install-dependencies",
+    "title": "GitHub Classroom Workflow",
     "section": "",
-    "text": "VS Code installed\nA personal Google account (not your .edu account)"
+    "text": "Open a terminal in VS Code: Terminal → New Terminal\n\nWindows (PowerShell)Windows (Command Prompt)macOS\n\n\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\Activate.ps1\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\nIf PowerShell blocks the activation script:\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\activate.bat\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\npython3.13 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\n\nIf the repo has a pyproject.toml or setup.py, also run:\npip install -e .\n\n\n\nWindowsmacOS\n\n\npython --version\nwhere python\nThe where python output should show a path inside .venv.\n\n\npython --version\nwhich python\nThe which python output should show a path inside .venv."
   },
   {
-    "objectID": "resources/gemini_code_assist.html#step-by-step-install-and-sign-in",
-    "href": "resources/gemini_code_assist.html#step-by-step-install-and-sign-in",
-    "title": "Installing Gemini Code Assist",
+    "objectID": "resources/github_classroom_workflow.html#sanity-checks",
+    "href": "resources/github_classroom_workflow.html#sanity-checks",
+    "title": "GitHub Classroom Workflow",
     "section": "",
-    "text": "Open VS Code.\nGo to the Extensions view (Ctrl+Shift+X on Windows, Cmd+Shift+X on macOS).\nSearch for Gemini Code Assist. Look for the one by Google with a verified badge.\nClick Install. Restart VS Code if prompted.\nClick the Gemini icon in the left sidebar (a pinched diamond shape).\nClick Login to Google and sign in with your personal Google account (not your .edu account).\nIf prompted to open an external website, click Open.\nReview and accept the privacy notice that appears in the chat panel."
+    "text": "If the repo has tests:\npytest -q\nOr run a quick Python check:\npython -c \"print('Hello from Python!')\""
   },
   {
-    "objectID": "resources/gemini_code_assist.html#verify-its-working",
-    "href": "resources/gemini_code_assist.html#verify-its-working",
-    "title": "Installing Gemini Code Assist",
+    "objectID": "resources/github_classroom_workflow.html#do-the-work",
+    "href": "resources/github_classroom_workflow.html#do-the-work",
+    "title": "GitHub Classroom Workflow",
     "section": "",
-    "text": "After signing in, you should see the Gemini chat panel. Try typing a question like “How do I read a file in Python?” to confirm it’s working."
+    "text": "Complete the assignment according to the instructions in the repo’s README."
   },
   {
-    "objectID": "resources/gemini_code_assist.html#free-tier",
-    "href": "resources/gemini_code_assist.html#free-tier",
-    "title": "Installing Gemini Code Assist",
+    "objectID": "resources/github_classroom_workflow.html#commit-and-push-submit",
+    "href": "resources/github_classroom_workflow.html#commit-and-push-submit",
+    "title": "GitHub Classroom Workflow",
     "section": "",
-    "text": "Gemini Code Assist can be used for free with a free tier Google Account\nIf you hit usage limits, you may need to wait until the next day for limits to reset\nThere is also a paid tier with higher limits if needed"
+    "text": "Typical “submission” is commit + push. Autograding (if enabled) runs after you push.\n\nVS Code UITerminal\n\n\n\nOpen the Source Control panel (left sidebar)\nStage changes (click + next to files)\nEnter a commit message\nClick Commit\nClick Sync Changes (pushes to GitHub)\n\n\n\ngit status\ngit add .\ngit commit -m \"Complete submission\"\ngit push\n\n\n\nAfter pushing, check your repo on GitHub. If autograding is enabled, you’ll see a ✅ or ❌ next to your commit."
   },
   {
-    "objectID": "resources/gemini_code_assist.html#cant-sign-in-authentication-errors",
-    "href": "resources/gemini_code_assist.html#cant-sign-in-authentication-errors",
-    "title": "Installing Gemini Code Assist",
-    "section": "Can’t sign in / authentication errors",
-    "text": "Can’t sign in / authentication errors\n\nMake sure you’re using a personal Google account, not your .edu account\nTry signing out and back in\nTry a different browser for the authentication flow"
+    "objectID": "resources/github_classroom_workflow.html#git-push-permissionauth-errors",
+    "href": "resources/github_classroom_workflow.html#git-push-permissionauth-errors",
+    "title": "GitHub Classroom Workflow",
+    "section": "git push permission/auth errors",
+    "text": "git push permission/auth errors\n\nMake sure you accepted the assignment with the correct GitHub account\nRetry push and complete the browser sign-in flow if prompted\nCheck that the repo URL matches your GitHub username\n\nIf issues persist, run these commands and include the output in your help request:\ngit remote -v\ngit config --global credential.helper\ngit config --show-origin --get-all credential.helper"
   },
   {
-    "objectID": "resources/gemini_code_assist.html#extension-not-appearing-in-sidebar",
-    "href": "resources/gemini_code_assist.html#extension-not-appearing-in-sidebar",
-    "title": "Installing Gemini Code Assist",
-    "section": "Extension not appearing in sidebar",
-    "text": "Extension not appearing in sidebar\n\nRestart VS Code after installation\nCheck that the extension is enabled in the Extensions view"
+    "objectID": "resources/github_classroom_workflow.html#powershell-wont-activate-.venv-execution-policy",
+    "href": "resources/github_classroom_workflow.html#powershell-wont-activate-.venv-execution-policy",
+    "title": "GitHub Classroom Workflow",
+    "section": "PowerShell won’t activate .venv (execution policy)",
+    "text": "PowerShell won’t activate .venv (execution policy)\nUse Command Prompt instead:\n.\\.venv\\Scripts\\activate.bat\nOr (advanced) allow local scripts in PowerShell:\nSet-ExecutionPolicy -Scope CurrentUser RemoteSigned"
   },
   {
-    "objectID": "resources/gemini_code_assist.html#usage-limit-exceeded",
-    "href": "resources/gemini_code_assist.html#usage-limit-exceeded",
-    "title": "Installing Gemini Code Assist",
-    "section": "“Usage limit exceeded”",
-    "text": "“Usage limit exceeded”\n\nWait until the next day for limits to reset"
+    "objectID": "resources/github_classroom_workflow.html#requirements.txt-not-found",
+    "href": "resources/github_classroom_workflow.html#requirements.txt-not-found",
+    "title": "GitHub Classroom Workflow",
+    "section": "requirements.txt not found",
+    "text": "requirements.txt not found\nNot all assignments have a requirements.txt. Skip the pip install -r requirements.txt step if the file doesn’t exist."
   },
   {
-    "objectID": "resources/gemini_code_assist.html#resources",
-    "href": "resources/gemini_code_assist.html#resources",
-    "title": "Installing Gemini Code Assist",
+    "objectID": "resources/github_classroom_workflow.html#tests-failing-after-push",
+    "href": "resources/github_classroom_workflow.html#tests-failing-after-push",
+    "title": "GitHub Classroom Workflow",
+    "section": "Tests failing after push",
+    "text": "Tests failing after push\n\nRead the error message in the GitHub Actions log\nFix the issue locally\nCommit and push again"
+  },
+  {
+    "objectID": "resources/github_classroom_workflow.html#quick-reference-common-commands",
+    "href": "resources/github_classroom_workflow.html#quick-reference-common-commands",
+    "title": "GitHub Classroom Workflow",
+    "section": "Quick reference: common commands",
+    "text": "Quick reference: common commands\n\n\n\n\n\n\n\n\nTask\nWindows (PowerShell)\nmacOS\n\n\n\n\nCreate venv\npy -3.13 -m venv .venv\npython3.13 -m venv .venv\n\n\nActivate venv\n.\\.venv\\Scripts\\Activate.ps1\nsource .venv/bin/activate\n\n\nDeactivate venv\ndeactivate\ndeactivate\n\n\nInstall deps\npip install -r requirements.txt\npip install -r requirements.txt\n\n\nRun tests\npytest -q\npytest -q\n\n\nCommit all\ngit add . && git commit -m \"msg\"\ngit add . && git commit -m \"msg\"\n\n\nPush\ngit push\ngit push"
+  },
+  {
+    "objectID": "resources/gemini_cli.html",
+    "href": "resources/gemini_cli.html",
+    "title": "Installing Gemini CLI",
+    "section": "",
+    "text": "Gemini CLI brings Gemini AI directly to your terminal. You can ask questions, generate code, and work with your codebase from the command line.\n\n\n\n\nbrew install gemini-cli\nVerify: gemini --version\n\n\n\n\n\n\nDownload the LTS installer from https://nodejs.org and run it. Reboot if prompted.\nVerify:\nnode -v\nnpm -v\n\n\n\nnpm install -g @google/gemini-cli\nVerify: gemini --version\n\n\n\n\n\n\nOpen a terminal in your project directory.\nRun gemini.\nSelect Login with Google.\nSign in with your personal Google account (not your .edu account).\n\nAfter signing in, you can start chatting with Gemini about your code.\n\n\n\n\n\nGemini CLI can be used for free with a free tier Google Account\nGemini CLI and Gemini Code Assist agent mode share quotas\nIf you hit usage limits, you may need to wait until the next day for limits to reset\nThere is also a paid tier with higher limits if needed"
+  },
+  {
+    "objectID": "resources/gemini_cli.html#creating-with-ai-in-the-loop-terminal-ai-assistant",
+    "href": "resources/gemini_cli.html#creating-with-ai-in-the-loop-terminal-ai-assistant",
+    "title": "Installing Gemini CLI",
+    "section": "",
+    "text": "Gemini CLI brings Gemini AI directly to your terminal. You can ask questions, generate code, and work with your codebase from the command line."
+  },
+  {
+    "objectID": "resources/gemini_cli.html#macos",
+    "href": "resources/gemini_cli.html#macos",
+    "title": "Installing Gemini CLI",
+    "section": "",
+    "text": "brew install gemini-cli\nVerify: gemini --version"
+  },
+  {
+    "objectID": "resources/gemini_cli.html#windows",
+    "href": "resources/gemini_cli.html#windows",
+    "title": "Installing Gemini CLI",
+    "section": "",
+    "text": "Download the LTS installer from https://nodejs.org and run it. Reboot if prompted.\nVerify:\nnode -v\nnpm -v\n\n\n\nnpm install -g @google/gemini-cli\nVerify: gemini --version"
+  },
+  {
+    "objectID": "resources/gemini_cli.html#first-run-sign-in",
+    "href": "resources/gemini_cli.html#first-run-sign-in",
+    "title": "Installing Gemini CLI",
+    "section": "",
+    "text": "Open a terminal in your project directory.\nRun gemini.\nSelect Login with Google.\nSign in with your personal Google account (not your .edu account).\n\nAfter signing in, you can start chatting with Gemini about your code."
+  },
+  {
+    "objectID": "resources/gemini_cli.html#free-tier",
+    "href": "resources/gemini_cli.html#free-tier",
+    "title": "Installing Gemini CLI",
+    "section": "",
+    "text": "Gemini CLI can be used for free with a free tier Google Account\nGemini CLI and Gemini Code Assist agent mode share quotas\nIf you hit usage limits, you may need to wait until the next day for limits to reset\nThere is also a paid tier with higher limits if needed"
+  },
+  {
+    "objectID": "resources/gemini_cli.html#macos-brew-command-not-found",
+    "href": "resources/gemini_cli.html#macos-brew-command-not-found",
+    "title": "Installing Gemini CLI",
+    "section": "macOS: brew: command not found",
+    "text": "macOS: brew: command not found\nInstall Homebrew first. See Initial Setup (macOS)."
+  },
+  {
+    "objectID": "resources/gemini_cli.html#windows-node-or-npm-not-recognized",
+    "href": "resources/gemini_cli.html#windows-node-or-npm-not-recognized",
+    "title": "Installing Gemini CLI",
+    "section": "Windows: node or npm not recognized",
+    "text": "Windows: node or npm not recognized\nRestart your terminal after installing Node.js. If still not working, reinstall Node.js and make sure “Add to PATH” is checked."
+  },
+  {
+    "objectID": "resources/gemini_cli.html#authentication-issues",
+    "href": "resources/gemini_cli.html#authentication-issues",
+    "title": "Installing Gemini CLI",
+    "section": "Authentication issues",
+    "text": "Authentication issues\n\nUse a personal Google account, not your .edu account\nTry signing out and back in: gemini --logout then gemini"
+  },
+  {
+    "objectID": "resources/gemini_cli.html#resources",
+    "href": "resources/gemini_cli.html#resources",
+    "title": "Installing Gemini CLI",
     "section": "Resources",
-    "text": "Resources\n\nOfficial setup guide: https://developers.google.com/gemini-code-assist/docs/set-up-gemini\nVS Code Marketplace: https://marketplace.visualstudio.com/items?itemName=Google.geminicodeassist"
+    "text": "Resources\n\nOfficial docs: https://geminicli.com/docs/\nGitHub: https://github.com/google-gemini/gemini-cli"
   },
   {
-    "objectID": "resources/gemini_api_key.html",
-    "href": "resources/gemini_api_key.html",
-    "title": "Getting a Gemini API Key",
+    "objectID": "resources/final_project.html",
+    "href": "resources/final_project.html",
+    "title": "Final Project Spec",
     "section": "",
-    "text": "This guide shows you how to get a Gemini API key using Google AI Studio. You’ll need this for assignments that interact with Gemini models.\n\n\n\n\n\nA personal Google account (Gmail or Google Workspace)\n\n\n\n\n\n\nSign in to your personal Google account (not your .edu account), then go to https://aistudio.google.com.\nIf prompted, accept the Terms of Service.\nClick Get API key in the left sidebar.\nClick the Create API key button (upper right).\nEnter a name for your key (e.g., myFirstGeminiKey).\nUnder Choose an imported project, click + Create a new project and name it (e.g., AI in the Loop). You may need to re-enter the key name after creating the project.\nClick Create. Initially you do not need to set up billing.\nClick the copy icon to copy your API key. Store it immediately (see next section).\n\n\n\n\n\nIf you don’t have an assignment yet: Save your API key somewhere safe (e.g., a password manager or private notes app). You’ll add it to a .env file when you start your first assignment that needs it.\nWhen working on an assignment: Store your key in a .env file in your repo:\n\nCreate a file named .env in your assignment repo (note the leading dot)\nAdd your key:\nGEMINI_API_KEY=your-api-key-here\nVerify .env is in your .gitignore (it should be by default)\n\nYour code will load the key from this file using a library like python-dotenv.\nNever commit your API key to Git.\n\n\n\n\nIf you suspect your API key has been compromised (e.g., accidentally pushed to GitHub or shared publicly):\n\nGo to https://aistudio.google.com/app/apikey\nClick the Create API key button to generate a new key\nFollow steps 5-8 above to create and copy your new key\nUpdate your .env file with the new key\nTest that your code works with the new key\nReturn to the API keys page and click the delete icon (trash can) next to your old, compromised key\n\nAlways delete the old key to ensure the compromised key can’t be used.\n\n\n\n\nIf you need to copy your key again, go to https://aistudio.google.com/app/apikey and click the copy icon next to your key.\n\n\n\n\nGoogle AI Studio provides a free tier with rate limits:\n\nIf you exceed limits, you’ll get a rate limit error (not a charge)\nYou are likely to reach this limit during normal assignment work\nIf you need more usage (you will), you can upgrade to a paid plan in Google AI Studio\nCurrently, when you upgrade, you get $300 free credit for the first 90 days\nYou will need to add billing information to upgrade\nSee current limits: https://ai.google.dev/pricing"
+    "text": "Your team will design and build a substantial AI application (or suite of related applications) using LangChain and LangGraph. The project should be related to your interests and do something genuinely useful — not just a toy demo.\n\n\nThere are four project teams: three teams of three and one team of two. Your final project team is also your group-led discussion team.\n\n\n\nYour project must incorporate the following LangChain/LangGraph features:\n\nTools — whether invoked by the LLM via bind_tools or called deterministically in a graph node\nConditional routing — at least one use of add_conditional_edges\nCustom state — a TypedDict state that goes beyond MessagesState (additional fields that your workflow reads and writes)\n\nYour application must have a user interface well-suited to the problem. Multiple interfaces are encouraged (e.g., a CLI built with Typer and a Streamlit web app), but at least one polished interface is required.\n\n\n\n\n\n\nDeliverable\nDue\nGrade Weight\n\n\n\n\nProposal\nWeek 10 (Tue, before class)\n—\n\n\nWorking prototype\nWeek 14 (Tue, before class)\n—\n\n\nWorking repository\nWed, April 29 (11:59pm)\n5%\n\n\nPresentation\nWeek 15 (Thu, April 30)\n5%\n\n\nGroup code review\nMon, May 4 (12:30–2:30pm)\n15%\n\n\nPortfolio piece (public site)\nWed, May 6 (11:59pm)\n5%\n\n\n\n\n\nA 1–2 page markdown document in your team repo covering:\n\nTeam name: Pick a name for your team!\nProblem / domain: What problem are you solving, and for whom?\nPlanned features: What will the application do? Be specific.\nTechnical approach: What tools, RAG strategy, routing logic, and state fields do you plan to use?\nTeam member roles: Who is responsible for what?\nRough timeline: What do you plan to have done by when?\n\nThe instructor will review your proposal and provide feedback. You may be asked to adjust scope.\n\n\n\nBy Week 14, your core functionality should be working. Remaining features and polish are fine, but they should be clearly tracked as individual issues in your repo (one issue per feature or bug).\nHow to submit: Create an issue titled “Prototype checkpoint” early on with a summary of what you plan to have working. Update the issue description as things change. By the deadline, it should reflect what’s working and what’s left. Closing the issue signals to the instructor that your prototype is ready for review.\n\n\n\nA clean, well-organized private repo with:\n\nREADME — project description, setup instructions, how to run the application\nWorking code — the application runs as described\nrequirements.txt — all dependencies pinned\nAI development log — see AI Development Log below\n\n\n\n\nEach team gives a 10–15 minute presentation on Thursday of Week 15 (April 30). Your presentation should include a live demo and slides covering who it’s for, why it’s useful, what you built, your technical approach, challenges you encountered, and what you learned.\n\n\n\nA public GitHub repository with a GitHub Pages site that summarizes your project for a general audience. This is a portfolio artifact — something you can show to future employers or graduate programs. It should include a clear project description, screenshots or screen recordings, and a summary of the technical approach. This public repo should include your project code (someone should be able to clone it and run your app), but should not include your AI development log or full development history. Instead, include a brief summary in your README of how AI tools were used in developing the project. See the Publishing a Portfolio Site with Quarto guide to get started.\n\n\n\nThe group code review takes place during the scheduled final exam time: Monday, May 4, 12:30–2:30pm (~30 minutes per team). Format:\n\nDemo (~5 min): Quick walkthrough of your application\nQ&A (~25 min): The instructor asks questions about your project and code — architecture decisions, how specific features work, why you made certain choices, etc.\n\nQuestions may cover any part of the project, not just one feature. Every team member must be able to explain every part of the code. This is an individual assessment — you are evaluated on your understanding, not just the team’s output.\n\n\n\n\nYour project will use two repositories:\n\nPrivate working repo (GitHub Classroom) — where you develop your code, track issues, maintain your AI development log, and collaborate with your team. This is the repo the instructor evaluates.\nPublic portfolio repo — a clean, public-facing repository with your project code and a GitHub Pages site. Create this toward the end of the project. Someone should be able to clone it and run your app. It should not include your AI development log or full development history. Include a brief summary in your README of how AI tools were used in developing the project. See the Publishing a Portfolio Site with Quarto guide for setup instructions.\n\n\n\n\nMaintain an AI development log (ai_dev_log.md) in your private working repo. This is an ongoing document — add entries as you work, not after the fact. Each entry should describe:\n\nWhat you were trying to accomplish\nHow you used AI tools (prompts, suggestions, generated code)\nWhat worked, what didn’t, and what you learned\n\nThe log helps you reflect on your AI-assisted development process and gives the instructor insight into how your project evolved.\n\n\n\n\nNever commit API keys, secrets, or credentials to your repo. Store them in a .env file and make sure .env is in your .gitignore. If you accidentally commit a key, rotate it immediately.\nEach team member should use their own API key. Do not share API keys with your group members, even in private messages or shared documents.\nCheck git status before every commit. Make sure you are not staging files that contain secrets, large data files, or other artifacts that don’t belong in the repo.\nUse .gitignore liberally. At a minimum, ignore .env, __pycache__/, .venv/, and any local data files.\n\n\n\n\n\nStart early. The proposal is due Week 10, and the semester moves fast from there.\nScope wisely. A focused, polished application is better than an ambitious one that half-works. You can always list stretch goals in your proposal.\nUse branches and pull requests. Don’t push directly to main — use the branch workflow described in the GitHub Collaboration Quickstart. Track remaining work with issues.\nCommit often. Small, frequent commits with clear messages make collaboration easier and give you a safety net.\nDivide work, but understand all of it. The code review evaluates individual understanding. Don’t let any part of the codebase become a black box to you.\nTest your application thoroughly before the presentation and code review. Nothing undermines a demo like a crash."
   },
   {
-    "objectID": "resources/gemini_api_key.html#creating-with-ai-in-the-loop-google-ai-studio-setup",
-    "href": "resources/gemini_api_key.html#creating-with-ai-in-the-loop-google-ai-studio-setup",
-    "title": "Getting a Gemini API Key",
+    "objectID": "resources/final_project.html#teams",
+    "href": "resources/final_project.html#teams",
+    "title": "Final Project Spec",
     "section": "",
-    "text": "This guide shows you how to get a Gemini API key using Google AI Studio. You’ll need this for assignments that interact with Gemini models."
+    "text": "There are four project teams: three teams of three and one team of two. Your final project team is also your group-led discussion team."
   },
   {
-    "objectID": "resources/gemini_api_key.html#what-you-need",
-    "href": "resources/gemini_api_key.html#what-you-need",
-    "title": "Getting a Gemini API Key",
+    "objectID": "resources/final_project.html#technical-requirements",
+    "href": "resources/final_project.html#technical-requirements",
+    "title": "Final Project Spec",
     "section": "",
-    "text": "A personal Google account (Gmail or Google Workspace)"
+    "text": "Your project must incorporate the following LangChain/LangGraph features:\n\nTools — whether invoked by the LLM via bind_tools or called deterministically in a graph node\nConditional routing — at least one use of add_conditional_edges\nCustom state — a TypedDict state that goes beyond MessagesState (additional fields that your workflow reads and writes)\n\nYour application must have a user interface well-suited to the problem. Multiple interfaces are encouraged (e.g., a CLI built with Typer and a Streamlit web app), but at least one polished interface is required."
   },
   {
-    "objectID": "resources/gemini_api_key.html#step-by-step-get-your-api-key",
-    "href": "resources/gemini_api_key.html#step-by-step-get-your-api-key",
-    "title": "Getting a Gemini API Key",
+    "objectID": "resources/final_project.html#deliverables-and-timeline",
+    "href": "resources/final_project.html#deliverables-and-timeline",
+    "title": "Final Project Spec",
     "section": "",
-    "text": "Sign in to your personal Google account (not your .edu account), then go to https://aistudio.google.com.\nIf prompted, accept the Terms of Service.\nClick Get API key in the left sidebar.\nClick the Create API key button (upper right).\nEnter a name for your key (e.g., myFirstGeminiKey).\nUnder Choose an imported project, click + Create a new project and name it (e.g., AI in the Loop). You may need to re-enter the key name after creating the project.\nClick Create. Initially you do not need to set up billing.\nClick the copy icon to copy your API key. Store it immediately (see next section)."
+    "text": "Deliverable\nDue\nGrade Weight\n\n\n\n\nProposal\nWeek 10 (Tue, before class)\n—\n\n\nWorking prototype\nWeek 14 (Tue, before class)\n—\n\n\nWorking repository\nWed, April 29 (11:59pm)\n5%\n\n\nPresentation\nWeek 15 (Thu, April 30)\n5%\n\n\nGroup code review\nMon, May 4 (12:30–2:30pm)\n15%\n\n\nPortfolio piece (public site)\nWed, May 6 (11:59pm)\n5%\n\n\n\n\n\nA 1–2 page markdown document in your team repo covering:\n\nTeam name: Pick a name for your team!\nProblem / domain: What problem are you solving, and for whom?\nPlanned features: What will the application do? Be specific.\nTechnical approach: What tools, RAG strategy, routing logic, and state fields do you plan to use?\nTeam member roles: Who is responsible for what?\nRough timeline: What do you plan to have done by when?\n\nThe instructor will review your proposal and provide feedback. You may be asked to adjust scope.\n\n\n\nBy Week 14, your core functionality should be working. Remaining features and polish are fine, but they should be clearly tracked as individual issues in your repo (one issue per feature or bug).\nHow to submit: Create an issue titled “Prototype checkpoint” early on with a summary of what you plan to have working. Update the issue description as things change. By the deadline, it should reflect what’s working and what’s left. Closing the issue signals to the instructor that your prototype is ready for review.\n\n\n\nA clean, well-organized private repo with:\n\nREADME — project description, setup instructions, how to run the application\nWorking code — the application runs as described\nrequirements.txt — all dependencies pinned\nAI development log — see AI Development Log below\n\n\n\n\nEach team gives a 10–15 minute presentation on Thursday of Week 15 (April 30). Your presentation should include a live demo and slides covering who it’s for, why it’s useful, what you built, your technical approach, challenges you encountered, and what you learned.\n\n\n\nA public GitHub repository with a GitHub Pages site that summarizes your project for a general audience. This is a portfolio artifact — something you can show to future employers or graduate programs. It should include a clear project description, screenshots or screen recordings, and a summary of the technical approach. This public repo should include your project code (someone should be able to clone it and run your app), but should not include your AI development log or full development history. Instead, include a brief summary in your README of how AI tools were used in developing the project. See the Publishing a Portfolio Site with Quarto guide to get started.\n\n\n\nThe group code review takes place during the scheduled final exam time: Monday, May 4, 12:30–2:30pm (~30 minutes per team). Format:\n\nDemo (~5 min): Quick walkthrough of your application\nQ&A (~25 min): The instructor asks questions about your project and code — architecture decisions, how specific features work, why you made certain choices, etc.\n\nQuestions may cover any part of the project, not just one feature. Every team member must be able to explain every part of the code. This is an individual assessment — you are evaluated on your understanding, not just the team’s output."
   },
   {
-    "objectID": "resources/gemini_api_key.html#storing-your-api-key-securely",
-    "href": "resources/gemini_api_key.html#storing-your-api-key-securely",
-    "title": "Getting a Gemini API Key",
+    "objectID": "resources/final_project.html#two-repo-model",
+    "href": "resources/final_project.html#two-repo-model",
+    "title": "Final Project Spec",
     "section": "",
-    "text": "If you don’t have an assignment yet: Save your API key somewhere safe (e.g., a password manager or private notes app). You’ll add it to a .env file when you start your first assignment that needs it.\nWhen working on an assignment: Store your key in a .env file in your repo:\n\nCreate a file named .env in your assignment repo (note the leading dot)\nAdd your key:\nGEMINI_API_KEY=your-api-key-here\nVerify .env is in your .gitignore (it should be by default)\n\nYour code will load the key from this file using a library like python-dotenv.\nNever commit your API key to Git."
+    "text": "Your project will use two repositories:\n\nPrivate working repo (GitHub Classroom) — where you develop your code, track issues, maintain your AI development log, and collaborate with your team. This is the repo the instructor evaluates.\nPublic portfolio repo — a clean, public-facing repository with your project code and a GitHub Pages site. Create this toward the end of the project. Someone should be able to clone it and run your app. It should not include your AI development log or full development history. Include a brief summary in your README of how AI tools were used in developing the project. See the Publishing a Portfolio Site with Quarto guide for setup instructions."
   },
   {
-    "objectID": "resources/gemini_api_key.html#if-your-api-key-is-compromised",
-    "href": "resources/gemini_api_key.html#if-your-api-key-is-compromised",
-    "title": "Getting a Gemini API Key",
+    "objectID": "resources/final_project.html#ai-development-log",
+    "href": "resources/final_project.html#ai-development-log",
+    "title": "Final Project Spec",
     "section": "",
-    "text": "If you suspect your API key has been compromised (e.g., accidentally pushed to GitHub or shared publicly):\n\nGo to https://aistudio.google.com/app/apikey\nClick the Create API key button to generate a new key\nFollow steps 5-8 above to create and copy your new key\nUpdate your .env file with the new key\nTest that your code works with the new key\nReturn to the API keys page and click the delete icon (trash can) next to your old, compromised key\n\nAlways delete the old key to ensure the compromised key can’t be used."
+    "text": "Maintain an AI development log (ai_dev_log.md) in your private working repo. This is an ongoing document — add entries as you work, not after the fact. Each entry should describe:\n\nWhat you were trying to accomplish\nHow you used AI tools (prompts, suggestions, generated code)\nWhat worked, what didn’t, and what you learned\n\nThe log helps you reflect on your AI-assisted development process and gives the instructor insight into how your project evolved."
   },
   {
-    "objectID": "resources/gemini_api_key.html#retrieving-your-api-key-later",
-    "href": "resources/gemini_api_key.html#retrieving-your-api-key-later",
-    "title": "Getting a Gemini API Key",
+    "objectID": "resources/final_project.html#api-keys-and-repo-hygiene",
+    "href": "resources/final_project.html#api-keys-and-repo-hygiene",
+    "title": "Final Project Spec",
     "section": "",
-    "text": "If you need to copy your key again, go to https://aistudio.google.com/app/apikey and click the copy icon next to your key."
+    "text": "Never commit API keys, secrets, or credentials to your repo. Store them in a .env file and make sure .env is in your .gitignore. If you accidentally commit a key, rotate it immediately.\nEach team member should use their own API key. Do not share API keys with your group members, even in private messages or shared documents.\nCheck git status before every commit. Make sure you are not staging files that contain secrets, large data files, or other artifacts that don’t belong in the repo.\nUse .gitignore liberally. At a minimum, ignore .env, __pycache__/, .venv/, and any local data files."
   },
   {
-    "objectID": "resources/gemini_api_key.html#free-tier-limits",
-    "href": "resources/gemini_api_key.html#free-tier-limits",
-    "title": "Getting a Gemini API Key",
+    "objectID": "resources/final_project.html#tips",
+    "href": "resources/final_project.html#tips",
+    "title": "Final Project Spec",
     "section": "",
-    "text": "Google AI Studio provides a free tier with rate limits:\n\nIf you exceed limits, you’ll get a rate limit error (not a charge)\nYou are likely to reach this limit during normal assignment work\nIf you need more usage (you will), you can upgrade to a paid plan in Google AI Studio\nCurrently, when you upgrade, you get $300 free credit for the first 90 days\nYou will need to add billing information to upgrade\nSee current limits: https://ai.google.dev/pricing"
-  },
-  {
-    "objectID": "resources/gemini_api_key.html#api-key-not-valid-errors",
-    "href": "resources/gemini_api_key.html#api-key-not-valid-errors",
-    "title": "Getting a Gemini API Key",
-    "section": "“API key not valid” errors",
-    "text": "“API key not valid” errors\n\nMake sure you copied the entire key (no extra spaces)\nVerify your .env file has the correct variable name (check the assignment README)\nEnsure .env is in the same directory as your Python script (or follow the assignment’s instructions)"
-  },
-  {
-    "objectID": "resources/gemini_api_key.html#cant-access-google-ai-studio",
-    "href": "resources/gemini_api_key.html#cant-access-google-ai-studio",
-    "title": "Getting a Gemini API Key",
-    "section": "Can’t access Google AI Studio",
-    "text": "Can’t access Google AI Studio\n\nUse a personal Google account, not your .edu account\nTry a different browser or incognito mode\nClear your browser cache and cookies"
-  },
-  {
-    "objectID": "resources/gemini_api_key.html#rate-limit-exceeded",
-    "href": "resources/gemini_api_key.html#rate-limit-exceeded",
-    "title": "Getting a Gemini API Key",
-    "section": "Rate limit exceeded",
-    "text": "Rate limit exceeded\n\nWait a few minutes and try again\nIf persistent, check that you’re not making requests in a loop by accident"
-  },
-  {
-    "objectID": "resources/gemini_api_key.html#resources",
-    "href": "resources/gemini_api_key.html#resources",
-    "title": "Getting a Gemini API Key",
-    "section": "Resources",
-    "text": "Resources\n\nOfficial docs: https://ai.google.dev/gemini-api/docs/api-key\nGoogle AI Studio: https://aistudio.google.com\nPricing and limits: https://ai.google.dev/pricing"
-  },
-  {
-    "objectID": "resources/gemini_api_key.html#if-youre-stuck-include-these-in-your-help-request",
-    "href": "resources/gemini_api_key.html#if-youre-stuck-include-these-in-your-help-request",
-    "title": "Getting a Gemini API Key",
-    "section": "If you’re stuck, include these in your help request",
-    "text": "If you’re stuck, include these in your help request\n\nThe exact error message you’re seeing\nConfirmation that your .env file exists and is in the correct location\nThe contents of your .env file (with the actual key replaced by xxx)"
+    "text": "Start early. The proposal is due Week 10, and the semester moves fast from there.\nScope wisely. A focused, polished application is better than an ambitious one that half-works. You can always list stretch goals in your proposal.\nUse branches and pull requests. Don’t push directly to main — use the branch workflow described in the GitHub Collaboration Quickstart. Track remaining work with issues.\nCommit often. Small, frequent commits with clear messages make collaboration easier and give you a safety net.\nDivide work, but understand all of it. The code review evaluates individual understanding. Don’t let any part of the codebase become a black box to you.\nTest your application thoroughly before the presentation and code review. Nothing undermines a demo like a crash."
   },
   {
     "objectID": "resources/index.html",
@@ -1180,7 +1299,7 @@
     "href": "resources/index.html#featured",
     "title": "Resources",
     "section": "Featured",
-    "text": "Featured\n\nInitial Setup (one-time)\n\nInitial Setup (Windows) — VS Code, Git, Python 3.13\nInitial Setup (macOS) — Homebrew, VS Code, Git, Python 3.13\n\n\n\nGitHub Classroom Workflow (every build assignment)\n\nGitHub Classroom Workflow — Accept, clone, venv, commit, push\n\n\n\nGemini\n\nGetting a Gemini API Key — For assignments that call Gemini models\nInstalling Gemini Code Assist — AI coding assistant in VS Code\nInstalling Gemini CLI — AI assistant in your terminal"
+    "text": "Featured\n\nInitial Setup (one-time)\n\nInitial Setup (Windows) — VS Code, Git, Python 3.13\nInitial Setup (macOS) — Homebrew, VS Code, Git, Python 3.13\n\n\n\nGitHub Classroom Workflow (every build assignment)\n\nGitHub Classroom Workflow — Accept, clone, venv, commit, push\n\n\n\nGitHub Collaboration (final project)\n\nGitHub Collaboration Quickstart — Branches, pull requests, merging, and resolving conflicts\nGitHub Issues Quickstart — Tracking features, bugs, and to-dos in your repo\n\n\n\nPortfolio Site (final project)\n\nPublishing a Portfolio Site with Quarto — Create and publish a project portfolio to GitHub Pages\n\n\n\nGemini\n\nGetting a Gemini API Key — For assignments that call Gemini models\nInstalling Gemini Code Assist — AI coding assistant in VS Code\nInstalling Gemini CLI — AI assistant in your terminal"
   },
   {
     "objectID": "resources/index.html#all-resources",
@@ -1229,14 +1348,14 @@
     "href": "assignments.html#assignment-calendar-overview",
     "title": "Assignments",
     "section": "Assignment calendar (overview)",
-    "text": "Assignment calendar (overview)\n\nWeeks 1–10: individual “build” assignments (A0–AZ)\nWeeks 10–14: group-led discussions (GLD1–GLD4)\nWeeks 10–15: final project work + checkpoints\nWeek 15: final presentations"
+    "text": "Assignment calendar (overview)\n\nWeeks 1–11: individual “build” assignments (A0–A9)\nWeeks 10–14: group-led discussions (GLD1–GLD4)\nWeeks 10–15: final project work + checkpoints\nWeek 15: final presentations\nWeek 16: group code review, portfolio piece due"
   },
   {
     "objectID": "assignments.html#individual-build-assignments-github-classroom",
     "href": "assignments.html#individual-build-assignments-github-classroom",
     "title": "Assignments",
     "section": "Individual Build Assignments (GitHub Classroom)",
-    "text": "Individual Build Assignments (GitHub Classroom)\n\nA0 — Git and GitHub Fundamentals\n\nDue: Thursday (Week 1) before class\nPurpose: Git and GitHub overview, verify you can accept a Classroom assignment, and push a commit.\nInvite link: https://classroom.github.com/a/hE8dbBM3\nSpec: Follow the GitHub Classroom Workflow instructions (skip steps 3-4), and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA1 — Setup Verification\n\nDue: Tuesday (Week 2) before class\nPurpose: More practice with Git/GitHub workflow, set up Python/venv.\nInvite link: https://classroom.github.com/a/lH2a7o-K\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA2 - API and Prompt Patterns\n\nDue: Tuesday (Week 3) before class\nPurpose: Using Gemini through API calls, exploring LLM limitations and prompt patterns.\nInvite link: https://classroom.github.com/a/HGMHcztQ\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA3 - Tools\n\nDue: Tuesday (Week 4) before class\nPurpose: Extend LLM capabilities by adding tools.\nInvite link: https://classroom.github.com/a/0vZ7_LAx\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA4 - RAG (KW) + Multi-turn Chat\n\nDue: Tuesday (Week 5) before class\nPurpose: Build a document Q&A agent with keyword search and multi-turn conversation.\nInvite link: https://classroom.github.com/a/u-McvYrh\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA5 - Build Your Own Expert\n\nDue: Wednesday (Week 6) 11:59pm\nPurpose: Similar to A4, but you pick your own domain, documentation, and application — and write your own tool.\nInvite link: https://classroom.github.com/a/1I3Fm8tQ\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\nNote: This assignment is the basis for Code Review 1. Submit slides on Moodle.\n\n\n\nA6 - RAG - Hybrid\n\nDue: Tuesday (Week 8) before class\nPurpose: Extend A4 to include hybrid RAG that combines keyword and semantic search.\nInvite link: https://classroom.github.com/a/1eXlUn-3\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA7 - Workflows, CLI\n\nDue: Thursday (Week 8) before class\nPurpose: Build multi-node workflows and command-line interfaces.\nInvite link: https://classroom.github.com/a/hslUktTh\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA8 - Streamlit\n\nDue: Tuesday (Week 9) before class\nPurpose: Build a Streamlit web interface that wraps a LangGraph workflow. \nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding."
+    "text": "Individual Build Assignments (GitHub Classroom)\n\nA0 — Git and GitHub Fundamentals\n\nDue: Thursday (Week 1) before class\nPurpose: Git and GitHub overview, verify you can accept a Classroom assignment, and push a commit.\nInvite link: https://classroom.github.com/a/hE8dbBM3\nSpec: Follow the GitHub Classroom Workflow instructions (skip steps 3-4), and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA1 — Setup Verification\n\nDue: Tuesday (Week 2) before class\nPurpose: More practice with Git/GitHub workflow, set up Python/venv.\nInvite link: https://classroom.github.com/a/lH2a7o-K\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA2 - API and Prompt Patterns\n\nDue: Tuesday (Week 3) before class\nPurpose: Using Gemini through API calls, exploring LLM limitations and prompt patterns.\nInvite link: https://classroom.github.com/a/HGMHcztQ\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA3 - Tools\n\nDue: Tuesday (Week 4) before class\nPurpose: Extend LLM capabilities by adding tools.\nInvite link: https://classroom.github.com/a/0vZ7_LAx\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA4 - RAG (KW) + Multi-turn Chat\n\nDue: Tuesday (Week 5) before class\nPurpose: Build a document Q&A agent with keyword search and multi-turn conversation.\nInvite link: https://classroom.github.com/a/u-McvYrh\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA5 - Build Your Own Expert\n\nDue: Wednesday (Week 6) 11:59pm\nPurpose: Similar to A4, but you pick your own domain, documentation, and application — and write your own tool.\nInvite link: https://classroom.github.com/a/1I3Fm8tQ\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\nNote: This assignment is the basis for Code Review 1. Submit slides on Moodle.\n\n\n\nA6 - RAG - Hybrid\n\nDue: Tuesday (Week 8) before class\nPurpose: Extend A4 to include hybrid RAG that combines keyword and semantic search.\nInvite link: https://classroom.github.com/a/1eXlUn-3\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA7 - Workflows, CLI\n\nDue: Thursday (Week 8) before class\nPurpose: Build multi-node workflows and command-line interfaces.\nInvite link: https://classroom.github.com/a/hslUktTh\nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA8 - Streamlit\n\nDue: Tuesday (Week 9) before class\nPurpose: Build a Streamlit web interface that wraps a LangGraph workflow. \nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\n\n\n\nA9 - Streamlit + Custom State + Complex Graph\n\nDue: Tuesday (Week 11) before class\nPurpose: Build a Streamlit application with a custom state and a moderately complex LangGraph workflow. \nSpec: Follow the GitHub Classroom Workflow instructions, and complete the instructions in the repo’s README. Confirm successful autograding.\nNote: This assignment is the basis for Code Review 2. Submit slides on Moodle."
   },
   {
     "objectID": "assignments.html#writing-reflections-github-classroom",
@@ -1250,14 +1369,14 @@
     "href": "assignments.html#group-led-discussions",
     "title": "Assignments",
     "section": "Group-Led Discussions",
-    "text": "Group-Led Discussions\n\nGLD1\n\nDiscussion date: Thursday (Week 10) during class\nTopic: TBD\nSpec: See Group-Led Discussion Spec for requirements and timeline.\nResources: TBD\nWritten reflection invite link: TBD\n\n\n\nGLD2\n\nDiscussion date: Thursday (Week 12) during class\nTopic: TBD\nSpec: See Group-Led Discussion Spec for requirements and timeline.\nResources: TBD\nWritten reflection invite link: TBD\n\n\n\nGLD3\n\nDiscussion date: Thursday (Week 13) during class\nTopic: TBD\nSpec: See Group-Led Discussion Spec for requirements and timeline.\nResources: TBD\nWritten reflection invite link: TBD\n\n\n\nGLD4\n\nDiscussion date: Thursday (Week 14) during class\nTopic: TBD\nSpec: See Group-Led Discussion Spec for requirements and timeline.\nResources: TBD\nWritten reflection invite link: TBD"
+    "text": "Group-Led Discussions\n\nGLD1/WR5\n\nDiscussion date: Thursday (Week 10) during class\nTopic: TBD\nSpec: See Group-Led Discussion Spec for requirements and timeline.\nResources: TBD\nWritten reflection invite link: TBD\n\n\n\nGLD2/WR6\n\nDiscussion date: Thursday (Week 12) during class\nTopic: TBD\nSpec: See Group-Led Discussion Spec for requirements and timeline.\nResources: TBD\nWritten reflection invite link: TBD\n\n\n\nGLD3/WR7\n\nDiscussion date: Thursday (Week 13) during class\nTopic: TBD\nSpec: See Group-Led Discussion Spec for requirements and timeline.\nResources: TBD\nWritten reflection invite link: TBD\n\n\n\nGLD4/WR8\n\nDiscussion date: Thursday (Week 14) during class\nTopic: TBD\nSpec: See Group-Led Discussion Spec for requirements and timeline.\nResources: TBD\nWritten reflection invite link: TBD"
   },
   {
     "objectID": "assignments.html#final-project-team-repo",
     "href": "assignments.html#final-project-team-repo",
     "title": "Assignments",
-    "section": "Final project (team repo)",
-    "text": "Final project (team repo)\n\nTeam repo creation\n\nWhen: (e.g., Week 8)\nHow: GitHub Classroom group assignment (one repo per team)\n\n\n\nProject checkpoints (typical)\n\nProposal: Week 10 (Tue, before class)\nPlan: Week 10 (Tue?)\n…\nFinal submission: Week 15 (Fri?)"
+    "section": "Final Project (team repo)",
+    "text": "Final Project (team repo)\nSpec: See Final Project Spec for full requirements.\n\nCheckpoints\n\n\n\nDeliverable\nDue\n\n\n\n\nProposal\nWeek 10 (Tue, before class)\n\n\nWorking prototype\nWeek 14 (Tue, before class)\n\n\nWorking repository\nWed, April 29 (11:59pm)\n\n\nPresentation\nWeek 15 (Thu, April 30)\n\n\nGroup code review\nMon, May 4 (12:30–2:30pm)\n\n\nPortfolio piece (public site)\nWed, May 6 (11:59pm)"
   },
   {
     "objectID": "assignments.html#grading-notes",
@@ -1313,7 +1432,7 @@
     "href": "schedule.html",
     "title": "Schedule",
     "section": "",
-    "text": "This page is the authoritative course schedule and the main entry point for weekly materials.\n\nSlide decks are linked here (rendered HTML).\nAssignment invite links live on the Assignments page.\n\n\n\n\n\n\n\nNote\n\n\n\nThis course is under active development, and the schedule will be filled in as we go.\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nCourse overview + workflow setup\nCourse Overview and Workflow Setup\nRead syllabus + Create GitHub account (before class)\n\n\nThursday\nLarge language models\nIntroduction to LLMs\nA0 — Git and GitHub Fundamentals (before class)\n\n\n\nLearn more\n\nOpenAI tokenizer - Demonstrates how text is tokenized by a language model.\nWhat are transformer models and how do they work? - YouTube video from Serrano.Academy.\nDeep Dive into LLMs like ChatGPT - YouTube video by Andrej Karpathy.\nAttention is all you need - paper by Vaswani et al. (2017).\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nPython, Code Assist, API\nPython, APIs, and Code Assist\nA1 — Setup Verification (before class)\n\n\nThursday\nPrompting, AI and critical thinking\nPrompt Patterns and Best Practices\nRead 3 discussion articles (before class)\n\n\n\nResources for discussion\nThe age of de-skilling - article by Kwaime Anthony Appiah published in web edition of the Atlantic\nThe people outsourcing their thinking to AI - article by Lila Shroff published in web edition of the Atlantic\nThe cognitive paradox of AI in education: Between enhancement and erosion - opinion article by Jose et al. from Frontiers in Psychology\nLearn more\nHow AI could save (not destroy) education - Ted Talk by Sal Kahn (founder and CEO of Khan Academy)\nGenerative AI without guardrails can harm learning: Evidence from high school mathematics - by Bastani and Sungu (2025) from PNAS\nThe widening gap: The benefits and harms of generative AI for novice programmers - a research article by Prather et al. from ICER ’24: Proceedings of the 2024 ACM Conference on International Computing Education Research.\nThe impact of generative AI on critical thinking: Self-reported reductions in cognitive effort and confidence effects from a survey of knowledge workers - a research article by Lee et al. from CHI ’25: Proceedings of the 2025 CHI Conference on Human Factors in Computing Systems\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTool calling\nTool Calling for LLMs\nA2 — API and Prompt Patterns (before class)\n\n\nThursday\nThe costs of training (discussion)\n-\nRead 2 articles + watch video (before class)\n\n\n\nResources for discussion\nExplained: Generative AI’s environmental impact - article from MIT News\nHow Much Water Do AI Data Centers Really Use? - article from Undark\nThe growing environmental impact of AI data centers’ energy demands - PBS NewsHour video\nLearn more\nWe did the math on AI’s energy footprint. Here’s the story you haven’t heard. - MIT Technology Review\nThe carbon and water footprints of data centers and what this could mean for artificial intelligence - research article from ScienceDirect\nHow much water does AI consume? The public deserves to know - policy article from OECD.AI\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nMulti-turn chat and document retrieval\nMulti-turn Chat and Document Retrieval\nA3 — Tools (before class)\n\n\nThursday\nHomogeneity, bias, and creativity (discussion)\n-\nRead 2 articles + listen to interview (before class)\n\n\n\nResources for discussion\nA.I. Is Homogenizing Our Thoughts - article by Kyle Chayka in The New Yorker\nGenerative AI bias poses risk to democratic values, research suggests - article from Phys.org on University of East Anglia research\nAre we thinking about AI the wrong way? - audio interview with Ethan Mollick on WBUR’s On Point (transcript available). You may skip the segment from 24:30 - 34:30 if you want, it’s not closely related to the topic of the discussion.\nLearn more\nGenerative AI enhances individual creativity but reduces the collective diversity of novel content - research article by Doshi & Hauser in Science Advances\nHomogenizing effect of large language models (LLMs) on creative diversity - research article in Computers in Human Behavior analyzing 2,200 college essays\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nWork day\n-\nA4 — RAG (KW) + Multi-turn Chat (before class)\n\n\nThursday\nWork day\n-\n-\n\n\n\nNote: Schedule your Code Review 1 appointment this week.\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nNo class (Winter Recess)\n-\nA5 — Build Your Own Expert (Wednesday 11:59pm)\n\n\nThursday\nNo class (Code Review appointments)\n-\n-\n\n\n\nNote: Code Review 1 appointments available Thursday and Friday of Week 6, and Monday of Week 7.\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nSemantic search and embeddings\nSemantic Search and Embeddings\n-\n\n\nThursday\nCustom states and multi-node workflows\nCustom States and Multi-Node Workflows\n-\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nStreamlit interfaces\nStreamlit Interfaces\nA6 — RAG - Hybrid (before class)\n\n\nThursday\nTBD\nTBD\nA7 — Workflows, CLI (before class)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\nA8 — Streamlit (before class)\n\n\nThursday\nThe future of jobs and work (discussion)\n-\nRead 3 articles + listen to podcast (before class)\n\n\n\nResources for discussion\nWhy A.I. Didn’t Transform Our Lives in 2025 - article by Cal Newport in The New Yorker\nAI Changed Work Forever in 2025 - article by Erik Brynjolfsson in TIME\nAI vs Gen Z: How AI has changed the career pathway for junior developers - article by Phoebe Sajor on the Stack Overflow Blog\nIs AI Slopifying the Job Market? - podcast episode from Planet Money / The Indicator (NPR)\nLearn more\nThe Evidence That AI Is Destroying Jobs for Young People Just Got Stronger - article by Derek Thompson (The Atlantic staff writer)\nGenerative AI at Work - research article by Brynjolfsson, Li, & Raymond in The Quarterly Journal of Economics\nTop engineers at Anthropic, OpenAI say AI now writes 100% of their code - article by Beatrice Nolan in Fortune\nI’ll Probably Lose My Job to AI. Here’s Why That’s OK - TED Talk by Megan McArdle\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\nProject proposal (before class)\n\n\nThursday\nGroup-led discussion (GLD1)\n-\nRead/watch assigned resources (before class)\n\n\n\nResources for discussion\nTBD — resources will be added once the group submits them.\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\n-\n\n\nThursday\nTBD\nTBD\n-\n\n\n\n\n\n\nNo class.\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\n-\n\n\nThursday\nGroup-led discussion (GLD2)\n-\nRead/watch assigned resources (before class)\n\n\n\nResources for discussion\nTBD — resources will be added once the group submits them.\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\n-\n\n\nThursday\nGroup-led discussion (GLD3)\n-\nRead/watch assigned resources (before class)\n\n\n\nResources for discussion\nTBD — resources will be added once the group submits them.\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\n-\n\n\nThursday\nGroup-led discussion (GLD4)\n-\nRead/watch assigned resources (before class)\n\n\n\nResources for discussion\nTBD — resources will be added once the group submits them.\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nFinal presentations\n-\n-\n\n\nThursday\nFinal presentations\n-\nFinal project submission (TBD)"
+    "text": "This page is the authoritative course schedule and the main entry point for weekly materials.\n\nSlide decks are linked here (rendered HTML).\nAssignment invite links live on the Assignments page.\n\n\n\n\n\n\n\nNote\n\n\n\nThis course is under active development, and the schedule will be filled in as we go.\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nCourse overview + workflow setup\nCourse Overview and Workflow Setup\nRead syllabus + Create GitHub account (before class)\n\n\nThursday\nLarge language models\nIntroduction to LLMs\nA0 — Git and GitHub Fundamentals (before class)\n\n\n\nLearn more\n\nOpenAI tokenizer - Demonstrates how text is tokenized by a language model.\nWhat are transformer models and how do they work? - YouTube video from Serrano.Academy.\nDeep Dive into LLMs like ChatGPT - YouTube video by Andrej Karpathy.\nAttention is all you need - paper by Vaswani et al. (2017).\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nPython, Code Assist, API\nPython, APIs, and Code Assist\nA1 — Setup Verification (before class)\n\n\nThursday\nPrompting, AI and critical thinking\nPrompt Patterns and Best Practices\nRead 3 discussion articles (before class)\n\n\n\nResources for discussion\nThe age of de-skilling - article by Kwaime Anthony Appiah published in web edition of the Atlantic\nThe people outsourcing their thinking to AI - article by Lila Shroff published in web edition of the Atlantic\nThe cognitive paradox of AI in education: Between enhancement and erosion - opinion article by Jose et al. from Frontiers in Psychology\nLearn more\nHow AI could save (not destroy) education - Ted Talk by Sal Kahn (founder and CEO of Khan Academy)\nGenerative AI without guardrails can harm learning: Evidence from high school mathematics - by Bastani and Sungu (2025) from PNAS\nThe widening gap: The benefits and harms of generative AI for novice programmers - a research article by Prather et al. from ICER ’24: Proceedings of the 2024 ACM Conference on International Computing Education Research.\nThe impact of generative AI on critical thinking: Self-reported reductions in cognitive effort and confidence effects from a survey of knowledge workers - a research article by Lee et al. from CHI ’25: Proceedings of the 2025 CHI Conference on Human Factors in Computing Systems\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTool calling\nTool Calling for LLMs\nA2 — API and Prompt Patterns (before class)\n\n\nThursday\nThe costs of training (discussion)\n-\nRead 2 articles + watch video (before class)\n\n\n\nResources for discussion\nExplained: Generative AI’s environmental impact - article from MIT News\nHow Much Water Do AI Data Centers Really Use? - article from Undark\nThe growing environmental impact of AI data centers’ energy demands - PBS NewsHour video\nLearn more\nWe did the math on AI’s energy footprint. Here’s the story you haven’t heard. - MIT Technology Review\nThe carbon and water footprints of data centers and what this could mean for artificial intelligence - research article from ScienceDirect\nHow much water does AI consume? The public deserves to know - policy article from OECD.AI\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nMulti-turn chat and document retrieval\nMulti-turn Chat and Document Retrieval\nA3 — Tools (before class)\n\n\nThursday\nHomogeneity, bias, and creativity (discussion)\n-\nRead 2 articles + listen to interview (before class)\n\n\n\nResources for discussion\nA.I. Is Homogenizing Our Thoughts - article by Kyle Chayka in The New Yorker\nGenerative AI bias poses risk to democratic values, research suggests - article from Phys.org on University of East Anglia research\nAre we thinking about AI the wrong way? - audio interview with Ethan Mollick on WBUR’s On Point (transcript available). You may skip the segment from 24:30 - 34:30 if you want, it’s not closely related to the topic of the discussion.\nLearn more\nGenerative AI enhances individual creativity but reduces the collective diversity of novel content - research article by Doshi & Hauser in Science Advances\nHomogenizing effect of large language models (LLMs) on creative diversity - research article in Computers in Human Behavior analyzing 2,200 college essays\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nWork day\n-\nA4 — RAG (KW) + Multi-turn Chat (before class)\n\n\nThursday\nWork day\n-\n-\n\n\n\nNote: Schedule your Code Review 1 appointment this week.\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nNo class (Winter Recess)\n-\nA5 — Build Your Own Expert (Wednesday 11:59pm)\n\n\nThursday\nNo class (Code Review appointments)\n-\n-\n\n\n\nNote: Code Review 1 appointments available Wednesday, Thursday, and Friday of Week 6.\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nSemantic search and embeddings\nSemantic Search and Embeddings\n-\n\n\nThursday\nCustom states and multi-node workflows\nCustom States and Multi-Node Workflows\n-\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nStreamlit interfaces\nStreamlit Interfaces\nA6 — RAG - Hybrid (before class)\n\n\nThursday\nTBD\nTBD\nA7 — Workflows, CLI (before class)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\nA8 — Streamlit (before class)\n\n\nThursday\nThe future of jobs and work (discussion)\n-\nRead 3 articles + listen to podcast (before class)\n\n\n\nResources for discussion\nWhy A.I. Didn’t Transform Our Lives in 2025 - article by Cal Newport in The New Yorker\nAI Changed Work Forever in 2025 - article by Erik Brynjolfsson in TIME\nAI vs Gen Z: How AI has changed the career pathway for junior developers - article by Phoebe Sajor on the Stack Overflow Blog\nIs AI Slopifying the Job Market? - podcast episode from Planet Money / The Indicator (NPR)\nLearn more\nThe Evidence That AI Is Destroying Jobs for Young People Just Got Stronger - article by Derek Thompson (The Atlantic staff writer)\nGenerative AI at Work - research article by Brynjolfsson, Li, & Raymond in The Quarterly Journal of Economics\nTop engineers at Anthropic, OpenAI say AI now writes 100% of their code - article by Beatrice Nolan in Fortune\nI’ll Probably Lose My Job to AI. Here’s Why That’s OK - TED Talk by Megan McArdle\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\nProject proposal (before class)\n\n\nThursday\nGroup-led discussion (GLD1)\n-\nRead/watch assigned resources (before class)\n\n\n\nResources for discussion\nTBD — resources will be added once the group submits them.\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\nA9 — Streamlit + Custom State + Complex Graph (before class)\n\n\nThursday\nTBD\nTBD\n-\n\n\n\nNote: Schedule your Code Review 2 appointment this week. CR2 appointments available March 23–26.\n\n\n\nNo class.\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\n-\n\n\nThursday\nGroup-led discussion (GLD2)\n-\nRead/watch assigned resources (before class)\n\n\n\nResources for discussion\nTBD — resources will be added once the group submits them.\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\n-\n\n\nThursday\nGroup-led discussion (GLD3)\n-\nRead/watch assigned resources (before class)\n\n\n\nResources for discussion\nTBD — resources will be added once the group submits them.\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\nWorking prototype (before class)\n\n\nThursday\nGroup-led discussion (GLD4)\n-\nRead/watch assigned resources (before class)\n\n\n\nResources for discussion\nTBD — resources will be added once the group submits them.\n\n\n\n\n\n\n\n\n\n\n\n\nMeeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nWork day\n-\n-\n\n\nThursday\nFinal presentations\n-\nWorking repo (Wed April 29, 11:59pm)\n\n\n\n\n\n\n\n\n\nDay\nEvent\nDue\n\n\n\n\nMonday\nGroup code review (final exam) 12:30–2:30pm\n-\n\n\nWednesday\n-\nPortfolio piece / public site (11:59pm)"
   },
   {
     "objectID": "schedule.html#week-1-january-12-18",
@@ -1355,7 +1474,7 @@
     "href": "schedule.html#week-6-february-16-22-winter-recess",
     "title": "Schedule",
     "section": "",
-    "text": "Meeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nNo class (Winter Recess)\n-\nA5 — Build Your Own Expert (Wednesday 11:59pm)\n\n\nThursday\nNo class (Code Review appointments)\n-\n-\n\n\n\nNote: Code Review 1 appointments available Thursday and Friday of Week 6, and Monday of Week 7."
+    "text": "Meeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nNo class (Winter Recess)\n-\nA5 — Build Your Own Expert (Wednesday 11:59pm)\n\n\nThursday\nNo class (Code Review appointments)\n-\n-\n\n\n\nNote: Code Review 1 appointments available Wednesday, Thursday, and Friday of Week 6."
   },
   {
     "objectID": "schedule.html#week-7-february-23---march-1",
@@ -1390,7 +1509,7 @@
     "href": "schedule.html#week-11-march-23-29",
     "title": "Schedule",
     "section": "",
-    "text": "Meeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\n-\n\n\nThursday\nTBD\nTBD\n-"
+    "text": "Meeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\nA9 — Streamlit + Custom State + Complex Graph (before class)\n\n\nThursday\nTBD\nTBD\n-\n\n\n\nNote: Schedule your Code Review 2 appointment this week. CR2 appointments available March 23–26."
   },
   {
     "objectID": "schedule.html#spring-recess-march-30---april-5",
@@ -1418,14 +1537,21 @@
     "href": "schedule.html#week-14-april-20-26",
     "title": "Schedule",
     "section": "",
-    "text": "Meeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\n-\n\n\nThursday\nGroup-led discussion (GLD4)\n-\nRead/watch assigned resources (before class)\n\n\n\nResources for discussion\nTBD — resources will be added once the group submits them."
+    "text": "Meeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nTBD\nTBD\nWorking prototype (before class)\n\n\nThursday\nGroup-led discussion (GLD4)\n-\nRead/watch assigned resources (before class)\n\n\n\nResources for discussion\nTBD — resources will be added once the group submits them."
   },
   {
     "objectID": "schedule.html#week-15-april-27---may-1",
     "href": "schedule.html#week-15-april-27---may-1",
     "title": "Schedule",
     "section": "",
-    "text": "Meeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nFinal presentations\n-\n-\n\n\nThursday\nFinal presentations\n-\nFinal project submission (TBD)"
+    "text": "Meeting\nTopic\nSlides\nDue\n\n\n\n\nTuesday\nWork day\n-\n-\n\n\nThursday\nFinal presentations\n-\nWorking repo (Wed April 29, 11:59pm)"
+  },
+  {
+    "objectID": "schedule.html#week-16-may-4-6",
+    "href": "schedule.html#week-16-may-4-6",
+    "title": "Schedule",
+    "section": "",
+    "text": "Day\nEvent\nDue\n\n\n\n\nMonday\nGroup code review (final exam) 12:30–2:30pm\n-\n\n\nWednesday\n-\nPortfolio piece / public site (11:59pm)"
   },
   {
     "objectID": "syllabus.html",
@@ -1526,263 +1652,340 @@
     "text": "No FAQs have been added yet. Please check back later for updates."
   },
   {
-    "objectID": "resources/gemini_cli.html",
-    "href": "resources/gemini_cli.html",
-    "title": "Installing Gemini CLI",
+    "objectID": "resources/gemini_api_key.html",
+    "href": "resources/gemini_api_key.html",
+    "title": "Getting a Gemini API Key",
     "section": "",
-    "text": "Gemini CLI brings Gemini AI directly to your terminal. You can ask questions, generate code, and work with your codebase from the command line.\n\n\n\n\nbrew install gemini-cli\nVerify: gemini --version\n\n\n\n\n\n\nDownload the LTS installer from https://nodejs.org and run it. Reboot if prompted.\nVerify:\nnode -v\nnpm -v\n\n\n\nnpm install -g @google/gemini-cli\nVerify: gemini --version\n\n\n\n\n\n\nOpen a terminal in your project directory.\nRun gemini.\nSelect Login with Google.\nSign in with your personal Google account (not your .edu account).\n\nAfter signing in, you can start chatting with Gemini about your code.\n\n\n\n\n\nGemini CLI can be used for free with a free tier Google Account\nGemini CLI and Gemini Code Assist agent mode share quotas\nIf you hit usage limits, you may need to wait until the next day for limits to reset\nThere is also a paid tier with higher limits if needed"
+    "text": "This guide shows you how to get a Gemini API key using Google AI Studio. You’ll need this for assignments that interact with Gemini models.\n\n\n\n\n\nA personal Google account (Gmail or Google Workspace)\n\n\n\n\n\n\nSign in to your personal Google account (not your .edu account), then go to https://aistudio.google.com.\nIf prompted, accept the Terms of Service.\nClick Get API key in the left sidebar.\nClick the Create API key button (upper right).\nEnter a name for your key (e.g., myFirstGeminiKey).\nUnder Choose an imported project, click + Create a new project and name it (e.g., AI in the Loop). You may need to re-enter the key name after creating the project.\nClick Create. Initially you do not need to set up billing.\nClick the copy icon to copy your API key. Store it immediately (see next section).\n\n\n\n\n\nIf you don’t have an assignment yet: Save your API key somewhere safe (e.g., a password manager or private notes app). You’ll add it to a .env file when you start your first assignment that needs it.\nWhen working on an assignment: Store your key in a .env file in your repo:\n\nCreate a file named .env in your assignment repo (note the leading dot)\nAdd your key:\nGEMINI_API_KEY=your-api-key-here\nVerify .env is in your .gitignore (it should be by default)\n\nYour code will load the key from this file using a library like python-dotenv.\nNever commit your API key to Git.\n\n\n\n\nIf you suspect your API key has been compromised (e.g., accidentally pushed to GitHub or shared publicly):\n\nGo to https://aistudio.google.com/app/apikey\nClick the Create API key button to generate a new key\nFollow steps 5-8 above to create and copy your new key\nUpdate your .env file with the new key\nTest that your code works with the new key\nReturn to the API keys page and click the delete icon (trash can) next to your old, compromised key\n\nAlways delete the old key to ensure the compromised key can’t be used.\n\n\n\n\nIf you need to copy your key again, go to https://aistudio.google.com/app/apikey and click the copy icon next to your key.\n\n\n\n\nGoogle AI Studio provides a free tier with rate limits:\n\nIf you exceed limits, you’ll get a rate limit error (not a charge)\nYou are likely to reach this limit during normal assignment work\nIf you need more usage (you will), you can upgrade to a paid plan in Google AI Studio\nCurrently, when you upgrade, you get $300 free credit for the first 90 days\nYou will need to add billing information to upgrade\nSee current limits: https://ai.google.dev/pricing"
   },
   {
-    "objectID": "resources/gemini_cli.html#creating-with-ai-in-the-loop-terminal-ai-assistant",
-    "href": "resources/gemini_cli.html#creating-with-ai-in-the-loop-terminal-ai-assistant",
-    "title": "Installing Gemini CLI",
+    "objectID": "resources/gemini_api_key.html#creating-with-ai-in-the-loop-google-ai-studio-setup",
+    "href": "resources/gemini_api_key.html#creating-with-ai-in-the-loop-google-ai-studio-setup",
+    "title": "Getting a Gemini API Key",
     "section": "",
-    "text": "Gemini CLI brings Gemini AI directly to your terminal. You can ask questions, generate code, and work with your codebase from the command line."
+    "text": "This guide shows you how to get a Gemini API key using Google AI Studio. You’ll need this for assignments that interact with Gemini models."
   },
   {
-    "objectID": "resources/gemini_cli.html#macos",
-    "href": "resources/gemini_cli.html#macos",
-    "title": "Installing Gemini CLI",
+    "objectID": "resources/gemini_api_key.html#what-you-need",
+    "href": "resources/gemini_api_key.html#what-you-need",
+    "title": "Getting a Gemini API Key",
     "section": "",
-    "text": "brew install gemini-cli\nVerify: gemini --version"
+    "text": "A personal Google account (Gmail or Google Workspace)"
   },
   {
-    "objectID": "resources/gemini_cli.html#windows",
-    "href": "resources/gemini_cli.html#windows",
-    "title": "Installing Gemini CLI",
+    "objectID": "resources/gemini_api_key.html#step-by-step-get-your-api-key",
+    "href": "resources/gemini_api_key.html#step-by-step-get-your-api-key",
+    "title": "Getting a Gemini API Key",
     "section": "",
-    "text": "Download the LTS installer from https://nodejs.org and run it. Reboot if prompted.\nVerify:\nnode -v\nnpm -v\n\n\n\nnpm install -g @google/gemini-cli\nVerify: gemini --version"
+    "text": "Sign in to your personal Google account (not your .edu account), then go to https://aistudio.google.com.\nIf prompted, accept the Terms of Service.\nClick Get API key in the left sidebar.\nClick the Create API key button (upper right).\nEnter a name for your key (e.g., myFirstGeminiKey).\nUnder Choose an imported project, click + Create a new project and name it (e.g., AI in the Loop). You may need to re-enter the key name after creating the project.\nClick Create. Initially you do not need to set up billing.\nClick the copy icon to copy your API key. Store it immediately (see next section)."
   },
   {
-    "objectID": "resources/gemini_cli.html#first-run-sign-in",
-    "href": "resources/gemini_cli.html#first-run-sign-in",
-    "title": "Installing Gemini CLI",
+    "objectID": "resources/gemini_api_key.html#storing-your-api-key-securely",
+    "href": "resources/gemini_api_key.html#storing-your-api-key-securely",
+    "title": "Getting a Gemini API Key",
     "section": "",
-    "text": "Open a terminal in your project directory.\nRun gemini.\nSelect Login with Google.\nSign in with your personal Google account (not your .edu account).\n\nAfter signing in, you can start chatting with Gemini about your code."
+    "text": "If you don’t have an assignment yet: Save your API key somewhere safe (e.g., a password manager or private notes app). You’ll add it to a .env file when you start your first assignment that needs it.\nWhen working on an assignment: Store your key in a .env file in your repo:\n\nCreate a file named .env in your assignment repo (note the leading dot)\nAdd your key:\nGEMINI_API_KEY=your-api-key-here\nVerify .env is in your .gitignore (it should be by default)\n\nYour code will load the key from this file using a library like python-dotenv.\nNever commit your API key to Git."
   },
   {
-    "objectID": "resources/gemini_cli.html#free-tier",
-    "href": "resources/gemini_cli.html#free-tier",
-    "title": "Installing Gemini CLI",
+    "objectID": "resources/gemini_api_key.html#if-your-api-key-is-compromised",
+    "href": "resources/gemini_api_key.html#if-your-api-key-is-compromised",
+    "title": "Getting a Gemini API Key",
     "section": "",
-    "text": "Gemini CLI can be used for free with a free tier Google Account\nGemini CLI and Gemini Code Assist agent mode share quotas\nIf you hit usage limits, you may need to wait until the next day for limits to reset\nThere is also a paid tier with higher limits if needed"
+    "text": "If you suspect your API key has been compromised (e.g., accidentally pushed to GitHub or shared publicly):\n\nGo to https://aistudio.google.com/app/apikey\nClick the Create API key button to generate a new key\nFollow steps 5-8 above to create and copy your new key\nUpdate your .env file with the new key\nTest that your code works with the new key\nReturn to the API keys page and click the delete icon (trash can) next to your old, compromised key\n\nAlways delete the old key to ensure the compromised key can’t be used."
   },
   {
-    "objectID": "resources/gemini_cli.html#macos-brew-command-not-found",
-    "href": "resources/gemini_cli.html#macos-brew-command-not-found",
-    "title": "Installing Gemini CLI",
-    "section": "macOS: brew: command not found",
-    "text": "macOS: brew: command not found\nInstall Homebrew first. See Initial Setup (macOS)."
+    "objectID": "resources/gemini_api_key.html#retrieving-your-api-key-later",
+    "href": "resources/gemini_api_key.html#retrieving-your-api-key-later",
+    "title": "Getting a Gemini API Key",
+    "section": "",
+    "text": "If you need to copy your key again, go to https://aistudio.google.com/app/apikey and click the copy icon next to your key."
   },
   {
-    "objectID": "resources/gemini_cli.html#windows-node-or-npm-not-recognized",
-    "href": "resources/gemini_cli.html#windows-node-or-npm-not-recognized",
-    "title": "Installing Gemini CLI",
-    "section": "Windows: node or npm not recognized",
-    "text": "Windows: node or npm not recognized\nRestart your terminal after installing Node.js. If still not working, reinstall Node.js and make sure “Add to PATH” is checked."
+    "objectID": "resources/gemini_api_key.html#free-tier-limits",
+    "href": "resources/gemini_api_key.html#free-tier-limits",
+    "title": "Getting a Gemini API Key",
+    "section": "",
+    "text": "Google AI Studio provides a free tier with rate limits:\n\nIf you exceed limits, you’ll get a rate limit error (not a charge)\nYou are likely to reach this limit during normal assignment work\nIf you need more usage (you will), you can upgrade to a paid plan in Google AI Studio\nCurrently, when you upgrade, you get $300 free credit for the first 90 days\nYou will need to add billing information to upgrade\nSee current limits: https://ai.google.dev/pricing"
   },
   {
-    "objectID": "resources/gemini_cli.html#authentication-issues",
-    "href": "resources/gemini_cli.html#authentication-issues",
-    "title": "Installing Gemini CLI",
-    "section": "Authentication issues",
-    "text": "Authentication issues\n\nUse a personal Google account, not your .edu account\nTry signing out and back in: gemini --logout then gemini"
+    "objectID": "resources/gemini_api_key.html#api-key-not-valid-errors",
+    "href": "resources/gemini_api_key.html#api-key-not-valid-errors",
+    "title": "Getting a Gemini API Key",
+    "section": "“API key not valid” errors",
+    "text": "“API key not valid” errors\n\nMake sure you copied the entire key (no extra spaces)\nVerify your .env file has the correct variable name (check the assignment README)\nEnsure .env is in the same directory as your Python script (or follow the assignment’s instructions)"
   },
   {
-    "objectID": "resources/gemini_cli.html#resources",
-    "href": "resources/gemini_cli.html#resources",
-    "title": "Installing Gemini CLI",
+    "objectID": "resources/gemini_api_key.html#cant-access-google-ai-studio",
+    "href": "resources/gemini_api_key.html#cant-access-google-ai-studio",
+    "title": "Getting a Gemini API Key",
+    "section": "Can’t access Google AI Studio",
+    "text": "Can’t access Google AI Studio\n\nUse a personal Google account, not your .edu account\nTry a different browser or incognito mode\nClear your browser cache and cookies"
+  },
+  {
+    "objectID": "resources/gemini_api_key.html#rate-limit-exceeded",
+    "href": "resources/gemini_api_key.html#rate-limit-exceeded",
+    "title": "Getting a Gemini API Key",
+    "section": "Rate limit exceeded",
+    "text": "Rate limit exceeded\n\nWait a few minutes and try again\nIf persistent, check that you’re not making requests in a loop by accident"
+  },
+  {
+    "objectID": "resources/gemini_api_key.html#resources",
+    "href": "resources/gemini_api_key.html#resources",
+    "title": "Getting a Gemini API Key",
     "section": "Resources",
-    "text": "Resources\n\nOfficial docs: https://geminicli.com/docs/\nGitHub: https://github.com/google-gemini/gemini-cli"
+    "text": "Resources\n\nOfficial docs: https://ai.google.dev/gemini-api/docs/api-key\nGoogle AI Studio: https://aistudio.google.com\nPricing and limits: https://ai.google.dev/pricing"
   },
   {
-    "objectID": "resources/github_classroom_workflow.html",
-    "href": "resources/github_classroom_workflow.html",
-    "title": "GitHub Classroom Workflow",
+    "objectID": "resources/gemini_api_key.html#if-youre-stuck-include-these-in-your-help-request",
+    "href": "resources/gemini_api_key.html#if-youre-stuck-include-these-in-your-help-request",
+    "title": "Getting a Gemini API Key",
+    "section": "If you’re stuck, include these in your help request",
+    "text": "If you’re stuck, include these in your help request\n\nThe exact error message you’re seeing\nConfirmation that your .env file exists and is in the correct location\nThe contents of your .env file (with the actual key replaced by xxx)"
+  },
+  {
+    "objectID": "resources/gemini_code_assist.html",
+    "href": "resources/gemini_code_assist.html",
+    "title": "Installing Gemini Code Assist",
     "section": "",
-    "text": "This guide covers the steps you’ll follow for each GitHub Classroom assignment:\n\nAccept the assignment and clone the repo\nCreate a virtual environment and install dependencies\nDo the work\nCommit and push (submit)\n\n\nPrerequisite: Complete the one-time setup first: Initial Setup (Windows) | Initial Setup (macOS)\n\n\n\n\n\n\nClick the Classroom invite link (from the Assignments page).\nClick Accept assignment.\nGitHub creates a repo for you and takes you to it.\n\n\n\n\n\nCopy the repo HTTPS URL from GitHub (click Code → HTTPS).\n\nWindows (VS Code)Windows (Terminal)macOS (Terminal)\n\n\n\nIn VS Code: Ctrl+Shift+P → Git: Clone\nPaste the URL\nPick a folder\nOpen the repo when prompted\n\n\n\ncd C:\\Users\\YourName\\Documents\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\ncode .\n\n\ncd ~/Documents\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\ncode .\n\n\n\n\n\n\n\nOpen a terminal in VS Code: Terminal → New Terminal\n\nWindows (PowerShell)Windows (Command Prompt)macOS\n\n\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\Activate.ps1\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\nIf PowerShell blocks the activation script:\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\activate.bat\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\npython3.13 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\n\nIf the repo has a pyproject.toml or setup.py, also run:\npip install -e .\n\n\n\nWindowsmacOS\n\n\npython --version\nwhere python\nThe where python output should show a path inside .venv.\n\n\npython --version\nwhich python\nThe which python output should show a path inside .venv.\n\n\n\n\n\n\n\n\nIf the repo has tests:\npytest -q\nOr run a quick Python check:\npython -c \"print('Hello from Python!')\"\n\n\n\n\nComplete the assignment according to the instructions in the repo’s README.\n\n\n\n\nTypical “submission” is commit + push. Autograding (if enabled) runs after you push.\n\nVS Code UITerminal\n\n\n\nOpen the Source Control panel (left sidebar)\nStage changes (click + next to files)\nEnter a commit message\nClick Commit\nClick Sync Changes (pushes to GitHub)\n\n\n\ngit status\ngit add .\ngit commit -m \"Complete submission\"\ngit push\n\n\n\nAfter pushing, check your repo on GitHub. If autograding is enabled, you’ll see a ✅ or ❌ next to your commit."
+    "text": "Gemini Code Assist is an AI coding assistant from Google that integrates directly into VS Code. It provides code completions, chat-based help, and code generation.\n\n\n\n\n\nVS Code installed\nA personal Google account (not your .edu account)\n\n\n\n\n\n\nOpen VS Code.\nGo to the Extensions view (Ctrl+Shift+X on Windows, Cmd+Shift+X on macOS).\nSearch for Gemini Code Assist. Look for the one by Google with a verified badge.\nClick Install. Restart VS Code if prompted.\nClick the Gemini icon in the left sidebar (a pinched diamond shape).\nClick Login to Google and sign in with your personal Google account (not your .edu account).\nIf prompted to open an external website, click Open.\nReview and accept the privacy notice that appears in the chat panel.\n\n\n\n\n\nAfter signing in, you should see the Gemini chat panel. Try typing a question like “How do I read a file in Python?” to confirm it’s working.\n\n\n\n\n\nGemini Code Assist can be used for free with a free tier Google Account\nIf you hit usage limits, you may need to wait until the next day for limits to reset\nThere is also a paid tier with higher limits if needed"
   },
   {
-    "objectID": "resources/github_classroom_workflow.html#creating-with-ai-in-the-loop-assignment-workflow-repeat-for-each-assignment",
-    "href": "resources/github_classroom_workflow.html#creating-with-ai-in-the-loop-assignment-workflow-repeat-for-each-assignment",
-    "title": "GitHub Classroom Workflow",
+    "objectID": "resources/gemini_code_assist.html#creating-with-ai-in-the-loop-vs-code-extension-setup",
+    "href": "resources/gemini_code_assist.html#creating-with-ai-in-the-loop-vs-code-extension-setup",
+    "title": "Installing Gemini Code Assist",
     "section": "",
-    "text": "This guide covers the steps you’ll follow for each GitHub Classroom assignment:\n\nAccept the assignment and clone the repo\nCreate a virtual environment and install dependencies\nDo the work\nCommit and push (submit)\n\n\nPrerequisite: Complete the one-time setup first: Initial Setup (Windows) | Initial Setup (macOS)"
+    "text": "Gemini Code Assist is an AI coding assistant from Google that integrates directly into VS Code. It provides code completions, chat-based help, and code generation."
   },
   {
-    "objectID": "resources/github_classroom_workflow.html#accept-the-github-classroom-assignment",
-    "href": "resources/github_classroom_workflow.html#accept-the-github-classroom-assignment",
-    "title": "GitHub Classroom Workflow",
+    "objectID": "resources/gemini_code_assist.html#what-you-need",
+    "href": "resources/gemini_code_assist.html#what-you-need",
+    "title": "Installing Gemini Code Assist",
     "section": "",
-    "text": "Click the Classroom invite link (from the Assignments page).\nClick Accept assignment.\nGitHub creates a repo for you and takes you to it."
+    "text": "VS Code installed\nA personal Google account (not your .edu account)"
   },
   {
-    "objectID": "resources/github_classroom_workflow.html#clone-the-repo",
-    "href": "resources/github_classroom_workflow.html#clone-the-repo",
-    "title": "GitHub Classroom Workflow",
+    "objectID": "resources/gemini_code_assist.html#step-by-step-install-and-sign-in",
+    "href": "resources/gemini_code_assist.html#step-by-step-install-and-sign-in",
+    "title": "Installing Gemini Code Assist",
     "section": "",
-    "text": "Copy the repo HTTPS URL from GitHub (click Code → HTTPS).\n\nWindows (VS Code)Windows (Terminal)macOS (Terminal)\n\n\n\nIn VS Code: Ctrl+Shift+P → Git: Clone\nPaste the URL\nPick a folder\nOpen the repo when prompted\n\n\n\ncd C:\\Users\\YourName\\Documents\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\ncode .\n\n\ncd ~/Documents\ngit clone &lt;PASTE-REPO-URL-HERE&gt;\ncd &lt;REPO-FOLDER&gt;\ncode ."
+    "text": "Open VS Code.\nGo to the Extensions view (Ctrl+Shift+X on Windows, Cmd+Shift+X on macOS).\nSearch for Gemini Code Assist. Look for the one by Google with a verified badge.\nClick Install. Restart VS Code if prompted.\nClick the Gemini icon in the left sidebar (a pinched diamond shape).\nClick Login to Google and sign in with your personal Google account (not your .edu account).\nIf prompted to open an external website, click Open.\nReview and accept the privacy notice that appears in the chat panel."
   },
   {
-    "objectID": "resources/github_classroom_workflow.html#create-a-virtual-environment-and-install-dependencies",
-    "href": "resources/github_classroom_workflow.html#create-a-virtual-environment-and-install-dependencies",
-    "title": "GitHub Classroom Workflow",
+    "objectID": "resources/gemini_code_assist.html#verify-its-working",
+    "href": "resources/gemini_code_assist.html#verify-its-working",
+    "title": "Installing Gemini Code Assist",
     "section": "",
-    "text": "Open a terminal in VS Code: Terminal → New Terminal\n\nWindows (PowerShell)Windows (Command Prompt)macOS\n\n\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\Activate.ps1\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\nIf PowerShell blocks the activation script:\npy -3.13 -m venv .venv\n.\\.venv\\Scripts\\activate.bat\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\npython3.13 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npip install -r requirements.txt\n\n\n\nIf the repo has a pyproject.toml or setup.py, also run:\npip install -e .\n\n\n\nWindowsmacOS\n\n\npython --version\nwhere python\nThe where python output should show a path inside .venv.\n\n\npython --version\nwhich python\nThe which python output should show a path inside .venv."
+    "text": "After signing in, you should see the Gemini chat panel. Try typing a question like “How do I read a file in Python?” to confirm it’s working."
   },
   {
-    "objectID": "resources/github_classroom_workflow.html#sanity-checks",
-    "href": "resources/github_classroom_workflow.html#sanity-checks",
-    "title": "GitHub Classroom Workflow",
+    "objectID": "resources/gemini_code_assist.html#free-tier",
+    "href": "resources/gemini_code_assist.html#free-tier",
+    "title": "Installing Gemini Code Assist",
     "section": "",
-    "text": "If the repo has tests:\npytest -q\nOr run a quick Python check:\npython -c \"print('Hello from Python!')\""
+    "text": "Gemini Code Assist can be used for free with a free tier Google Account\nIf you hit usage limits, you may need to wait until the next day for limits to reset\nThere is also a paid tier with higher limits if needed"
   },
   {
-    "objectID": "resources/github_classroom_workflow.html#do-the-work",
-    "href": "resources/github_classroom_workflow.html#do-the-work",
-    "title": "GitHub Classroom Workflow",
+    "objectID": "resources/gemini_code_assist.html#cant-sign-in-authentication-errors",
+    "href": "resources/gemini_code_assist.html#cant-sign-in-authentication-errors",
+    "title": "Installing Gemini Code Assist",
+    "section": "Can’t sign in / authentication errors",
+    "text": "Can’t sign in / authentication errors\n\nMake sure you’re using a personal Google account, not your .edu account\nTry signing out and back in\nTry a different browser for the authentication flow"
+  },
+  {
+    "objectID": "resources/gemini_code_assist.html#extension-not-appearing-in-sidebar",
+    "href": "resources/gemini_code_assist.html#extension-not-appearing-in-sidebar",
+    "title": "Installing Gemini Code Assist",
+    "section": "Extension not appearing in sidebar",
+    "text": "Extension not appearing in sidebar\n\nRestart VS Code after installation\nCheck that the extension is enabled in the Extensions view"
+  },
+  {
+    "objectID": "resources/gemini_code_assist.html#usage-limit-exceeded",
+    "href": "resources/gemini_code_assist.html#usage-limit-exceeded",
+    "title": "Installing Gemini Code Assist",
+    "section": "“Usage limit exceeded”",
+    "text": "“Usage limit exceeded”\n\nWait until the next day for limits to reset"
+  },
+  {
+    "objectID": "resources/gemini_code_assist.html#resources",
+    "href": "resources/gemini_code_assist.html#resources",
+    "title": "Installing Gemini Code Assist",
+    "section": "Resources",
+    "text": "Resources\n\nOfficial setup guide: https://developers.google.com/gemini-code-assist/docs/set-up-gemini\nVS Code Marketplace: https://marketplace.visualstudio.com/items?itemName=Google.geminicodeassist"
+  },
+  {
+    "objectID": "resources/github_collaboration.html",
+    "href": "resources/github_collaboration.html",
+    "title": "GitHub Collaboration Quickstart",
     "section": "",
-    "text": "Complete the assignment according to the instructions in the repo’s README."
+    "text": "So far you’ve worked in your own repo: edit, commit, push to main. That works great solo, but when multiple people push directly to main, you’ll quickly overwrite each other’s work. This guide covers the workflow teams use to avoid that.\nThe short version: work on a branch, open a pull request, then merge.\n\n\n\nA branch is a parallel copy of the code where you can make changes without affecting main. When your changes are ready, you merge them back into main.\nmain:        A --- B --- C --------- D (merge)\n                          \\         /\nyour-branch:               E --- F\nYour teammates keep working on main (or their own branches) while you work on yours. Nobody steps on anyone else’s work.\n\n\n\n\nThe key rules:\n\nAlways create a branch before making changes. If you’re on main, your only job is to pull. Never edit files while on main.\nEach person works on their own branch. Don’t share branches — if two people need to work on related features, use two separate branches.\n\n\n\n\n\n\n\nNote\n\n\n\nYour final project repo has branch protection enabled — pushing directly to main is blocked. All changes must go through a pull request. If you try to push to main, Git will reject it. Create a branch first (see Troubleshooting if you already started working on main).\n\n\nHere’s the loop you’ll repeat for each feature or fix:\n\n\nBefore starting new work, make sure you have your team’s latest code:\ngit pull\n\n\n\nMake sure you’re on main first (check the bottom-left of VS Code), then pick a short, descriptive name for what you’re working on. Use hyphens instead of spaces:\ngit checkout -b add-export-feature\nHere add-export-feature is the branch name — replace it with whatever you’re working on (e.g., fix-crash-on-empty-input, build-streamlit-ui).\nThis creates a new branch and switches you to it. You’re no longer on main.\nTo check which branch you’re on at any time:\ngit branch\nThe active branch has a * next to it. You can also see your current branch in the bottom-left corner of VS Code at all times — get in the habit of glancing at it before you start editing.\n\n\n\nEdit files, then commit as usual:\ngit add .\ngit commit -m \"Add PDF export button to Streamlit app\"\nYou can make multiple commits on your branch — that’s normal.\n\n\n\nThe first time you push a new branch, use:\ngit push -u origin add-export-feature\nAfter that first push, git push is enough for additional commits on the same branch.\n\n\n\nA pull request (PR) is how you propose merging your branch into main. It gives your teammates a chance to see what you changed before it goes in.\n\nGo to your repo on GitHub. You’ll often see a banner saying your branch was recently pushed — click Compare & pull request.\nIf you don’t see the banner: click the Pull requests tab → New pull request → set “compare” to your branch.\nGive the PR a title that summarizes the change.\nAdd a brief description of what you did and why.\nClick Create pull request.\n\n\n\n\nDon’t merge your own PRs. Have a teammate look it over and merge it. They can see exactly what changed in the “Files changed” tab. This keeps everyone aware of what’s happening in the codebase — which matters, since you’ll all need to explain every part of the code at the group code review.\nWhen it looks good, the teammate merges:\n\nClick Merge pull request.\nClick Confirm merge.\nClick Delete branch — the work is safely in main now, so you don’t need the branch anymore.\n\n\n\n\nBefore starting your next piece of work, switch back to main, pull the latest changes, and delete your local copy of the merged branch:\ngit checkout main\ngit pull\ngit branch -d branch-name\nThe last command is optional — stale local branches are harmless — but it keeps things tidy.\nYou don’t need to do this while you’re in the middle of working on a branch — your branch is unaffected by changes to main. Just make sure to pull main before creating your next branch.\n\n\n\n\n\nA merge conflict happens when two people edit the same lines in the same file. Git doesn’t know which version to keep, so it asks you to decide.\nYou’ll usually encounter this on GitHub when merging a pull request. If there’s a conflict, GitHub will block the merge and show a Resolve conflicts button.\nClick it to open GitHub’s conflict editor. You’ll see markers like this:\n&lt;&lt;&lt;&lt;&lt;&lt;&lt; main\ndef process_query(query):\n    return query.strip().lower()\n=======\ndef process_query(query):\n    return query.strip()\n&gt;&gt;&gt;&gt;&gt;&gt;&gt; add-export-feature\n\nThe top section (main) is what’s currently in main.\nThe bottom section is what’s on your branch.\n\nTo resolve it:\n\nEdit the file in GitHub’s editor to keep the version you want (or combine both). Delete all the marker lines — that’s the &lt;&lt;&lt;&lt;&lt;&lt;&lt; main, =======, and &gt;&gt;&gt;&gt;&gt;&gt;&gt; branch-name lines.\nClick Mark as resolved.\nOnce all conflicts are resolved, click Commit merge.\n\nTips for avoiding conflicts:\n\nPull often. The longer you go without pulling, the more your branch drifts from main.\nWork in different files when possible. If one person is building the Streamlit UI and another is writing the LangGraph workflow, conflicts are rare.\nKeep branches short-lived. Merge a branch once its feature works — don’t let branches live for weeks.\n\n\n\n\n\n\n\nIf you edited files on main but haven’t committed yet, you can move your changes to a new branch:\ngit stash\ngit checkout -b my-new-branch\ngit stash pop\nThis saves your changes, creates a branch, and puts the changes back. Now commit as usual.\n\n\n\nIf you already committed to main, don’t panic. You can move those commits to a branch. Replace N with the number of commits to move (e.g., HEAD~1 for one commit, HEAD~2 for two):\ngit branch my-new-branch\ngit reset HEAD~N\ngit checkout my-new-branch\nThis creates a branch with your commit, removes it from main, and switches you to the branch.\n\n\n\nAlways create new branches from main. If you accidentally branched from a feature branch, you can start over:\ngit stash\ngit checkout main\ngit pull\ngit checkout -b my-new-branch\ngit stash pop\n\n\n\nCommits are local until you push. If you committed but forgot to push:\ngit push\nIf it’s a new branch you haven’t pushed before:\ngit push -u origin branch-name\n\n\n\n\n\n\n\n\nTask\nCommand\n\n\n\n\nPull latest changes\ngit pull\n\n\nCreate and switch to a branch\ngit checkout -b branch-name\n\n\nSwitch to an existing branch\ngit checkout branch-name\n\n\nSee which branch you’re on\ngit branch\n\n\nPush a new branch\ngit push -u origin branch-name\n\n\nSwitch back to main\ngit checkout main"
   },
   {
-    "objectID": "resources/github_classroom_workflow.html#commit-and-push-submit",
-    "href": "resources/github_classroom_workflow.html#commit-and-push-submit",
-    "title": "GitHub Classroom Workflow",
+    "objectID": "resources/github_collaboration.html#what-is-a-branch",
+    "href": "resources/github_collaboration.html#what-is-a-branch",
+    "title": "GitHub Collaboration Quickstart",
     "section": "",
-    "text": "Typical “submission” is commit + push. Autograding (if enabled) runs after you push.\n\nVS Code UITerminal\n\n\n\nOpen the Source Control panel (left sidebar)\nStage changes (click + next to files)\nEnter a commit message\nClick Commit\nClick Sync Changes (pushes to GitHub)\n\n\n\ngit status\ngit add .\ngit commit -m \"Complete submission\"\ngit push\n\n\n\nAfter pushing, check your repo on GitHub. If autograding is enabled, you’ll see a ✅ or ❌ next to your commit."
+    "text": "A branch is a parallel copy of the code where you can make changes without affecting main. When your changes are ready, you merge them back into main.\nmain:        A --- B --- C --------- D (merge)\n                          \\         /\nyour-branch:               E --- F\nYour teammates keep working on main (or their own branches) while you work on yours. Nobody steps on anyone else’s work."
   },
   {
-    "objectID": "resources/github_classroom_workflow.html#git-push-permissionauth-errors",
-    "href": "resources/github_classroom_workflow.html#git-push-permissionauth-errors",
-    "title": "GitHub Classroom Workflow",
-    "section": "git push permission/auth errors",
-    "text": "git push permission/auth errors\n\nMake sure you accepted the assignment with the correct GitHub account\nRetry push and complete the browser sign-in flow if prompted\nCheck that the repo URL matches your GitHub username\n\nIf issues persist, run these commands and include the output in your help request:\ngit remote -v\ngit config --global credential.helper\ngit config --show-origin --get-all credential.helper"
-  },
-  {
-    "objectID": "resources/github_classroom_workflow.html#powershell-wont-activate-.venv-execution-policy",
-    "href": "resources/github_classroom_workflow.html#powershell-wont-activate-.venv-execution-policy",
-    "title": "GitHub Classroom Workflow",
-    "section": "PowerShell won’t activate .venv (execution policy)",
-    "text": "PowerShell won’t activate .venv (execution policy)\nUse Command Prompt instead:\n.\\.venv\\Scripts\\activate.bat\nOr (advanced) allow local scripts in PowerShell:\nSet-ExecutionPolicy -Scope CurrentUser RemoteSigned"
-  },
-  {
-    "objectID": "resources/github_classroom_workflow.html#requirements.txt-not-found",
-    "href": "resources/github_classroom_workflow.html#requirements.txt-not-found",
-    "title": "GitHub Classroom Workflow",
-    "section": "requirements.txt not found",
-    "text": "requirements.txt not found\nNot all assignments have a requirements.txt. Skip the pip install -r requirements.txt step if the file doesn’t exist."
-  },
-  {
-    "objectID": "resources/github_classroom_workflow.html#tests-failing-after-push",
-    "href": "resources/github_classroom_workflow.html#tests-failing-after-push",
-    "title": "GitHub Classroom Workflow",
-    "section": "Tests failing after push",
-    "text": "Tests failing after push\n\nRead the error message in the GitHub Actions log\nFix the issue locally\nCommit and push again"
-  },
-  {
-    "objectID": "resources/github_classroom_workflow.html#quick-reference-common-commands",
-    "href": "resources/github_classroom_workflow.html#quick-reference-common-commands",
-    "title": "GitHub Classroom Workflow",
-    "section": "Quick reference: common commands",
-    "text": "Quick reference: common commands\n\n\n\n\n\n\n\n\nTask\nWindows (PowerShell)\nmacOS\n\n\n\n\nCreate venv\npy -3.13 -m venv .venv\npython3.13 -m venv .venv\n\n\nActivate venv\n.\\.venv\\Scripts\\Activate.ps1\nsource .venv/bin/activate\n\n\nDeactivate venv\ndeactivate\ndeactivate\n\n\nInstall deps\npip install -r requirements.txt\npip install -r requirements.txt\n\n\nRun tests\npytest -q\npytest -q\n\n\nCommit all\ngit add . && git commit -m \"msg\"\ngit add . && git commit -m \"msg\"\n\n\nPush\ngit push\ngit push"
-  },
-  {
-    "objectID": "resources/initial_setup_macos.html",
-    "href": "resources/initial_setup_macos.html",
-    "title": "Initial Setup (macOS)",
+    "objectID": "resources/github_collaboration.html#the-collaboration-workflow",
+    "href": "resources/github_collaboration.html#the-collaboration-workflow",
+    "title": "GitHub Collaboration Quickstart",
     "section": "",
-    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13).\n\n\n\n\n\n\nmacOS (recent version)\nAdmin access for installs\nA GitHub account\n\n\n\n\n\nOpen Terminal and run:\nxcode-select --install\nVerify:\ngit --version\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list\n\n\n\n\n\nRun the official installer:\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\nIf the installer prints a line that starts with eval \"$(...)\", copy/paste it into Terminal (this adds Homebrew to your PATH).\nVerify:\nbrew --version\n\n\n\n\nGCM securely stores your GitHub credentials so you don’t have to re-authenticate on every push.\nInstall:\nbrew install git-credential-manager\nVerify:\ngit-credential-manager --version\nThe first time you git push, GCM will open a browser window to authenticate with GitHub. After that, your credentials are stored securely.\n\n\n\n\nInstall:\nbrew install python@3.13\nVerify:\npython3.13 --version\npython3.13 -m pip --version\n\nIf python3.13 is not found, run:\nbrew info python@3.13\nand follow the “caveats” it prints (Homebrew will tell you what to add to your PATH).\n\n\n\n\n\n\n\n\nDownload: https://code.visualstudio.com/download\nDrag Visual Studio Code.app to Applications\nOpen VS Code once\n\n\n\n\nbrew install --cask visual-studio-code\n\n\n\n\n\nIn VS Code, go to Extensions:\n\nPython (Microsoft)\n\nOptional:\n\nGitHub Pull Requests (GitHub)\n\n\n\nIn VS Code:\n\nCmd+Shift+P → Shell Command: Install ‘code’ command in PATH\n\nVerify in Terminal:\ncode --version\n\n\n\n\n\nFor each assignment, follow the GitHub Classroom Workflow Guide."
+    "text": "The key rules:\n\nAlways create a branch before making changes. If you’re on main, your only job is to pull. Never edit files while on main.\nEach person works on their own branch. Don’t share branches — if two people need to work on related features, use two separate branches.\n\n\n\n\n\n\n\nNote\n\n\n\nYour final project repo has branch protection enabled — pushing directly to main is blocked. All changes must go through a pull request. If you try to push to main, Git will reject it. Create a branch first (see Troubleshooting if you already started working on main).\n\n\nHere’s the loop you’ll repeat for each feature or fix:\n\n\nBefore starting new work, make sure you have your team’s latest code:\ngit pull\n\n\n\nMake sure you’re on main first (check the bottom-left of VS Code), then pick a short, descriptive name for what you’re working on. Use hyphens instead of spaces:\ngit checkout -b add-export-feature\nHere add-export-feature is the branch name — replace it with whatever you’re working on (e.g., fix-crash-on-empty-input, build-streamlit-ui).\nThis creates a new branch and switches you to it. You’re no longer on main.\nTo check which branch you’re on at any time:\ngit branch\nThe active branch has a * next to it. You can also see your current branch in the bottom-left corner of VS Code at all times — get in the habit of glancing at it before you start editing.\n\n\n\nEdit files, then commit as usual:\ngit add .\ngit commit -m \"Add PDF export button to Streamlit app\"\nYou can make multiple commits on your branch — that’s normal.\n\n\n\nThe first time you push a new branch, use:\ngit push -u origin add-export-feature\nAfter that first push, git push is enough for additional commits on the same branch.\n\n\n\nA pull request (PR) is how you propose merging your branch into main. It gives your teammates a chance to see what you changed before it goes in.\n\nGo to your repo on GitHub. You’ll often see a banner saying your branch was recently pushed — click Compare & pull request.\nIf you don’t see the banner: click the Pull requests tab → New pull request → set “compare” to your branch.\nGive the PR a title that summarizes the change.\nAdd a brief description of what you did and why.\nClick Create pull request.\n\n\n\n\nDon’t merge your own PRs. Have a teammate look it over and merge it. They can see exactly what changed in the “Files changed” tab. This keeps everyone aware of what’s happening in the codebase — which matters, since you’ll all need to explain every part of the code at the group code review.\nWhen it looks good, the teammate merges:\n\nClick Merge pull request.\nClick Confirm merge.\nClick Delete branch — the work is safely in main now, so you don’t need the branch anymore.\n\n\n\n\nBefore starting your next piece of work, switch back to main, pull the latest changes, and delete your local copy of the merged branch:\ngit checkout main\ngit pull\ngit branch -d branch-name\nThe last command is optional — stale local branches are harmless — but it keeps things tidy.\nYou don’t need to do this while you’re in the middle of working on a branch — your branch is unaffected by changes to main. Just make sure to pull main before creating your next branch."
   },
   {
-    "objectID": "resources/initial_setup_macos.html#creating-with-ai-in-the-loop-one-time-macos-setup",
-    "href": "resources/initial_setup_macos.html#creating-with-ai-in-the-loop-one-time-macos-setup",
-    "title": "Initial Setup (macOS)",
+    "objectID": "resources/github_collaboration.html#handling-merge-conflicts",
+    "href": "resources/github_collaboration.html#handling-merge-conflicts",
+    "title": "GitHub Collaboration Quickstart",
     "section": "",
-    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13)."
+    "text": "A merge conflict happens when two people edit the same lines in the same file. Git doesn’t know which version to keep, so it asks you to decide.\nYou’ll usually encounter this on GitHub when merging a pull request. If there’s a conflict, GitHub will block the merge and show a Resolve conflicts button.\nClick it to open GitHub’s conflict editor. You’ll see markers like this:\n&lt;&lt;&lt;&lt;&lt;&lt;&lt; main\ndef process_query(query):\n    return query.strip().lower()\n=======\ndef process_query(query):\n    return query.strip()\n&gt;&gt;&gt;&gt;&gt;&gt;&gt; add-export-feature\n\nThe top section (main) is what’s currently in main.\nThe bottom section is what’s on your branch.\n\nTo resolve it:\n\nEdit the file in GitHub’s editor to keep the version you want (or combine both). Delete all the marker lines — that’s the &lt;&lt;&lt;&lt;&lt;&lt;&lt; main, =======, and &gt;&gt;&gt;&gt;&gt;&gt;&gt; branch-name lines.\nClick Mark as resolved.\nOnce all conflicts are resolved, click Commit merge.\n\nTips for avoiding conflicts:\n\nPull often. The longer you go without pulling, the more your branch drifts from main.\nWork in different files when possible. If one person is building the Streamlit UI and another is writing the LangGraph workflow, conflicts are rare.\nKeep branches short-lived. Merge a branch once its feature works — don’t let branches live for weeks."
   },
   {
-    "objectID": "resources/initial_setup_macos.html#what-you-need",
-    "href": "resources/initial_setup_macos.html#what-you-need",
-    "title": "Initial Setup (macOS)",
+    "objectID": "resources/github_collaboration.html#troubleshooting",
+    "href": "resources/github_collaboration.html#troubleshooting",
+    "title": "GitHub Collaboration Quickstart",
     "section": "",
-    "text": "macOS (recent version)\nAdmin access for installs\nA GitHub account"
+    "text": "If you edited files on main but haven’t committed yet, you can move your changes to a new branch:\ngit stash\ngit checkout -b my-new-branch\ngit stash pop\nThis saves your changes, creates a branch, and puts the changes back. Now commit as usual.\n\n\n\nIf you already committed to main, don’t panic. You can move those commits to a branch. Replace N with the number of commits to move (e.g., HEAD~1 for one commit, HEAD~2 for two):\ngit branch my-new-branch\ngit reset HEAD~N\ngit checkout my-new-branch\nThis creates a branch with your commit, removes it from main, and switches you to the branch.\n\n\n\nAlways create new branches from main. If you accidentally branched from a feature branch, you can start over:\ngit stash\ngit checkout main\ngit pull\ngit checkout -b my-new-branch\ngit stash pop\n\n\n\nCommits are local until you push. If you committed but forgot to push:\ngit push\nIf it’s a new branch you haven’t pushed before:\ngit push -u origin branch-name"
   },
   {
-    "objectID": "resources/initial_setup_macos.html#install-apple-command-line-tools-includes-git",
-    "href": "resources/initial_setup_macos.html#install-apple-command-line-tools-includes-git",
-    "title": "Initial Setup (macOS)",
+    "objectID": "resources/github_collaboration.html#quick-reference",
+    "href": "resources/github_collaboration.html#quick-reference",
+    "title": "GitHub Collaboration Quickstart",
     "section": "",
-    "text": "Open Terminal and run:\nxcode-select --install\nVerify:\ngit --version\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list"
+    "text": "Task\nCommand\n\n\n\n\nPull latest changes\ngit pull\n\n\nCreate and switch to a branch\ngit checkout -b branch-name\n\n\nSwitch to an existing branch\ngit checkout branch-name\n\n\nSee which branch you’re on\ngit branch\n\n\nPush a new branch\ngit push -u origin branch-name\n\n\nSwitch back to main\ngit checkout main"
   },
   {
-    "objectID": "resources/initial_setup_macos.html#install-homebrew",
-    "href": "resources/initial_setup_macos.html#install-homebrew",
-    "title": "Initial Setup (macOS)",
+    "objectID": "resources/group_led_discussions.html",
+    "href": "resources/group_led_discussions.html",
+    "title": "Group-Led Discussion Spec",
     "section": "",
-    "text": "Run the official installer:\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\nIf the installer prints a line that starts with eval \"$(...)\", copy/paste it into Terminal (this adds Homebrew to your PATH).\nVerify:\nbrew --version"
+    "text": "Starting in Week 10, each final project group will lead one in-class discussion on an AI-related topic. This page describes the requirements, deliverables, and timeline.\n\n\nYour group will choose a topic, curate resources, write reflection prompts, prepare discussion questions, and lead the class discussion. The instructor will create a written reflection assignment on GitHub Classroom and add your resources to the course website.\n\n\n\n\n\nDue: at least one week before your discussion (earlier is better)\nChoose an AI-related topic that can sustain a good class discussion. Topics at the intersection of AI and society work well (e.g., AI and healthcare, AI and creative work, AI and faith, AI regulation), but you’re not limited to that — any AI-related topic that enables thoughtful discussion is fair game. Then curate 3–4 resources that the rest of the class will consume before the discussion. Your resources must:\n\nInclude at least two of the following categories: text (articles), audio, video\nWhen possible, choose resources that represent opposing or contrasting perspectives — discussions are richer when the readings disagree\nText articles must be from high-quality sources (e.g., The Atlantic, The New Yorker, Wired, MIT Technology Review, Harvard Business Review, NPR, PBS, peer-reviewed journals)\nAll resources must be accessible to students (accessing through the college library’s electronic collection is fine)\nEach resource needs a title, author/source, and a 1–2 sentence description explaining what it covers and why it’s relevant\nRead, watch, or listen to every resource yourself before submitting them — you need to know the material well to lead a discussion on it\n\nYou may also include a few optional “learn more” resources for students who want to go deeper. These are not required but are a nice addition.\nModel your resource descriptions on the ones provided for D1–D4 on the Schedule page.\n\n\n\nDue: at least one week before your discussion\nWrite two writing prompts that students will respond to as an in-class written reflection before the discussion begins. Strong prompts:\n\nConnect to the assigned resources and topic\nInvite students to reflect on their own lives, experiences, or future plans\nCannot be answered with a quick, surface-level response\nStimulate genuine thinking and introspection (not just summary of the readings)\n\nLook at previous written reflections (WR1–WR4) for examples of effective prompts.\n\n\n\nDue: at least two days before your discussion\nPrepare 10–15 discussion questions to drive the in-class conversation. Good discussion questions:\n\nCover a variety of angles on the topic (don’t cluster around one sub-theme)\nInclude questions that students can relate to their own lives and experiences\nAre interesting and thought-provoking, not surface-level comprehension checks\nDraw on the assigned resources but also push beyond them\nMix concrete/specific questions with bigger-picture ones\n\n\n\n\n\nSubmit all deliverables by email to the instructor. Submitting more than a week in advance is encouraged — the instructor may ask you to revise your topic, swap a resource, or strengthen a prompt before the discussion date.\n\n\n\n\n\n\n\n\n\n\nDeliverable\nDeadline\n\n\n\n\nTopic + resources (with descriptions)\nAt least 1 week before discussion\n\n\nTwo writing prompts\nAt least 1 week before discussion\n\n\n10–15 discussion questions\nAt least 2 days before discussion\n\n\n\n\n\n\nAfter receiving your materials, the instructor will:\n\nReview and provide feedback (possibly requesting changes)\nCreate the written reflection assignment on GitHub Classroom\nAdd your resources and descriptions to the course website\nYour group leads the in-class discussion on the scheduled date\n\n\n\n\n\nStart early. The instructor may ask for revisions, so give yourself time.\nPick a topic your group genuinely cares about. Enthusiasm is contagious.\nTest your resources. Make sure links work and that articles aren’t behind inaccessible paywalls.\nPrepare more questions than you think you’ll need. Some questions land better than others, and you want options.\nPlan for facilitation. Think about how you’ll structure the discussion — who opens, how you’ll handle quiet moments, etc."
   },
   {
-    "objectID": "resources/initial_setup_macos.html#install-git-credential-manager-gcm",
-    "href": "resources/initial_setup_macos.html#install-git-credential-manager-gcm",
-    "title": "Initial Setup (macOS)",
+    "objectID": "resources/group_led_discussions.html#overview",
+    "href": "resources/group_led_discussions.html#overview",
+    "title": "Group-Led Discussion Spec",
     "section": "",
-    "text": "GCM securely stores your GitHub credentials so you don’t have to re-authenticate on every push.\nInstall:\nbrew install git-credential-manager\nVerify:\ngit-credential-manager --version\nThe first time you git push, GCM will open a browser window to authenticate with GitHub. After that, your credentials are stored securely."
+    "text": "Your group will choose a topic, curate resources, write reflection prompts, prepare discussion questions, and lead the class discussion. The instructor will create a written reflection assignment on GitHub Classroom and add your resources to the course website."
   },
   {
-    "objectID": "resources/initial_setup_macos.html#install-python-3.13.x-via-homebrew",
-    "href": "resources/initial_setup_macos.html#install-python-3.13.x-via-homebrew",
-    "title": "Initial Setup (macOS)",
+    "objectID": "resources/group_led_discussions.html#deliverables",
+    "href": "resources/group_led_discussions.html#deliverables",
+    "title": "Group-Led Discussion Spec",
     "section": "",
-    "text": "Install:\nbrew install python@3.13\nVerify:\npython3.13 --version\npython3.13 -m pip --version\n\nIf python3.13 is not found, run:\nbrew info python@3.13\nand follow the “caveats” it prints (Homebrew will tell you what to add to your PATH)."
+    "text": "Due: at least one week before your discussion (earlier is better)\nChoose an AI-related topic that can sustain a good class discussion. Topics at the intersection of AI and society work well (e.g., AI and healthcare, AI and creative work, AI and faith, AI regulation), but you’re not limited to that — any AI-related topic that enables thoughtful discussion is fair game. Then curate 3–4 resources that the rest of the class will consume before the discussion. Your resources must:\n\nInclude at least two of the following categories: text (articles), audio, video\nWhen possible, choose resources that represent opposing or contrasting perspectives — discussions are richer when the readings disagree\nText articles must be from high-quality sources (e.g., The Atlantic, The New Yorker, Wired, MIT Technology Review, Harvard Business Review, NPR, PBS, peer-reviewed journals)\nAll resources must be accessible to students (accessing through the college library’s electronic collection is fine)\nEach resource needs a title, author/source, and a 1–2 sentence description explaining what it covers and why it’s relevant\nRead, watch, or listen to every resource yourself before submitting them — you need to know the material well to lead a discussion on it\n\nYou may also include a few optional “learn more” resources for students who want to go deeper. These are not required but are a nice addition.\nModel your resource descriptions on the ones provided for D1–D4 on the Schedule page.\n\n\n\nDue: at least one week before your discussion\nWrite two writing prompts that students will respond to as an in-class written reflection before the discussion begins. Strong prompts:\n\nConnect to the assigned resources and topic\nInvite students to reflect on their own lives, experiences, or future plans\nCannot be answered with a quick, surface-level response\nStimulate genuine thinking and introspection (not just summary of the readings)\n\nLook at previous written reflections (WR1–WR4) for examples of effective prompts.\n\n\n\nDue: at least two days before your discussion\nPrepare 10–15 discussion questions to drive the in-class conversation. Good discussion questions:\n\nCover a variety of angles on the topic (don’t cluster around one sub-theme)\nInclude questions that students can relate to their own lives and experiences\nAre interesting and thought-provoking, not surface-level comprehension checks\nDraw on the assigned resources but also push beyond them\nMix concrete/specific questions with bigger-picture ones"
   },
   {
-    "objectID": "resources/initial_setup_macos.html#install-vs-code",
-    "href": "resources/initial_setup_macos.html#install-vs-code",
-    "title": "Initial Setup (macOS)",
+    "objectID": "resources/group_led_discussions.html#submission",
+    "href": "resources/group_led_discussions.html#submission",
+    "title": "Group-Led Discussion Spec",
     "section": "",
-    "text": "Download: https://code.visualstudio.com/download\nDrag Visual Studio Code.app to Applications\nOpen VS Code once\n\n\n\n\nbrew install --cask visual-studio-code"
+    "text": "Submit all deliverables by email to the instructor. Submitting more than a week in advance is encouraged — the instructor may ask you to revise your topic, swap a resource, or strengthen a prompt before the discussion date."
   },
   {
-    "objectID": "resources/initial_setup_macos.html#install-vs-code-extensions",
-    "href": "resources/initial_setup_macos.html#install-vs-code-extensions",
-    "title": "Initial Setup (macOS)",
+    "objectID": "resources/group_led_discussions.html#timeline-summary",
+    "href": "resources/group_led_discussions.html#timeline-summary",
+    "title": "Group-Led Discussion Spec",
     "section": "",
-    "text": "In VS Code, go to Extensions:\n\nPython (Microsoft)\n\nOptional:\n\nGitHub Pull Requests (GitHub)\n\n\n\nIn VS Code:\n\nCmd+Shift+P → Shell Command: Install ‘code’ command in PATH\n\nVerify in Terminal:\ncode --version"
+    "text": "Deliverable\nDeadline\n\n\n\n\nTopic + resources (with descriptions)\nAt least 1 week before discussion\n\n\nTwo writing prompts\nAt least 1 week before discussion\n\n\n10–15 discussion questions\nAt least 2 days before discussion"
   },
   {
-    "objectID": "resources/initial_setup_macos.html#youre-done-with-one-time-setup",
-    "href": "resources/initial_setup_macos.html#youre-done-with-one-time-setup",
-    "title": "Initial Setup (macOS)",
+    "objectID": "resources/group_led_discussions.html#what-happens-next",
+    "href": "resources/group_led_discussions.html#what-happens-next",
+    "title": "Group-Led Discussion Spec",
+    "section": "",
+    "text": "After receiving your materials, the instructor will:\n\nReview and provide feedback (possibly requesting changes)\nCreate the written reflection assignment on GitHub Classroom\nAdd your resources and descriptions to the course website\nYour group leads the in-class discussion on the scheduled date"
+  },
+  {
+    "objectID": "resources/group_led_discussions.html#tips",
+    "href": "resources/group_led_discussions.html#tips",
+    "title": "Group-Led Discussion Spec",
+    "section": "",
+    "text": "Start early. The instructor may ask for revisions, so give yourself time.\nPick a topic your group genuinely cares about. Enthusiasm is contagious.\nTest your resources. Make sure links work and that articles aren’t behind inaccessible paywalls.\nPrepare more questions than you think you’ll need. Some questions land better than others, and you want options.\nPlan for facilitation. Think about how you’ll structure the discussion — who opens, how you’ll handle quiet moments, etc."
+  },
+  {
+    "objectID": "resources/initial_setup_windows.html",
+    "href": "resources/initial_setup_windows.html",
+    "title": "Initial Setup (Windows)",
+    "section": "",
+    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13). Download: https://www.python.org/downloads/\n\n\n\n\n\n\nWindows 10/11\nA GitHub account (the same one you’ll use to accept GitHub Classroom assignments)\n\n\n\n\n\n\n\nhttps://code.visualstudio.com/download\n\n\n\n\nRun the installer.\nAccept defaults unless you know you want something else.\nRecommended: enable “Add to PATH”.\n\n(Official Windows setup doc: https://code.visualstudio.com/docs/setup/windows)\n\n\n\nOpen VS Code from the Start menu.\n\n\n\n\n\n\n\nUse either official source:\n\nhttps://git-scm.com/download/win\nhttps://gitforwindows.org/\n\n\n\n\nAccept defaults unless you know you need different settings.\n\n\n\nOpen PowerShell and run:\ngit --version\n\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list\n\n\n\n\n\n\n\nhttps://www.python.org/downloads/\n\n\n\nWhen running the installer: 1. Check “Add python.exe to PATH” 2. Keep pip included (default) 3. Keep the Python launcher (py) enabled if offered (default)\n\n\n\nClose and reopen PowerShell, then run:\npython --version\npy --version\npip --version\n\n\n\n\n\nIn VS Code, go to Extensions:\n\nPython (Microsoft)\n\nOptional:\n\nGitHub Pull Requests (GitHub)\n\n\n\n\n\nFor each assignment, follow the GitHub Classroom Workflow Guide."
+  },
+  {
+    "objectID": "resources/initial_setup_windows.html#creating-with-ai-in-the-loop-one-time-windows-setup",
+    "href": "resources/initial_setup_windows.html#creating-with-ai-in-the-loop-one-time-windows-setup",
+    "title": "Initial Setup (Windows)",
+    "section": "",
+    "text": "This guide installs the core tools you need for the course. You only need to do this once.\n\nCourse standard: Python 3.13.x (we’ll support/debug primarily on 3.13). Download: https://www.python.org/downloads/"
+  },
+  {
+    "objectID": "resources/initial_setup_windows.html#what-you-need",
+    "href": "resources/initial_setup_windows.html#what-you-need",
+    "title": "Initial Setup (Windows)",
+    "section": "",
+    "text": "Windows 10/11\nA GitHub account (the same one you’ll use to accept GitHub Classroom assignments)"
+  },
+  {
+    "objectID": "resources/initial_setup_windows.html#install-visual-studio-code-vs-code",
+    "href": "resources/initial_setup_windows.html#install-visual-studio-code-vs-code",
+    "title": "Initial Setup (Windows)",
+    "section": "",
+    "text": "https://code.visualstudio.com/download\n\n\n\n\nRun the installer.\nAccept defaults unless you know you want something else.\nRecommended: enable “Add to PATH”.\n\n(Official Windows setup doc: https://code.visualstudio.com/docs/setup/windows)\n\n\n\nOpen VS Code from the Start menu."
+  },
+  {
+    "objectID": "resources/initial_setup_windows.html#install-git-git-for-windows",
+    "href": "resources/initial_setup_windows.html#install-git-git-for-windows",
+    "title": "Initial Setup (Windows)",
+    "section": "",
+    "text": "Use either official source:\n\nhttps://git-scm.com/download/win\nhttps://gitforwindows.org/\n\n\n\n\nAccept defaults unless you know you need different settings.\n\n\n\nOpen PowerShell and run:\ngit --version\n\n\n\ngit config --global user.name \"First Last\"\ngit config --global user.email \"you@school.edu\"\ngit config --global --list"
+  },
+  {
+    "objectID": "resources/initial_setup_windows.html#install-python-course-standard-3.13.x",
+    "href": "resources/initial_setup_windows.html#install-python-course-standard-3.13.x",
+    "title": "Initial Setup (Windows)",
+    "section": "",
+    "text": "https://www.python.org/downloads/\n\n\n\nWhen running the installer: 1. Check “Add python.exe to PATH” 2. Keep pip included (default) 3. Keep the Python launcher (py) enabled if offered (default)\n\n\n\nClose and reopen PowerShell, then run:\npython --version\npy --version\npip --version"
+  },
+  {
+    "objectID": "resources/initial_setup_windows.html#install-vs-code-extensions",
+    "href": "resources/initial_setup_windows.html#install-vs-code-extensions",
+    "title": "Initial Setup (Windows)",
+    "section": "",
+    "text": "In VS Code, go to Extensions:\n\nPython (Microsoft)\n\nOptional:\n\nGitHub Pull Requests (GitHub)"
+  },
+  {
+    "objectID": "resources/initial_setup_windows.html#youre-done-with-one-time-setup",
+    "href": "resources/initial_setup_windows.html#youre-done-with-one-time-setup",
+    "title": "Initial Setup (Windows)",
     "section": "",
     "text": "For each assignment, follow the GitHub Classroom Workflow Guide."
   },
   {
-    "objectID": "resources/initial_setup_macos.html#homebrew-brew-command-not-found",
-    "href": "resources/initial_setup_macos.html#homebrew-brew-command-not-found",
-    "title": "Initial Setup (macOS)",
-    "section": "Homebrew: brew: command not found",
-    "text": "Homebrew: brew: command not found\nRe-run the PATH line the installer printed (the eval ... line), then restart Terminal and try:\nbrew --version"
+    "objectID": "resources/initial_setup_windows.html#git-not-found-in-vs-code",
+    "href": "resources/initial_setup_windows.html#git-not-found-in-vs-code",
+    "title": "Initial Setup (Windows)",
+    "section": "Git not found in VS Code",
+    "text": "Git not found in VS Code\n\nInstall Git for Windows\nQuit and restart VS Code\nVerify:\ngit --version"
   },
   {
-    "objectID": "resources/initial_setup_macos.html#python-3.13-not-found-python3.13-command-not-found",
-    "href": "resources/initial_setup_macos.html#python-3.13-not-found-python3.13-command-not-found",
-    "title": "Initial Setup (macOS)",
-    "section": "Python 3.13 not found (python3.13: command not found)",
-    "text": "Python 3.13 not found (python3.13: command not found)\nRun:\nbrew info python@3.13\nand follow the “caveats” (it tells you exactly what to add to your PATH). Then open a new Terminal and retry:\npython3.13 --version"
+    "objectID": "resources/initial_setup_windows.html#python-not-recognized-or-opens-microsoft-store",
+    "href": "resources/initial_setup_windows.html#python-not-recognized-or-opens-microsoft-store",
+    "title": "Initial Setup (Windows)",
+    "section": "python not recognized or opens Microsoft Store",
+    "text": "python not recognized or opens Microsoft Store\n\nInstall Python 3.13.x\nMake sure Add to PATH is checked\nRestart PowerShell and verify:\npython --version\npy --version"
   },
   {
-    "objectID": "resources/initial_setup_macos.html#vs-code-code-command-not-found",
-    "href": "resources/initial_setup_macos.html#vs-code-code-command-not-found",
-    "title": "Initial Setup (macOS)",
-    "section": "VS Code: code: command not found",
-    "text": "VS Code: code: command not found\nIn VS Code:\n\nCmd+Shift+P → Shell Command: Install ‘code’ command in PATH Restart Terminal."
+    "objectID": "resources/initial_setup_windows.html#powershell-wont-run-scripts-execution-policy",
+    "href": "resources/initial_setup_windows.html#powershell-wont-run-scripts-execution-policy",
+    "title": "Initial Setup (Windows)",
+    "section": "PowerShell won’t run scripts (execution policy)",
+    "text": "PowerShell won’t run scripts (execution policy)\nUse Command Prompt terminal in VS Code instead, or (advanced) allow local scripts:\nSet-ExecutionPolicy -Scope CurrentUser RemoteSigned"
   },
   {
-    "objectID": "resources/initial_setup_macos.html#if-youre-stuck-include-these-in-your-help-request",
-    "href": "resources/initial_setup_macos.html#if-youre-stuck-include-these-in-your-help-request",
-    "title": "Initial Setup (macOS)",
+    "objectID": "resources/initial_setup_windows.html#if-youre-stuck-include-these-in-your-help-request",
+    "href": "resources/initial_setup_windows.html#if-youre-stuck-include-these-in-your-help-request",
+    "title": "Initial Setup (Windows)",
     "section": "If you’re stuck, include these in your help request",
-    "text": "If you’re stuck, include these in your help request\ngit --version\npython3.13 --version\nbrew --version"
+    "text": "If you’re stuck, include these in your help request\ngit --version\npython --version\npy --version"
   },
   {
     "objectID": "slides-listing.html",

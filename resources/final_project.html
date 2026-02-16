@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-03-16">
+<meta name="description" content="Requirements, deliverables, and timeline for the final group project.">
 
-<title>Resources – Creating with AI in the Loop</title>
+<title>Final Project Spec – Creating with AI in the Loop</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +32,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -69,66 +69,8 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-resources .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-description','listing-categories','listing-date',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-resources'] = new List('listing-resources', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <style>html{ scroll-behavior: smooth; }</style>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -176,7 +118,7 @@ window.Quarto = {
 <span class="menu-text">Policies</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../resources/index.html" aria-current="page"> 
+    <a class="nav-link" href="../resources/index.html"> 
 <span class="menu-text">Resources</span></a>
   </li>  
 </ul>
@@ -199,7 +141,7 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -207,31 +149,55 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#featured" id="toc-featured" class="nav-link active" data-scroll-target="#featured">Featured</a>
+  <li><a href="#final-group-project" id="toc-final-group-project" class="nav-link active" data-scroll-target="#final-group-project">Final Group Project</a>
   <ul class="collapse">
-  <li><a href="#initial-setup-one-time" id="toc-initial-setup-one-time" class="nav-link" data-scroll-target="#initial-setup-one-time">Initial Setup (one-time)</a></li>
-  <li><a href="#github-classroom-workflow-every-build-assignment" id="toc-github-classroom-workflow-every-build-assignment" class="nav-link" data-scroll-target="#github-classroom-workflow-every-build-assignment">GitHub Classroom Workflow (every build assignment)</a></li>
-  <li><a href="#github-collaboration-final-project" id="toc-github-collaboration-final-project" class="nav-link" data-scroll-target="#github-collaboration-final-project">GitHub Collaboration (final project)</a></li>
-  <li><a href="#portfolio-site-final-project" id="toc-portfolio-site-final-project" class="nav-link" data-scroll-target="#portfolio-site-final-project">Portfolio Site (final project)</a></li>
-  <li><a href="#gemini" id="toc-gemini" class="nav-link" data-scroll-target="#gemini">Gemini</a></li>
+  <li><a href="#teams" id="toc-teams" class="nav-link" data-scroll-target="#teams">Teams</a></li>
+  <li><a href="#technical-requirements" id="toc-technical-requirements" class="nav-link" data-scroll-target="#technical-requirements">Technical Requirements</a></li>
+  <li><a href="#deliverables-and-timeline" id="toc-deliverables-and-timeline" class="nav-link" data-scroll-target="#deliverables-and-timeline">Deliverables and Timeline</a>
+  <ul class="collapse">
+  <li><a href="#proposal" id="toc-proposal" class="nav-link" data-scroll-target="#proposal">Proposal</a></li>
+  <li><a href="#working-prototype" id="toc-working-prototype" class="nav-link" data-scroll-target="#working-prototype">Working Prototype</a></li>
+  <li><a href="#working-repository" id="toc-working-repository" class="nav-link" data-scroll-target="#working-repository">Working Repository</a></li>
+  <li><a href="#presentation" id="toc-presentation" class="nav-link" data-scroll-target="#presentation">Presentation</a></li>
+  <li><a href="#portfolio-piece" id="toc-portfolio-piece" class="nav-link" data-scroll-target="#portfolio-piece">Portfolio Piece</a></li>
+  <li><a href="#group-code-review" id="toc-group-code-review" class="nav-link" data-scroll-target="#group-code-review">Group Code Review</a></li>
   </ul></li>
-  <li><a href="#all-resources" id="toc-all-resources" class="nav-link" data-scroll-target="#all-resources">All resources</a></li>
+  <li><a href="#two-repo-model" id="toc-two-repo-model" class="nav-link" data-scroll-target="#two-repo-model">Two-Repo Model</a></li>
+  <li><a href="#ai-development-log" id="toc-ai-development-log" class="nav-link" data-scroll-target="#ai-development-log">AI Development Log</a></li>
+  <li><a href="#api-keys-and-repo-hygiene" id="toc-api-keys-and-repo-hygiene" class="nav-link" data-scroll-target="#api-keys-and-repo-hygiene">API Keys and Repo Hygiene</a></li>
+  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ai-in-the-loop-2026/ai-in-the-loop-hub/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Resources</h1>
+<h1 class="title">Final Project Spec</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Course Logistics</div>
+    <div class="quarto-category">Projects</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Requirements, deliverables, and timeline for the final group project.
+  </div>
 </div>
 
 
-
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 16, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -241,331 +207,155 @@ window.Quarto = {
 </header>
 
 
-<p>Use this page as the <strong>single place</strong> to find setup guides, FAQs, and “how-to” docs.</p>
-<section id="featured" class="level2">
-<h2 class="anchored" data-anchor-id="featured">Featured</h2>
-<section id="initial-setup-one-time" class="level3">
-<h3 class="anchored" data-anchor-id="initial-setup-one-time">Initial Setup (one-time)</h3>
+<section id="final-group-project" class="level1">
+<h1>Final Group Project</h1>
+<p>Your team will design and build a substantial AI application (or suite of related applications) using LangChain and LangGraph. The project should be related to your interests and do something genuinely useful — not just a toy demo.</p>
+<section id="teams" class="level2">
+<h2 class="anchored" data-anchor-id="teams">Teams</h2>
+<p>There are four project teams: three teams of three and one team of two. Your final project team is also your group-led discussion team.</p>
+</section>
+<section id="technical-requirements" class="level2">
+<h2 class="anchored" data-anchor-id="technical-requirements">Technical Requirements</h2>
+<p>Your project must incorporate the following LangChain/LangGraph features:</p>
 <ul>
-<li><a href="../resources/initial_setup_windows.html">Initial Setup (Windows)</a> — VS Code, Git, Python 3.13</li>
-<li><a href="../resources/initial_setup_macos.html">Initial Setup (macOS)</a> — Homebrew, VS Code, Git, Python 3.13</li>
+<li><strong>Tools</strong> — whether invoked by the LLM via <code>bind_tools</code> or called deterministically in a graph node</li>
+<li><strong>Conditional routing</strong> — at least one use of <code>add_conditional_edges</code></li>
+<li><strong>Custom state</strong> — a <code>TypedDict</code> state that goes beyond <code>MessagesState</code> (additional fields that your workflow reads and writes)</li>
+</ul>
+<p>Your application must have a <strong>user interface</strong> well-suited to the problem. Multiple interfaces are encouraged (e.g., a CLI built with Typer and a Streamlit web app), but at least one polished interface is required.</p>
+</section>
+<section id="deliverables-and-timeline" class="level2">
+<h2 class="anchored" data-anchor-id="deliverables-and-timeline">Deliverables and Timeline</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Deliverable</th>
+<th>Due</th>
+<th>Grade Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Proposal</td>
+<td>Week 10 (Tue, before class)</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>Working prototype</td>
+<td>Week 14 (Tue, before class)</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>Working repository</td>
+<td>Wed, April 29 (11:59pm)</td>
+<td>5%</td>
+</tr>
+<tr class="even">
+<td>Presentation</td>
+<td>Week 15 (Thu, April 30)</td>
+<td>5%</td>
+</tr>
+<tr class="odd">
+<td>Group code review</td>
+<td>Mon, May 4 (12:30–2:30pm)</td>
+<td>15%</td>
+</tr>
+<tr class="even">
+<td>Portfolio piece (public site)</td>
+<td>Wed, May 6 (11:59pm)</td>
+<td>5%</td>
+</tr>
+</tbody>
+</table>
+<section id="proposal" class="level3">
+<h3 class="anchored" data-anchor-id="proposal">Proposal</h3>
+<p>A 1–2 page markdown document in your team repo covering:</p>
+<ul>
+<li><strong>Team name:</strong> Pick a name for your team!</li>
+<li><strong>Problem / domain:</strong> What problem are you solving, and for whom?</li>
+<li><strong>Planned features:</strong> What will the application do? Be specific.</li>
+<li><strong>Technical approach:</strong> What tools, RAG strategy, routing logic, and state fields do you plan to use?</li>
+<li><strong>Team member roles:</strong> Who is responsible for what?</li>
+<li><strong>Rough timeline:</strong> What do you plan to have done by when?</li>
+</ul>
+<p>The instructor will review your proposal and provide feedback. You may be asked to adjust scope.</p>
+</section>
+<section id="working-prototype" class="level3">
+<h3 class="anchored" data-anchor-id="working-prototype">Working Prototype</h3>
+<p>By Week 14, your core functionality should be working. Remaining features and polish are fine, but they should be clearly tracked as individual <a href="../resources/github_issues.html">issues</a> in your repo (one issue per feature or bug).</p>
+<p><strong>How to submit:</strong> Create an issue titled <strong>“Prototype checkpoint”</strong> early on with a summary of what you plan to have working. Update the issue description as things change. By the deadline, it should reflect what’s working and what’s left. Closing the issue signals to the instructor that your prototype is ready for review.</p>
+</section>
+<section id="working-repository" class="level3">
+<h3 class="anchored" data-anchor-id="working-repository">Working Repository</h3>
+<p>A clean, well-organized private repo with:</p>
+<ul>
+<li><strong>README</strong> — project description, setup instructions, how to run the application</li>
+<li><strong>Working code</strong> — the application runs as described</li>
+<li><strong><code>requirements.txt</code></strong> — all dependencies pinned</li>
+<li><strong>AI development log</strong> — see <a href="#ai-development-log">AI Development Log</a> below</li>
 </ul>
 </section>
-<section id="github-classroom-workflow-every-build-assignment" class="level3">
-<h3 class="anchored" data-anchor-id="github-classroom-workflow-every-build-assignment">GitHub Classroom Workflow (every build assignment)</h3>
+<section id="presentation" class="level3">
+<h3 class="anchored" data-anchor-id="presentation">Presentation</h3>
+<p>Each team gives a 10–15 minute presentation on Thursday of Week 15 (April 30). Your presentation should include a live demo and slides covering who it’s for, why it’s useful, what you built, your technical approach, challenges you encountered, and what you learned.</p>
+</section>
+<section id="portfolio-piece" class="level3">
+<h3 class="anchored" data-anchor-id="portfolio-piece">Portfolio Piece</h3>
+<p>A <strong>public</strong> GitHub repository with a GitHub Pages site that summarizes your project for a general audience. This is a portfolio artifact — something you can show to future employers or graduate programs. It should include a clear project description, screenshots or screen recordings, and a summary of the technical approach. This public repo should include your project code (someone should be able to clone it and run your app), but should <strong>not</strong> include your AI development log or full development history. Instead, include a brief summary in your README of how AI tools were used in developing the project. See the <a href="../resources/quarto_portfolio_site.html">Publishing a Portfolio Site with Quarto</a> guide to get started.</p>
+</section>
+<section id="group-code-review" class="level3">
+<h3 class="anchored" data-anchor-id="group-code-review">Group Code Review</h3>
+<p>The group code review takes place during the scheduled final exam time: <strong>Monday, May 4, 12:30–2:30pm</strong> (~30 minutes per team). Format:</p>
+<ol type="1">
+<li><strong>Demo (~5 min):</strong> Quick walkthrough of your application</li>
+<li><strong>Q&amp;A (~25 min):</strong> The instructor asks questions about your project and code — architecture decisions, how specific features work, why you made certain choices, etc.</li>
+</ol>
+<p>Questions may cover any part of the project, not just one feature. <strong>Every team member must be able to explain every part of the code.</strong> This is an individual assessment — you are evaluated on your understanding, not just the team’s output.</p>
+</section>
+</section>
+<section id="two-repo-model" class="level2">
+<h2 class="anchored" data-anchor-id="two-repo-model">Two-Repo Model</h2>
+<p>Your project will use two repositories:</p>
+<ol type="1">
+<li><strong>Private working repo</strong> (GitHub Classroom) — where you develop your code, track issues, maintain your AI development log, and collaborate with your team. This is the repo the instructor evaluates.</li>
+<li><strong>Public portfolio repo</strong> — a clean, public-facing repository with your project code and a GitHub Pages site. Create this toward the end of the project. Someone should be able to clone it and run your app. It should not include your AI development log or full development history. Include a brief summary in your README of how AI tools were used in developing the project. See the <a href="../resources/quarto_portfolio_site.html">Publishing a Portfolio Site with Quarto</a> guide for setup instructions.</li>
+</ol>
+</section>
+<section id="ai-development-log" class="level2">
+<h2 class="anchored" data-anchor-id="ai-development-log">AI Development Log</h2>
+<p>Maintain an AI development log (<code>ai_dev_log.md</code>) in your <strong>private</strong> working repo. This is an ongoing document — add entries as you work, not after the fact. Each entry should describe:</p>
 <ul>
-<li><a href="../resources/github_classroom_workflow.html">GitHub Classroom Workflow</a> — Accept, clone, venv, commit, push</li>
+<li>What you were trying to accomplish</li>
+<li>How you used AI tools (prompts, suggestions, generated code)</li>
+<li>What worked, what didn’t, and what you learned</li>
+</ul>
+<p>The log helps you reflect on your AI-assisted development process and gives the instructor insight into how your project evolved.</p>
+</section>
+<section id="api-keys-and-repo-hygiene" class="level2">
+<h2 class="anchored" data-anchor-id="api-keys-and-repo-hygiene">API Keys and Repo Hygiene</h2>
+<ul>
+<li><strong>Never commit API keys, secrets, or credentials to your repo.</strong> Store them in a <code>.env</code> file and make sure <code>.env</code> is in your <code>.gitignore</code>. If you accidentally commit a key, rotate it immediately.</li>
+<li><strong>Each team member should use their own API key.</strong> Do not share API keys with your group members, even in private messages or shared documents.</li>
+<li><strong>Check <code>git status</code> before every commit.</strong> Make sure you are not staging files that contain secrets, large data files, or other artifacts that don’t belong in the repo.</li>
+<li><strong>Use <code>.gitignore</code> liberally.</strong> At a minimum, ignore <code>.env</code>, <code>__pycache__/</code>, <code>.venv/</code>, and any local data files.</li>
 </ul>
 </section>
-<section id="github-collaboration-final-project" class="level3">
-<h3 class="anchored" data-anchor-id="github-collaboration-final-project">GitHub Collaboration (final project)</h3>
+<section id="tips" class="level2">
+<h2 class="anchored" data-anchor-id="tips">Tips</h2>
 <ul>
-<li><a href="../resources/github_collaboration.html">GitHub Collaboration Quickstart</a> — Branches, pull requests, merging, and resolving conflicts</li>
-<li><a href="../resources/github_issues.html">GitHub Issues Quickstart</a> — Tracking features, bugs, and to-dos in your repo</li>
+<li><strong>Start early.</strong> The proposal is due Week 10, and the semester moves fast from there.</li>
+<li><strong>Scope wisely.</strong> A focused, polished application is better than an ambitious one that half-works. You can always list stretch goals in your proposal.</li>
+<li><strong>Use branches and pull requests.</strong> Don’t push directly to <code>main</code> — use the branch workflow described in the <a href="../resources/github_collaboration.html">GitHub Collaboration Quickstart</a>. Track remaining work with <a href="../resources/github_issues.html">issues</a>.</li>
+<li><strong>Commit often.</strong> Small, frequent commits with clear messages make collaboration easier and give you a safety net.</li>
+<li><strong>Divide work, but understand all of it.</strong> The code review evaluates individual understanding. Don’t let any part of the codebase become a black box to you.</li>
+<li><strong>Test your application thoroughly</strong> before the presentation and code review. Nothing undermines a demo like a crash.</li>
 </ul>
-</section>
-<section id="portfolio-site-final-project" class="level3">
-<h3 class="anchored" data-anchor-id="portfolio-site-final-project">Portfolio Site (final project)</h3>
-<ul>
-<li><a href="../resources/quarto_portfolio_site.html">Publishing a Portfolio Site with Quarto</a> — Create and publish a project portfolio to GitHub Pages</li>
-</ul>
-</section>
-<section id="gemini" class="level3">
-<h3 class="anchored" data-anchor-id="gemini">Gemini</h3>
-<ul>
-<li><a href="../resources/gemini_api_key.html">Getting a Gemini API Key</a> — For assignments that call Gemini models</li>
-<li><a href="../resources/gemini_code_assist.html">Installing Gemini Code Assist</a> — AI coding assistant in VS Code</li>
-<li><a href="../resources/gemini_cli.html">Installing Gemini CLI</a> — AI assistant in your terminal</li>
-</ul>
-</section>
-</section>
-<section id="all-resources" class="level2">
-<h2 class="anchored" data-anchor-id="all-resources">All resources</h2>
-<p>The list below is generated automatically from the files in this folder.</p>
-
 
 
 </section>
+</section>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-resources">
-<div class="listing-actions-group">
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
-</div>
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Q291cnNlJTIwTG9naXN0aWNz" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1767132920854" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="15">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/faq.html" class="no-external">Course FAQ</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q291cnNlJTIwTG9naXN0aWNz'); return false;">Course Logistics</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/faq.html" class="no-external">
-<p>Responses to Frequently Asked Questions about the course.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/faq.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="Q291cnNlJTIwTG9naXN0aWNz" data-listing-date-sort="1772341200000" data-listing-file-modified-sort="1770909883071" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="642">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/group_led_discussions.html" class="no-external">Group-Led Discussion Spec</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q291cnNlJTIwTG9naXN0aWNz'); return false;">Course Logistics</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/group_led_discussions.html" class="no-external">
-<p>Requirements and timeline for group-led discussions (GLD1–GLD4).</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/group_led_discussions.html" class="no-external">
-<div class="listing-date">
-Mar 1, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="Q291cnNlJTIwTG9naXN0aWNzJTJDUHJvamVjdHM=" data-listing-date-sort="1773633600000" data-listing-file-modified-sort="1771259591082" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1107">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/final_project.html" class="no-external">Final Project Spec</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q291cnNlJTIwTG9naXN0aWNz'); return false;">Course Logistics</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHJvamVjdHM='); return false;">Projects</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/final_project.html" class="no-external">
-<p>Requirements, deliverables, and timeline for the final group project.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/final_project.html" class="no-external">
-<div class="listing-date">
-Mar 16, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="R2l0SHVi" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1767279343415" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="559">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/github_classroom_workflow.html" class="no-external">GitHub Classroom Workflow</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0SHVi'); return false;">GitHub</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/github_classroom_workflow.html" class="no-external">
-<p>Accept an assignment, clone the repo, set up a virtual environment, and submit your work.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/github_classroom_workflow.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="R2l0SHVi" data-listing-date-sort="1771218000000" data-listing-file-modified-sort="1771259330497" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1183">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/github_collaboration.html" class="no-external">GitHub Collaboration Quickstart</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0SHVi'); return false;">GitHub</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/github_collaboration.html" class="no-external">
-<p>How to use branches, pull requests, and merging to collaborate on a shared repo without stepping on each other’s work.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/github_collaboration.html" class="no-external">
-<div class="listing-date">
-Feb 16, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="R2l0SHVi" data-listing-date-sort="1771218000000" data-listing-file-modified-sort="1771253082080" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="385">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/github_issues.html" class="no-external">GitHub Issues Quickstart</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0SHVi'); return false;">GitHub</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/github_issues.html" class="no-external">
-<p>How to use GitHub Issues to track bugs, remaining features, and to-dos in your repo.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/github_issues.html" class="no-external">
-<div class="listing-date">
-Feb 16, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="UXVhcnRvJTJDR2l0SHVi" data-listing-date-sort="1771218000000" data-listing-file-modified-sort="1771260250526" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="962">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/quarto_portfolio_site.html" class="no-external">Publishing a Portfolio Site with Quarto</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UXVhcnRv'); return false;">Quarto</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0SHVi'); return false;">GitHub</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/quarto_portfolio_site.html" class="no-external">
-<p>How to create a simple project portfolio site using Quarto and publish it to GitHub Pages.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/quarto_portfolio_site.html" class="no-external">
-<div class="listing-date">
-Feb 16, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="U2V0dXA=" data-listing-date-sort="1767243600000" data-listing-file-modified-sort="1767912338231" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="612">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/gemini_api_key.html" class="no-external">Getting a Gemini API Key</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/gemini_api_key.html" class="no-external">
-<p>How to obtain a Gemini API key from Google AI Studio for course assignments.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/gemini_api_key.html" class="no-external">
-<div class="listing-date">
-Jan 1, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-categories="U2V0dXA=" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1768246261513" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="296">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/initial_setup_windows.html" class="no-external">Initial Setup (Windows)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/initial_setup_windows.html" class="no-external">
-<p>One-time installation of VS Code, Git, and Python 3.13 on Windows.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/initial_setup_windows.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="9" data-categories="U2V0dXA=" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1768246254939" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="353">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/initial_setup_macos.html" class="no-external">Initial Setup (macOS)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/initial_setup_macos.html" class="no-external">
-<p>One-time installation of VS Code, Git, Python 3.13, and Homebrew on macOS.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/initial_setup_macos.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="10" data-categories="U2V0dXA=" data-listing-date-sort="1767243600000" data-listing-file-modified-sort="1767912743598" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="226">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/gemini_cli.html" class="no-external">Installing Gemini CLI</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/gemini_cli.html" class="no-external">
-<p>Set up Google’s Gemini CLI for AI assistance in your terminal.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/gemini_cli.html" class="no-external">
-<div class="listing-date">
-Jan 1, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="11" data-categories="U2V0dXA=" data-listing-date-sort="1767243600000" data-listing-file-modified-sort="1767913166399" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="288">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/gemini_code_assist.html" class="no-external">Installing Gemini Code Assist</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/gemini_code_assist.html" class="no-external">
-<p>Set up the Gemini Code Assist extension in VS Code for AI-powered coding assistance.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/gemini_code_assist.html" class="no-external">
-<div class="listing-date">
-Jan 1, 2026
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

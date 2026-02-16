@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-02-16">
+<meta name="description" content="How to use GitHub Issues to track bugs, remaining features, and to-dos in your repo.">
 
-<title>Resources – Creating with AI in the Loop</title>
+<title>GitHub Issues Quickstart – Creating with AI in the Loop</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +67,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -69,66 +104,8 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-resources .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-description','listing-categories','listing-date',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-resources'] = new List('listing-resources', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <style>html{ scroll-behavior: smooth; }</style>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -176,7 +153,7 @@ window.Quarto = {
 <span class="menu-text">Policies</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../resources/index.html" aria-current="page"> 
+    <a class="nav-link" href="../resources/index.html"> 
 <span class="menu-text">Resources</span></a>
   </li>  
 </ul>
@@ -199,7 +176,7 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -207,31 +184,47 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#featured" id="toc-featured" class="nav-link active" data-scroll-target="#featured">Featured</a>
+  <li><a href="#github-issues-quickstart" id="toc-github-issues-quickstart" class="nav-link active" data-scroll-target="#github-issues-quickstart">GitHub Issues Quickstart</a>
   <ul class="collapse">
-  <li><a href="#initial-setup-one-time" id="toc-initial-setup-one-time" class="nav-link" data-scroll-target="#initial-setup-one-time">Initial Setup (one-time)</a></li>
-  <li><a href="#github-classroom-workflow-every-build-assignment" id="toc-github-classroom-workflow-every-build-assignment" class="nav-link" data-scroll-target="#github-classroom-workflow-every-build-assignment">GitHub Classroom Workflow (every build assignment)</a></li>
-  <li><a href="#github-collaboration-final-project" id="toc-github-collaboration-final-project" class="nav-link" data-scroll-target="#github-collaboration-final-project">GitHub Collaboration (final project)</a></li>
-  <li><a href="#portfolio-site-final-project" id="toc-portfolio-site-final-project" class="nav-link" data-scroll-target="#portfolio-site-final-project">Portfolio Site (final project)</a></li>
-  <li><a href="#gemini" id="toc-gemini" class="nav-link" data-scroll-target="#gemini">Gemini</a></li>
+  <li><a href="#creating-an-issue" id="toc-creating-an-issue" class="nav-link" data-scroll-target="#creating-an-issue">Creating an issue</a></li>
+  <li><a href="#closing-an-issue" id="toc-closing-an-issue" class="nav-link" data-scroll-target="#closing-an-issue">Closing an issue</a>
+  <ul class="collapse">
+  <li><a href="#option-1-close-it-manually" id="toc-option-1-close-it-manually" class="nav-link" data-scroll-target="#option-1-close-it-manually">Option 1: Close it manually</a></li>
+  <li><a href="#option-2-close-it-from-a-commit-message" id="toc-option-2-close-it-from-a-commit-message" class="nav-link" data-scroll-target="#option-2-close-it-from-a-commit-message">Option 2: Close it from a commit message</a></li>
   </ul></li>
-  <li><a href="#all-resources" id="toc-all-resources" class="nav-link" data-scroll-target="#all-resources">All resources</a></li>
+  <li><a href="#what-makes-a-good-issue" id="toc-what-makes-a-good-issue" class="nav-link" data-scroll-target="#what-makes-a-good-issue">What makes a good issue?</a></li>
+  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ai-in-the-loop-2026/ai-in-the-loop-hub/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Resources</h1>
+<h1 class="title">GitHub Issues Quickstart</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">GitHub</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    How to use GitHub Issues to track bugs, remaining features, and to-dos in your repo.
+  </div>
 </div>
 
 
-
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 16, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -241,331 +234,88 @@ window.Quarto = {
 </header>
 
 
-<p>Use this page as the <strong>single place</strong> to find setup guides, FAQs, and “how-to” docs.</p>
-<section id="featured" class="level2">
-<h2 class="anchored" data-anchor-id="featured">Featured</h2>
-<section id="initial-setup-one-time" class="level3">
-<h3 class="anchored" data-anchor-id="initial-setup-one-time">Initial Setup (one-time)</h3>
+<section id="github-issues-quickstart" class="level1">
+<h1>GitHub Issues Quickstart</h1>
+<p>GitHub Issues are lightweight to-do items attached to your repository. Each issue has a title and a description — think of them as sticky notes for your project that your whole team (and the instructor) can see.</p>
+<p>You’ll use issues in your final project to track remaining features and known bugs, especially around the <a href="../resources/final_project.html#working-prototype">prototype checkpoint</a>.</p>
+<hr>
+<section id="creating-an-issue" class="level2">
+<h2 class="anchored" data-anchor-id="creating-an-issue">Creating an issue</h2>
+<ol type="1">
+<li>Go to your repo on GitHub.</li>
+<li>Click the <strong>Issues</strong> tab (near the top of the page, next to <strong>Code</strong>).</li>
+<li>Click <strong>New issue</strong>.</li>
+<li>Give it a short, descriptive <strong>title</strong> (e.g., “Add error handling for invalid API responses”).</li>
+<li>In the description, add any helpful details — what the feature should do, steps to reproduce a bug, etc.</li>
+<li>Click <strong>Submit new issue</strong>.</li>
+</ol>
+<p>That’s it. GitHub assigns it a number (e.g., <code>#1</code>, <code>#2</code>) that you can reference elsewhere.</p>
+<hr>
+</section>
+<section id="closing-an-issue" class="level2">
+<h2 class="anchored" data-anchor-id="closing-an-issue">Closing an issue</h2>
+<p>When the work is done, you have two options:</p>
+<section id="option-1-close-it-manually" class="level3">
+<h3 class="anchored" data-anchor-id="option-1-close-it-manually">Option 1: Close it manually</h3>
+<p>Open the issue on GitHub and click <strong>Close issue</strong> at the bottom.</p>
+</section>
+<section id="option-2-close-it-from-a-commit-message" class="level3">
+<h3 class="anchored" data-anchor-id="option-2-close-it-from-a-commit-message">Option 2: Close it from a commit message</h3>
+<p>Include a keyword and the issue number in your commit message:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add input validation — fixes #3"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>When you push that commit, GitHub automatically closes issue <code>#3</code>. Any of these keywords work: <code>fixes</code>, <code>closes</code>, <code>resolves</code> (case-insensitive).</p>
+<hr>
+</section>
+</section>
+<section id="what-makes-a-good-issue" class="level2">
+<h2 class="anchored" data-anchor-id="what-makes-a-good-issue">What makes a good issue?</h2>
+<p>Keep it simple. A good issue has:</p>
 <ul>
-<li><a href="../resources/initial_setup_windows.html">Initial Setup (Windows)</a> — VS Code, Git, Python 3.13</li>
-<li><a href="../resources/initial_setup_macos.html">Initial Setup (macOS)</a> — Homebrew, VS Code, Git, Python 3.13</li>
+<li><strong>A clear title</strong> — someone should understand the task from the title alone</li>
+<li><strong>Enough context</strong> — a sentence or two about what needs to happen or what’s broken</li>
 </ul>
+<p>Examples:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Title</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Add retry logic for API timeouts</td>
+<td>Right now a timeout crashes the app. Should retry up to 3 times before showing an error.</td>
+</tr>
+<tr class="even">
+<td>Fix crash when user enters empty query</td>
+<td>Entering an empty string in the Streamlit input causes a KeyError in <code>process_query()</code>.</td>
+</tr>
+<tr class="odd">
+<td>Build “export to PDF” feature</td>
+<td>Users should be able to export the summary as a PDF from the Streamlit interface.</td>
+</tr>
+</tbody>
+</table>
+<hr>
 </section>
-<section id="github-classroom-workflow-every-build-assignment" class="level3">
-<h3 class="anchored" data-anchor-id="github-classroom-workflow-every-build-assignment">GitHub Classroom Workflow (every build assignment)</h3>
+<section id="tips" class="level2">
+<h2 class="anchored" data-anchor-id="tips">Tips</h2>
 <ul>
-<li><a href="../resources/github_classroom_workflow.html">GitHub Classroom Workflow</a> — Accept, clone, venv, commit, push</li>
+<li><strong>One issue per task.</strong> Don’t lump multiple features into a single issue.</li>
+<li><strong>Create issues as you go.</strong> When you notice a bug or think of a feature, open an issue right away so you don’t forget.</li>
+<li><strong>Reference issues in commits.</strong> Even if you don’t auto-close them, mentioning <code>#5</code> in a commit message creates a link between the commit and the issue, making it easy to trace what changed and why.</li>
 </ul>
-</section>
-<section id="github-collaboration-final-project" class="level3">
-<h3 class="anchored" data-anchor-id="github-collaboration-final-project">GitHub Collaboration (final project)</h3>
-<ul>
-<li><a href="../resources/github_collaboration.html">GitHub Collaboration Quickstart</a> — Branches, pull requests, merging, and resolving conflicts</li>
-<li><a href="../resources/github_issues.html">GitHub Issues Quickstart</a> — Tracking features, bugs, and to-dos in your repo</li>
-</ul>
-</section>
-<section id="portfolio-site-final-project" class="level3">
-<h3 class="anchored" data-anchor-id="portfolio-site-final-project">Portfolio Site (final project)</h3>
-<ul>
-<li><a href="../resources/quarto_portfolio_site.html">Publishing a Portfolio Site with Quarto</a> — Create and publish a project portfolio to GitHub Pages</li>
-</ul>
-</section>
-<section id="gemini" class="level3">
-<h3 class="anchored" data-anchor-id="gemini">Gemini</h3>
-<ul>
-<li><a href="../resources/gemini_api_key.html">Getting a Gemini API Key</a> — For assignments that call Gemini models</li>
-<li><a href="../resources/gemini_code_assist.html">Installing Gemini Code Assist</a> — AI coding assistant in VS Code</li>
-<li><a href="../resources/gemini_cli.html">Installing Gemini CLI</a> — AI assistant in your terminal</li>
-</ul>
-</section>
-</section>
-<section id="all-resources" class="level2">
-<h2 class="anchored" data-anchor-id="all-resources">All resources</h2>
-<p>The list below is generated automatically from the files in this folder.</p>
-
 
 
 </section>
+</section>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-resources">
-<div class="listing-actions-group">
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
-</div>
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Q291cnNlJTIwTG9naXN0aWNz" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1767132920854" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="15">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/faq.html" class="no-external">Course FAQ</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q291cnNlJTIwTG9naXN0aWNz'); return false;">Course Logistics</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/faq.html" class="no-external">
-<p>Responses to Frequently Asked Questions about the course.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/faq.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="Q291cnNlJTIwTG9naXN0aWNz" data-listing-date-sort="1772341200000" data-listing-file-modified-sort="1770909883071" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="642">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/group_led_discussions.html" class="no-external">Group-Led Discussion Spec</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q291cnNlJTIwTG9naXN0aWNz'); return false;">Course Logistics</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/group_led_discussions.html" class="no-external">
-<p>Requirements and timeline for group-led discussions (GLD1–GLD4).</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/group_led_discussions.html" class="no-external">
-<div class="listing-date">
-Mar 1, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="Q291cnNlJTIwTG9naXN0aWNzJTJDUHJvamVjdHM=" data-listing-date-sort="1773633600000" data-listing-file-modified-sort="1771259591082" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1107">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/final_project.html" class="no-external">Final Project Spec</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q291cnNlJTIwTG9naXN0aWNz'); return false;">Course Logistics</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHJvamVjdHM='); return false;">Projects</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/final_project.html" class="no-external">
-<p>Requirements, deliverables, and timeline for the final group project.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/final_project.html" class="no-external">
-<div class="listing-date">
-Mar 16, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="R2l0SHVi" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1767279343415" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="559">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/github_classroom_workflow.html" class="no-external">GitHub Classroom Workflow</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0SHVi'); return false;">GitHub</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/github_classroom_workflow.html" class="no-external">
-<p>Accept an assignment, clone the repo, set up a virtual environment, and submit your work.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/github_classroom_workflow.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="R2l0SHVi" data-listing-date-sort="1771218000000" data-listing-file-modified-sort="1771259330497" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1183">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/github_collaboration.html" class="no-external">GitHub Collaboration Quickstart</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0SHVi'); return false;">GitHub</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/github_collaboration.html" class="no-external">
-<p>How to use branches, pull requests, and merging to collaborate on a shared repo without stepping on each other’s work.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/github_collaboration.html" class="no-external">
-<div class="listing-date">
-Feb 16, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="R2l0SHVi" data-listing-date-sort="1771218000000" data-listing-file-modified-sort="1771253082080" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="385">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/github_issues.html" class="no-external">GitHub Issues Quickstart</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0SHVi'); return false;">GitHub</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/github_issues.html" class="no-external">
-<p>How to use GitHub Issues to track bugs, remaining features, and to-dos in your repo.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/github_issues.html" class="no-external">
-<div class="listing-date">
-Feb 16, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="UXVhcnRvJTJDR2l0SHVi" data-listing-date-sort="1771218000000" data-listing-file-modified-sort="1771260250526" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="962">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/quarto_portfolio_site.html" class="no-external">Publishing a Portfolio Site with Quarto</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UXVhcnRv'); return false;">Quarto</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0SHVi'); return false;">GitHub</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/quarto_portfolio_site.html" class="no-external">
-<p>How to create a simple project portfolio site using Quarto and publish it to GitHub Pages.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/quarto_portfolio_site.html" class="no-external">
-<div class="listing-date">
-Feb 16, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="U2V0dXA=" data-listing-date-sort="1767243600000" data-listing-file-modified-sort="1767912338231" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="612">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/gemini_api_key.html" class="no-external">Getting a Gemini API Key</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/gemini_api_key.html" class="no-external">
-<p>How to obtain a Gemini API key from Google AI Studio for course assignments.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/gemini_api_key.html" class="no-external">
-<div class="listing-date">
-Jan 1, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-categories="U2V0dXA=" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1768246261513" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="296">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/initial_setup_windows.html" class="no-external">Initial Setup (Windows)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/initial_setup_windows.html" class="no-external">
-<p>One-time installation of VS Code, Git, and Python 3.13 on Windows.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/initial_setup_windows.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="9" data-categories="U2V0dXA=" data-listing-date-sort="1767070800000" data-listing-file-modified-sort="1768246254939" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="353">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/initial_setup_macos.html" class="no-external">Initial Setup (macOS)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/initial_setup_macos.html" class="no-external">
-<p>One-time installation of VS Code, Git, Python 3.13, and Homebrew on macOS.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/initial_setup_macos.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="10" data-categories="U2V0dXA=" data-listing-date-sort="1767243600000" data-listing-file-modified-sort="1767912743598" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="226">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/gemini_cli.html" class="no-external">Installing Gemini CLI</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/gemini_cli.html" class="no-external">
-<p>Set up Google’s Gemini CLI for AI assistance in your terminal.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/gemini_cli.html" class="no-external">
-<div class="listing-date">
-Jan 1, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="11" data-categories="U2V0dXA=" data-listing-date-sort="1767243600000" data-listing-file-modified-sort="1767913166399" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="288">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../resources/gemini_code_assist.html" class="no-external">Installing Gemini Code Assist</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U2V0dXA='); return false;">Setup</div>
-
-</div>
-<div class="delink listing-description"><a href="../resources/gemini_code_assist.html" class="no-external">
-<p>Set up the Gemini Code Assist extension in VS Code for AI-powered coding assistance.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../resources/gemini_code_assist.html" class="no-external">
-<div class="listing-date">
-Jan 1, 2026
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
