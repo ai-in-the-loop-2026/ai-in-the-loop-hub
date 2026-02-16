@@ -119,7 +119,7 @@ This course is under active development, and the schedule will be filled in as w
 | Tuesday | No class (Winter Recess) | - | A5 — Build Your Own Expert (*Wednesday 11:59pm*) |
 | Thursday | No class (Code Review appointments) | - | - |
 
-**Note:** Code Review 1 appointments available Thursday and Friday of Week 6, and Monday of Week 7.
+**Note:** Code Review 1 appointments available Wednesday, Thursday, and Friday of Week 6.
 
 ## Week 7: February 23 - March 1
 

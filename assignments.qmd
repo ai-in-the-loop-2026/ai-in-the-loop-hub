@@ -19,6 +19,7 @@ This page is the **single canonical place** for:
 - Weeks 10–14: group-led discussions (GLD1–GLD4)
 - Weeks 10–15: final project work + checkpoints
 - Week 15: final presentations
+- Week 16: group code review, portfolio piece due
 
 ---
 
@@ -176,8 +177,8 @@ This page is the **single canonical place** for:
 | Working prototype | Week 14 (Tue, before class) |
 | Working repository | Wed, April 29 (11:59pm) |
 | Presentation | Week 15 (Thu, April 30) |
-| Portfolio piece (public site) | Wed, May 6 (11:59pm) |
 | Group code review | Mon, May 4 (12:30–2:30pm) |
+| Portfolio piece (public site) | Wed, May 6 (11:59pm) |
 
 ---
 
