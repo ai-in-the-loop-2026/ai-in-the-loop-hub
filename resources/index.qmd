@@ -29,6 +29,15 @@ Use this page as the **single place** to find setup guides, FAQs, and "how-to" d
 
 - [GitHub Classroom Workflow](github_classroom_workflow.md) — Accept, clone, venv, commit, push
 
+### GitHub Collaboration (final project)
+
+- [GitHub Collaboration Quickstart](github_collaboration.md) — Branches, pull requests, merging, and resolving conflicts
+- [GitHub Issues Quickstart](github_issues.md) — Tracking features, bugs, and to-dos in your repo
+
+### Portfolio Site (final project)
+
+- [Publishing a Portfolio Site with Quarto](quarto_portfolio_site.md) — Create and publish a project portfolio to GitHub Pages
+
 ### Gemini
 
 - [Getting a Gemini API Key](gemini_api_key.md) — For assignments that call Gemini models

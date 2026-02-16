@@ -174,9 +174,9 @@ This page is the **single canonical place** for:
 |---|---|
 | Proposal | Week 10 (Tue, before class) |
 | Working prototype | Week 14 (Tue, before class) |
-| Final repository | Week 15 |
-| Presentation | Week 15 (Tue, April 30) |
-| Portfolio piece (public site) | Week 15 |
+| Working repository | Wed, April 29 (11:59pm) |
+| Presentation | Week 15 (Thu, April 30) |
+| Portfolio piece (public site) | Wed, May 6 (11:59pm) |
 | Group code review | Mon, May 4 (12:30–2:30pm) |
 
 ---

@@ -25,19 +25,20 @@ Your application must have a **user interface** well-suited to the problem. Mult
 
 ## Deliverables and Timeline
 
-| Deliverable | Due | Weight |
+| Deliverable | Due | Grade Weight |
 |---|---|---|
 | Proposal | Week 10 (Tue, before class) | — |
 | Working prototype | Week 14 (Tue, before class) | — |
-| Final repository | Week 15 | 5% |
-| Presentation | Week 15 (Tue, April 30) | 5% |
-| Portfolio piece (public site) | Week 15 | 5% |
+| Working repository | Wed, April 29 (11:59pm) | 5% |
+| Presentation | Week 15 (Thu, April 30) | 5% |
 | Group code review | Mon, May 4 (12:30–2:30pm) | 15% |
+| Portfolio piece (public site) | Wed, May 6 (11:59pm) | 5% |
 
 ### Proposal
 
 A 1–2 page markdown document in your team repo covering:
 
+- **Team name:** Pick a name for your team!
 - **Problem / domain:** What problem are you solving, and for whom?
 - **Planned features:** What will the application do? Be specific.
 - **Technical approach:** What tools, RAG strategy, routing logic, and state fields do you plan to use?
@@ -48,9 +49,11 @@ The instructor will review your proposal and provide feedback. You may be asked 
 
 ### Working Prototype
 
-By Week 14, your core functionality should be working. Remaining features and polish are fine, but they should be clearly tracked as issues in your repo.
+By Week 14, your core functionality should be working. Remaining features and polish are fine, but they should be clearly tracked as individual [issues](github_issues.md) in your repo (one issue per feature or bug).
 
-### Final Repository
+**How to submit:** Create an issue titled **"Prototype checkpoint"** early on with a summary of what you plan to have working. Update the issue description as things change. By the deadline, it should reflect what's working and what's left. Closing the issue signals to the instructor that your prototype is ready for review.
+
+### Working Repository
 
 A clean, well-organized private repo with:
 
@@ -61,11 +64,11 @@ A clean, well-organized private repo with:
 
 ### Presentation
 
-Each team gives a presentation on Tuesday of Week 15 (April 30). Your presentation should include a live demo and slides covering what you built, your technical approach, challenges you encountered, and what you learned.
+Each team gives a 10–15 minute presentation on Thursday of Week 15 (April 30). Your presentation should include a live demo and slides covering who it's for, why it's useful, what you built, your technical approach, challenges you encountered, and what you learned.
 
 ### Portfolio Piece
 
-A **public** GitHub repository with a GitHub Pages site that summarizes your project for a general audience. This is a portfolio artifact — something you can show to future employers or graduate programs. It should include a clear project description, screenshots or screen recordings, and a summary of the technical approach. This public repo does not need to contain your working code or development history.
+A **public** GitHub repository with a GitHub Pages site that summarizes your project for a general audience. This is a portfolio artifact — something you can show to future employers or graduate programs. It should include a clear project description, screenshots or screen recordings, and a summary of the technical approach. This public repo should include your project code (someone should be able to clone it and run your app), but should **not** include your AI development log or full development history. Instead, include a brief summary in your README of how AI tools were used in developing the project. See the [Publishing a Portfolio Site with Quarto](quarto_portfolio_site.md) guide to get started.
 
 ### Group Code Review
 
@@ -81,7 +84,7 @@ Questions may cover any part of the project, not just one feature. **Every team 
 Your project will use two repositories:
 
 1. **Private working repo** (GitHub Classroom) — where you develop your code, track issues, maintain your AI development log, and collaborate with your team. This is the repo the instructor evaluates.
-2. **Public portfolio repo** — a clean, public-facing repository with your GitHub Pages site. Create this toward the end of the project. It does not need to include your full development history or AI development log.
+2. **Public portfolio repo** — a clean, public-facing repository with your project code and a GitHub Pages site. Create this toward the end of the project. Someone should be able to clone it and run your app. It should not include your AI development log or full development history. Include a brief summary in your README of how AI tools were used in developing the project. See the [Publishing a Portfolio Site with Quarto](quarto_portfolio_site.md) guide for setup instructions.
 
 ## AI Development Log
 
@@ -104,6 +107,7 @@ The log helps you reflect on your AI-assisted development process and gives the 
 
 - **Start early.** The proposal is due Week 10, and the semester moves fast from there.
 - **Scope wisely.** A focused, polished application is better than an ambitious one that half-works. You can always list stretch goals in your proposal.
+- **Use branches and pull requests.** Don't push directly to `main` — use the branch workflow described in the [GitHub Collaboration Quickstart](github_collaboration.md). Track remaining work with [issues](github_issues.md).
 - **Commit often.** Small, frequent commits with clear messages make collaboration easier and give you a safety net.
 - **Divide work, but understand all of it.** The code review evaluates individual understanding. Don't let any part of the codebase become a black box to you.
 - **Test your application thoroughly** before the presentation and code review. Nothing undermines a demo like a crash.

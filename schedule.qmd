@@ -223,7 +223,12 @@ TBD — resources will be added once the group submits them.
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
-| Tuesday | Final presentations | - | - |
-| Thursday | Final presentations | - | Final project + portfolio piece |
+| Tuesday | Work day | - | - |
+| Thursday | Final presentations | - | Working repo (*Wed April 29, 11:59pm*) |
 
-**Final exam (group code review):** Monday, May 4, 12:30–2:30pm
+## Week 16: May 4-6
+
+| Day | Event | Due |
+|---|---|---|
+| Monday | Group code review (final exam) 12:30–2:30pm | - |
+| Wednesday | - | Portfolio piece / public site (*11:59pm*) |
