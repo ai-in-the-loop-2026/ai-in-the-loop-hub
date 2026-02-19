@@ -177,7 +177,7 @@ TBD — resources will be added once the group submits them.
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
-| Tuesday | TBD | TBD | A9 — Streamlit + Custom State + Complex Graph (*before class*) |
+| Tuesday | TBD | TBD | A9 — TL;Draw (*before class*) |
 | Thursday | TBD | TBD | - |
 
 **Note:** Schedule your Code Review 2 appointment this week. CR2 appointments available March 23–26.

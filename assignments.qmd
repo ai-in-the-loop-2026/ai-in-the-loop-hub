@@ -89,11 +89,11 @@ This page is the **single canonical place** for:
 <!-- - **Invite link:** <https://classroom.github.com/a/bo5lxa1o> -->
 - **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
 
-### A9 - Streamlit + Custom State + Complex Graph
+### A9 - TL;Draw
 
 - **Due:** Tuesday (Week 11) before class
-- **Purpose:** Build a Streamlit application with a custom state and a moderately complex LangGraph workflow.
-<!-- - **Invite link:** TBD -->
+- **Purpose:** Build a Streamlit application that generates SVG and images from documents.
+- **Invite link:** https://classroom.github.com/a/1XwEM7HY
 - **Spec:** Follow the [GitHub Classroom Workflow](resources/github_classroom_workflow.md) instructions, and complete the instructions in the repo's README. Confirm successful autograding.
 - **Note:** This assignment is the basis for Code Review 2. Submit slides on Moodle.
 
