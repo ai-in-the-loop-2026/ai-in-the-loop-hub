@@ -137,7 +137,7 @@ This page is the **single canonical place** for:
 - **Topic:** TBD
 - **Spec:** See [Group-Led Discussion Spec](resources/group_led_discussions.md) for requirements and timeline.
 - **Resources:** TBD
-- **Written reflection invite link:** TBD
+<!-- - **Written reflection invite link:** <https://classroom.github.com/a/rLZaRHrl> -->
 
 ### GLD2/WR6
 
@@ -145,7 +145,7 @@ This page is the **single canonical place** for:
 - **Topic:** TBD
 - **Spec:** See [Group-Led Discussion Spec](resources/group_led_discussions.md) for requirements and timeline.
 - **Resources:** TBD
-- **Written reflection invite link:** TBD
+<!-- - **Written reflection invite link:** <https://classroom.github.com/a/Sq1tmtRb> -->
 
 ### GLD3/WR7
 
@@ -153,7 +153,7 @@ This page is the **single canonical place** for:
 - **Topic:** TBD
 - **Spec:** See [Group-Led Discussion Spec](resources/group_led_discussions.md) for requirements and timeline.
 - **Resources:** TBD
-- **Written reflection invite link:** TBD
+<!-- - **Written reflection invite link:** <https://classroom.github.com/a/rD3LAiQB> -->
 
 ### GLD4/WR8
 
@@ -161,7 +161,7 @@ This page is the **single canonical place** for:
 - **Topic:** TBD
 - **Spec:** See [Group-Led Discussion Spec](resources/group_led_discussions.md) for requirements and timeline.
 - **Resources:** TBD
-- **Written reflection invite link:** TBD
+<!-- - **Written reflection invite link:** <https://classroom.github.com/a/kFSZTzHf> -->
 
 ---
 
