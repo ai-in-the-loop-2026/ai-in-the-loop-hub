@@ -169,6 +169,8 @@ This page is the **single canonical place** for:
 
 **Spec:** See [Final Project Spec](resources/final_project.md) for full requirements.
 
+<!-- **Invite link:** <https://classroom.github.com/a/30poBfe_> -->
+
 ### Checkpoints
 
 | Deliverable | Due |
