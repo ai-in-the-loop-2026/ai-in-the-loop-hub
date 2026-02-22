@@ -179,7 +179,7 @@ This page is the **single canonical place** for:
 | Working prototype | Week 14 (Tue, before class) |
 | Working repository | Wed, April 29 (11:59pm) |
 | Presentation | Week 15 (Thu, April 30) |
-| Group code review | Mon, May 4 (12:30–2:30pm) |
+| Group code review | Mon, May 4 (12:00–2:30pm) |
 | Portfolio piece (public site) | Wed, May 6 (11:59pm) |
 
 ---
