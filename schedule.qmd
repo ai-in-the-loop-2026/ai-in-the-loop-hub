@@ -133,13 +133,13 @@ This course is under active development, and the schedule will be filled in as w
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
 | Tuesday | Streamlit interfaces | [Streamlit Interfaces](slides/09-streamlit-interfaces.qmd) | A6 — RAG - Hybrid (*before class*) |
-| Thursday | TBD | TBD | A7 — Workflows, CLI (*before class*) |
+| Thursday | Gemini CLI | - | A7 — Workflows, CLI (*before class*) |
 
 ## Week 9: March 9-15
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
-| Tuesday | TBD | TBD | A8 — Streamlit (*before class*) |
+| Tuesday | Group work | - | A8 — Streamlit (*before class*) |
 | Thursday | The future of jobs and work (discussion) | - | Read 3 articles + listen to podcast (*before class*) |
 
 **Resources for discussion**
@@ -166,7 +166,7 @@ This course is under active development, and the schedule will be filled in as w
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
-| Tuesday | TBD | TBD | Project proposal (*before class*) |
+| Tuesday | Work day | - | Project proposal (*before class*) |
 | Thursday | Group-led discussion (GLD1) | - | Read/watch assigned resources (*before class*) |
 
 **Resources for discussion**
@@ -177,8 +177,8 @@ TBD — resources will be added once the group submits them.
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
-| Tuesday | TBD | TBD | A9 — TL;Draw (*before class*) |
-| Thursday | TBD | TBD | - |
+| Tuesday | Work day | - | A9 — TL;Draw (*before class*) |
+| Thursday | No Class (Code Review 2 appointments) | - | - |
 
 **Note:** Schedule your Code Review 2 appointment this week. CR2 appointments available March 23–26.
 
@@ -190,7 +190,7 @@ No class.
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
-| Tuesday | TBD | TBD | - |
+| Tuesday | Group work | - | - |
 | Thursday | Group-led discussion (GLD2) | - | Read/watch assigned resources (*before class*) |
 
 **Resources for discussion**
@@ -201,7 +201,7 @@ TBD — resources will be added once the group submits them.
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
-| Tuesday | TBD | TBD | - |
+| Tuesday | Group work | - | - |
 | Thursday | Group-led discussion (GLD3) | - | Read/watch assigned resources (*before class*) |
 
 **Resources for discussion**
@@ -212,7 +212,7 @@ TBD — resources will be added once the group submits them.
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
-| Tuesday | TBD | TBD | Working prototype (*before class*) |
+| Tuesday | Group work | - | Working prototype (*before class*) |
 | Thursday | Group-led discussion (GLD4) | - | Read/watch assigned resources (*before class*) |
 
 **Resources for discussion**
@@ -223,7 +223,7 @@ TBD — resources will be added once the group submits them.
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
-| Tuesday | Work day | - | - |
+| Tuesday | Group work | - | - |
 | Thursday | Final presentations | - | Working repo (*Wed April 29, 11:59pm*) |
 
 ## Week 16: May 4-6
