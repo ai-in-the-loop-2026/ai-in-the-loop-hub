@@ -133,14 +133,14 @@ This course is under active development, and the schedule will be filled in as w
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
 | Tuesday | Streamlit interfaces | [Streamlit Interfaces](slides/09-streamlit-interfaces.qmd) | A6 — RAG - Hybrid (*before class*) |
-| Thursday | Gemini CLI | - | A7 — Workflows, CLI (*before class*) |
+| Thursday | Gemini CLI | - | - |
 
 ## Week 9: March 9-15
 
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
-| Tuesday | Group work | - | A8 — Streamlit (*before class*) |
-| Thursday | The future of jobs and work (discussion) | - | Read 3 articles + listen to podcast (*before class*) |
+| Tuesday | Group work | - | A7 — Workflows, CLI (*before class*) |
+| Thursday | The future of jobs and work (discussion) | - | A8 — Streamlit (*before class*); Read 3 articles + listen to podcast (*before class*) |
 
 **Resources for discussion**
 
