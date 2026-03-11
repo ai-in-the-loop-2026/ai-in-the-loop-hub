@@ -162,6 +162,8 @@ This course is under active development, and the schedule will be filled in as w
 
 [*I'll Probably Lose My Job to AI. Here's Why That's OK*](https://www.ted.com/talks/megan_j_mcardle_i_ll_probably_lose_my_job_to_ai_here_s_why_that_s_ok) - TED Talk by Megan McArdle
 
+[*The Macroeconomic Impact of Artificial Intelligence*](https://www.anthropic.com/research/labor-market-impacts) - research from Anthropic
+
 ## Week 10: March 16-22
 
 | Meeting | Topic | Slides | Due |
