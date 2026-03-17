@@ -169,15 +169,17 @@ This course is under active development, and the schedule will be filled in as w
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
 | Tuesday | Work day | - | Project proposal (*before class*) |
-| Thursday | Ethical concerns of AI in different fields (GLD1) | - | Read 2 articles + journal (*before class*) |
+| Thursday | Ethical concerns of AI in different fields (GLD1) | - | Read 3 articles + listen to podcast (*before class*) |
 
 **Resources for discussion**
 
 [*AI is Making Medical Decisions - But For Whom?*](https://dbmi.hms.harvard.edu/news/ai-making-medical-decisions-whom) - article by Olivia Farrar in *Harvard Magazine*
 
-[*Is AI Making Call Center Agents Better Or Replacing Them?*](https://www.forbes.com/sites/kolawolesamueladebayo/2024/12/29/is-ai-making-call-center-agents-better-or-replacing-them/) - article in *Forbes*
+[*Is AI Making Call Center Agents Better Or Replacing Them?*](https://www.forbes.com/sites/kolawolesamueladebayo/2024/12/29/is-ai-making-call-center-agents-better-or-replacing-them/) - article by Kolawole Samuel Adebayo in *Forbes*
 
 [*Ethical Review in the Age of Artificial Intelligence*](https://www.aiethicsjournal.org/10-47289-aiej20210716-4) - journal by Jung Hwan Heo in *AI Ethics Journal*
+
+[*Navigating the Future of AI in Healthcare*](https://gould.usc.edu/news/podcast-episode-navigating-the-future-of-ai-in-healthcare/) - podcast episode from *USC Gould School of Law*
 
 **Learn more**
 
