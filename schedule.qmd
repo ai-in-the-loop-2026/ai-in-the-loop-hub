@@ -169,11 +169,19 @@ This course is under active development, and the schedule will be filled in as w
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
 | Tuesday | Work day | - | Project proposal (*before class*) |
-| Thursday | Group-led discussion (GLD1) | - | Read/watch assigned resources (*before class*) |
+| Thursday | Ethical concerns of AI in different fields (GLD1) | - | Read 2 articles + journal (*before class*) |
 
 **Resources for discussion**
 
-TBD — resources will be added once the group submits them.
+[*AI is Making Medical Decisions - But For Whom?*](https://dbmi.hms.harvard.edu/news/ai-making-medical-decisions-whom) - article by Olivia Farrar in *Harvard Magazine*
+
+[*Is AI Making Call Center Agents Better Or Replacing Them?*](https://www.forbes.com/sites/kolawolesamueladebayo/2024/12/29/is-ai-making-call-center-agents-better-or-replacing-them/) - article in *Forbes*
+
+[*Ethical Review in the Age of Artificial Intelligence*](https://www.aiethicsjournal.org/10-47289-aiej20210716-4) - journal by Jung Hwan Heo in *AI Ethics Journal*
+
+**Learn more**
+
+[*Call Centers Replaced Many Doctors' Receptionists. Now, AI Is Coming for Call Centers.*](https://kffhealthnews.org/news/article/ai-call-centers-medical-receptionists-replaced-bots-human-touch-unions/) - article by Darius Tahir in *KFF Health News*
 
 ## Week 11: March 23-29
 
