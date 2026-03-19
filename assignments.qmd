@@ -132,7 +132,7 @@ This page is the **single canonical place** for:
 ### GLD1/WR5 - Ethical Concerns of AI in Different Fields
 
 - **Due:** Thursday (Week 10) during class
-<!-- - **Invite link:**  <https://classroom.github.com/a/rLZaRHrl> -->
+- **Invite link:**  <https://classroom.github.com/a/rLZaRHrl>
 - **Spec:** See [Group-Led Discussion Spec](resources/group_led_discussions.md) for requirements and timeline.
 - **Resource Links:** [AI is Making Medical Decisions - But For Whom?](https://dbmi.hms.harvard.edu/news/ai-making-medical-decisions-whom), [Is AI Making Call Center Agents Better Or Replacing Them?](https://www.forbes.com/sites/kolawolesamueladebayo/2024/12/29/is-ai-making-call-center-agents-better-or-replacing-them/), [Ethical Review in the Age of Artificial Intelligence](https://www.aiethicsjournal.org/10-47289-aiej20210716-4), [Navigating the Future of AI in Healthcare](https://gould.usc.edu/news/podcast-episode-navigating-the-future-of-ai-in-healthcare/)
 
