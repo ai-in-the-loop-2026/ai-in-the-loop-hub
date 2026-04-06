@@ -203,11 +203,27 @@ No class.
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
 | Tuesday | Group work | - | - |
-| Thursday | Group-led discussion (GLD2) | - | Read/watch assigned resources (*before class*) |
+| Thursday | AI, Grief, and Human Relationships (GLD2) | - | Read/watch assigned resources (*before class*) |
 
 **Resources for discussion**
 
-TBD — resources will be added once the group submits them.
+[*The AI Companies Trying to Make Grief Obsolete*](https://www.newsbreak.com/the-atlantic-560501/4471405151226-the-ai-companies-trying-to-make-grief-obsolete) — The Atlantic. Explores startups creating AI chatbots of deceased loved ones and asks whether this helps people process grief or traps them in it.
+
+[*Griefbits and the New Afterlife: How AI is Changing the Ways We Mourn*](https://youtu.be/K7b_qYCJOUw?si=5H36Vl2recGmE86r) — Thomas Doyle, TEDx. In this talk, Doyle explores how AI “griefbots” allow people to interact with digital versions of deceased loved ones, drawing on his experience as both a minister and AI researcher to examine how technology is reshaping mourning and remembrance.
+
+[*Young People Are Using AI to Skip the Hardest Part of Growing Up*](https://www.nytimes.com/2026/01/30/opinion/ai-social-skills-relationships.html?searchResultPosition=10) — New York Times. Argues that relying on AI for emotional support or advice may prevent people from developing real-world coping and relationship skills.
+
+[*Inside Three Long-Term Relationships with AI Chatbots*](https://www.nytimes.com/interactive/2025/11/05/magazine/ai-chatbot-marriage-love-romance-sex.html?searchResultPosition=3) — The New York Times. Profiles individuals who have formed deep emotional and romantic relationships with AI companions, highlighting both the appeal and complexity of these connections.
+
+**Learn more**
+
+[*AI Replica of Val Kilmer to Appear in Film After Death*](https://www.nytimes.com/2026/03/18/movies/val-kilmer-ai-movie.html?searchResultPosition=24https://www.nytimes.com/2026/03/18/movies/val-kilmer-ai-movie.html?searchResultPosition=24)
+
+[*Can Ai Cure Grief, BBC*](https://youtu.be/jmQtJLO9myo?si=0g14GsCbOVwbuhw0)
+
+[*Should you use ChatGPT for relationship advice?*](https://youtu.be/p6vQKjGc5QY?si=b1cX-ghMKBRZT_sd)
+
+[*Podcast — Embodied: AI in Romance, Sex, and Grief*](https://www.wunc.org/show/due-south/2024-02-15/new-embodied-series-explores-use-of-ai-in-romance-sex-and-grief)
 
 ## Week 13: April 13-19
 

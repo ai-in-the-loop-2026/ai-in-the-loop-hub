@@ -136,13 +136,14 @@ This page is the **single canonical place** for:
 - **Spec:** See [Group-Led Discussion Spec](resources/group_led_discussions.md) for requirements and timeline.
 - **Resource Links:** [AI is Making Medical Decisions - But For Whom?](https://dbmi.hms.harvard.edu/news/ai-making-medical-decisions-whom), [Is AI Making Call Center Agents Better Or Replacing Them?](https://www.forbes.com/sites/kolawolesamueladebayo/2024/12/29/is-ai-making-call-center-agents-better-or-replacing-them/), [Ethical Review in the Age of Artificial Intelligence](https://www.aiethicsjournal.org/10-47289-aiej20210716-4), [Navigating the Future of AI in Healthcare](https://gould.usc.edu/news/podcast-episode-navigating-the-future-of-ai-in-healthcare/)
 
-### GLD2/WR6
+### GLD2/WR6 - AI, Grief, and Human Relationships: What role should/does technology play in human emotion?
 
-- **Discussion date:** Thursday (Week 12) during class
-- **Topic:** TBD
+- **Due:** Thursday (Week 12) during class
+<!-- - **Invite link:** <https://classroom.github.com/a/Sq1tmtRb>  -->
 - **Spec:** See [Group-Led Discussion Spec](resources/group_led_discussions.md) for requirements and timeline.
-- **Resources:** TBD
-<!-- - **Written reflection invite link:** <https://classroom.github.com/a/Sq1tmtRb> -->
+- **Resource Links:** [The AI Companies Trying to Make Grief Obsolete — The Atlantic](https://www.newsbreak.com/the-atlantic-560501/4471405151226-the-ai-companies-trying-to-make-grief-obsolete),
+[Griefbits and the New Afterlife: How AI is Changing the Ways We Mourn — Thomas Doyle, TEDx](https://youtu.be/K7b_qYCJOUw?si=5H36Vl2recGmE86r), [Young People Are Using AI to Skip the Hardest Part of Growing Up — New York Times](https://www.nytimes.com/2026/01/30/opinion/ai-social-skills-relationships.html?searchResultPosition=10), [Inside Three Long-Term Relationships with AI Chatbots — The New York Times](https://www.nytimes.com/interactive/2025/11/05/magazine/ai-chatbot-marriage-love-romance-sex.html?searchResultPosition=3).
+
 
 ### GLD3/WR7
 
