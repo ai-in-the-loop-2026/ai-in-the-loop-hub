@@ -230,11 +230,27 @@ No class.
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
 | Tuesday | Group work | - | - |
-| Thursday | Group-led discussion (GLD3) | - | Read/watch assigned resources (*before class*) |
+| Thursday | AI Safety, Governance, and Existential Risk (GLD3) | - | Watch 2 video clips + read White House AI Action Plan sections (*before class*) |
 
 **Resources for discussion**
 
-TBD — resources will be added once the group submits them.
+[*AI Expert: Here Is What The World Looks Like In 2 Years! - Tristan Harris (Clip 1, 22m)*](https://www.youtube.com/watch?v=LYgLTraIe2I) — Diary of a CEO Clips
+
+[*AI Expert: Here Is What The World Looks Like In 2 Years! - Tristan Harris (Clip 2, 21m)*](https://www.youtube.com/watch?v=tphiJE01qxw) — Diary of a CEO Clips
+
+[*America's AI Action Plan*](https://www.whitehouse.gov/wp-content/uploads/2025/07/Americas-AI-Action-Plan.pdf) — The White House. Skim the table of contents to get a sense of what the document covers. Read these subsections: Remove Red Tape and Onerous Regulation (p. 3), Encourage Open-Source and Open-Weight AI (p. 4), Enable AI Adoption (p. 5), Invest in AI Interpretability, Control, and Robustness Breakthroughs (p. 9), Build an AI Evaluations Ecosystem (p. 10), Ensure that the U.S. Government is at the Forefront of Evaluating National Security Risks in Frontier Models (p. 22).
+
+**Learn more**
+
+[*Let's think about slowing down AI*](https://www.alignmentforum.org/posts/uFNgRumrDTpBfQGrs/let-s-think-about-slowing-down-ai) — AI Alignment Forum
+
+[*AI Expert: We Have 2 Years Before Everything Changes! We Need To Start Protesting! - Tristan Harris*](https://open.spotify.com/episode/1S8FEbhkaQQ8Yrx4e3f5Vh) — full interview on The Diary of a CEO with Steven Bartlett
+
+[*A Narrow Path*](https://www.narrowpath.co/) — a plan to secure our future from AI extinction risk
+
+[*AI 2027*](https://ai-2027.com/) — AI forecasting scenario from the AI Futures Project
+
+[*AGI Ruin: A List of Lethalities*](https://www.alignmentforum.org/posts/uMQ3cqWDPHhjtiesc/agi-ruin-a-list-of-lethalities) — AI Alignment Forum
 
 ## Week 14: April 20-26
 

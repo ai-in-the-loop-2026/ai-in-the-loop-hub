@@ -145,13 +145,12 @@ This page is the **single canonical place** for:
 [Griefbits and the New Afterlife: How AI is Changing the Ways We Mourn — Thomas Doyle, TEDx](https://youtu.be/K7b_qYCJOUw?si=5H36Vl2recGmE86r), [Young People Are Using AI to Skip the Hardest Part of Growing Up — New York Times](https://www.nytimes.com/2026/01/30/opinion/ai-social-skills-relationships.html?searchResultPosition=10), [Inside Three Long-Term Relationships with AI Chatbots — The New York Times](https://www.nytimes.com/interactive/2025/11/05/magazine/ai-chatbot-marriage-love-romance-sex.html?searchResultPosition=3).
 
 
-### GLD3/WR7
+### GLD3/WR7 - AI Safety, Governance, and Existential Risk
 
-- **Discussion date:** Thursday (Week 13) during class
-- **Topic:** TBD
+- **Due:** Thursday (Week 13) during class
+<!-- - **Invite link:** <https://classroom.github.com/a/rD3LAiQB> -->
 - **Spec:** See [Group-Led Discussion Spec](resources/group_led_discussions.md) for requirements and timeline.
-- **Resources:** TBD
-<!-- - **Written reflection invite link:** <https://classroom.github.com/a/rD3LAiQB> -->
+- **Resource Links:** [AI Expert: Here Is What The World Looks Like In 2 Years! - Tristan Harris (Clip 1, 22m)](https://www.youtube.com/watch?v=LYgLTraIe2I), [AI Expert: Here Is What The World Looks Like In 2 Years! - Tristan Harris (Clip 2, 21m)](https://www.youtube.com/watch?v=tphiJE01qxw), [America's AI Action Plan — The White House (PDF)](https://www.whitehouse.gov/wp-content/uploads/2025/07/Americas-AI-Action-Plan.pdf) — skim the table of contents; read: Remove Red Tape and Onerous Regulation (p. 3), Encourage Open-Source and Open-Weight AI (p. 4), Enable AI Adoption (p. 5), Invest in AI Interpretability, Control, and Robustness Breakthroughs (p. 9), Build an AI Evaluations Ecosystem (p. 10), Ensure that the U.S. Government is at the Forefront of Evaluating National Security Risks in Frontier Models (p. 22)
 
 ### GLD4/WR8
 
