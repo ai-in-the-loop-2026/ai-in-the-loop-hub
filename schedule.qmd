@@ -257,11 +257,17 @@ No class.
 | Meeting | Topic | Slides | Due |
 |---|---|---|---|
 | Tuesday | Group work | - | Working prototype (*before class*) |
-| Thursday | Group-led discussion (GLD4) | - | Read/watch assigned resources (*before class*) |
+| Thursday | How AI Can Help or Worsen Income Inequality Through Its Impact on Education and Work (GLD4) | - | Read/watch assigned resources (*before class*) |
 
 **Resources for discussion**
 
-TBD — resources will be added once the group submits them.
+[*AI Could Actually Help Rebuild The Middle Class*](https://www.noemamag.com/how-ai-could-help-rebuild-the-middle-class/) — article by David Autor in *Noema Magazine*. AI can rebuild the middle class by helping average workers perform higher-skill tasks, increasing opportunities and wages if used effectively.
+
+[*Can AI Foster Equity in Education?*](https://education.umd.edu/news/11-08-24-can-ai-foster-equity-education) — article from the University of Maryland College of Education. AI can reduce educational inequality by supporting under-resourced students and teachers, but it may worsen gaps if access is uneven.
+
+[*The Simple Macroeconomics of AI*](https://economics.mit.edu/sites/default/files/2024-04/The%20Simple%20Macroeconomics%20of%20AI.pdf) — paper by Daron Acemoglu (MIT). AI's economic impact depends on whether it mainly replaces human tasks or enhances them, shaping outcomes like growth and wages.
+
+[*Will AI Make Inequality Better Or Worse*](https://www.youtube.com/watch?v=vGDqhUILlTQ) — video by Bernard Marr. AI will transform jobs and daily life, and its effects depend on how people choose to use and adapt to it.
 
 ## Week 15: April 27 - May 1
 
