@@ -155,9 +155,9 @@ This page is the **single canonical place** for:
 ### GLD4/WR8 - How AI Can Help or Worsen Income Inequality Through Its Impact on Education and Work
 
 - **Due:** Thursday (Week 14) during class
-<!-- - **Invite link:** <https://classroom.github.com/a/kFSZTzHf> -->
+- **Invite link:** <https://classroom.github.com/a/kFSZTzHf>
 - **Spec:** See [Group-Led Discussion Spec](resources/group_led_discussions.md) for requirements and timeline.
-- **Resource Links:** [AI Could Actually Help Rebuild The Middle Class — David Autor, Noema](https://www.noemamag.com/how-ai-could-help-rebuild-the-middle-class/), [Can AI Foster Equity in Education? — UMD College of Education](https://education.umd.edu/news/11-08-24-can-ai-foster-equity-education), [The Simple Macroeconomics of AI — Daron Acemoglu (MIT)](https://economics.mit.edu/sites/default/files/2024-04/The%20Simple%20Macroeconomics%20of%20AI.pdf), [Will AI Make Inequality Better Or Worse — Bernard Marr](https://www.youtube.com/watch?v=vGDqhUILlTQ)
+- **Resource Links:** [AI Could Actually Help Rebuild The Middle Class — David Autor, Noema](https://www.noemamag.com/how-ai-could-help-rebuild-the-middle-class/), [Can AI Foster Equity in Education? — UMD College of Education](https://education.umd.edu/news/11-08-24-can-ai-foster-equity-education), [The Simple Macroeconomics of AI — Daron Acemoglu (MIT) - just the intro](https://economics.mit.edu/sites/default/files/2024-04/The%20Simple%20Macroeconomics%20of%20AI.pdf), [Will AI Make Inequality Better Or Worse — Bernard Marr](https://www.youtube.com/watch?v=vGDqhUILlTQ)
 
 
 ---
