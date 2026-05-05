@@ -66,6 +66,14 @@ A clean, well-organized private repo with:
 
 Each team gives a 10–15 minute presentation on Thursday of Week 15 (April 30). Your presentation should include a live demo and slides covering who it's for, why it's useful, what you built, your technical approach, challenges you encountered, and what you learned.
 
+The presentation is graded out of **25 points** across five categories:
+
+- **Problem framing & motivation (5 pts)** — Audience understands who the app is for, the problem it solves, and why it matters *before* the demo begins. Specific user/use case, not generic.
+- **Live demo (5 pts)** — App runs end-to-end and showcases the core value in a focused, well-paced walkthrough. Hiccups handled gracefully.
+- **Technical approach (5 pts)** — Architecture explained at the right altitude: tools, conditional routing, custom state, and how they fit together — without reading code off the slides.
+- **Challenges & learning (5 pts)** — Honest, specific reflection on what was hard, what you tried, and what you'd do differently. Concrete, not generic.
+- **Delivery & teamwork (5 pts)** — Slides are clean and readable. All team members speak with smooth handoffs. Stays within the 10–15 min window. Q&A handled professionally.
+
 ### Portfolio Piece
 
 A **public** GitHub repository with a GitHub Pages site that summarizes your project for a general audience. This is a portfolio artifact — something you can show to future employers or graduate programs. It should include a clear project description, screenshots or screen recordings, and a summary of the technical approach. This public repo should include your project code (someone should be able to clone it and run your app), but should **not** include your AI development log or full development history. Instead, include a brief summary in your README of how AI tools were used in developing the project. See the [Publishing a Portfolio Site with Quarto](quarto_portfolio_site.md) guide to get started.
